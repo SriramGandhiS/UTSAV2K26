@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>UTSAV 2K26 — PSNA CSE</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{overscroll-behavior:none}
+:root{
+  --black:#0a0a0a;--black2:#111;--card:#161616;--border:#242424;--border2:#2e2e2e;
+  --text:#f0f0f0;--muted:#888;--muted2:#555;
+  --orange:#e8541a;--orange2:#ff6830;--od:rgba(232,84,26,.12);
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;padding-bottom:80px}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--border2)}
+a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',sans-serif}
+
+/* WATERMARK NAMES */
+.wm-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.wm-name{
+  position:absolute;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;text-transform:uppercase;letter-spacing:4px;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(232,84,26,0.07);
+  white-space:nowrap;user-select:none;line-height:1;
+}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:rgba(10,10,10,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nl{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;letter-spacing:3px;color:#fff;text-transform:uppercase}
+.nl span{color:var(--orange)}
+.nr{display:flex;gap:10px;align-items:center}
+.btn-ol{padding:8px 18px;background:transparent;border:1.5px solid var(--orange);color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:4px;transition:all .2s}
+.btn-ol:active,.btn-ol:hover{background:var(--orange);color:#fff}
+.btn-fi{padding:8px 18px;background:var(--orange);border:1.5px solid var(--orange);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:4px;transition:opacity .2s;display:none}
+.btn-fi:active{opacity:.85}
+
+/* HERO */
+.hero{min-height:100svh;display:grid;grid-template-columns:1fr;padding-top:64px;position:relative;background:var(--black);overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:60%;height:100%;background:radial-gradient(ellipse at 80% 30%,rgba(232,84,26,.07) 0%,transparent 60%);pointer-events:none}
+/* mobile-first: hero stays single column */
+.hero-left{padding:48px 24px 32px;display:flex;flex-direction:column;justify-content:center}
+.hero-meta{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.hero-h{font-family:'Barlow Condensed',sans-serif;font-size:clamp(54px,13vw,84px);font-weight:900;line-height:.9;text-transform:uppercase;letter-spacing:-1px;margin-bottom:16px}
+.hero-h .wh{color:#fff}.hero-h .or{color:var(--orange)}
+.hero-desc{font-size:14px;color:var(--muted);line-height:1.7;max-width:380px;margin-bottom:28px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-or{padding:13px 26px;background:transparent;border:1.5px solid var(--orange);color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;border-radius:4px;transition:all .2s}
+.btn-or:active,.btn-or:hover{background:var(--orange);color:#fff}
+.btn-fill{padding:13px 26px;background:var(--orange);border:1.5px solid var(--orange);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;border-radius:4px;transition:opacity .2s}
+.btn-fill:active{opacity:.85}
+.cd-row{margin-top:32px;display:flex;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;width:fit-content}
+.cd-c{padding:14px 20px;text-align:center;border-right:1px solid var(--border)}.cd-c:last-child{border-right:none}
+.cdn{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:#fff;display:block;line-height:1}
+.cdl{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;display:block;margin-top:3px}
+
+/* Hero right poster */
+.hero-right{padding:64px 24px 32px 0;display:flex;align-items:center;justify-content:center}
+@media(max-width:767px){.hero-right{padding:0 24px 40px}}
+.poster{width:100%;max-width:400px;aspect-ratio:4/3;border-radius:14px;overflow:hidden;border:1px solid var(--border2);background:var(--card);position:relative}
+.poster-inner{position:absolute;inset:0;background:linear-gradient(135deg,#1a0a00,#0f0500,#1a0800);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden}
+.poster-inner::before{content:'';position:absolute;top:-30%;left:-20%;width:140%;height:140%;background:radial-gradient(ellipse at 50% 40%,rgba(232,84,26,.22) 0%,transparent 65%)}
+.poster-ot{font-family:'Barlow Condensed',sans-serif;font-size:clamp(50px,12vw,88px);font-weight:900;letter-spacing:4px;text-transform:uppercase;color:transparent;-webkit-text-stroke:1.5px var(--orange);opacity:.65;position:relative;z-index:1;line-height:1}
+.poster-dt{position:relative;z-index:1;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;color:var(--orange);text-transform:uppercase;padding:5px 14px;border:1px solid rgba(232,84,26,.4);border-radius:3px;background:rgba(232,84,26,.08)}
+.poster-su{position:relative;z-index:1;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.25);text-transform:uppercase;font-weight:600}
+
+/* OUTLINE BAND */
+.ob{width:100%;overflow:hidden;padding:24px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--black)}
+.obs{display:flex;gap:0;animation:osc 18s linear infinite;width:max-content;white-space:nowrap}
+@keyframes osc{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.obi{font-family:'Barlow Condensed',sans-serif;font-size:clamp(64px,16vw,120px);font-weight:900;letter-spacing:4px;text-transform:uppercase;color:transparent;-webkit-text-stroke:1px rgba(232,84,26,.4);padding:0 28px;line-height:1;user-select:none}
+
+/* TICKER */
+.ticker-wrap{background:var(--orange);padding:12px 0;overflow:hidden;transform:skewY(-1deg);margin:0 -20px}
+.ticker-inner{display:flex;gap:0;animation:tk 22s linear infinite;width:max-content}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ti{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:3px;color:#fff;text-transform:uppercase;white-space:nowrap;padding:0 18px;display:flex;align-items:center;gap:10px}
+.td{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.4)}
+
+/* SECTION */
+.sec{padding:72px 24px}
+.sl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;color:var(--orange);text-transform:uppercase;margin-bottom:10px}
+.st{font-family:'Barlow Condensed',sans-serif;font-size:clamp(38px,9vw,66px);font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-1px;line-height:.95;margin-bottom:8px}
+.ss{font-size:14px;color:var(--muted);line-height:1.6;max-width:440px;margin-bottom:36px}
+
+/* STATS */
+.stats-g{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:52px}
+.sb{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:22px 14px;text-align:center}
+.sbn{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;color:var(--orange);display:block;letter-spacing:-1px;line-height:1}
+.sbl{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-top:5px;display:block}
+
+/* ─── EVENT TILES ─── */
+.ev-tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* mobile-first: keep 2 columns max */
+
+.ev-tile{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;cursor:pointer;
+  transition:border-color .25s,transform .2s;
+  position:relative;
+}
+.ev-tile:hover{border-color:var(--orange);transform:translateY(-3px)}
+.ev-tile:active{transform:scale(.98)}
+.ev-tile-top{
+  width:100%;aspect-ratio:4/3;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.ev-tile-bg{position:absolute;inset:0;transition:transform .35s}
+.ev-tile:hover .ev-tile-bg{transform:scale(1.06)}
+.ev-tile-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(10,10,10,.92) 100%)}
+.ev-tile-tag{position:absolute;top:10px;left:10px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 8px;border-radius:3px;background:rgba(10,10,10,.85);border:1px solid var(--border2);color:var(--muted);backdrop-filter:blur(4px)}
+.ev-tile-prize{position:absolute;bottom:10px;right:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;color:var(--orange);background:rgba(10,10,10,.85);padding:4px 10px;border-radius:3px;border:1px solid rgba(232,84,26,.3)}
+.ev-tile-body{padding:14px}
+.ev-tile-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;line-height:1.1}
+.ev-tile-sub{font-size:10px;color:var(--muted2);font-weight:500;margin-bottom:6px}
+.ev-tile-time{font-size:9px;color:var(--muted2);margin-bottom:8px;display:flex;align-items:center;gap:4px;opacity:.8}
+.ev-tile-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.etp{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px}
+.etp-or{background:rgba(232,84,26,.1);border:1px solid rgba(232,84,26,.2);color:var(--orange)}
+.etp-nt{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted2)}
+.ev-tile-link{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--orange);transition:gap .2s}
+.ev-tile:hover .ev-tile-link{gap:9px}
+.ev-tile-link svg{width:13px;height:13px;flex-shrink:0}
+
+/* ─── REGISTER OVERLAY (smart flow) ─── */
+.reg-ov{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);display:none;align-items:flex-end}
+.reg-ov.open{display:flex;animation:fo .2s ease}
+@keyframes fo{from{opacity:0}to{opacity:1}}
+.reg-sheet{width:100%;max-height:96svh;background:var(--black2);border-top:2px solid var(--orange);border-radius:20px 20px 0 0;overflow-y:auto;animation:su .3s cubic-bezier(.22,.68,0,1.1)}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.rsc{padding:22px 22px 44px}
+
+/* STEPS */
+.step{display:none}.step.active{display:block;animation:rise .3s ease}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Event summary card (shows in form after click) */
+.ev-summary-card{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-radius:8px;
+  background:rgba(232,84,26,.08);border:1.5px solid rgba(232,84,26,.3);
+  margin-bottom:22px;position:relative;
+}
+.esc-accent{width:4px;height:100%;position:absolute;left:0;top:0;border-radius:4px 0 0 4px;background:var(--orange)}
+.esc-icon{width:44px;height:44px;border-radius:8px;background:rgba(232,84,26,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
+.esc-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:.5px}
+.esc-meta{font-size:11px;color:var(--muted2);margin-top:2px}
+.esc-change{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);background:var(--border);border:none;border-radius:4px;padding:5px 10px;flex-shrink:0}
+
+/* Form elements */
+.fc-t{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:10px;font-weight:700;letter-spacing:2.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:7px}
+.fi,.fs{width:100%;padding:12px 14px;background:rgba(255,255,255,.04);border:1.5px solid var(--border2);border-radius:6px;color:#fff;font-family:'Barlow',sans-serif;font-size:14px;-webkit-appearance:none;appearance:none;transition:border-color .2s}
+.fi::placeholder{color:var(--muted2)}
+.fi:focus,.fs:focus{outline:none;border-color:var(--orange)}
+.fs{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;color:rgba(255,255,255,.8);-webkit-appearance:none;appearance:none}
+.fs option{background:#111;color:#fff}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* Team member cards */
+.tm-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.tm-card{background:rgba(255,255,255,.03);border:1.5px solid var(--border);border-radius:8px;padding:14px}
+.tm-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.tm-num{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--orange);letter-spacing:2px;text-transform:uppercase}
+.tm-required{font-size:9px;color:var(--muted2);letter-spacing:1px}
+.add-tm-btn{width:100%;padding:11px;background:transparent;border:1.5px dashed var(--border2);border-radius:6px;color:var(--muted2);font-size:12px;font-weight:600;letter-spacing:1px;margin-top:4px;transition:border-color .2s}
+.add-tm-btn:hover{border-color:var(--orange)}
+.remove-tm{background:none;border:none;color:var(--muted2);font-size:16px;padding:2px 6px;transition:color .2s}
+.remove-tm:hover{color:var(--orange)}
+
+/* Nav dots */
+.step-nav{display:flex;gap:8px;margin-bottom:22px}
+.step-dot{width:24px;height:3px;border-radius:2px;background:var(--border2);transition:all .2s}
+.step-dot.done{background:var(--orange);opacity:.5}
+.step-dot.current{background:var(--orange);width:40px}
+
+/* Action btns */
+.reg-next-btn{width:100%;padding:16px;background:var(--orange);color:#fff;border:none;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:2px;text-transform:uppercase;box-shadow:0 4px 20px rgba(232,84,26,.35);transition:opacity .2s;margin-top:6px}
+.reg-next-btn:active{opacity:.85}
+.reg-back-btn{width:100%;padding:14px;background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;margin-top:10px}
+.free-note{text-align:center;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;padding:10px}
+
+/* CONFIRMATION */
+.conf-screen{position:fixed;inset:0;z-index:800;background:var(--black);display:none;flex-direction:column;overflow-y:auto}
+.conf-screen.open{display:flex;animation:fo .3s ease}
+.conf-inner{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;max-width:460px;margin:0 auto;width:100%}
+.conf-check-ring{width:88px;height:88px;border-radius:50%;border:2px solid rgba(232,84,26,.35);display:flex;align-items:center;justify-content:center;margin-bottom:24px;animation:pop .5s cubic-bezier(.22,.68,0,1.4)}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+.conf-check-ring svg{width:36px;height:36px;stroke:var(--orange);stroke-width:2.5}
+.conf-title{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.conf-sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px;max-width:280px}
+.conf-id-box{background:rgba(232,84,26,.08);border:1px solid rgba(232,84,26,.2);border-radius:8px;padding:14px 24px;margin-bottom:8px;width:100%;max-width:300px}
+.conf-id-l{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:5px}
+.conf-id-v{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--orange);letter-spacing:4px}
+.conf-policy{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0;text-align:left;width:100%;max-width:360px}
+.conf-policy h4{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:10px}
+.conf-policy ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.conf-policy li{font-size:12px;color:var(--muted2);line-height:1.5;display:flex;gap:8px}
+.conf-policy li::before{content:'—';color:var(--orange);flex-shrink:0}
+
+/* PASS */
+.pass-ov{position:fixed;inset:0;z-index:700;background:var(--black);display:none;overflow-y:auto}
+.pass-ov.open{display:block;animation:fo .3s ease}
+.pass-wrap{padding:20px 16px 80px;max-width:440px;margin:0 auto}
+.pass-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-top:10px}
+.pass-head-t{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase}
+.pass-close-btn{padding:8px 16px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--muted);font-size:12px;font-weight:600;letter-spacing:1px}
+.pass-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.pass-top{padding:22px;background:linear-gradient(135deg,#1a0800,#0d0500);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.pass-top::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(232,84,26,.15) 0%,transparent 70%)}
+.pass-fest{font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:8px;position:relative;z-index:1}
+.pass-ev-name{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;line-height:1.1;margin-bottom:12px;position:relative;z-index:1}
+.pass-status{display:inline-flex;align-items:center;gap:6px;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.2);color:#2ecc71;font-size:9px;font-weight:700;letter-spacing:2px;padding:5px 12px;border-radius:3px;text-transform:uppercase;position:relative;z-index:1}
+.sdot{width:5px;height:5px;border-radius:50%;background:#2ecc71;animation:dp 1.5s ease infinite}
+@keyframes dp{0%,100%{opacity:1}50%{opacity:.3}}
+.pass-body{padding:20px}
+.pass-id-row{display:flex;justify-content:space-between;align-items:center;background:rgba(232,84,26,.06);border:1px solid rgba(232,84,26,.15);border-radius:8px;padding:12px 14px;margin-bottom:16px}
+.pid-l{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:4px}
+.pid-v{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--orange);letter-spacing:3px}
+.pass-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.pfl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:3px}
+.pfv{font-size:13px;font-weight:600;color:#fff;line-height:1.3}
+.pass-sep{display:flex;align-items:center;gap:10px;margin:14px 0}
+.pass-sep::before,.pass-sep::after{content:'';flex:1;border-top:1px dashed var(--border2)}
+.pass-sep span{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted2);white-space:nowrap;text-transform:uppercase}
+.qr-center{display:flex;justify-content:center;padding:4px 0 10px}
+.qr-box{padding:14px;background:#fff;border-radius:10px;display:inline-flex;flex-direction:column;align-items:center;gap:8px}
+.qr-lbl{font-size:9px;letter-spacing:2px;color:#666;font-weight:600;text-transform:uppercase}
+.shot-note{text-align:center;font-size:11px;color:var(--muted2);background:rgba(255,255,255,.03);border-radius:6px;padding:10px}
+
+/* Team member pass section */
+.team-pass-section{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:12px}
+.team-pass-title{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:10px}
+.team-member-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;color:var(--muted)}
+.team-member-row:last-child{border-bottom:none}
+.team-member-row strong{color:#fff;font-weight:600}
+
+/* ADMIN */
+.admin-ov{position:fixed;inset:0;z-index:900;background:var(--black);display:none;overflow-y:auto}
+.admin-ov.open{display:block}
+.admin-wrap{padding:20px 20px 60px;max-width:700px;margin:0 auto}
+.admin-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-top:10px}
+.admin-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase}
+.admin-title span{color:var(--orange)}
+.admin-close{padding:8px 16px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--muted);font-size:12px;font-weight:600;letter-spacing:1px}
+.admin-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+@media(min-width:500px){.admin-stat-grid{grid-template-columns:repeat(4,1fr)}}
+.admin-stat{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px 14px;text-align:center}
+.as-n{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--orange);display:block;line-height:1}
+.as-l{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-top:4px;display:block}
+.admin-ev-section{margin-bottom:24px}
+.admin-ev-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.admin-ev-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:6px;margin-bottom:6px}
+.aer-name{font-size:13px;font-weight:700;color:#fff}
+.aer-stats{display:flex;gap:14px}
+.aer-stat{text-align:center}
+.aer-n{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--orange);display:block}
+.aer-l{font-size:8px;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase}
+.admin-regs-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.admin-reg-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;cursor:pointer;transition:border-color .2s}
+.admin-reg-card:hover{border-color:var(--orange)}
+.arc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.arc-name{font-size:14px;font-weight:700;color:#fff}
+.arc-id{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--orange);letter-spacing:2px}
+.arc-meta{font-size:11px;color:var(--muted2);line-height:1.6}
+.arc-events{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.arc-ev-pill{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;background:var(--od);border:1px solid rgba(232,84,26,.2);color:var(--orange)}
+.admin-sync-btn{width:100%;padding:14px;background:var(--orange);border:none;border-radius:6px;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;box-shadow:0 4px 20px rgba(232,84,26,.3)}
+.admin-clear-btn{width:100%;padding:12px;background:transparent;border:1px solid rgba(232,84,26,.3);border-radius:6px;color:rgba(232,84,26,.6);font-family:'Barlow',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px}
+.sync-status{text-align:center;font-size:12px;color:var(--muted2);padding:8px;margin-bottom:12px}
+.sync-status.ok{color:#2ecc71}
+.sync-status.err{color:#e74c3c}
+
+/* EVENT DETAIL MODAL */
+.ev-modal-ov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);display:none;align-items:flex-end}
+.ev-modal-ov.open{display:flex;animation:fo .2s ease}
+.ev-sheet{width:100%;max-height:93svh;background:#111;border-top:2px solid var(--orange);border-radius:20px 20px 0 0;overflow-y:auto;animation:su .3s cubic-bezier(.22,.68,0,1.1)}
+.sh{width:32px;height:3px;background:var(--border2);border-radius:2px;margin:14px auto 0}
+.esc{padding:22px 22px 36px}
+
+/* CONTACT */
+.contact-grid{display:flex;flex-direction:column;gap:10px}
+.cc{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px;text-decoration:none;transition:border-color .2s}
+.cc:hover{border-color:var(--orange)}
+.cc-icon{width:38px;height:38px;border-radius:6px;background:var(--od);border:1px solid rgba(232,84,26,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cc-icon svg{width:16px;height:16px;color:var(--orange)}
+.cc-role{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:2px}
+.cc-name{font-size:13px;font-weight:700;color:#fff}
+.cc-ph{font-size:11px;color:var(--orange);margin-top:1px}
+
+/* FOOTER */
+.footer{background:var(--black2);border-top:1px solid var(--border);padding:44px 24px}
+.fl-logo{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;letter-spacing:3px;color:#fff;text-transform:uppercase;margin-bottom:8px}
+.fl-logo span{color:var(--orange)}
+.fl-info{font-size:13px;color:var(--muted2);line-height:1.8;margin-bottom:20px}
+.fl-copy{font-size:11px;color:var(--muted2);padding-top:18px;border-top:1px solid var(--border)}
+
+/* about grid */
+.about-g{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:600px){.about-g{grid-template-columns:1fr 1fr 1fr}}
+.ab-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:26px 20px}
+.ab-num{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:var(--orange);opacity:.3;line-height:1;margin-bottom:10px;letter-spacing:-2px}
+.ab-t{font-size:15px;font-weight:700;color:#fff;margin-bottom:6px}
+.ab-b{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* ADMIN ICON */
+.admin-icon-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .2s;flex-shrink:0}
+.admin-icon-btn:active{border-color:var(--orange)}
+.admin-icon-btn svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.5}
+
+/* ADMIN LOGIN MODAL */
+.admin-login-ov{position:fixed;inset:0;z-index:950;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:24px}
+.admin-login-ov.open{display:flex;animation:fo .2s ease}
+.admin-login-box{width:100%;max-width:340px;background:rgba(22,22,22,.95);border:1px solid var(--border);border-radius:16px;padding:32px 24px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.admin-login-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;text-align:center;margin-bottom:6px}
+.admin-login-sub{text-align:center;font-size:12px;color:var(--muted2);margin-bottom:24px}
+.admin-login-err{text-align:center;font-size:11px;color:#e74c3c;margin-bottom:12px;display:none}
+.admin-login-err.show{display:block;animation:rise .3s ease}
+
+/* REG CLOSE BAR */
+.reg-close-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 22px 0}
+.reg-close-bar-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:1px}
+.reg-close-btn{padding:6px 14px;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px}
+.reg-close-btn:active{opacity:.7}
+
+/* EVENT MODAL CLOSE */
+.ev-modal-close{display:flex;align-items:center;justify-content:space-between;padding:0 0 14px}
+.ev-modal-close-btn{padding:6px 14px;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer}
+.ev-modal-close-btn:active{opacity:.7}
+
+/* BOTTOM DOCK */
+.dock{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:center;padding:0 16px calc(8px + env(safe-area-inset-bottom,0px));pointer-events:none}
+.dock-bar{display:flex;align-items:center;justify-content:space-around;width:100%;max-width:420px;padding:8px 12px;background:rgba(17,17,17,.6);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.08);border-radius:18px;pointer-events:all;box-shadow:0 4px 30px rgba(0,0,0,.5)}
+.dock-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 18px;border-radius:12px;cursor:pointer;background:transparent;border:none;font-family:'Barlow',sans-serif;transition:all .2s}
+.dock-item svg{width:22px;height:22px;stroke:var(--muted2);fill:none;stroke-width:1.5;transition:stroke .2s}
+.dock-item span{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);transition:color .2s}
+.dock-item.active svg{stroke:var(--orange)}
+.dock-item.active span{color:var(--orange)}
+.dock-item:active{transform:scale(.93)}
+.dock.hidden{display:none}
+
+/* ADMIN EXPANDED */
+.arc-expanded{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.arc-expanded.show{display:block;animation:rise .2s ease}
+.arc-member{padding:6px 0;font-size:11px;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.03)}
+.arc-member:last-child{border-bottom:none}
+.admin-search{width:100%;padding:12px 14px;background:rgba(255,255,255,.04);border:1.5px solid var(--border2);border-radius:6px;color:#fff;font-family:'Barlow',sans-serif;font-size:14px;margin-bottom:16px;-webkit-appearance:none}
+.admin-search:focus{outline:none;border-color:var(--orange)}
+.admin-search::placeholder{color:var(--muted2)}
+.admin-dept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-bottom:20px}
+.admin-dept-card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:10px 8px;text-align:center}
+.adc-n{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--orange);display:block;line-height:1}
+.adc-l{font-size:9px;font-weight:700;letter-spacing:1px;color:var(--muted2);text-transform:uppercase;margin-top:3px;display:block}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="admin-icon-btn" onclick="openAdminLogin()" aria-label="Admin">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </button>
+    <button class="btn-fi" id="pass-nav-btn" onclick="openPass()" style="display:block;padding:8px 12px;font-size:11px">My Pass</button>
+    <button class="btn-ol" onclick="openReg(null)" style="padding:8px 12px;font-size:11px">Register</button>
+  </div>
+  <div class="nr">
+    <div class="nl">UT<span>SAV</span></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <!-- Watermark ghost names -->
+  <div class="wm-layer" id="wm-layer"></div>
+  <div class="hero-left">
+    <div class="hero-meta">28–29 March 2026 &nbsp;|&nbsp; PSNA College, Dindigul</div>
+    <h1 class="hero-h">
+      <span class="wh">THE</span><span class="or"> UTSAV</span>
+      <br><span class="wh">BEGINS</span>
+    </h1>
+    <p class="hero-desc">The Annual Technical Symposium of the Department of Computer Science & Engineering. Compete. Collaborate. Conquer.</p>
+    <div class="hero-btns">
+      <button class="btn-or" onclick="openReg(null)">Register Free</button>
+      <button class="btn-fill" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})">Explore Events</button>
+    </div>
+    <div class="cd-row">
+      <div class="cd-c"><span class="cdn" id="cd-d">00</span><span class="cdl">Days</span></div>
+      <div class="cd-c"><span class="cdn" id="cd-h">00</span><span class="cdl">Hours</span></div>
+      <div class="cd-c"><span class="cdn" id="cd-m">00</span><span class="cdl">Mins</span></div>
+      <div class="cd-c"><span class="cdn" id="cd-s">00</span><span class="cdl">Secs</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="poster">
+      <div class="poster-inner">
+        <div class="poster-ot">UTSAV</div>
+        <div class="poster-dt">28 — 29 March 2026</div>
+        <div class="poster-su">PSNA CSE · Dindigul</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTLINE BAND -->
+<div class="ob"><div class="obs" id="obs"></div></div>
+
+<!-- TICKER -->
+<div style="overflow:hidden"><div class="ticker-wrap"><div class="ticker-inner" id="ticker"></div></div></div>
+
+<!-- ABOUT -->
+<section class="sec" id="about">
+  <div class="sl">About</div>
+  <div class="st">A Legacy of<br>Excellence</div>
+  <p class="ss">PSNA CSE brings together the sharpest minds for a day of competition, innovation and celebration.</p>
+  <div class="stats-g">
+    <div class="sb"><span class="sbn" id="sev">0</span><span class="sbl">Events</span></div>
+    <div class="sb"><span class="sbn" id="spr">0K</span><span class="sbl">Prize Pool</span></div>
+    <div class="sb"><span class="sbn">FREE</span><span class="sbl">Entry Fee</span></div>
+  </div>
+  <div class="about-g">
+    <div class="ab-card"><div class="ab-num">01</div><div class="ab-t">Compete & Win</div><div class="ab-b">Six events across coding, design, research and innovation. Over ₹40,000 in prizes.</div></div>
+    <div class="ab-card"><div class="ab-num">02</div><div class="ab-t">Zero Cost</div><div class="ab-b">Registration is completely free. No hidden fees. Just show up and give your best.</div></div>
+    <div class="ab-card"><div class="ab-num">03</div><div class="ab-t">Instant Digital Pass</div><div class="ab-b">Register and get a QR-verified pass instantly on your phone. Show it at the event desk.</div></div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="sec" id="events" style="padding-top:0">
+  <div class="sl">2026 Edition</div>
+  <div class="st">Events</div>
+  <p class="ss">Tap any event to view details — clicking Register will pre-fill the event automatically.</p>
+  <div class="ev-tiles" id="ev-tiles"></div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec" id="contact" style="padding-top:0">
+  <div class="sl">Get in Touch</div>
+  <div class="st">Contact</div>
+  <p class="ss">Reach coordinators for any event queries.</p>
+  <div class="contact-grid" id="cg"></div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="fl-logo">UT<span>SAV</span></div>
+  <div class="fl-info">PSNA College of Engineering & Technology<br>Department of Computer Science & Engineering<br>Dindigul, Tamil Nadu — 624 622</div>
+  <div class="fl-copy">© 2026 UTSAV · PSNA CSE · All Rights Reserved</div>
+</footer>
+
+<!-- EVENT DETAIL MODAL -->
+<div class="ev-modal-ov" id="ev-modal" onclick="closeEvMod(event)">
+  <div class="ev-sheet" onclick="event.stopPropagation()">
+    <div class="sh"></div>
+    <div class="esc" id="esc"></div>
+  </div>
+</div>
+
+<!-- REGISTER OVERLAY (3-step smart flow) -->
+<div class="reg-ov" id="reg-ov" onclick="closeRegOv(event)">
+  <div class="reg-sheet" id="reg-sheet" onclick="event.stopPropagation()">
+    <div class="reg-close-bar">
+      <div class="reg-close-bar-title">Registration</div>
+      <button class="reg-close-btn" onclick="forceCloseReg()">✕ Close</button>
+    </div>
+    <div class="rsc">
+
+      <!-- STEP DOTS -->
+      <div class="step-nav" id="step-nav">
+        <div class="step-dot current" id="dot-0"></div>
+        <div class="step-dot" id="dot-1"></div>
+        <div class="step-dot" id="dot-2"></div>
+      </div>
+
+      <!-- STEP 1: Personal Details -->
+      <div class="step active" id="step-0">
+        <div id="ev-summary-here"></div>
+        <div class="fc-t">Your Details</div>
+        <div class="fg"><label class="fl">Full Name</label><input class="fi" id="f-name" type="text" placeholder="Enter your full name"></div>
+        <div class="row2">
+          <div class="fg"><label class="fl">Register Number</label><input class="fi" id="f-regno" type="text" placeholder="e.g. 23CSE001"></div>
+          <div class="fg">
+            <label class="fl">Year</label>
+            <select class="fs" id="f-year">
+              <option value="">Year</option>
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3">3rd Year</option>
+              <option value="4">4th Year</option>
+            </select>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="fg">
+            <label class="fl">Section</label>
+            <select class="fs" id="f-section">
+              <option value="">Section</option>
+              <option value="A">Section A</option>
+              <option value="B">Section B</option>
+              <option value="C">Section C</option>
+              <option value="D">Section D</option>
+              <option value="E">Section E</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label class="fl">Phone Number</label>
+            <input class="fi" id="f-phone" type="tel" placeholder="+91 XXXXX XXXXX">
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Email Address</label><input class="fi" id="f-email" type="email" placeholder="your@email.com"></div>
+        <div class="free-note">CSE Department Only · Free Registration</div>
+        <button class="reg-next-btn" onclick="goStep(1)">Next — Team Details</button>
+      </div>
+
+      <!-- STEP 2: Team Details -->
+      <div class="step" id="step-1">
+        <div id="ev-summary-here2"></div>
+        <div class="fc-t">Team Details</div>
+        <div class="fg"><label class="fl">Team Name</label><input class="fi" id="f-teamname" type="text" placeholder="Enter your team name"></div>
+        <div style="font-size:11px;color:var(--muted2);margin-bottom:14px;line-height:1.5" id="team-hint"></div>
+        <div class="tm-grid" id="tm-grid"></div>
+        <button class="add-tm-btn" id="add-tm-btn" onclick="addTeamMember()">+ Add Team Member</button>
+        <button class="reg-next-btn" style="margin-top:14px" onclick="goStep(2)">Next — Review & Confirm</button>
+        <button class="reg-back-btn" onclick="goStep(0)">← Back</button>
+      </div>
+
+      <!-- STEP 3: Review -->
+      <div class="step" id="step-2">
+        <div class="fc-t">Review & Confirm</div>
+        <div id="review-content"></div>
+        <div class="free-note">Registration is completely FREE</div>
+        <button class="reg-next-btn" onclick="submitReg()">Confirm Registration</button>
+        <button class="reg-back-btn" onclick="goStep(1)">← Edit Details</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRMATION -->
+<div class="conf-screen" id="conf-screen">
+  <div class="conf-inner">
+    <div class="conf-check-ring"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="conf-title">You're In!</div>
+    <div class="conf-sub">Registration confirmed. Your digital pass is ready.</div>
+    <div class="conf-id-box"><div class="conf-id-l">Registration ID</div><div class="conf-id-v" id="conf-id-v">UTSAV-0001</div></div>
+    <div class="conf-policy">
+      <h4>Registration Policy</h4>
+      <ul>
+        <li>Bring this pass to the event — shown at the desk</li>
+        <li>Only PSNA CSE students may participate</li>
+        <li>One registration per student per event</li>
+        <li>Arrive 15 minutes before the event time</li>
+        <li>Team leader is responsible for team coordination</li>
+        <li>Results announced same day — prizes given on stage</li>
+      </ul>
+    </div>
+    <button class="btn-fill" style="width:100%;max-width:320px;margin-top:4px" onclick="viewPass()">View My Digital Pass</button>
+    <button style="width:100%;max-width:320px;margin-top:10px;padding:13px;background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-family:'Barlow',sans-serif;font-size:13px;font-weight:600" onclick="closeConf()">Back to Events</button>
+  </div>
+</div>
+
+<!-- MY PASS -->
+<div class="pass-ov" id="pass-ov">
+  <div class="pass-wrap">
+    <div class="pass-head"><div class="pass-head-t">My Pass</div><button class="pass-close-btn" onclick="closePass()">Close ✕</button></div>
+    <div id="pass-out"></div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-ov" id="admin-ov">
+  <div class="admin-wrap">
+    <div class="admin-head">
+      <div class="admin-title">Admin <span>Panel</span></div>
+      <button class="admin-close" onclick="closeAdmin()">Close ✕</button>
+    </div>
+    <div class="sync-status" id="sync-status"></div>
+    <button class="admin-sync-btn" onclick="syncToSheets()">Sync to Google Sheets</button>
+    <div class="admin-stat-grid" id="admin-stats"></div>
+    <div style="margin:20px 0 12px"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:1px">Department Summary</div></div>
+    <div id="admin-dept-summary"></div>
+    <div style="margin:20px 0 12px"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:1px">Event Breakdown</div></div>
+    <div id="admin-ev-breakdown"></div>
+    <div style="margin:20px 0 12px"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:1px">All Registrations</div></div>
+    <input class="admin-search" id="admin-search" type="text" placeholder="Search by name, reg no, event..." oninput="filterAdminRegs()">
+    <div id="admin-regs-list"></div>
+    <div style="height:20px"></div>
+    <button class="admin-clear-btn" onclick="clearAllData()">Clear All Registration Data</button>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div class="admin-login-ov" id="admin-login-ov" onclick="if(event.target===this)closeAdminLogin()">
+  <div class="admin-login-box">
+    <div class="admin-login-title">Admin <span style="color:var(--orange)">Login</span></div>
+    <div class="admin-login-sub">Enter admin credentials to access the panel</div>
+    <div class="admin-login-err" id="admin-login-err">Invalid credentials. Try again.</div>
+    <div class="fg"><label class="fl">User ID</label><input class="fi" id="admin-uid" type="text" placeholder="Enter user ID"></div>
+    <div class="fg"><label class="fl">Password</label><input class="fi" id="admin-pwd" type="password" placeholder="Enter password"></div>
+    <button class="reg-next-btn" style="margin-top:8px" onclick="checkAdminLogin()">Login</button>
+    <button class="reg-back-btn" onclick="closeAdminLogin()">Cancel</button>
+  </div>
+</div>
+
+<!-- BOTTOM DOCK -->
+<div class="dock" id="dock">
+  <div class="dock-bar">
+    <button class="dock-item active" id="dock-home" onclick="dockNav('home')">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="dock-item" id="dock-events" onclick="dockNav('events')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>Events</span>
+    </button>
+    <button class="dock-item" id="dock-pass" onclick="dockNav('pass')">
+      <svg viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 0 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 0 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+      <span>My Pass</span>
+    </button>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════
+   CONFIGURATION — EDIT THESE
+   ════════════════════════════════ */
+// To connect Google Sheets:
+// 1. Create a Google Sheet
+// 2. Go to Extensions → Apps Script
+// 3. Paste the doPost function from the bottom of this file
+// 4. Deploy as Web App (Anyone can access)
+// 5. Paste the URL below
+const SHEETS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+// Admin credentials
+const ADMIN_ID = 'sriram';
+const ADMIN_PASS = '93611';
+
+/* ════════ EVENT DATA ════════ */
+const EVS = [
+  {id:'hack', name:'TECHNOTHON', label:'24-Hour Hackathon', type:'Team', minTeam:2, maxTeam:4, tag:'Hackathon',
+   icon:'⚡', grad:'linear-gradient(135deg,#0d1f3c,#0a1428)', accent:'#3498db',
+   desc:'Build a working product in 24 hours. Real problems, real solutions — from raw idea to working prototype overnight.',
+   date:'March 28, 2026', time:'9:00 AM – 9:00 AM (next day)', venue:'CS Lab Block A', deadline:'March 25',
+   p1:'₹8,000', p2:'₹5,000', p3:'₹3,000',
+   rules:['Team of 2–4 members','Any programming language','Theme announced on event day','Laptops and chargers mandatory','Plagiarism = disqualification'],
+   ec:'Mr. Karthik R.', ep:'+91 98421 56789', sc:'Dr. Priya M.', sp:'+91 97890 12345'},
+  {id:'paper', name:'PAPER PRESENTATION', label:'Research & Innovation', type:'Team', minTeam:1, maxTeam:2, tag:'Technical',
+   icon:'📄', grad:'linear-gradient(135deg,#1f1200,#120b00)', accent:'#e67e22',
+   desc:'Present original research to expert judges. Depth, clarity and innovation rewarded.',
+   date:'March 28, 2026', time:'10:00 AM – 1:00 PM', venue:'Seminar Hall 1', deadline:'March 24',
+   p1:'₹5,000', p2:'₹3,000', p3:'₹2,000',
+   rules:['Max 2 members','Slides submitted 2 days before','10 min + 5 min Q&A','CSE/IT topics only','Plagiarism check done'],
+   ec:'Ms. Divya S.', ep:'+91 96780 34567', sc:'Prof. Ramesh K.', sp:'+91 95670 23456'},
+  {id:'debug', name:'CODE DEBUGGING', label:'Find the Bug & Win', type:'Solo', minTeam:1, maxTeam:1, tag:'Coding',
+   icon:'🐛', grad:'linear-gradient(135deg,#031a0d,#021008)', accent:'#2ecc71',
+   desc:'Deliberately broken code. Multiple rounds. Only the sharpest debugger survives.',
+   date:'March 29, 2026', time:'9:30 AM – 12:00 PM', venue:'CS Lab Block B', deadline:'March 27',
+   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
+   rules:['Individual only','Languages: C, C++, Java, Python','3 rounds — Easy, Medium, Hard','No internet','Judge decision final'],
+   ec:'Mr. Vijay T.', ep:'+91 94560 78901', sc:'Ms. Anitha L.', sp:'+91 93450 67890'},
+  {id:'uiux', name:'UI/UX DESIGN', label:'Design Sprint · 3 Hours', type:'Team', minTeam:1, maxTeam:2, tag:'Design',
+   icon:'🎨', grad:'linear-gradient(135deg,#1a0a28,#0f0518)', accent:'#9b59b6',
+   desc:'Design a complete mobile app UI in 3 hours. Figma skills and user empathy judged.',
+   date:'March 29, 2026', time:'10:00 AM – 1:00 PM', venue:'Design Studio', deadline:'March 27',
+   p1:'₹4,000', p2:'₹2,500', p3:'₹1,500',
+   rules:['Figma or Adobe XD only','Theme revealed on day','3 hours to design','5-min pitch required','Bring your own laptop'],
+   ec:'Ms. Keerthana R.', ep:'+91 92340 56789', sc:'Dr. Senthil P.', sp:'+91 91230 45678'},
+  {id:'quiz', name:'TECH QUIZ', label:'Knowledge · Speed · Accuracy', type:'Team', minTeam:2, maxTeam:3, tag:'Quiz',
+   icon:'🧠', grad:'linear-gradient(135deg,#1f0505,#120303)', accent:'#e74c3c',
+   desc:'Three rapid-fire rounds on AI, networks, OS, algorithms, and web tech.',
+   date:'March 28, 2026', time:'2:00 PM – 4:30 PM', venue:'Seminar Hall 2', deadline:'March 27',
+   p1:'₹2,000 + Trophy', p2:'₹1,500 + Medal', p3:'₹1,000 + Medal',
+   rules:['Team of 2–3','Round 1: MCQ prelims','Finals: Top 6','No phones in finals','Quizmaster decision final'],
+   ec:'Mr. Arun M.', ep:'+91 90120 34567', sc:'Prof. Lavanya S.', sp:'+91 89010 23456'},
+  {id:'idea', name:'IDEATHON', label:'Pitch Your Vision', type:'Team', minTeam:2, maxTeam:4, tag:'Innovation',
+   icon:'💡', grad:'linear-gradient(135deg,#1a1200,#100c00)', accent:'#f1c40f',
+   desc:'No code required. Just a bold idea and a killer pitch to industry judges.',
+   date:'March 29, 2026', time:'2:00 PM – 5:00 PM', venue:'Main Auditorium', deadline:'March 26',
+   p1:'₹5,000', p2:'₹3,000', p3:'₹2,000',
+   rules:['Team of 2–4','Original ideas only','10-min pitch + 5-min Q&A','PPT mandatory','Any domain'],
+   ec:'Ms. Nithya B.', ep:'+91 88900 12345', sc:'Dr. Murugan A.', sp:'+91 87890 01234'}
+];
+
+const CONTACTS = [
+  {role:'Events', name:'Mr. Karthik R.', phone:'+91 98421 56789'},
+  {role:'Registration', name:'Ms. Divya S.', phone:'+91 96780 34567'},
+  {role:'General Queries', name:'Mr. Vijay T.', phone:'+91 94560 78901'},
+  {role:'Staff Coordinator', name:'Dr. Priya M.', phone:'+91 97890 12345'},
+];
+
+/* ════════ STATE ════════ */
+let currentEv = null;
+let currentStep = 0;
+let teamMembers = [];
+
+/* ════════ INIT ════════ */
+function init() {
+  buildObs(); buildTicker(); renderTiles(); renderContacts();
+  animStats(); tick(); setInterval(tick, 1000);
+  buildWatermarks();
+  if (JSON.parse(localStorage.getItem('u26r') || '[]').length) {
+    document.getElementById('pass-nav-btn').style.display = 'block';
+  }
+  // Dock active state on scroll
+  window.addEventListener('scroll', updateDockActive, {passive:true});
+  updateDockActive();
+}
+
+/* ════════ OUTLINE + TICKER ════════ */
+function buildObs() {
+  const w = ['UTSAV','2K26','CSE','PSNA'];
+  const d = [...w,...w,...w,...w,...w,...w];
+  document.getElementById('obs').innerHTML = d.map(x=>`<span class="obi">${x}</span>`).join('');
+}
+function buildTicker() {
+  const items = ['UTSAV 2K26','EVENTS','TECHNOTHON','PAPER PRESENTATION','CODE DEBUGGING','UI/UX SPRINT','TECH QUIZ','IDEATHON','₹40,000+ PRIZES','FREE ENTRY','PSNA CSE','28–29 MARCH 2026'];
+  const d = [...items,...items];
+  document.getElementById('ticker').innerHTML = d.map(t=>`<div class="ti">${t}<div class="td"></div></div>`).join('');
+}
+
+/* ════════ RENDER TILES ════════ */
+function renderTiles() {
+  document.getElementById('ev-tiles').innerHTML = EVS.map(e => {
+    const startTime = e.time.split('–')[0].trim();
+    return `
+    <div class="ev-tile" onclick="openEvMod('${e.id}')">
+      <div class="ev-tile-top">
+        <div class="ev-tile-bg" style="background:${e.grad}">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;color:transparent;-webkit-text-stroke:1px ${e.accent};opacity:.2;text-transform:uppercase;letter-spacing:2px">${e.name.split(' ')[0]}</span>
+          </div>
+        </div>
+        <div class="ev-tile-overlay"></div>
+        <div class="ev-tile-tag">${e.tag}</div>
+        <div class="ev-tile-prize">${e.p1}</div>
+      </div>
+      <div class="ev-tile-body">
+        <div class="ev-tile-name">${e.name}</div>
+        <div class="ev-tile-sub">${e.label}</div>
+        <div class="ev-tile-time">⏰ ${e.date.replace(', 2026','')} · ${startTime}</div>
+        <div class="ev-tile-tags">
+          <span class="etp etp-or">${e.type}</span>
+          <span class="etp etp-nt">${e.type === 'Solo' ? 'Individual' : `${e.minTeam}–${e.maxTeam} Members`}</span>
+        </div>
+        <div class="ev-tile-link" onclick="event.stopPropagation();openReg('${e.id}')">
+          Register Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+  `}).join('');
+}
+
+/* ════════ CONTACTS ════════ */
+function renderContacts() {
+  document.getElementById('cg').innerHTML = CONTACTS.map(c => `
+    <a class="cc" href="tel:${c.phone}">
+      <div class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg></div>
+      <div>
+        <div class="cc-role">${c.role}</div>
+        <div class="cc-name">${c.name}</div>
+        <div class="cc-ph">${c.phone}</div>
+      </div>
+    </a>
+  `).join('');
+}
+
+/* ════════ STATS ════════ */
+function animStats() {
+  function count(el, target, suffix, dur) {
+    let v=0, step=target/50;
+    const t = setInterval(() => { v+=step; if(v>=target){v=target;clearInterval(t);} el.textContent=Math.floor(v)+suffix; }, dur/50);
+  }
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      count(document.getElementById('sev'), 6, '', 700);
+      count(document.getElementById('spr'), 40, 'K+', 900);
+      obs.disconnect();
+    }
+  }, {threshold:.4});
+  obs.observe(document.getElementById('sev'));
+}
+
+/* ════════ EVENT MODAL ════════ */
+function openEvMod(id) {
+  const e = EVS.find(ev => ev.id === id); if (!e) return;
+  document.getElementById('esc').innerHTML = `
+    <div class="ev-modal-close">
+      <div style="font-size:10px;font-weight:700;letter-spacing:3px;color:var(--orange);text-transform:uppercase">${e.tag}</div>
+      <button class="ev-modal-close-btn" onclick="closeEvMod(null,1)">✕ Close</button>
+    </div>
+    <div style="margin-bottom:18px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">${e.name}</div>
+      <div style="font-size:12px;color:var(--muted)">${e.label} · ${e.type === 'Solo' ? 'Individual' : `Team ${e.minTeam}–${e.maxTeam}`}</div>
+    </div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.7;padding:13px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;margin-bottom:16px">${e.desc}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px">
+      ${[['📅',e.date],['⏰',e.time],['📍',e.venue],['⏳','Deadline: '+e.deadline]].map(([i,t])=>`<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:5px 10px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;display:flex;gap:5px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:18px">
+      ${[['1st',e.p1,true],['2nd',e.p2,false],['3rd',e.p3,false]].map(([r,a,h])=>`<div style="flex:1;padding:12px 6px;border-radius:6px;text-align:center;background:${h?'rgba(232,84,26,.08)':'rgba(255,255,255,.03)'};border:1px solid ${h?'rgba(232,84,26,.2)':'var(--border)'}"><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:5px">${r} Prize</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;color:${h?'var(--orange)':'#fff'}">${a}</div></div>`).join('')}
+    </div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:3px;color:var(--muted2);text-transform:uppercase;margin-bottom:8px">Rules</div>
+    <div style="background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:16px">
+      ${e.rules.map(r=>`<div style="display:flex;gap:8px;padding:6px 0;font-size:12px;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.04);line-height:1.4"><span style="color:var(--orange);font-weight:800;flex-shrink:0">—</span>${r}</div>`).join('')}
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:18px">
+      <a href="tel:${e.ep}" style="flex:1;padding:12px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;display:block"><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:3px">Event Coord</div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:2px">${e.ec}</div><div style="font-size:11px;color:var(--orange)">${e.ep}</div></a>
+      <a href="tel:${e.sp}" style="flex:1;padding:12px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;display:block"><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:3px">Staff Coord</div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:2px">${e.sc}</div><div style="font-size:11px;color:var(--orange)">${e.sp}</div></a>
+    </div>
+    <button class="btn-fill" style="width:100%" onclick="closeEvMod(null,1);openReg('${e.id}')">Register for this Event — Free</button>
+  `;
+  document.getElementById('ev-modal').classList.add('open');
+}
+function closeEvMod(ev, f) { if (f || (ev && ev.target === document.getElementById('ev-modal'))) document.getElementById('ev-modal').classList.remove('open'); }
+
+/* ════════ REGISTER FLOW ════════ */
+function evSummaryCard(id) {
+  const e = EVS.find(ev => ev.id === id); if (!e) return '';
+  return `<div class="ev-summary-card">
+    <div class="esc-accent"></div>
+    <div class="esc-icon">${e.icon}</div>
+    <div>
+      <div class="esc-name">${e.name}</div>
+      <div class="esc-meta">${e.label} · ${e.type==='Solo'?'Individual':`Team ${e.minTeam}–${e.maxTeam}`} · ${e.date}</div>
+    </div>
+    <button class="esc-change" onclick="clearEvent()">Change</button>
+  </div>`;
+}
+
+function openReg(evId) {
+  hideDock();
+  currentEv = evId ? EVS.find(e => e.id === evId) : null;
+  currentStep = 0;
+  teamMembers = [];
+  // Render event summary if preselected
+  const s1 = document.getElementById('ev-summary-here');
+  const s2 = document.getElementById('ev-summary-here2');
+  if (currentEv) {
+    s1.innerHTML = evSummaryCard(currentEv.id);
+    s2.innerHTML = evSummaryCard(currentEv.id);
+    setupTeamStep();
+  } else {
+    // Show event selector
+    s1.innerHTML = `
+      <div class="fc-t">Choose Event</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+        ${EVS.map(e=>`
+          <div onclick="selectEventInForm('${e.id}')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,255,255,.03);border:1.5px solid var(--border2);border-radius:8px;cursor:pointer;transition:all .2s" class="ev-sel-row">
+            <span style="font-size:22px">${e.icon}</span>
+            <div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#fff;text-transform:uppercase">${e.name}</div>
+              <div style="font-size:10px;color:var(--muted2)">${e.label} · ${e.type==='Solo'?'Individual':`${e.minTeam}–${e.maxTeam} Members`}</div>
+            </div>
+            <div style="margin-left:auto;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;color:var(--orange)">${e.p1}</div>
+          </div>
+        `).join('')}
+      </div>`;
+    s2.innerHTML = '';
+  }
+  updateStepUI();
+  document.getElementById('reg-ov').classList.add('open');
+}
+
+function selectEventInForm(id) {
+  currentEv = EVS.find(e => e.id === id);
+  const s1 = document.getElementById('ev-summary-here');
+  const s2 = document.getElementById('ev-summary-here2');
+  s1.innerHTML = evSummaryCard(id);
+  s2.innerHTML = evSummaryCard(id);
+  setupTeamStep();
+}
+
+function clearEvent() {
+  currentEv = null;
+  openReg(null);
+}
+
+function setupTeamStep() {
+  if (!currentEv) return;
+  const e = currentEv;
+  if (e.type === 'Solo') {
+    document.getElementById('team-hint').textContent = 'This is a solo event. No team members needed.';
+    document.getElementById('tm-grid').innerHTML = '';
+    document.getElementById('add-tm-btn').style.display = 'none';
+    document.getElementById('f-teamname').closest('.fg').style.display = 'none';
+  } else {
+    document.getElementById('f-teamname').closest('.fg').style.display = 'block';
+    document.getElementById('add-tm-btn').style.display = 'block';
+    document.getElementById('team-hint').textContent = `Add ${e.minTeam-1}–${e.maxTeam-1} more team members (you are Member 1)`;
+    teamMembers = [];
+    if (e.minTeam > 1) {
+      // Pre-add minimum required members
+      for (let i=1; i<e.minTeam; i++) addTeamMember();
+    }
+  }
+}
+
+let tmCount = 0;
+function addTeamMember() {
+  if (!currentEv) return;
+  if (teamMembers.length >= currentEv.maxTeam - 1) {
+    alert(`Maximum ${currentEv.maxTeam} members including you`); return;
+  }
+  const idx = teamMembers.length;
+  teamMembers.push({name:'',regno:'',year:'',section:'',phone:''});
+  const grid = document.getElementById('tm-grid');
+  const card = document.createElement('div');
+  card.className = 'tm-card'; card.id = `tm-card-${idx}`;
+  card.innerHTML = `
+    <div class="tm-hdr">
+      <div class="tm-num">Member ${idx+2}</div>
+      <button class="remove-tm" onclick="removeTeamMember(${idx})">✕</button>
+    </div>
+    <div class="row2" style="margin-bottom:10px">
+      <div class="fg" style="margin:0"><label class="fl">Name</label><input class="fi tm-name" data-idx="${idx}" type="text" placeholder="Full name"></div>
+      <div class="fg" style="margin:0"><label class="fl">Reg Number</label><input class="fi tm-regno" data-idx="${idx}" type="text" placeholder="23CSE..."></div>
+    </div>
+    <div class="row3">
+      <div class="fg" style="margin:0"><label class="fl">Year</label><select class="fs tm-year" data-idx="${idx}"><option value="">Yr</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+      <div class="fg" style="margin:0"><label class="fl">Section</label><select class="fs tm-section" data-idx="${idx}"><option value="">Sec</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
+      <div class="fg" style="margin:0"><label class="fl">Phone</label><input class="fi tm-phone" data-idx="${idx}" type="tel" placeholder="Phone"></div>
+    </div>
+  `;
+  grid.appendChild(card);
+}
+
+function removeTeamMember(idx) {
+  if (!currentEv || teamMembers.length <= currentEv.minTeam - 1) {
+    alert(`Minimum ${currentEv.minTeam} members required`); return;
+  }
+  // Remove the card from DOM directly (preserves other members' data)
+  const card = document.getElementById(`tm-card-${idx}`);
+  if (card) card.remove();
+  teamMembers.splice(idx, 1);
+  // Re-number remaining cards
+  document.querySelectorAll('.tm-card').forEach((c, i) => {
+    c.id = `tm-card-${i}`;
+    const numEl = c.querySelector('.tm-num');
+    if (numEl) numEl.textContent = `Member ${i+2}`;
+    const rmBtn = c.querySelector('.remove-tm');
+    if (rmBtn) rmBtn.setAttribute('onclick', `removeTeamMember(${i})`);
+    c.querySelectorAll('[data-idx]').forEach(el => el.setAttribute('data-idx', i));
+  });
+}
+
+/* ── STEP NAVIGATION ── */
+function goStep(n) {
+  if (n === 1) {
+    // Validate step 0
+    if (!currentEv) { alert('Please select an event first.'); return; }
+    const name=document.getElementById('f-name').value.trim();
+    const regno=document.getElementById('f-regno').value.trim();
+    const year=document.getElementById('f-year').value;
+    const section=document.getElementById('f-section').value;
+    const phone=document.getElementById('f-phone').value.trim();
+    const email=document.getElementById('f-email').value.trim();
+    if (!name||!regno||!year||!section||!phone||!email) { alert('Please fill all your personal details.'); return; }
+    if (!email.includes('@')) { alert('Enter a valid email address.'); return; }
+    if (phone.replace(/\D/g,'').length < 10) { alert('Enter a valid phone number.'); return; }
+  }
+  if (n === 2) {
+    // Validate step 1 (team)
+    if (currentEv && currentEv.type !== 'Solo') {
+      const tname = document.getElementById('f-teamname').value.trim();
+      if (!tname) { alert('Please enter a team name.'); return; }
+      // Collect team member data
+      teamMembers = [];
+      document.querySelectorAll('.tm-card').forEach(card => {
+        const nm = card.querySelector('.tm-name')?.value.trim() || '';
+        const rg = card.querySelector('.tm-regno')?.value.trim() || '';
+        const yr = card.querySelector('.tm-year')?.value || '';
+        const sc = card.querySelector('.tm-section')?.value || '';
+        const ph = card.querySelector('.tm-phone')?.value.trim() || '';
+        if (nm) teamMembers.push({name:nm, regno:rg, year:yr, section:sc, phone:ph});
+      });
+      if (teamMembers.length < currentEv.minTeam - 1) {
+        alert(`Please add at least ${currentEv.minTeam - 1} more team member(s).`); return;
+      }
+    }
+    buildReview();
+  }
+  currentStep = n;
+  updateStepUI();
+}
+
+function updateStepUI() {
+  document.querySelectorAll('.step').forEach((s,i) => {
+    s.classList.toggle('active', i === currentStep);
+  });
+  document.querySelectorAll('.step-dot').forEach((d,i) => {
+    d.classList.remove('current','done');
+    if (i === currentStep) d.classList.add('current');
+    else if (i < currentStep) d.classList.add('done');
+  });
+  // Scroll sheet to top
+  document.querySelector('.reg-sheet')?.scrollTo(0,0);
+}
+
+function buildReview() {
+  const name=document.getElementById('f-name').value.trim();
+  const regno=document.getElementById('f-regno').value.trim();
+  const year=document.getElementById('f-year').value;
+  const section=document.getElementById('f-section').value;
+  const phone=document.getElementById('f-phone').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const tname = document.getElementById('f-teamname')?.value.trim() || '';
+  const e = currentEv;
+
+  let html = `
+    ${evSummaryCard(e.id)}
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:14px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:12px">Your Details</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        ${[['Name',name],['Reg Number',regno],['Year',year+'th Year'],['Section','Section '+section],['Phone',phone],['Email',email]].map(([l,v])=>`<div><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:3px">${l}</div><div style="font-size:13px;font-weight:600;color:#fff">${v}</div></div>`).join('')}
+      </div>
+    </div>`;
+
+  if (e.type !== 'Solo' && tname) {
+    html += `<div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:14px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:6px">Team: ${tname}</div>
+      <div style="font-size:11px;color:var(--muted2);margin-bottom:10px">Member 1 (You): ${name} · ${regno}</div>
+      ${teamMembers.map((m,i)=>`<div style="padding:8px 0;border-top:1px solid rgba(255,255,255,.04)"><div style="font-size:12px;font-weight:700;color:#fff">Member ${i+2}: ${m.name}</div><div style="font-size:10px;color:var(--muted2)">${m.regno} · Year ${m.year} · Sec ${m.section}</div></div>`).join('')}
+    </div>`;
+  }
+  document.getElementById('review-content').innerHTML = html;
+}
+
+/* ── SUBMIT ── */
+function submitReg() {
+  const name=document.getElementById('f-name').value.trim();
+  const regno=document.getElementById('f-regno').value.trim();
+  const year=document.getElementById('f-year').value;
+  const section=document.getElementById('f-section').value;
+  const phone=document.getElementById('f-phone').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const tname = (currentEv?.type !== 'Solo') ? document.getElementById('f-teamname').value.trim() : '';
+
+  // Duplicate check
+  const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
+  const isDupe = saved.some(r => r.regno === regno && r.eventId === currentEv.id);
+  if (isDupe) {
+    alert('You have already registered for ' + currentEv.name + ' with reg number ' + regno + '.');
+    return;
+  }
+
+  const n = parseInt(localStorage.getItem('u26n') || '0') + 1;
+  localStorage.setItem('u26n', String(n));
+  const rnd = Math.floor(Math.random() * 900 + 100);
+  const regId = 'UTSAV-' + String(n).padStart(4, '0') + '-' + rnd;
+  const ts = new Date().toISOString();
+
+  const reg = {
+    regId, name, regno, year, section, phone, email,
+    eventId: currentEv.id, eventName: currentEv.name,
+    teamName: tname,
+    teamMembers: teamMembers.slice(),
+    ts
+  };
+
+  saved.push(reg); localStorage.setItem('u26r', JSON.stringify(saved));
+
+  // Try auto-sync to Sheets
+  if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    syncSingle(reg);
+  }
+
+  document.getElementById('reg-ov').classList.remove('open');
+  showDock();
+  document.getElementById('conf-id-v').textContent = regId;
+  document.getElementById('conf-screen').classList.add('open');
+  document.getElementById('pass-nav-btn').style.display = 'block';
+
+  // Reset
+  ['f-name','f-regno','f-email','f-phone'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-year','f-section'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('f-teamname').value = '';
+  teamMembers = []; currentEv = null; currentStep = 0;
+}
+
+function syncSingle(reg) {
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({action: 'addReg', data: reg})
+  }).catch(() => {});
+}
+
+/* ── CONFIRMATION ── */
+function viewPass() { document.getElementById('conf-screen').classList.remove('open'); openPass(); }
+function closeConf() { document.getElementById('conf-screen').classList.remove('open'); showDock(); }
+
+/* ── PASS ── */
+function openPass() {
+  hideDock();
+  const regs = JSON.parse(localStorage.getItem('u26r') || '[]').reverse();
+  const out = document.getElementById('pass-out');
+  if (!regs.length) {
+    out.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">No registrations found.</div>';
+    document.getElementById('pass-ov').classList.add('open'); return;
+  }
+  out.innerHTML = regs.map(r => `
+    <div class="pass-card">
+      <div class="pass-top">
+        <div class="pass-fest">UTSAV 2K26 · PSNA COLLEGE · DEPT OF CSE</div>
+        <div class="pass-ev-name">${r.eventName}</div>
+        <div class="pass-status"><div class="sdot"></div>Confirmed</div>
+      </div>
+      <div class="pass-body">
+        <div class="pass-id-row">
+          <div><div class="pid-l">Registration ID</div><div class="pid-v">${r.regId}</div></div>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(232,84,26,.3)" stroke-width="1.5"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/></svg>
+        </div>
+        <div class="pass-grid">
+          <div><div class="pfl">Name</div><div class="pfv">${r.name}</div></div>
+          <div><div class="pfl">Reg Number</div><div class="pfv">${r.regno}</div></div>
+          <div><div class="pfl">Year & Section</div><div class="pfv">Year ${r.year} · Sec ${r.section}</div></div>
+          <div><div class="pfl">Phone</div><div class="pfv">${r.phone}</div></div>
+          <div><div class="pfl">Date</div><div class="pfv">28–29 Mar 2026</div></div>
+          <div><div class="pfl">Venue</div><div class="pfv">PSNA, Dindigul</div></div>
+        </div>
+        ${r.teamName ? `
+        <div class="team-pass-section">
+          <div class="team-pass-title">Team: ${r.teamName}</div>
+          <div class="team-member-row"><span>Member 1 (You)</span><strong>${r.name} · ${r.regno}</strong></div>
+          ${r.teamMembers.map((m,i)=>`<div class="team-member-row"><span>Member ${i+2}</span><strong>${m.name} · ${m.regno}</strong></div>`).join('')}
+        </div>` : ''}
+        <div class="pass-sep"><span>QR Verification Pass</span></div>
+        <div class="qr-center">
+          <div class="qr-box">
+            <div id="qr-${r.regId.replace('-','_')}"></div>
+            <div class="qr-lbl">${r.regId}</div>
+          </div>
+        </div>
+        <div class="shot-note">Screenshot this pass · Show at the event registration desk on the day</div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('pass-ov').classList.add('open');
+  setTimeout(() => {
+    regs.forEach(r => {
+      const el = document.getElementById('qr-' + r.regId.replace('-','_'));
+      if (el && !el.hasChildNodes()) {
+        try { new QRCode(el, {text:`UTSAV2K26|${r.regId}|${r.name}|${r.eventName}|${r.regno}`, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.H}); } catch(ex){}
+      }
+    });
+  }, 100);
+}
+function closePass() { document.getElementById('pass-ov').classList.remove('open'); showDock(); }
+
+/* ── CLOSE REG ── */
+function closeRegOv(ev) { if (ev && ev.target === document.getElementById('reg-ov')) { document.getElementById('reg-ov').classList.remove('open'); showDock(); } }
+function forceCloseReg() { document.getElementById('reg-ov').classList.remove('open'); showDock(); }
+
+/* ════════ ADMIN PANEL ════════ */
+let allAdminRegs = [];
+function openAdmin() {
+  hideDock();
+  const regs = JSON.parse(localStorage.getItem('u26r') || '[]');
+  allAdminRegs = regs;
+  const totalRegs = regs.length;
+  const totalMembers = regs.reduce((a,r) => a + 1 + (r.teamMembers?.length||0), 0);
+  const totalTeams = regs.filter(r => EVS.find(e=>e.id===r.eventId)?.type !== 'Solo').length;
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="admin-stat"><span class="as-n">${totalRegs}</span><span class="as-l">Registrations</span></div>
+    <div class="admin-stat"><span class="as-n">${totalMembers}</span><span class="as-l">Total Members</span></div>
+    <div class="admin-stat"><span class="as-n">${totalTeams}</span><span class="as-l">Teams</span></div>
+    <div class="admin-stat"><span class="as-n">${EVS.length}</span><span class="as-l">Events</span></div>`;
+
+  // Department summary
+  const yearCounts = {}; const secCounts = {};
+  regs.forEach(r => {
+    yearCounts[r.year] = (yearCounts[r.year]||0) + 1;
+    secCounts[r.section] = (secCounts[r.section]||0) + 1;
+  });
+  let deptHtml = '<div style="font-size:11px;color:var(--muted);margin-bottom:8px">By Year</div><div class="admin-dept-grid">';
+  ['1','2','3','4'].forEach(y => {
+    deptHtml += `<div class="admin-dept-card"><span class="adc-n">${yearCounts[y]||0}</span><span class="adc-l">Year ${y}</span></div>`;
+  });
+  deptHtml += '</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px;margin-top:10px">By Section</div><div class="admin-dept-grid">';
+  ['A','B','C','D','E'].forEach(s => {
+    deptHtml += `<div class="admin-dept-card"><span class="adc-n">${secCounts[s]||0}</span><span class="adc-l">Sec ${s}</span></div>`;
+  });
+  deptHtml += '</div>';
+  document.getElementById('admin-dept-summary').innerHTML = deptHtml;
+
+  // Event breakdown
+  document.getElementById('admin-ev-breakdown').innerHTML = EVS.map(e => {
+    const evRegs = regs.filter(r => r.eventId === e.id);
+    const evMembers = evRegs.reduce((a,r) => a + 1 + (r.teamMembers?.length||0), 0);
+    return `<div class="admin-ev-row">
+      <div class="aer-name">${e.name}</div>
+      <div class="aer-stats">
+        <div class="aer-stat"><span class="aer-n">${evRegs.length}</span><span class="aer-l">Teams</span></div>
+        <div class="aer-stat"><span class="aer-n">${evMembers}</span><span class="aer-l">Members</span></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Registrations list
+  renderAdminRegs(regs);
+  document.getElementById('admin-search').value = '';
+  document.getElementById('admin-ov').classList.add('open');
+}
+
+function renderAdminRegs(regs) {
+  document.getElementById('admin-regs-list').innerHTML = regs.length ? regs.slice().reverse().map(r => `
+    <div class="admin-reg-card" onclick="this.querySelector('.arc-expanded').classList.toggle('show')">
+      <div class="arc-top">
+        <div class="arc-name">${r.name} <span style="font-size:11px;color:var(--muted2);font-weight:400">· ${r.regno}</span></div>
+        <div class="arc-id">${r.regId}</div>
+      </div>
+      <div class="arc-meta">
+        Year ${r.year} · Sec ${r.section} · ${r.phone}<br>
+        ${r.teamName ? `Team: ${r.teamName} · ${1+(r.teamMembers?.length||0)} members` : 'Solo'}
+        · <span style="color:rgba(255,255,255,.4);font-size:10px">${new Date(r.ts).toLocaleString()}</span>
+      </div>
+      <div class="arc-events"><span class="arc-ev-pill">${r.eventName}</span></div>
+      <div class="arc-expanded">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--orange);text-transform:uppercase;margin-bottom:8px">Full Details</div>
+        <div class="arc-member"><strong>Email:</strong> ${r.email}</div>
+        <div class="arc-member"><strong>Phone:</strong> ${r.phone}</div>
+        ${r.teamMembers?.length ? '<div style="font-size:10px;font-weight:700;color:var(--orange);margin-top:8px;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase">Team Members</div>' + r.teamMembers.map((m,i) => `
+          <div class="arc-member">Member ${i+2}: <strong>${m.name}</strong> · ${m.regno} · Year ${m.year} · Sec ${m.section} · ${m.phone}</div>
+        `).join('') : ''}
+      </div>
+    </div>`).join('') : '<div style="text-align:center;padding:30px;color:var(--muted2)">No registrations yet.</div>';
+}
+
+function filterAdminRegs() {
+  const q = document.getElementById('admin-search').value.trim().toLowerCase();
+  if (!q) { renderAdminRegs(allAdminRegs); return; }
+  const filtered = allAdminRegs.filter(r =>
+    r.name.toLowerCase().includes(q) || r.regno.toLowerCase().includes(q) ||
+    r.eventName.toLowerCase().includes(q) || r.regId.toLowerCase().includes(q) ||
+    (r.teamName||'').toLowerCase().includes(q) || r.email.toLowerCase().includes(q)
+  );
+  renderAdminRegs(filtered);
+}
+
+function closeAdmin() { document.getElementById('admin-ov').classList.remove('open'); showDock(); }
+
+async function syncToSheets() {
+  if (!SHEETS_URL || SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    document.getElementById('sync-status').className = 'sync-status err';
+    document.getElementById('sync-status').textContent = '⚠ Google Sheets URL not configured. See setup instructions below.';
+    showSheetsSetup();
+    return;
+  }
+  const regs = JSON.parse(localStorage.getItem('u26r') || '[]');
+  document.getElementById('sync-status').className = 'sync-status';
+  document.getElementById('sync-status').textContent = 'Syncing ' + regs.length + ' registrations...';
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({action: 'syncAll', data: regs})
+    });
+    document.getElementById('sync-status').className = 'sync-status ok';
+    document.getElementById('sync-status').textContent = '✓ Synced ' + regs.length + ' registrations to Google Sheets!';
+  } catch (e) {
+    document.getElementById('sync-status').className = 'sync-status err';
+    document.getElementById('sync-status').textContent = '✗ Sync failed. Check your internet connection.';
+  }
+}
+
+function showSheetsSetup() {
+  const setup = document.createElement('div');
+  setup.style.cssText = 'background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:14px;font-size:12px;color:var(--muted2);line-height:1.8';
+  setup.innerHTML = `
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:10px">Google Sheets Setup</div>
+    <ol style="margin-left:14px">
+      <li>Create a new Google Sheet</li>
+      <li>Go to <strong style="color:#fff">Extensions → Apps Script</strong></li>
+      <li>Paste this code and save:<br>
+      <code style="background:rgba(0,0,0,.4);padding:4px 8px;border-radius:4px;display:block;margin:6px 0;color:#aaa;font-size:10px">
+function doPost(e){
+  var ss=SpreadsheetApp.getActiveSpreadsheet();
+  var sh=ss.getSheetByName("Registrations")||ss.insertSheet("Registrations");
+  if(sh.getLastRow()===0)sh.appendRow(["RegID","Name","RegNo","Year","Section","Phone","Email","Event","TeamName","TeamMembers","Timestamp"]);
+  var d=JSON.parse(e.postData.contents);
+  if(d.action==="syncAll"){d.data.forEach(function(r){sh.appendRow([r.regId,r.name,r.regno,r.year,r.section,r.phone,r.email,r.eventName,r.teamName||"",JSON.stringify(r.teamMembers||[]),r.ts]);});}
+  else if(d.action==="addReg"){var r=d.data;sh.appendRow([r.regId,r.name,r.regno,r.year,r.section,r.phone,r.email,r.eventName,r.teamName||"",JSON.stringify(r.teamMembers||[]),r.ts]);}
+  return ContentService.createTextOutput("ok");
+}
+      </code></li>
+      <li>Click <strong style="color:#fff">Deploy → New Deployment</strong></li>
+      <li>Type: <strong style="color:#fff">Web App</strong>, Access: <strong style="color:#fff">Anyone</strong></li>
+      <li>Copy the URL and paste it in the HTML file as <strong style="color:#fff">SHEETS_URL</strong></li>
+    </ol>
+  `;
+  document.getElementById('admin-ov').querySelector('.admin-wrap').insertBefore(setup, document.getElementById('sync-status'));
+}
+
+function clearAllData() {
+  if (confirm('Delete ALL registration data? This cannot be undone.')) {
+    localStorage.removeItem('u26r');
+    localStorage.removeItem('u26n');
+    document.getElementById('pass-nav-btn').style.display = 'none';
+    closeAdmin();
+    alert('All data cleared.');
+  }
+}
+
+/* ════════ COUNTDOWN ════════ */
+function tick() {
+  const d = new Date('2026-03-28T09:00:00') - new Date();
+  if (d <= 0) return;
+  document.getElementById('cd-d').textContent = String(Math.floor(d/86400000)).padStart(2,'0');
+  document.getElementById('cd-h').textContent = String(Math.floor(d%86400000/3600000)).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(Math.floor(d%3600000/60000)).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(Math.floor(d%60000/1000)).padStart(2,'0');
+}
+
+/* ════════ NAV SCROLL ════════ */
+window.addEventListener('scroll', () => {
+  document.querySelector('.nav').style.background = window.scrollY > 50 ? 'rgba(10,10,10,.98)' : 'rgba(10,10,10,.95)';
+});
+
+/* ════════ WATERMARK NAMES ════════ */
+function buildWatermarks() {
+  const names = [
+    'SRIRAM','KARTHIK','DIVYA','PRIYA','ARUN','RAMESH',
+    'KEERTHANA','VIJAY','ANITHA','SENTHIL','LAVANYA','MURUGAN',
+    'NITHYA','DEEPAK','SWATHI','HARI','MEENA','SURYA',
+    'KAVYA','RAJA','POOJA','VENKAT','SINDHU','PRAKASH'
+  ];
+  const layer = document.getElementById('wm-layer');
+  if (!layer) return;
+  const positions = [
+    {top:'8%',left:'-2%',size:'clamp(48px,9vw,88px)',rot:'-12deg',op:.045},
+    {top:'18%',left:'52%',size:'clamp(36px,7vw,68px)',rot:'8deg',op:.03},
+    {top:'35%',left:'5%',size:'clamp(40px,8vw,76px)',rot:'-6deg',op:.04},
+    {top:'52%',left:'38%',size:'clamp(32px,6vw,60px)',rot:'15deg',op:.025},
+    {top:'68%',left:'-1%',size:'clamp(44px,8vw,80px)',rot:'-18deg',op:.035},
+    {top:'78%',left:'55%',size:'clamp(36px,7vw,64px)',rot:'5deg',op:.03},
+    {top:'12%',left:'28%',size:'clamp(28px,5vw,52px)',rot:'20deg',op:.02},
+    {top:'44%',left:'62%',size:'clamp(40px,7vw,72px)',rot:'-8deg',op:.04},
+    {top:'88%',left:'20%',size:'clamp(32px,6vw,58px)',rot:'12deg',op:.025},
+  ];
+  positions.forEach((p, i) => {
+    const span = document.createElement('span');
+    span.className = 'wm-name';
+    span.textContent = names[i % names.length];
+    span.style.cssText = `top:${p.top};left:${p.left};font-size:${p.size};transform:rotate(${p.rot});-webkit-text-stroke:1px rgba(232,84,26,${p.op});`;
+    layer.appendChild(span);
+  });
+}
+
+/* ════════ ADMIN LOGIN ════════ */
+function openAdminLogin() {
+  document.getElementById('admin-uid').value = '';
+  document.getElementById('admin-pwd').value = '';
+  document.getElementById('admin-login-err').classList.remove('show');
+  document.getElementById('admin-login-ov').classList.add('open');
+}
+function closeAdminLogin() {
+  document.getElementById('admin-login-ov').classList.remove('open');
+}
+function checkAdminLogin() {
+  const uid = document.getElementById('admin-uid').value.trim();
+  const pwd = document.getElementById('admin-pwd').value.trim();
+  if (uid === ADMIN_ID && pwd === ADMIN_PASS) {
+    closeAdminLogin();
+    openAdmin();
+  } else {
+    document.getElementById('admin-login-err').classList.add('show');
+    document.getElementById('admin-login-ov').querySelector('.admin-login-box').style.animation = 'none';
+    requestAnimationFrame(() => {
+      document.getElementById('admin-login-ov').querySelector('.admin-login-box').style.animation = '';
+    });
+  }
+}
+
+/* ════════ DOCK ════════ */
+function hideDock() { document.getElementById('dock').classList.add('hidden'); }
+function showDock() { document.getElementById('dock').classList.remove('hidden'); }
+
+function dockNav(target) {
+  if (target === 'pass') {
+    openPass();
+    return;
+  }
+  const el = document.getElementById(target);
+  if (el) el.scrollIntoView({behavior:'smooth'});
+  // Update active
+  document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
+  document.getElementById('dock-' + target).classList.add('active');
+}
+
+function updateDockActive() {
+  const eventsEl = document.getElementById('events');
+  const dockHome = document.getElementById('dock-home');
+  const dockEvents = document.getElementById('dock-events');
+  if (!eventsEl || !dockHome || !dockEvents) return;
+  const scrollMid = window.scrollY + window.innerHeight / 2;
+  document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
+  if (scrollMid >= eventsEl.offsetTop) {
+    dockEvents.classList.add('active');
+  } else {
+    dockHome.classList.add('active');
+  }
+}
+
+init();
+
+/* ════════════════════════════════
+   GOOGLE APPS SCRIPT CODE
+   (Copy into your Apps Script editor)
+
+function doPost(e){
+  var ss=SpreadsheetApp.getActiveSpreadsheet();
+  var sh=ss.getSheetByName("Registrations")||ss.insertSheet("Registrations");
+  if(sh.getLastRow()===0){
+    sh.appendRow(["RegID","Name","RegNo","Year","Section","Phone","Email","Event","TeamName","TeamMembers","Timestamp"]);
+  }
+  var d=JSON.parse(e.postData.contents);
+  if(d.action==="syncAll"){
+    d.data.forEach(function(r){
+      sh.appendRow([r.regId,r.name,r.regno,r.year,r.section,r.phone,r.email,r.eventName,r.teamName||"",JSON.stringify(r.teamMembers||[]),r.ts]);
+    });
+  } else if(d.action==="addReg"){
+    var r=d.data;
+    sh.appendRow([r.regId,r.name,r.regno,r.year,r.section,r.phone,r.email,r.eventName,r.teamName||"",JSON.stringify(r.teamMembers||[]),r.ts]);
+  }
+  return ContentService.createTextOutput("ok");
+}
+════════════════════════════════ */
+</script>
+</body>
+</html>
