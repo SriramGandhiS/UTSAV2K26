@@ -477,24 +477,17 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
   <div class="ev-tiles" id="ev-tiles"></div>
 </section>
 
-<!-- REGISTRATION (GOOGLE FORM) -->
+<!-- REGISTRATION (CUSTOM) -->
 <section class="sec form-section" id="registration">
   <div class="sl">Registration</div>
-  <div class="st">Register for<br>UTSAV 2K26</div>
-  <p class="ss">Fill out the form below to secure your spot. All responses are automatically saved — no sign-up needed.</p>
-  <div class="form-container">
-    <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLSfwfn_PMpZS4_caOssLh-mTXR8kfWynPyl3SXGIQM3_xuAKbQ/viewform?embedded=true"
-      width="100%"
-      height="1748"
-      frameborder="0"
-      marginheight="0"
-      marginwidth="0"
-      loading="lazy"
-      title="UTSAV 2K26 Registration Form">
-      Loading…
-    </iframe>
-    <div class="form-note">Responses are stored securely in <span>Google Sheets</span> · No database required</div>
+  <div class="st">Secure Your<br>Spot Now</div>
+  <p class="ss">Experience the most seamless registration. No forms, no redirects. Just fill your details and get your digital pass instantly.</p>
+  <div class="form-container" style="text-align:center;padding:60px 24px">
+    <div class="fetch-icon" style="width:80px;height:80px;font-size:32px;margin-bottom:24px">✨</div>
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Ready to Compete?</h3>
+    <p style="color:var(--muted);margin-bottom:32px;max-width:320px;margin-left:auto;margin-right:auto;font-size:14px">Join 500+ participants from PSNA CSE in the ultimate technical celebration.</p>
+    <button class="btn-fill" style="padding:16px 40px;font-size:18px;letter-spacing:3px" onclick="openReg(null)">Register Free Now</button>
+    <div class="form-note" style="margin-top:24px">Processed securely via <span>Google Cloud</span> · Instant Digital Pass</div>
   </div>
 </section>
 
@@ -572,7 +565,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
             <input class="fi" id="f-phone" type="tel" placeholder="+91 XXXXX XXXXX">
           </div>
         </div>
-        <div class="fg"><label class="fl">Email Address</label><input class="fi" id="f-email" type="email" placeholder="your@email.com"></div>
+        <div class="fg"><label class="fl">College Email</label><input class="fi" id="f-email" type="email" placeholder="yourname@psnacet.edu.in"></div>
         <div class="free-note">CSE Department Only · Free Registration</div>
         <button class="reg-next-btn" onclick="goStep(1)">Next — Team Details</button>
       </div>
@@ -621,6 +614,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
       </ul>
     </div>
     <button class="btn-fill" style="width:100%;max-width:320px;margin-top:4px" onclick="viewPass()">View My Digital Pass</button>
+    <div id="conf-wa-container" style="width:100%;max-width:320px;margin-top:10px"></div>
     <button style="width:100%;max-width:320px;margin-top:10px;padding:13px;background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-family:'Barlow',sans-serif;font-size:13px;font-weight:600" onclick="closeConf()">Back to Events</button>
   </div>
 </div>
@@ -711,7 +705,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 // 3. Paste the doPost function from the bottom of this file
 // 4. Deploy as Web App (Anyone can access)
 // 5. Paste the URL below
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyAuemnJ6YYqDSH0pB8-AFWaqnQj4ZKSp6joTxiKaawrkeG5lSulp0ZDuJPu5diDD3P/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx_En8x8MhnhIV1qYboX9kAftQ23dHtjJAO8wGouGgwlaBP8GOgUHTS-7Va4nErc0MWKg/exec';
 // Admin credentials
 const ADMIN_ID = 'sriram';
 const ADMIN_PASS = '93611';
@@ -1037,7 +1031,7 @@ function goStep(n) {
     const phone=document.getElementById('f-phone').value.trim();
     const email=document.getElementById('f-email').value.trim();
     if (!name||!regno||!year||!section||!phone||!email) { alert('Please fill all your personal details.'); return; }
-    if (!email.includes('@')) { alert('Enter a valid email address.'); return; }
+    if (!email.endsWith('@psnacet.edu.in')) { alert('Please use your college email (e.g. yourname@psnacet.edu.in)'); return; }
     if (phone.replace(/\D/g,'').length < 10) { alert('Enter a valid phone number.'); return; }
   }
   if (n === 2) {
@@ -1047,14 +1041,24 @@ function goStep(n) {
       if (!tname) { alert('Please enter a team name.'); return; }
       // Collect team member data
       teamMembers = [];
+      let incomplete = false;
       document.querySelectorAll('.tm-card').forEach(card => {
         const nm = card.querySelector('.tm-name')?.value.trim() || '';
         const rg = card.querySelector('.tm-regno')?.value.trim() || '';
         const yr = card.querySelector('.tm-year')?.value || '';
         const sc = card.querySelector('.tm-section')?.value || '';
         const ph = card.querySelector('.tm-phone')?.value.trim() || '';
-        if (nm) teamMembers.push({name:nm, regno:rg, year:yr, section:sc, phone:ph});
+        
+        // If name is present, all other details must be present
+        if (nm) {
+          if (!rg || !yr || !sc || !ph) {
+            incomplete = true;
+          } else {
+            teamMembers.push({name:nm, regno:rg, year:yr, section:sc, phone:ph});
+          }
+        }
       });
+      if (incomplete) { alert('Please fill all details for the added team members.'); return; }
       if (teamMembers.length < currentEv.minTeam - 1) {
         alert(`Please add at least ${currentEv.minTeam - 1} more team member(s).`); return;
       }
@@ -1117,11 +1121,11 @@ function submitReg() {
   const email=document.getElementById('f-email').value.trim();
   const tname = (currentEv?.type !== 'Solo') ? document.getElementById('f-teamname').value.trim() : '';
 
-  // Duplicate check
+  // Duplicate check (Local only)
   const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
   const isDupe = saved.some(r => r.regno === regno && r.eventId === currentEv.id);
   if (isDupe) {
-    alert('You have already registered for ' + currentEv.name + ' with reg number ' + regno + '.');
+    alert('Already registered for ' + currentEv.name + ' with this register number.');
     return;
   }
 
@@ -1141,10 +1145,17 @@ function submitReg() {
 
   saved.push(reg); localStorage.setItem('u26r', JSON.stringify(saved));
 
-  // Try auto-sync to Sheets
+  // Sync to Sheets
   if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
     syncSingle(reg);
   }
+
+  // Email confirmation note
+  document.getElementById('conf-wa-container').innerHTML = `
+    <div style="padding:12px;background:rgba(76,175,80,.08);border:1px solid rgba(76,175,80,.25);border-radius:8px;text-align:center">
+      <div style="font-size:13px;font-weight:700;color:#4CAF50;margin-bottom:4px">📧 Confirmation Email Sent</div>
+      <div style="font-size:11px;color:var(--muted)">Check your inbox at <strong style="color:#fff">${email}</strong></div>
+    </div>`;
 
   document.getElementById('reg-ov').classList.remove('open');
   showDock();
@@ -1153,9 +1164,8 @@ function submitReg() {
   document.getElementById('pass-nav-btn').style.display = 'block';
 
   // Reset
-  ['f-name','f-regno','f-email','f-phone'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-name','f-regno','f-email','f-phone','f-teamname'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   ['f-year','f-section'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  document.getElementById('f-teamname').value = '';
   teamMembers = []; currentEv = null; currentStep = 0;
 }
 
@@ -1163,7 +1173,7 @@ function syncSingle(reg) {
   fetch(SHEETS_URL, {
     method: 'POST',
     mode: 'no-cors',
-    headers: {'Content-Type': 'application/json'},
+    headers: {'Content-Type': 'text/plain'},
     body: JSON.stringify({action: 'addReg', data: reg})
   }).catch(() => {});
 }
@@ -1189,10 +1199,10 @@ function renderPassCards(regs) {
         <div class="pass-grid">
           <div><div class="pfl">Name</div><div class="pfv">${r.name}</div></div>
           <div><div class="pfl">Reg Number</div><div class="pfv">${r.regno}</div></div>
-          <div><div class="pfl">Year & Section</div><div class="pfv">${r.year ? 'Year '+r.year+' · Sec '+(r.section||'—') : r.department||'—'}</div></div>
-          <div><div class="pfl">Phone</div><div class="pfv">${r.phone||'—'}</div></div>
-          <div><div class="pfl">Date</div><div class="pfv">28–29 Mar 2026</div></div>
-          <div><div class="pfl">Venue</div><div class="pfv">PSNA, Dindigul</div></div>
+          <div><div class="pfl">Department</div><div class="pfv">${r.department || 'CSE'}</div></div>
+          <div><div class="pfl">Year & Section</div><div class="pfv">${r.year ? 'Year '+r.year+' · Sec '+(r.section||'—') : '—'}</div></div>
+          <div><div class="pfl">Register Phone</div><div class="pfv">${r.phone||'—'}</div></div>
+          <div><div class="pfl">Date & Venue</div><div class="pfv">28–29 Mar · PSNA</div></div>
         </div>
         ${r.teamName ? `
         <div class="team-pass-section">
@@ -1200,14 +1210,14 @@ function renderPassCards(regs) {
           <div class="team-member-row"><span>Member 1 (You)</span><strong>${r.name} · ${r.regno||''}</strong></div>
           ${(r.teamMembers||[]).map((m,i)=>`<div class="team-member-row"><span>Member ${i+2}</span><strong>${m.name}${m.regno?' · '+m.regno:''}</strong></div>`).join('')}
         </div>` : ''}
-        <div class="pass-sep"><span>QR Verification Pass</span></div>
+        <div class="pass-sep"><span>Valid Digital Entry Pass</span></div>
         <div class="qr-center">
           <div class="qr-box">
             <div id="qr-${r.regId.replace(/[^a-zA-Z0-9]/g,'_')}"></div>
             <div class="qr-lbl">${r.regId}</div>
           </div>
         </div>
-        <div class="shot-note">Screenshot this pass · Show at the event registration desk on the day</div>
+        <div class="shot-note">Screenshot this pass · Show at the entry desk</div>
       </div>
     </div>
   `).join('');
@@ -1242,7 +1252,7 @@ function openPass() {
   out.innerHTML = renderPassCards(regs);
   // Show fetch option below existing passes
   out.innerHTML += `<div style="margin-top:20px;padding:16px;text-align:center;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px">
-    <div style="font-size:11px;color:var(--muted2);margin-bottom:10px;letter-spacing:1px">Registered via Google Form?</div>
+    <div style="font-size:11px;color:var(--muted2);margin-bottom:10px;letter-spacing:1px">Registered on another device?</div>
     <div style="display:flex;gap:8px">
       <input class="fi" id="fetch-email-inline" type="email" placeholder="Enter your email" style="flex:1">
       <button class="btn-fill" style="white-space:nowrap;padding:10px 16px;font-size:12px" onclick="fetchMyPass(document.getElementById('fetch-email-inline').value)">Fetch</button>
@@ -1307,13 +1317,37 @@ function forceCloseReg() { document.getElementById('reg-ov').classList.remove('o
 
 /* ════════ ADMIN PANEL ════════ */
 let allAdminRegs = [];
-function openAdmin() {
+async function openAdmin() {
   hideDock();
-  const regs = JSON.parse(localStorage.getItem('u26r') || '[]');
+  const statusEl = document.getElementById('sync-status');
+  statusEl.textContent = 'Loading registrations from Google Sheets...';
+  statusEl.className = 'sync-status loading';
+
+  let regs = JSON.parse(localStorage.getItem('u26r') || '[]');
+  
+  if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    try {
+      const resp = await fetch(SHEETS_URL + '?action=getRegs');
+      const data = await resp.json();
+      if (data.registrations) {
+        regs = data.registrations;
+        statusEl.textContent = '✓ Showing real-time data from Google Sheets';
+        statusEl.className = 'sync-status ok';
+      }
+    } catch (err) {
+      statusEl.textContent = '⚠ Failed to fetch from Sheets. Showing local data instead.';
+      statusEl.className = 'sync-status err';
+    }
+  }
+
   allAdminRegs = regs;
   const totalRegs = regs.length;
   const totalMembers = regs.reduce((a,r) => a + 1 + (r.teamMembers?.length||0), 0);
-  const totalTeams = regs.filter(r => EVS.find(e=>e.id===r.eventId)?.type !== 'Solo').length;
+  const totalTeams = regs.filter(r => {
+    const ev = EVS.find(e=>e.id===r.eventId);
+    return ev && ev.type !== 'Solo';
+  }).length;
+  
   document.getElementById('admin-stats').innerHTML = `
     <div class="admin-stat"><span class="as-n">${totalRegs}</span><span class="as-l">Registrations</span></div>
     <div class="admin-stat"><span class="as-n">${totalMembers}</span><span class="as-l">Total Members</span></div>
@@ -1350,7 +1384,6 @@ function openAdmin() {
     </div>`;
   }).join('');
 
-  // Registrations list
   renderAdminRegs(regs);
   document.getElementById('admin-search').value = '';
   document.getElementById('admin-ov').classList.add('open');
@@ -1406,7 +1439,7 @@ async function syncToSheets() {
   try {
     await fetch(SHEETS_URL, {
       method: 'POST', mode: 'no-cors',
-      headers: {'Content-Type': 'application/json'},
+      headers: {'Content-Type': 'text/plain'},
       body: JSON.stringify({action: 'syncAll', data: regs})
     });
     document.getElementById('sync-status').className = 'sync-status ok';
@@ -1430,10 +1463,10 @@ function showSheetsSetup() {
 function doPost(e){
   var ss=SpreadsheetApp.getActiveSpreadsheet();
   var sh=ss.getSheetByName("Registrations")||ss.insertSheet("Registrations");
-  if(sh.getLastRow()===0)sh.appendRow(["RegID","Name","RegNo","Year","Section","Phone","Email","Event","TeamName","TeamMembers","Timestamp"]);
+  if(sh.getLastRow()===0)sh.appendRow(["RegID","Name","RegNo","Year","Section","Phone","Email","EventID","Event","TeamName","TeamMembers","Timestamp"]);
   var d=JSON.parse(e.postData.contents);
-  if(d.action==="syncAll"){d.data.forEach(function(r){sh.appendRow([r.regId,r.name,r.regno,r.year,r.section,r.phone,r.email,r.eventName,r.teamName||"",JSON.stringify(r.teamMembers||[]),r.ts]);});}
-  else if(d.action==="addReg"){var r=d.data;sh.appendRow([r.regId,r.name,r.regno,r.year,r.section,r.phone,r.email,r.eventName,r.teamName||"",JSON.stringify(r.teamMembers||[]),r.ts]);}
+  if(d.action==="syncAll"){d.data.forEach(function(r){sh.appendRow([r.regId,r.name,r.regno,r.year,r.section,r.phone,r.email,r.eventId||"",r.eventName,r.teamName||"",JSON.stringify(r.teamMembers||[]),r.ts]);});}
+  else if(d.action==="addReg"){var r=d.data;sh.appendRow([r.regId,r.name,r.regno,r.year,r.section,r.phone,r.email,r.eventId||"",r.eventName,r.teamName||"",JSON.stringify(r.teamMembers||[]),r.ts]);}
   return ContentService.createTextOutput("ok");
 }
       </code></li>
@@ -1562,70 +1595,11 @@ function updateDockActive() {
 init();
 
 /* ════════════════════════════════
-   GOOGLE APPS SCRIPT CODE (v2)
-   Copy ALL of this into your Apps Script editor.
+   GOOGLE APPS SCRIPT CODE (v3)
+   See apps_script_code.js for the full, up-to-date version.
+   Copy that file's contents into your Apps Script editor.
    Then Deploy → New Deployment → Web App → Anyone.
    Paste the URL as SHEETS_URL at the top of this file.
-
-// ── LOOKUP by email (called from "Fetch My Pass") ──
-function doGet(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sh = ss.getSheetByName("Registrations");
-  if (!sh) return ContentService.createTextOutput(JSON.stringify({found:false})).setMimeType(ContentService.MimeType.JSON);
-
-  var action = e.parameter.action;
-  if (action === "lookup") {
-    var email = (e.parameter.email || "").toLowerCase().trim();
-    if (!email) return ContentService.createTextOutput(JSON.stringify({found:false})).setMimeType(ContentService.MimeType.JSON);
-
-    var data = sh.getDataRange().getValues();
-    var headers = data[0];
-    var results = [];
-    for (var i = 1; i < data.length; i++) {
-      var row = data[i];
-      var rowEmail = String(row[headers.indexOf("Email")] || "").toLowerCase().trim();
-      if (rowEmail === email) {
-        var teamMembersRaw = row[headers.indexOf("TeamMembers")] || "[]";
-        var teamMembers = [];
-        try { teamMembers = JSON.parse(teamMembersRaw); } catch(ex) {}
-        results.push({
-          regId: row[headers.indexOf("RegID")] || ("GF-" + (i+1)),
-          name: row[headers.indexOf("Name")] || "",
-          regno: row[headers.indexOf("RegNo")] || "",
-          year: row[headers.indexOf("Year")] || "",
-          section: row[headers.indexOf("Section")] || "",
-          phone: row[headers.indexOf("Phone")] || "",
-          email: rowEmail,
-          eventName: row[headers.indexOf("Event")] || "",
-          teamName: row[headers.indexOf("TeamName")] || "",
-          teamMembers: teamMembers,
-          ts: row[headers.indexOf("Timestamp")] || ""
-        });
-      }
-    }
-    return ContentService.createTextOutput(JSON.stringify({found: results.length > 0, registrations: results})).setMimeType(ContentService.MimeType.JSON);
-  }
-  return ContentService.createTextOutput(JSON.stringify({found:false})).setMimeType(ContentService.MimeType.JSON);
-}
-
-// ── SAVE registrations (called from website sync) ──
-function doPost(e){
-  var ss=SpreadsheetApp.getActiveSpreadsheet();
-  var sh=ss.getSheetByName("Registrations")||ss.insertSheet("Registrations");
-  if(sh.getLastRow()===0){
-    sh.appendRow(["RegID","Name","RegNo","Year","Section","Phone","Email","Event","TeamName","TeamMembers","Timestamp"]);
-  }
-  var d=JSON.parse(e.postData.contents);
-  if(d.action==="syncAll"){
-    d.data.forEach(function(r){
-      sh.appendRow([r.regId,r.name,r.regno,r.year,r.section,r.phone,r.email,r.eventName,r.teamName||"",JSON.stringify(r.teamMembers||[]),r.ts]);
-    });
-  } else if(d.action==="addReg"){
-    var r=d.data;
-    sh.appendRow([r.regId,r.name,r.regno,r.year,r.section,r.phone,r.email,r.eventName,r.teamName||"",JSON.stringify(r.teamMembers||[]),r.ts]);
-  }
-  return ContentService.createTextOutput("ok");
-}
 ════════════════════════════════ */
 </script>
 </body>
