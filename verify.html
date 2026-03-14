@@ -60,18 +60,42 @@ body{background:var(--black);color:var(--text);font-family:'Barlow',sans-serif;-
 </div>
 
 <script>
-function init() {
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx_En8x8MhnhIV1qYboX9kAftQ23dHtjJAO8wGouGgwlaBP8GOgUHTS-7Va4nErc0MWKg/exec';
+
+async function init() {
   const container = document.getElementById('vc');
   const params = new URLSearchParams(window.location.search);
   const dataStr = params.get('d');
   
   if (!dataStr) {
-    showError("Invalid Pass", "No verification data found in URL.");
+    showError("Invalid Scan", "No verification data found in URL.");
     return;
   }
 
   try {
     const data = JSON.parse(atob(dataStr));
+    const regId = data.id || ""; // The QR should contain the ID
+    const email = data.em || ""; 
+
+    container.innerHTML = `<div style="color:var(--muted)">Verifying with secure database...</div>`;
+
+    // Live check
+    if (SHEETS_URL) {
+      try {
+        const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email || "");
+        const resp = await fetch(url);
+        const db = await resp.json();
+        const exists = db.registrations && db.registrations.some(r => r.name === data.n && r.eventName === data.e);
+        
+        if (!exists) {
+          showError("Pass Revoked", "This registration has been cancelled or removed from the records.");
+          return;
+        }
+      } catch(ex) {
+        // If offline/error, we still show the data but with a warning
+        console.warn("Live check failed", ex);
+      }
+    }
     
     container.innerHTML = `
       <div class="check-ring">

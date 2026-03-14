@@ -798,7 +798,12 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
     <div class="sync-status" id="sync-status"></div>
     <div class="admin-action-row">
       <button class="admin-sync-btn" onclick="syncToSheets()">Sync to Sheets</button>
-      <a href="https://docs.google.com/spreadsheets/d/1UqAHW4DpWAWnm9TSwpaAu9qnh4533twCljoHzUceWoM/edit?gid=936722095#gid=936722095" target="_blank" class="admin-btn-ol" id="admin-sheet-link">View Sheet</a>
+      <button class="admin-btn-ol" onclick="openAdmin()" title="Refresh Data">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.5"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Refresh
+      </button>
+      <button class="admin-btn-ol" onclick="logoutAdmin()" style="border-color:rgba(231,76,60,.3);color:#e74c3c">Logout</button>
+      <a href="https://docs.google.com/spreadsheets/d/1UqAHW4DpWAWnm9TSwpaAu9qnh4533twCljoHzUceWoM/edit?gid=936722095#gid=936722095" target="_blank" class="admin-btn-ol" id="admin-sheet-link" style="margin-left:auto">View Sheet</a>
     </div>
 
     <div class="admin-sec-title">Overall Stats</div>
@@ -1288,7 +1293,7 @@ function buildReview() {
 }
 
 /* ── SUBMIT ── */
-function submitReg() {
+async function submitReg() {
   const name=document.getElementById('f-name').value.trim();
   const regno=document.getElementById('f-regno').value.trim();
   const year=document.getElementById('f-year').value;
@@ -1297,12 +1302,29 @@ function submitReg() {
   const email=document.getElementById('f-email').value.trim();
   const tname = (currentEv?.type !== 'Solo') ? document.getElementById('f-teamname').value.trim() : '';
 
-  // Duplicate check (Local only)
+  // Duplicate check (Local & Server)
   const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
-  const isDupe = saved.some(r => r.regno === regno && r.eventId === currentEv.id);
-  if (isDupe) {
-    alert('Already registered for ' + currentEv.name + ' with this register number.');
+  const isLocalDupe = saved.some(r => r.regno === regno && r.eventId === currentEv.id);
+  
+  if (isLocalDupe) {
+    alert('Already registered for ' + currentEv.name + ' on this device.');
     return;
+  }
+
+  // Server check
+  if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    showAdminLoader('Verifying Registration Status...');
+    try {
+      const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email);
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if (data.found && data.registrations.some(r => r.eventId === currentEv.id)) {
+        hideAdminLoader();
+        alert('Verification Error: You are already registered for ' + currentEv.name + '.');
+        return;
+      }
+    } catch(e) { /* continue on network error to allow offline-ish fallback */ }
+    hideAdminLoader();
   }
 
   const n = parseInt(localStorage.getItem('u26n') || '0') + 1;
@@ -1323,7 +1345,12 @@ function submitReg() {
 
   // Sync to Sheets
   if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-    syncSingle(reg);
+    // Show a small non-blocking toast or similar if needed
+    fetch(SHEETS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: {'Content-Type': 'text/plain'},
+      body: JSON.stringify({action: 'addReg', data: reg})
+    });
   }
 
   // Email confirmation note
@@ -1405,7 +1432,7 @@ function generateQRs(regs) {
       const el = document.getElementById('qr-' + r.regId.replace(/[^a-zA-Z0-9]/g,'_'));
       if (el && !el.hasChildNodes()) {
         const verifyUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'verify.html';
-        const data = { n: r.name, t: r.teamName || 'Solo', e: r.eventName };
+        const data = { n: r.name, em: r.email, t: r.teamName || 'Solo', e: r.eventName, id: r.regId };
         // Use encodeURIComponent to handle special characters before btoa
         const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
         try { new QRCode(el, {text:qrText, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.H}); } catch(ex){}
@@ -1491,6 +1518,11 @@ async function backgroundValidatePasses(localRegs) {
   } catch (e) { console.error('BG Validation failed', e); }
 }
 function closePass() { document.getElementById('pass-ov').classList.remove('open'); showDock(); }
+
+function logoutAdmin() {
+  closeAdmin();
+  openAdminLogin();
+}
 
 /* ── FETCH PASS FROM GOOGLE SHEETS ── */
 async function fetchMyPass(emailArg) {
