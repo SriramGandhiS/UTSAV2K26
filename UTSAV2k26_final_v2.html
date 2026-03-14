@@ -1228,7 +1228,7 @@ function generateQRs(regs) {
     regs.forEach(r => {
       const el = document.getElementById('qr-' + r.regId.replace(/[^a-zA-Z0-9]/g,'_'));
       if (el && !el.hasChildNodes()) {
-        try { new QRCode(el, {text:`UTSAV2K26|${r.regId}|${r.name}|${r.eventName}|${r.regno||''}`, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.H}); } catch(ex){}
+        try { new QRCode(el, {text:`UTSAV2K26|${r.regId}|${r.name}|${r.eventName}|${r.regno||''}`, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.L}); } catch(ex){ console.error("QR render error:", ex); }
       }
     });
   }, 100);

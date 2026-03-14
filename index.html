@@ -1435,7 +1435,7 @@ function generateQRs(regs) {
         const data = { n: r.name, em: r.email, t: r.teamName || 'Solo', e: r.eventName, id: r.regId };
         // Use encodeURIComponent to handle special characters before btoa
         const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-        try { new QRCode(el, {text:qrText, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.H}); } catch(ex){}
+        try { new QRCode(el, {text:qrText, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.L}); } catch(ex){ console.error("QR Code rendering blocked:", ex); }
       }
     });
   }, 100);

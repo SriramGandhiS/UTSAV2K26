@@ -1210,7 +1210,7 @@ function openPass(){
     regs.forEach(r=>{
       const el=document.getElementById('qr-'+r.regId.replace('-','_'));
       if(el&&!el.hasChildNodes()){
-        try{new QRCode(el,{text:`UTSAV2K26|${r.regId}|${r.name}|${r.events.join(',')}`,width:140,height:140,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.H});}catch(ex){}
+        try{new QRCode(el,{text:`UTSAV2K26|${r.regId}|${r.name}|${r.events.join(',')}`,width:140,height:140,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.L});}catch(ex){ console.error(ex); }
       }
     });
   },100);
