@@ -1441,6 +1441,54 @@ function openPass() {
   </div>`;
   document.getElementById('pass-ov').classList.add('open');
   generateQRs(regs);
+  backgroundValidatePasses(regs);
+}
+
+async function backgroundValidatePasses(localRegs) {
+  if (!SHEETS_URL || SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE' || localRegs.length === 0) return;
+
+  const emails = [...new Set(localRegs.map(r => r.email).filter(e => !!e))];
+  let updatedAny = false;
+  let allLatest = [];
+
+  try {
+    for (const email of emails) {
+      const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email);
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if (data.registrations) {
+        allLatest = allLatest.concat(data.registrations);
+      }
+    }
+
+    // Filter local storage to only keep what is still in the latest remote data
+    // OR keep things that aren't in the checked emails list (though normally they all should be)
+    const currentLocal = JSON.parse(localStorage.getItem('u26r') || '[]');
+    const filtered = currentLocal.filter(loc => {
+      // If we checked this email, only keep if the exact regId exists in the remote data
+      if (emails.includes(loc.email)) {
+        return allLatest.some(rem => rem.regId === loc.regId);
+      }
+      return true; // Keep others
+    });
+
+    if (filtered.length !== currentLocal.length) {
+      localStorage.setItem('u26r', JSON.stringify(filtered));
+      if (filtered.length === 0) document.getElementById('pass-nav-btn').style.display = 'none';
+      
+      // Quietly re-render if the user is still looking at the passes
+      if (document.getElementById('pass-ov').classList.contains('open')) {
+        const out = document.getElementById('pass-out');
+        if (filtered.length === 0) {
+          out.innerHTML = '';
+          document.getElementById('fetch-pass-section').style.display = 'block';
+        } else {
+          out.innerHTML = renderPassCards([...filtered].reverse());
+          generateQRs(filtered);
+        }
+      }
+    }
+  } catch (e) { console.error('BG Validation failed', e); }
 }
 function closePass() { document.getElementById('pass-ov').classList.remove('open'); showDock(); }
 
