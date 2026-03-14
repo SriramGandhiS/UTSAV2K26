@@ -1672,30 +1672,50 @@ async function openAdmin() {
 }
 
 function renderAdminRegs(regs) {
-  document.getElementById('admin-regs-list').innerHTML = regs.length ? regs.slice().reverse().map(r => `
+  document.getElementById('admin-regs-list').innerHTML = regs.length ? regs.slice().reverse().map(r => {
+    // Safe date parsing
+    let dateStr = 'Unknown Date';
+    if (r.ts) {
+      const d = new Date(r.ts);
+      if (!isNaN(d.getTime())) { dateStr = d.toLocaleString(); }
+      else { dateStr = String(r.ts); } // Fallback to raw string if parsing fails
+    }
+
+    const isTeam = (r.teamName && r.teamName.trim() !== '') || (r.teamMembers && r.teamMembers.length > 0);
+    const teamNameDisplay = isTeam ? (r.teamName || 'Unnamed Team') : 'Solo';
+    const numMembers = isTeam ? (1 + (r.teamMembers?.length || 0)) : 1;
+
+    let expandedHtml = `
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--orange);text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+        <span>Full Details</span>
+        <button onclick="deleteSingleReg('${r.regId}'); event.stopPropagation();" style="background:rgba(231,76,60,.1);color:#e74c3c;border:1px solid rgba(231,76,60,.2);padding:4px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Delete Profile</button>
+      </div>
+      <div class="arc-member"><strong>Email:</strong> ${r.email || 'N/A'}</div>
+      <div class="arc-member"><strong>Phone:</strong> ${r.phone || 'N/A'}</div>
+    `;
+
+    if (isTeam && r.teamMembers && r.teamMembers.length > 0) {
+      expandedHtml += `<div style="font-size:10px;font-weight:700;color:var(--orange);margin-top:8px;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase">Team Members</div>`;
+      expandedHtml += r.teamMembers.map((m,i) => `
+        <div class="arc-member">Member ${i+2}: <strong>${m.name || 'N/A'}</strong> ${m.regno ? '· ' + m.regno : ''} ${m.year ? '· Year ' + m.year : ''} ${m.section ? '· Sec ' + m.section : ''} ${m.phone ? '· ' + m.phone : ''}</div>
+      `).join('');
+    }
+
+    return `
     <div class="admin-reg-card" onclick="this.querySelector('.arc-expanded').classList.toggle('show')">
       <div class="arc-top">
-        <div class="arc-name">${r.name} <span style="font-size:11px;color:var(--muted2);font-weight:400">· ${r.regno}</span></div>
-        <div class="arc-id">${r.regId}</div>
+        <div class="arc-name">${r.name || 'Unknown'} <span style="font-size:11px;color:var(--muted2);font-weight:400">· ${r.regno || 'N/A'}</span></div>
+        <div class="arc-id">${r.regId || 'N/A'}</div>
       </div>
       <div class="arc-meta">
-        Year ${r.year} · Sec ${r.section} · ${r.phone}<br>
-        ${r.teamName ? `Team: ${r.teamName} · ${1+(r.teamMembers?.length||0)} members` : 'Solo'}
-        · <span style="color:rgba(255,255,255,.4);font-size:10px">${new Date(r.ts).toLocaleString()}</span>
+        ${r.year ? 'Year ' + r.year : ''} ${r.section ? '· Sec ' + r.section : ''} · ${r.phone || ''}<br>
+        ${isTeam ? `Team: ${teamNameDisplay} · ${numMembers} members` : 'Solo Registration'}
+        · <span style="color:rgba(255,255,255,.4);font-size:10px">${dateStr}</span>
       </div>
-      <div class="arc-events"><span class="arc-ev-pill">${r.eventName}</span></div>
-      <div class="arc-expanded">
-        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--orange);text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
-          <span>Full Details</span>
-          <button onclick="deleteSingleReg('${r.regId}'); event.stopPropagation();" style="background:rgba(231,76,60,.1);color:#e74c3c;border:1px solid rgba(231,76,60,.2);padding:4px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Delete Profile</button>
-        </div>
-        <div class="arc-member"><strong>Email:</strong> ${r.email}</div>
-        <div class="arc-member"><strong>Phone:</strong> ${r.phone}</div>
-        ${r.teamMembers?.length ? '<div style="font-size:10px;font-weight:700;color:var(--orange);margin-top:8px;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase">Team Members</div>' + r.teamMembers.map((m,i) => `
-          <div class="arc-member">Member ${i+2}: <strong>${m.name}</strong> · ${m.regno} · Year ${m.year} · Sec ${m.section} · ${m.phone}</div>
-        `).join('') : ''}
-      </div>
-    </div>`).join('') : '<div style="text-align:center;padding:30px;color:var(--muted2)">No registrations yet.</div>';
+      <div class="arc-events"><span class="arc-ev-pill">${r.eventName || 'Event'}</span></div>
+      <div class="arc-expanded">${expandedHtml}</div>
+    </div>`;
+  }).join('') : '<div style="text-align:center;padding:30px;color:var(--muted2)">No registrations yet.</div>';
 }
 
 function filterAdminRegs() {
