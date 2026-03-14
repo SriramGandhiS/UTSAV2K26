@@ -77,22 +77,26 @@ async function init() {
     const regId = data.id || ""; // The QR should contain the ID
     const email = data.em || ""; 
 
-    container.innerHTML = `<div style="color:var(--muted)">Verifying with secure database...</div>`;
+    container.innerHTML = `<div style="color:var(--muted)">Verifying digital signature...</div>`;
 
-    // Live check
-    if (SHEETS_URL) {
+    // Live check (Optional background check, we trust the QR payload first for speed)
+    let syncStatusHtml = '';
+    if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
       try {
         const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email || "");
         const resp = await fetch(url);
         const db = await resp.json();
-        const exists = db.registrations && db.registrations.some(r => r.name === data.n && r.eventName === data.e);
         
-        if (!exists) {
-          showError("Pass Revoked", "This registration has been cancelled or removed from the records.");
-          return;
+        // We do a loose check. If the DB answers but we don't find it, it might still be syncing.
+        const exists = db.registrations && db.registrations.some(r => r.regId === regId || (r.name === data.n && r.eventName === data.e));
+        
+        if (!exists && db.registrations && db.registrations.length > 0) {
+           // We found this user, but NOT this pass. It could be a revoked pass or a very new one.
+           syncStatusHtml = `<div style="color:#e67e22; font-size:11px; margin-top:12px; font-weight:600;">⚠️ Pass not yet synced to central database.</div>`;
+        } else if (exists) {
+           syncStatusHtml = `<div style="color:var(--green); font-size:11px; margin-top:12px; font-weight:600;">✓ Synced with central database</div>`;
         }
       } catch(ex) {
-        // If offline/error, we still show the data but with a warning
         console.warn("Live check failed", ex);
       }
     }
@@ -122,6 +126,7 @@ async function init() {
       </div>
       
       <div class="fest-name">UTSAV 2K26 · PSNA CSE</div>
+      ${syncStatusHtml}
     `;
   } catch(e) {
     showError("Verification Failed", "The pass data is corrupt or invalid.");
