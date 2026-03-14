@@ -1112,7 +1112,10 @@ function buildReview() {
 }
 
 /* ── SUBMIT ── */
-function submitReg() {
+async function submitReg() {
+  const btn = document.querySelector('.step.active .btn-fill') || document.getElementById('reg-ov').querySelector('.btn-fill' + '[onclick="submitReg()"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; btn.style.opacity = '0.7'; }
+
   const name=document.getElementById('f-name').value.trim();
   const regno=document.getElementById('f-regno').value.trim();
   const year=document.getElementById('f-year').value;
@@ -1121,16 +1124,33 @@ function submitReg() {
   const email=document.getElementById('f-email').value.trim();
   const tname = (currentEv?.type !== 'Solo') ? document.getElementById('f-teamname').value.trim() : '';
 
-  // Duplicate check (Local only)
+  // Duplicate check (Local & Server)
   const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
   const isDupe = saved.some(r => r.regno === regno && r.eventId === currentEv.id);
   if (isDupe) {
     alert('Already registered for ' + currentEv.name + ' with this register number.');
+    if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
     return;
   }
 
+  // Server check
+  if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    showAdminLoader('Verifying Registration Status...');
+    try {
+      const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email);
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if (data.found && data.registrations.some(r => r.eventId === currentEv.id)) {
+        hideAdminLoader();
+        alert('Verification Error: You are already registered for ' + currentEv.name + '.');
+        if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+        return;
+      }
+    } catch(e) { /* continue on network error to allow offline-ish fallback */ }
+    hideAdminLoader();
+  }
+
   const n = parseInt(localStorage.getItem('u26n') || '0') + 1;
-  localStorage.setItem('u26n', String(n));
   const rnd = Math.floor(Math.random() * 900 + 100);
   const regId = 'UTSAV-' + String(n).padStart(4, '0') + '-' + rnd;
   const ts = new Date().toISOString();
@@ -1143,18 +1163,36 @@ function submitReg() {
     ts
   };
 
-  saved.push(reg); localStorage.setItem('u26r', JSON.stringify(saved));
-
-  // Sync to Sheets
+  // Sync to Sheets (Wait for success before showing pass)
   if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-    syncSingle(reg);
+    try {
+      const resp = await fetch(SHEETS_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({action: 'addReg', data: reg})
+      });
+      const resData = await resp.json();
+      if (!resData.success) {
+        alert('Registration Failed: ' + (resData.error || 'Server error. Please try again.'));
+        if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+        return; // HALT SUBMISSION
+      }
+    } catch(e) {
+      alert('Network Error during registration. Please check your connection and try again.');
+      if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+      return; // HALT SUBMISSION
+    }
   }
 
-  // Email confirmation note
+  // Save Locally ONLY if backend push succeeds (or if SHEETS_URL is not set)
+  localStorage.setItem('u26n', String(n));
+  saved.push(reg); localStorage.setItem('u26r', JSON.stringify(saved));
+
+  // Remove Email confirmation note from confirmation screen as email is disabled for load
   document.getElementById('conf-wa-container').innerHTML = `
-    <div style="padding:12px;background:rgba(76,175,80,.08);border:1px solid rgba(76,175,80,.25);border-radius:8px;text-align:center">
-      <div style="font-size:13px;font-weight:700;color:#4CAF50;margin-bottom:4px">📧 Confirmation Email Sent</div>
-      <div style="font-size:11px;color:var(--muted)">Check your inbox at <strong style="color:#fff">${email}</strong></div>
+    <div style="padding:12px;background:rgba(232,84,26,.08);border:1px solid rgba(232,84,26,.25);border-radius:8px;text-align:center">
+      <div style="font-size:13px;font-weight:700;color:var(--orange);margin-bottom:4px">✓ Pass Secured & Synced</div>
+      <div style="font-size:11px;color:var(--muted)">Your registration has been confirmed with the central database.</div>
     </div>`;
 
   document.getElementById('reg-ov').classList.remove('open');
@@ -1167,15 +1205,15 @@ function submitReg() {
   ['f-name','f-regno','f-email','f-phone','f-teamname'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   ['f-year','f-section'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   teamMembers = []; currentEv = null; currentStep = 0;
+  if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
 }
 
 function syncSingle(reg) {
   fetch(SHEETS_URL, {
     method: 'POST',
-    mode: 'no-cors',
     headers: {'Content-Type': 'text/plain'},
     body: JSON.stringify({action: 'addReg', data: reg})
-  }).catch(() => {});
+  }).then(r => r.json()).catch(() => {});
 }
 
 /* ── CONFIRMATION ── */

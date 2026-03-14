@@ -91,26 +91,84 @@ function doGet(e) {
 
 // ── POST requests (Save registrations) ──
 function doPost(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sh = ss.getSheetByName("Registrations") || ss.insertSheet("Registrations");
-  if (sh.getLastRow() === 0) {
-    sh.appendRow(["RegID","Name","RegNo","Year","Section","Phone","Email","EventID","Event","TeamName","TeamMembers","Timestamp"]);
+  var lock = LockService.getScriptLock();
+  // Wait for up to 10 seconds for other processes to finish.
+  var successLock = lock.tryLock(10000);
+  
+  if (!successLock) {
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false, 
+      error: "Server too busy. Please try again in a few seconds."
+    })).setMimeType(ContentService.MimeType.JSON);
   }
-  var d = JSON.parse(e.postData.contents);
 
-  if (d.action === "syncAll") {
-    d.data.forEach(function(r) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sh = ss.getSheetByName("Registrations") || ss.insertSheet("Registrations");
+    if (sh.getLastRow() === 0) {
+      sh.appendRow(["RegID","Name","RegNo","Year","Section","Phone","Email","EventID","Event","TeamName","TeamMembers","Timestamp"]);
+    }
+    
+    var d = JSON.parse(e.postData.contents);
+    
+    if (d.action === "syncAll") {
+      d.data.forEach(function(r) {
+        sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventId||"", r.eventName, r.teamName||"", JSON.stringify(r.teamMembers||[]), r.ts]);
+      });
+      return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+    } else if (d.action === "addReg") {
+      var r = d.data;
+      var emailLC = (r.email || "").toLowerCase().trim();
+      var eventNameLC = (r.eventName || "").toLowerCase().trim();
+      
+      // Backend duplicate check
+      var data = sh.getDataRange().getValues();
+      var headers = data[0];
+      var isDuplicate = false;
+      
+      for (var i = 1; i < data.length; i++) {
+        var row = data[i];
+        if (String(row[headers.indexOf("RegID")] || "") === r.regId) {
+          isDuplicate = true; break;
+        }
+        var rowEmail = String(row[headers.indexOf("Email")] || "").toLowerCase().trim();
+        var rowEvent = String(row[headers.indexOf("Event")] || "").toLowerCase().trim();
+        if (rowEmail && rowEmail === emailLC && rowEvent === eventNameLC) {
+          isDuplicate = true; break;
+        }
+      }
+      
+      if (isDuplicate) {
+        return ContentService.createTextOutput(JSON.stringify({
+          success: false,
+          error: "You are already registered for this event."
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
       sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventId||"", r.eventName, r.teamName||"", JSON.stringify(r.teamMembers||[]), r.ts]);
-    });
-  } else if (d.action === "addReg") {
-    var r = d.data;
-    sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventId||"", r.eventName, r.teamName||"", JSON.stringify(r.teamMembers||[]), r.ts]);
-    // Send Confirmation Email
-    try {
-      var subject = "Registration Confirmed - " + r.eventName + " | UTSAV 2K26";
-      var body = "Hi " + r.name + ",\n\nYour registration for " + r.eventName + " is confirmed!\n\nPass ID: " + r.regId + "\nDate: 28-29 March 2026\nVenue: PSNA College, Dindigul\n\nPlease show your digital pass at the registration desk.\n\nBest regards,\nUTSAV 2K26 Team";
-      GmailApp.sendEmail(r.email, subject, body);
-    } catch(ex) {}
+      
+      // Email sending removed for scalability (preventing hitting 100/day limit & slowing down requests)
+      // To re-enable safely in future, use a separate time-driven trigger script that reads rows without emails sent.
+      
+      return ContentService.createTextOutput(JSON.stringify({
+        success: true,
+        regId: r.regId
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false, 
+      error: "Unknown action"
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch (ex) {
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false, 
+      error: "Server Error: " + ex.message
+    })).setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    // Release lock so next registration can process
+    lock.releaseLock();
   }
-  return ContentService.createTextOutput("ok");
 }
+
