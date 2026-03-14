@@ -1673,17 +1673,34 @@ async function openAdmin() {
 
 function renderAdminRegs(regs) {
   document.getElementById('admin-regs-list').innerHTML = regs.length ? regs.slice().reverse().map(r => {
-    // Safe date parsing
+    // Advanced Date formatting
     let dateStr = 'Unknown Date';
     if (r.ts) {
       const d = new Date(r.ts);
-      if (!isNaN(d.getTime())) { dateStr = d.toLocaleString(); }
-      else { dateStr = String(r.ts); } // Fallback to raw string if parsing fails
+      if (!isNaN(d.getTime())) {
+        const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+        const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        
+        let tStr = d.toLocaleTimeString('en-US', timeOptions);
+        let dStr = d.toLocaleDateString('en-US', dateOptions);
+        
+        dateStr = tStr + ' ' + dStr;
+      } else { 
+        dateStr = String(r.ts); 
+      }
     }
 
-    const isTeam = (r.teamName && r.teamName.trim() !== '') || (r.teamMembers && r.teamMembers.length > 0);
+    // Try to parse teamMembers if it came back from Sheets as a stringified array
+    let parsedMembers = [];
+    if (typeof r.teamMembers === 'string') {
+      try { parsedMembers = JSON.parse(r.teamMembers); } catch(e) {}
+    } else if (Array.isArray(r.teamMembers)) {
+      parsedMembers = r.teamMembers;
+    }
+
+    const isTeam = (r.teamName && r.teamName.trim() !== '') || (parsedMembers.length > 0);
     const teamNameDisplay = isTeam ? (r.teamName || 'Unnamed Team') : 'Solo';
-    const numMembers = isTeam ? (1 + (r.teamMembers?.length || 0)) : 1;
+    const numMembers = isTeam ? (1 + parsedMembers.length) : 1;
 
     let expandedHtml = `
       <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--orange);text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
@@ -1694,11 +1711,16 @@ function renderAdminRegs(regs) {
       <div class="arc-member"><strong>Phone:</strong> ${r.phone || 'N/A'}</div>
     `;
 
-    if (isTeam && r.teamMembers && r.teamMembers.length > 0) {
+    if (isTeam && parsedMembers.length > 0) {
       expandedHtml += `<div style="font-size:10px;font-weight:700;color:var(--orange);margin-top:8px;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase">Team Members</div>`;
-      expandedHtml += r.teamMembers.map((m,i) => `
-        <div class="arc-member">Member ${i+2}: <strong>${m.name || 'N/A'}</strong> ${m.regno ? '· ' + m.regno : ''} ${m.year ? '· Year ' + m.year : ''} ${m.section ? '· Sec ' + m.section : ''} ${m.phone ? '· ' + m.phone : ''}</div>
-      `).join('');
+      expandedHtml += parsedMembers.map((m,i) => {
+        let det = [];
+        if (m.regno) det.push(m.regno);
+        if (m.year) det.push('Year ' + m.year);
+        if (m.section) det.push('Sec ' + m.section);
+        if (m.phone) det.push(m.phone);
+        return `<div class="arc-member" style="margin-bottom:4px">Member ${i+2}: <strong>${m.name || 'N/A'}</strong> ${det.length > 0 ? '· ' + det.join(' · ') : ''}</div>`;
+      }).join('');
     }
 
     return `
