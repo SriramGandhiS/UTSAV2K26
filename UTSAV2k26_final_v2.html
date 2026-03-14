@@ -1220,9 +1220,28 @@ function syncSingle(reg) {
 function viewPass() { document.getElementById('conf-screen').classList.remove('open'); openPass(); }
 function closeConf() { document.getElementById('conf-screen').classList.remove('open'); showDock(); }
 
+/* ── HELPERS ── */
+function getParsedMembers(r) {
+  let m = [];
+  if (Array.isArray(r.teamMembers)) m = r.teamMembers;
+  else if (typeof r.teamMembers === 'string' && r.teamMembers.trim()) {
+    try { m = JSON.parse(r.teamMembers); } catch(e) {}
+  }
+  // Fallbacks for corrupted data
+  if (m.length === 0 && typeof r.ts === 'string' && r.ts.includes('[{"name"')) {
+    try { m = JSON.parse(r.ts); } catch(e) {}
+  }
+  if (m.length === 0 && typeof r.teamName === 'string' && r.teamName.includes('[{"name"')) {
+    try { m = JSON.parse(r.teamName); } catch(e) {}
+  }
+  return m;
+}
+
 /* ── PASS ── */
 function renderPassCards(regs) {
-  return regs.map(r => `
+  return regs.map(r => {
+    const members = getParsedMembers(r);
+    return `
     <div class="pass-card">
       <div class="pass-top">
         <div class="pass-fest">UTSAV 2K26 · PSNA COLLEGE · DEPT OF CSE</div>
@@ -1242,11 +1261,11 @@ function renderPassCards(regs) {
           <div><div class="pfl">Register Phone</div><div class="pfv">${r.phone||'—'}</div></div>
           <div><div class="pfl">Date & Venue</div><div class="pfv">28–29 Mar · PSNA</div></div>
         </div>
-        ${r.teamName ? `
+        ${(r.teamName && !r.teamName.includes('[{"name"')) || members.length > 0 ? `
         <div class="team-pass-section">
-          <div class="team-pass-title">Team: ${r.teamName}</div>
+          <div class="team-pass-title">Team: ${r.teamName && !r.teamName.includes('[{"name"') ? r.teamName : 'Team'}</div>
           <div class="team-member-row"><span>Member 1 (You)</span><strong>${r.name} · ${r.regno||''}</strong></div>
-          ${(r.teamMembers||[]).map((m,i)=>`<div class="team-member-row"><span>Member ${i+2}</span><strong>${m.name}${m.regno?' · '+m.regno:''}</strong></div>`).join('')}
+          ${members.map((m,i)=>`<div class="team-member-row"><span>Member ${i+2}</span><strong>${m.name}${m.regno?' · '+m.regno:''}</strong></div>`).join('')}
         </div>` : ''}
         <div class="pass-sep"><span>Valid Digital Entry Pass</span></div>
         <div class="qr-center">
@@ -1258,7 +1277,7 @@ function renderPassCards(regs) {
         <div class="shot-note">Screenshot this pass · Show at the entry desk</div>
       </div>
     </div>
-  `).join('');
+  `; }).join('');
 }
 
 function generateQRs(regs) {
@@ -1266,7 +1285,12 @@ function generateQRs(regs) {
     regs.forEach(r => {
       const el = document.getElementById('qr-' + r.regId.replace(/[^a-zA-Z0-9]/g,'_'));
       if (el && !el.hasChildNodes()) {
-        try { new QRCode(el, {text:`UTSAV2K26|${r.regId}|${r.name}|${r.eventName}|${r.regno||''}`, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.L}); } catch(ex){ console.error("QR render error:", ex); }
+        const verifyUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'verify.html';
+        const members = getParsedMembers(r);
+        const tmQR = members.map(m => ({ n: m.name||'', r: m.regno||'', y: m.year||'', s: m.section||'', p: m.phone||'' }));
+        const data = { n: r.name, em: r.email, t: r.teamName && !r.teamName.includes('[{"name"') ? r.teamName : 'Solo', e: r.eventName, id: r.regId, rn: r.regno||'', yr: r.year||'', sec: r.section||'', ph: r.phone||'', tm: tmQR };
+        const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+        try { new QRCode(el, {text:qrText, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.L}); } catch(ex){ console.error("QR render error:", ex); }
       }
     });
   }, 100);
@@ -1412,7 +1436,7 @@ async function openAdmin() {
   // Event breakdown
   document.getElementById('admin-ev-breakdown').innerHTML = EVS.map(e => {
     const evRegs = regs.filter(r => r.eventId === e.id);
-    const evMembers = evRegs.reduce((a,r) => a + 1 + (r.teamMembers?.length||0), 0);
+    const evMembers = evRegs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
     return `<div class="admin-ev-row">
       <div class="aer-name">${e.name}</div>
       <div class="aer-stats">
@@ -1452,23 +1476,8 @@ function renderAdminRegs(regs) {
       }
     }
 
-    // Try to parse teamMembers if it came back from Sheets as a stringified array
-    let parsedMembers = [];
-    if (typeof r.teamMembers === 'string' && r.teamMembers.trim() !== '') {
-      try { parsedMembers = JSON.parse(r.teamMembers); } catch(e) {}
-    } else if (Array.isArray(r.teamMembers)) {
-      parsedMembers = r.teamMembers;
-    }
-    
-    // Fallback: If it's old corrupted data, the array was saved in the timestamp field!
-    if (parsedMembers.length === 0 && typeof r.ts === 'string' && r.ts.includes('[{"name"')) {
-      try { parsedMembers = JSON.parse(r.ts); } catch(e) {}
-    }
-    
-    // Fallback 2: Sometimes it was saved in teamName
-    if (parsedMembers.length === 0 && typeof r.teamName === 'string' && r.teamName.includes('[{"name"')) {
-      try { parsedMembers = JSON.parse(r.teamName); } catch(e) {}
-    }
+    // Use centralized helper for parsing team members with fallbacks
+    let parsedMembers = getParsedMembers(r);
 
     const isTeam = (r.teamName && r.teamName.trim() !== '') || (parsedMembers.length > 0);
     

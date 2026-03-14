@@ -73,7 +73,7 @@ async function init() {
   }
 
   try {
-    const data = JSON.parse(atob(dataStr));
+    const data = JSON.parse(decodeURIComponent(escape(atob(dataStr))));
     const regId = data.id || ""; // The QR should contain the ID
     const email = data.em || ""; 
 
@@ -101,6 +101,25 @@ async function init() {
       }
     }
     
+    // Build team members HTML
+    let teamHtml = '';
+    if (data.tm && data.tm.length > 0) {
+      teamHtml = `
+        <div style="margin-top:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px 16px;text-align:left">
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:10px">Team Members</div>
+          <div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+            <div style="font-size:13px;font-weight:700;color:#fff">Member 1 (Leader): ${data.n || '—'}</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">${[data.rn, data.yr ? 'Year '+data.yr : '', data.sec ? 'Sec '+data.sec : '', data.ph].filter(Boolean).join(' · ')}</div>
+          </div>
+          ${data.tm.map((m,i) => `
+            <div style="padding:8px 0;${i < data.tm.length-1 ? 'border-bottom:1px solid rgba(255,255,255,.06)' : ''}">
+              <div style="font-size:13px;font-weight:700;color:#fff">Member ${i+2}: ${m.n || '—'}</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">${[m.r, m.y ? 'Year '+m.y : '', m.s ? 'Sec '+m.s : '', m.p].filter(Boolean).join(' · ')}</div>
+            </div>
+          `).join('')}
+        </div>`;
+    }
+
     container.innerHTML = `
       <div class="check-ring">
         <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -112,18 +131,41 @@ async function init() {
       
       <div class="detail-grid">
         <div class="detail-row">
+          <div class="dl">Registration ID</div>
+          <div class="dv">${data.id || '—'}</div>
+        </div>
+        <div class="detail-row">
           <div class="dl">Student Name</div>
           <div class="dv dv-w">${data.n || '—'}</div>
         </div>
         <div class="detail-row">
-          <div class="dl">Team</div>
-          <div class="dv dv-w">${data.t || 'Solo'}</div>
+          <div class="dl">Register Number</div>
+          <div class="dv dv-w">${data.rn || '—'}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="detail-row">
+            <div class="dl">Year</div>
+            <div class="dv dv-w">${data.yr ? 'Year ' + data.yr : '—'}</div>
+          </div>
+          <div class="detail-row">
+            <div class="dl">Section</div>
+            <div class="dv dv-w">${data.sec ? 'Sec ' + data.sec : '—'}</div>
+          </div>
+        </div>
+        <div class="detail-row">
+          <div class="dl">Phone</div>
+          <div class="dv dv-w">${data.ph || '—'}</div>
         </div>
         <div class="detail-row">
           <div class="dl">Event</div>
           <div class="dv">${data.e || '—'}</div>
         </div>
+        <div class="detail-row">
+          <div class="dl">Team</div>
+          <div class="dv dv-w">${data.t || 'Solo'}</div>
+        </div>
       </div>
+      ${teamHtml}
       
       <div class="fest-name">UTSAV 2K26 · PSNA CSE</div>
       ${syncStatusHtml}
