@@ -1431,7 +1431,13 @@ function renderAdminRegs(regs) {
   document.getElementById('admin-regs-list').innerHTML = regs.length ? regs.slice().reverse().map(r => {
     // Advanced Date formatting
     let dateStr = 'Unknown Date';
-    if (r.ts && !String(r.ts).includes('[{"name"')) {
+    const isBracketOrEmpty = (str) => {
+      if (!str) return true;
+      const s = String(str).trim();
+      return s === '' || s === '[]' || s === '[ ]' || s === '{}' || s === '{ }' || (s.startsWith('[') && s.endsWith(']')) || (s.startsWith('{') && s.endsWith('}'));
+    };
+    
+    if (r.ts && !isBracketOrEmpty(r.ts)) {
       const d = new Date(r.ts);
       if (!isNaN(d.getTime())) {
         const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
@@ -1442,7 +1448,7 @@ function renderAdminRegs(regs) {
         
         dateStr = tStr + ' ' + dStr;
       } else { 
-        dateStr = String(r.ts); 
+        dateStr = 'Unknown Date'; 
       }
     }
 
