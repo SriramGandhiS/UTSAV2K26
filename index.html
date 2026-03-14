@@ -278,6 +278,24 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 .sync-status.ok{color:#2ecc71}
 .sync-status.err{color:#e74c3c}
 
+/* COMMITTEE MODAL */
+.comm-ov{position:fixed;inset:0;z-index:850;background:var(--black);display:none;overflow-y:auto}
+.comm-ov.open{display:block;animation:fo .3s ease}
+.comm-wrap{padding:20px 20px 60px;max-width:500px;margin:0 auto}
+.comm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-top:10px}
+.comm-title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#fff;letter-spacing:1px;text-transform:uppercase}
+.comm-close{padding:8px 16px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--muted);font-size:12px;font-weight:600;letter-spacing:1px}
+.comm-grid{display:flex;flex-direction:column;gap:12px}
+.comm-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;transition:border-color .2s}
+.comm-card:hover{border-color:var(--orange)}
+.comm-info{display:flex;flex-direction:column;gap:4px}
+.comm-role{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase}
+.comm-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:1px;text-transform:uppercase}
+.comm-meta{font-size:11px;color:var(--muted2)}
+.comm-action{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);transition:all .2s;flex-shrink:0}
+.comm-action:hover{background:var(--orange);border-color:var(--orange);color:#fff}
+.comm-action svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
 /* EVENT DETAIL MODAL */
 .ev-modal-ov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);display:none;align-items:flex-end}
 .ev-modal-ov.open{display:flex;animation:fo .2s ease}
@@ -372,9 +390,16 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 .form-container iframe{width:100%;border:none;border-radius:8px;display:block;min-height:900px;background:transparent}
 .form-note{text-align:center;margin-top:16px;font-size:11px;color:var(--muted2);letter-spacing:1px}
 .form-note span{color:var(--orange);font-weight:700}
+.reg-hero-icon{width:80px;height:80px;margin:0 auto 24px;position:relative;display:flex;align-items:center;justify-content:center}
+.reg-hero-icon::before{content:'';position:absolute;inset:0;border-radius:24px;background:rgba(232,84,26,.1);border:1.5px solid rgba(232,84,26,.3);transform:rotate(45deg);transition:all .4s ease}
+.form-container:hover .reg-hero-icon::before{transform:rotate(90deg);border-color:var(--orange)}
+.reg-hero-icon svg{width:36px;height:36px;stroke:var(--orange);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:1;filter:drop-shadow(0 0 8px rgba(232,84,26,.5))}
 @media(max-width:767px){
   .form-container{padding:12px;border-radius:10px}
   .form-container iframe{min-height:1000px}
+  .reg-hero-icon{width:64px;height:64px;margin-bottom:18px}
+  .reg-hero-icon::before{border-radius:18px}
+  .reg-hero-icon svg{width:28px;height:28px}
 }
 
 /* ─── FETCH PASS LOOKUP ─── */
@@ -395,6 +420,23 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 .fetch-status.loading{color:var(--orange)}
 .fetch-status.error{color:#e74c3c}
 .fetch-status.success{color:#2ecc71}
+
+/* ─── DESKTOP OPTIMIZATIONS ─── */
+@media(min-width: 992px) {
+  .nav { padding: 0 6vw; }
+  .hero { grid-template-columns: 1fr 1fr; align-items: center; }
+  .hero-left { padding: 80px 4vw 40px 6vw; }
+  .hero-right { padding: 80px 6vw 40px 4vw; }
+  .sec { padding: 90px 6vw; }
+  .ev-tiles { grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .poster { max-width: 460px; }
+  .about-g { grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .stats-g { gap: 24px; margin-bottom: 72px; }
+  .sb { padding: 32px 20px; }
+  .form-container { padding: 40px; }
+  .contact-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .footer { padding: 60px 6vw; }
+}
 </style>
 </head>
 <body>
@@ -483,7 +525,11 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
   <div class="st">Secure Your<br>Spot Now</div>
   <p class="ss">Experience the most seamless registration. No forms, no redirects. Just fill your details and get your digital pass instantly.</p>
   <div class="form-container" style="text-align:center;padding:60px 24px">
-    <div class="fetch-icon" style="width:80px;height:80px;font-size:32px;margin-bottom:24px">✨</div>
+    <div class="reg-hero-icon">
+      <svg viewBox="0 0 24 24">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+      </svg>
+    </div>
     <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Ready to Compete?</h3>
     <p style="color:var(--muted);margin-bottom:32px;max-width:320px;margin-left:auto;margin-right:auto;font-size:14px">Join 500+ participants from PSNA CSE in the ultimate technical celebration.</p>
     <button class="btn-fill" style="padding:16px 40px;font-size:18px;letter-spacing:3px" onclick="openReg(null)">Register Free Now</button>
@@ -638,6 +684,79 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
   </div>
 </div>
 
+<!-- COMMITTEE MEMBERS -->
+<div class="comm-ov" id="comm-ov">
+  <div class="comm-wrap">
+    <div class="comm-head">
+      <div class="comm-title">Committee <span>Members</span></div>
+      <button class="comm-close" onclick="closeComm()">Close ✕</button>
+    </div>
+    
+    <div class="comm-grid">
+      <!-- President -->
+      <div class="comm-card">
+        <div class="comm-info">
+          <div class="comm-role">President</div>
+          <div class="comm-name">[Name TBD]</div>
+          <div class="comm-meta">[Designation TBD]</div>
+        </div>
+        <a href="tel:" class="comm-action" aria-label="Call">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
+        </a>
+      </div>
+      
+      <!-- Vice President -->
+      <div class="comm-card">
+        <div class="comm-info">
+          <div class="comm-role">Vice President</div>
+          <div class="comm-name">[Name TBD]</div>
+          <div class="comm-meta">[Designation TBD]</div>
+        </div>
+        <a href="tel:" class="comm-action" aria-label="Call">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
+        </a>
+      </div>
+
+      <!-- Event Head -->
+      <div class="comm-card">
+        <div class="comm-info">
+          <div class="comm-role">Event Head</div>
+          <div class="comm-name">Arjun</div>
+          <div class="comm-meta">CSE 3rd Year</div>
+        </div>
+        <a href="tel:+918610051714" class="comm-action" aria-label="Call Arjun">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
+        </a>
+      </div>
+      
+      <!-- Web Coordinator -->
+      <div class="comm-card">
+        <div class="comm-info">
+          <div class="comm-role">Web Coordinator</div>
+          <div class="comm-name">Sriram S</div>
+          <div class="comm-meta">Web Issues</div>
+        </div>
+        <a href="tel:+919361123688" class="comm-action" aria-label="Call Sriram S">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
+        </a>
+      </div>
+
+      <!-- Treasurer -->
+      <div class="comm-card">
+        <div class="comm-info">
+          <div class="comm-role">Treasurer</div>
+          <div class="comm-name">[Name TBD]</div>
+          <div class="comm-meta">[Designation TBD]</div>
+        </div>
+        <a href="tel:" class="comm-action" aria-label="Call">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- ADMIN PANEL -->
 <div class="admin-ov" id="admin-ov">
   <div class="admin-wrap">
@@ -691,6 +810,10 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
     <button class="dock-item" id="dock-pass" onclick="dockNav('pass')">
       <svg viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 0 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 0 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
       <span>My Pass</span>
+    </button>
+    <button class="dock-item" id="dock-committee" onclick="openComm()">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Team</span>
     </button>
   </div>
 </div>
@@ -1228,7 +1351,11 @@ function generateQRs(regs) {
     regs.forEach(r => {
       const el = document.getElementById('qr-' + r.regId.replace(/[^a-zA-Z0-9]/g,'_'));
       if (el && !el.hasChildNodes()) {
-        try { new QRCode(el, {text:`UTSAV2K26|${r.regId}|${r.name}|${r.eventName}|${r.regno||''}`, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.H}); } catch(ex){}
+        const verifyUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'verify.html';
+        const data = { n: r.name, t: r.teamName || 'Solo', e: r.eventName };
+        // Use encodeURIComponent to handle special characters before btoa
+        const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+        try { new QRCode(el, {text:qrText, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.H}); } catch(ex){}
       }
     });
   }, 100);
@@ -1590,6 +1717,16 @@ function updateDockActive() {
   } else {
     dockHome.classList.add('active');
   }
+}
+
+/* ════════ COMMITTEE ════════ */
+function openComm() {
+  hideDock();
+  document.getElementById('comm-ov').classList.add('open');
+}
+function closeComm() {
+  document.getElementById('comm-ov').classList.remove('open');
+  showDock();
 }
 
 init();

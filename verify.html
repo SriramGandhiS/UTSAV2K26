@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Verification — UTSAV 2K26</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{overscroll-behavior:none}
+:root{
+  --black:#0a0a0a;--card:#161616;--border:#242424;
+  --text:#f0f0f0;--muted:#888;--muted2:#555;
+  --orange:#e8541a;--green:#2ecc71;
+}
+body{background:var(--black);color:var(--text);font-family:'Barlow',sans-serif;-webkit-font-smoothing:antialiased;display:flex;align-items:center;justify-content:center;min-height:100svh;padding:24px}
+.verify-container{
+  width:100%;max-width:420px;background:var(--card);
+  border:1px solid var(--border);border-radius:16px;
+  padding:40px 24px;text-align:center;
+  position:relative;overflow:hidden;
+  box-shadow:0 10px 40px rgba(0,0,0,.6);
+}
+.verify-container::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+}
+.check-ring{
+  width:96px;height:96px;border-radius:50%;
+  border:2px solid rgba(46,204,113,.2);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 24px;background:rgba(46,204,113,.05);
+  animation:pop .5s cubic-bezier(.22,.68,0,1.4);
+}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+.check-ring svg{width:44px;height:44px;stroke:var(--green);stroke-width:2.5;animation:draw .6s ease forwards}
+@keyframes draw{from{stroke-dasharray:100;stroke-dashoffset:100}to{stroke-dasharray:100;stroke-dashoffset:0}}
+.verify-title{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.verify-sub{font-size:13px;color:var(--green);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px}
+.detail-grid{display:flex;flex-direction:column;gap:12px;text-align:left}
+.detail-row{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+  border-radius:8px;padding:12px 16px;
+}
+.dl{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:4px}
+.dv{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--orange);letter-spacing:.5px}
+.dv-w{color:#fff}
+.error-msg{
+  color:#e74c3c;font-size:14px;background:rgba(231,76,60,.1);
+  border:1px solid rgba(231,76,60,.3);padding:16px;border-radius:8px;
+  margin-bottom:20px;
+}
+.fest-name{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:32px}
+</style>
+</head>
+<body>
+
+<div class="verify-container" id="vc">
+  <div style="color:var(--muted)">Scanning...</div>
+</div>
+
+<script>
+function init() {
+  const container = document.getElementById('vc');
+  const params = new URLSearchParams(window.location.search);
+  const dataStr = params.get('d');
+  
+  if (!dataStr) {
+    showError("Invalid Pass", "No verification data found in URL.");
+    return;
+  }
+
+  try {
+    const data = JSON.parse(atob(dataStr));
+    
+    container.innerHTML = `
+      <div class="check-ring">
+        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="verify-title">Verified Successfully</div>
+      <div class="verify-sub">Valid Digital Pass</div>
+      
+      <div class="detail-grid">
+        <div class="detail-row">
+          <div class="dl">Student Name</div>
+          <div class="dv dv-w">${data.n || '—'}</div>
+        </div>
+        <div class="detail-row">
+          <div class="dl">Team</div>
+          <div class="dv dv-w">${data.t || 'Solo'}</div>
+        </div>
+        <div class="detail-row">
+          <div class="dl">Event</div>
+          <div class="dv">${data.e || '—'}</div>
+        </div>
+      </div>
+      
+      <div class="fest-name">UTSAV 2K26 · PSNA CSE</div>
+    `;
+  } catch(e) {
+    showError("Verification Failed", "The pass data is corrupt or invalid.");
+  }
+}
+
+function showError(title, msg) {
+  const container = document.getElementById('vc');
+  container.innerHTML = `
+    <div class="check-ring" style="border-color:rgba(231,76,60,.3);background:rgba(231,76,60,.05)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" style="stroke:#e74c3c">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </div>
+    <div class="verify-title" style="color:#e74c3c">${title}</div>
+    <div class="error-msg">${msg}</div>
+    <div class="fest-name">UTSAV 2K26 · PSNA CSE</div>
+  `;
+}
+
+// Start
+init();
+</script>
+</body>
+</html>
