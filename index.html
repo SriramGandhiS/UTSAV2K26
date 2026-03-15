@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>UTSAV 2K26 — PSNA CSE</title>
+<title>CSE UTSAV 2K26 — PSNA CSE</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -32,10 +32,10 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 
 /* NAV */
 .nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:rgba(10,10,10,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-.nl{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;letter-spacing:3px;color:#fff;text-transform:uppercase}
+.nl{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;letter-spacing:3px;color:#fff;text-transform:uppercase;white-space:nowrap}
 .nl span{color:var(--orange)}
 .nr{display:flex;gap:10px;align-items:center}
-.btn-ol{padding:8px 18px;background:transparent;border:1.5px solid var(--orange);color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:4px;transition:all .2s}
+.btn-ol{padding:8px 18px;background:transparent;border:1.5px solid var(--orange);color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:4px;transition:all .2s;white-space:nowrap}
 .btn-ol:active,.btn-ol:hover{background:var(--orange);color:#fff}
 .btn-fi{padding:8px 18px;background:var(--orange);border:1.5px solid var(--orange);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:4px;transition:opacity .2s;display:none}
 .btn-fi:active{opacity:.85}
@@ -431,6 +431,11 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
   .reg-hero-icon{width:64px;height:64px;margin-bottom:18px}
   .reg-hero-icon::before{border-radius:18px}
   .reg-hero-icon svg{width:28px;height:28px}
+  .nav { padding: 0 12px; }
+  .nav > div:first-child { gap: 6px !important; }
+  .btn-ol, .btn-fi { padding: 7px 8px !important; font-size: 10px !important; letter-spacing: 1px !important; }
+  .nl { font-size: 18px; letter-spacing: 1px; }
+  .admin-icon-btn { width: 32px; height: 32px; }
 }
 
 /* ─── FETCH PASS LOOKUP ─── */
@@ -478,11 +483,12 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
     <button class="admin-icon-btn" onclick="openAdminLogin()" aria-label="Admin">
       <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     </button>
-    <button class="btn-fi" id="pass-nav-btn" onclick="openPass()" style="display:block;padding:8px 12px;font-size:11px">My Pass</button>
+    <button class="btn-fi" id="pass-nav-btn" onclick="openPass()" style="padding:8px 12px;font-size:11px">My Pass</button>
     <button class="btn-ol" onclick="openReg(null)" style="padding:8px 12px;font-size:11px">Register</button>
+    <button class="btn-ol" onclick="openAllEvents()" style="padding:8px 12px;font-size:11px;border-color:var(--border2);color:var(--text)">Event Details</button>
   </div>
   <div class="nr">
-    <div class="nl">UT<span>SAV</span></div>
+    <div class="nl">CSE UT<span>SAV</span></div>
   </div>
 </nav>
 
@@ -491,9 +497,9 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
   <!-- Watermark ghost names -->
   <div class="wm-layer" id="wm-layer"></div>
   <div class="hero-left">
-    <div class="hero-meta">28–29 March 2026 &nbsp;|&nbsp; PSNA College, Dindigul</div>
+    <div class="hero-meta">19–21 March 2026 &nbsp;|&nbsp; PSNA College, Dindigul</div>
     <h1 class="hero-h">
-      <span class="wh">THE</span><span class="or"> UTSAV</span>
+      <span class="wh">THE</span><span class="or"> CSE UTSAV</span>
       <br><span class="wh">BEGINS</span>
     </h1>
     <p class="hero-desc">The Annual Technical Symposium of the Department of Computer Science & Engineering. Compete. Collaborate. Conquer.</p>
@@ -511,8 +517,8 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
   <div class="hero-right">
     <div class="poster">
       <div class="poster-inner">
-        <div class="poster-ot">UTSAV</div>
-        <div class="poster-dt">28 — 29 March 2026</div>
+        <div class="poster-ot">CSE UTSAV</div>
+        <div class="poster-dt">19 — 21 March 2026</div>
         <div class="poster-su">PSNA CSE · Dindigul</div>
       </div>
     </div>
@@ -578,9 +584,9 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="fl-logo">UT<span>SAV</span></div>
+  <div class="fl-logo">CSE UT<span>SAV</span></div>
   <div class="fl-info">PSNA College of Engineering & Technology<br>Department of Computer Science & Engineering<br>Dindigul, Tamil Nadu — 624 622</div>
-  <div class="fl-copy">© 2026 UTSAV · PSNA CSE · All Rights Reserved</div>
+  <div class="fl-copy">© 2026 CSE UTSAV · PSNA CSE · All Rights Reserved</div>
 </footer>
 
 <!-- EVENT DETAIL MODAL -->
@@ -642,6 +648,14 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
             <input class="fi" id="f-phone" type="tel" placeholder="10-digit number">
           </div>
         </div>
+        <div class="fg">
+          <label class="fl">Gender</label>
+          <select class="fs" id="f-gender">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
         <div class="fg"><label class="fl">College Email</label><input class="fi" id="f-email" type="email" placeholder="yourname@psnacet.edu.in"></div>
         <div class="free-note">CSE Department Only · Free Registration</div>
         <button class="reg-next-btn" onclick="goStep(1)">Next — Team Details</button>
@@ -678,7 +692,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
     <div class="conf-check-ring"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="conf-title">You're In!</div>
     <div class="conf-sub">Registration confirmed. Your digital pass is ready.</div>
-    <div class="conf-id-box"><div class="conf-id-l">Registration ID</div><div class="conf-id-v" id="conf-id-v">UTSAV-0001</div></div>
+    <div class="conf-id-box"><div class="conf-id-l">Registration ID</div><div class="conf-id-v" id="conf-id-v">CSEUTSAV-0001</div></div>
     <div class="conf-policy">
       <h4>Registration Policy</h4>
       <ul>
@@ -788,6 +802,18 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
   </div>
 </div>
 
+<!-- EVENT DETAILS MODAL (ALL EVENTS) -->
+<div class="comm-ov" id="allev-ov" onclick="if(event.target===this)closeAllEvents()">
+  <div class="comm-wrap">
+    <div class="comm-head">
+      <div class="comm-title">Event <span style="color:var(--orange)">Details</span></div>
+      <button class="comm-close" onclick="closeAllEvents()">Close ✕</button>
+    </div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;background:rgba(255,255,255,.03);padding:14px;border-radius:8px;border:1px solid var(--border)">Detailed schedule, venues, rules, and timings for all events at CSE UTSAV 2K26. Tap any card below to open its full details.</div>
+    <div class="comm-grid" id="allev-list"></div>
+  </div>
+</div>
+
 <!-- ADMIN PANEL -->
 <div class="admin-ov" id="admin-ov">
   <div class="admin-wrap">
@@ -819,7 +845,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
     <input class="admin-search" id="admin-search" type="text" placeholder="Search by name, reg no, event..." oninput="filterAdminRegs()">
     <div id="admin-regs-list"></div>
     <div style="height:20px"></div>
-    <button class="admin-clear-btn" onclick="clearAllData()">Clear All Registration Data</button>
+    <button class="admin-clear-btn" onclick="deleteAllData()" style="background:rgba(231,76,60,.1);color:#e74c3c;border:1px solid rgba(231,76,60,.2);">Delete All Data</button>
   </div>
 </div>
 
@@ -886,48 +912,76 @@ const ADMIN_PASS = '93611';
 
 /* ════════ EVENT DATA ════════ */
 const EVS = [
-  {id:'hack', name:'TECHNOTHON', label:'24-Hour Hackathon', type:'Team', minTeam:2, maxTeam:4, tag:'Hackathon',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-hack" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="url(#g-hack)" fill="url(#g-hack)" fill-opacity="0.15"></polygon></svg>', grad:'linear-gradient(135deg,#0d1f3c,#0a1428)', accent:'#3498db',
-   desc:'Build a working product in 24 hours. Real problems, real solutions — from raw idea to working prototype overnight.',
-   date:'March 28, 2026', time:'9:00 AM – 9:00 AM (next day)', venue:'CS Lab Block A', deadline:'March 25',
-   p1:'₹8,000', p2:'₹5,000', p3:'₹3,000',
-   rules:['Team of 2–4 members','Any programming language','Theme announced on event day','Laptops and chargers mandatory','Plagiarism = disqualification'],
-   ec:'Mr. Karthik R.', ep:'+91 98421 56789', sc:'Dr. Priya M.', sp:'+91 97890 12345'},
-  {id:'paper', name:'PAPER PRESENTATION', label:'Research & Innovation', type:'Team', minTeam:1, maxTeam:2, tag:'Technical',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-paper" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e67e22"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="url(#g-paper)" fill="url(#g-paper)" fill-opacity="0.15"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" stroke="url(#g-paper)"/></svg>', grad:'linear-gradient(135deg,#1f1200,#120b00)', accent:'#e67e22',
-   desc:'Present original research to expert judges. Depth, clarity and innovation rewarded.',
-   date:'March 28, 2026', time:'10:00 AM – 1:00 PM', venue:'Seminar Hall 1', deadline:'March 24',
-   p1:'₹5,000', p2:'₹3,000', p3:'₹2,000',
-   rules:['Max 2 members','Slides submitted 2 days before','10 min + 5 min Q&A','CSE/IT topics only','Plagiarism check done'],
-   ec:'Ms. Divya S.', ep:'+91 96780 34567', sc:'Prof. Ramesh K.', sp:'+91 95670 23456'},
-  {id:'debug', name:'CODE DEBUGGING', label:'Find the Bug & Win', type:'Solo', minTeam:1, maxTeam:1, tag:'Coding',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-bug" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2ecc71"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3M6 10l-4 4M22 14l-4-4" stroke="#e74c3c"/><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-bug)" fill="url(#g-bug)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-bug)"/></svg>', grad:'linear-gradient(135deg,#031a0d,#021008)', accent:'#2ecc71',
-   desc:'Deliberately broken code. Multiple rounds. Only the sharpest debugger survives.',
-   date:'March 29, 2026', time:'9:30 AM – 12:00 PM', venue:'CS Lab Block B', deadline:'March 27',
+  {id:'dup', name:'DESIGN UNDER PRESSURE', label:'Creative Design Challenge', type:'Team', minTeam:1, maxTeam:2, tag:'Design',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dup" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fd79a8"/><stop offset="100%" stop-color="#e84393"/></linearGradient></defs><circle cx="13.5" cy="10.5" r="2.5" fill="#fd79a8" stroke="none"/><path d="m20.24 12.24-5.48 5.48a2.83 2.83 0 0 1-4 0l-5.48-5.48a2.83 2.83 0 0 1 0-4l5.48-5.48a2.83 2.83 0 0 1 4 0l5.48 5.48a2.83 2.83 0 0 1 0 4Z" stroke="url(#g-dup)" fill="url(#g-dup)" fill-opacity="0.15"/><path d="M3.76 11.76l5.48-5.48" stroke="#00cec9"/><path d="M14.76 20.24l5.48-5.48" stroke="#00cec9"/></svg>', grad:'linear-gradient(135deg,#1a0a28,#0f0518)', accent:'#e84393',
+   desc:'Race against the clock to create stunning designs under extreme time pressure. Creativity meets speed.',
+   date:'March 19, 2026', time:'9:00 AM – 10:35 AM', venue:'Lab', deadline:'March 17',
    p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
-   rules:['Individual only','Languages: C, C++, Java, Python','3 rounds — Easy, Medium, Hard','No internet','Judge decision final'],
+   rules:['Max 2 members','Design tools provided','Time-bound rounds','Theme given on spot','Originality is key'],
+   ec:'Mr. Karthik R.', ep:'+91 98421 56789', sc:'Dr. Priya M.', sp:'+91 97890 12345'},
+  {id:'dd', name:'DIGITAL DYNAMO', label:'Tech Knowledge Battle', type:'Team', minTeam:2, maxTeam:3, tag:'Quiz',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dd" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="url(#g-dd)" fill="url(#g-dd)" fill-opacity="0.15"></polygon></svg>', grad:'linear-gradient(135deg,#0d1f3c,#0a1428)', accent:'#3498db',
+   desc:'Test your digital knowledge across multiple domains. Speed and accuracy will crown the champion.',
+   date:'March 19, 2026', time:'9:00 AM – 10:35 AM', venue:'Classroom', deadline:'March 17',
+   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
+   rules:['Team of 2–3','Multiple rounds','No electronic devices','Quizmaster decision final','Time-limited answers'],
+   ec:'Ms. Divya S.', ep:'+91 96780 34567', sc:'Prof. Ramesh K.', sp:'+91 95670 23456'},
+  {id:'cwc', name:'CODE WITH COMALI', label:'Fun Coding Challenge', type:'Team', minTeam:2, maxTeam:3, tag:'Coding',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-cwc" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2ecc71"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-cwc)"/></svg>', grad:'linear-gradient(135deg,#031a0d,#021008)', accent:'#2ecc71',
+   desc:'A hilarious twist on coding — one codes while the other guides, swapping roles each round. Chaos guaranteed!',
+   date:'March 19, 2026', time:'10:55 AM – 12:35 PM', venue:'Lab', deadline:'March 17',
+   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
+   rules:['Team of 2–3','Languages: C, C++, Java, Python','Fun + Coding combined','No internet','Judge decision final'],
    ec:'Mr. Vijay T.', ep:'+91 94560 78901', sc:'Ms. Anitha L.', sp:'+91 93450 67890'},
-  {id:'uiux', name:'UI/UX DESIGN', label:'Design Sprint · 3 Hours', type:'Team', minTeam:1, maxTeam:2, tag:'Design',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ui" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fd79a8"/><stop offset="100%" stop-color="#e84393"/></linearGradient></defs><circle cx="13.5" cy="10.5" r="2.5" fill="#fd79a8" stroke="none"/><path d="m20.24 12.24-5.48 5.48a2.83 2.83 0 0 1-4 0l-5.48-5.48a2.83 2.83 0 0 1 0-4l5.48-5.48a2.83 2.83 0 0 1 4 0l5.48 5.48a2.83 2.83 0 0 1 0 4Z" stroke="url(#g-ui)" fill="url(#g-ui)" fill-opacity="0.15"/><path d="M3.76 11.76l5.48-5.48" stroke="#00cec9"/><path d="M14.76 20.24l5.48-5.48" stroke="#00cec9"/></svg>', grad:'linear-gradient(135deg,#1a0a28,#0f0518)', accent:'#9b59b6',
-   desc:'Design a complete mobile app UI in 3 hours. Figma skills and user empathy judged.',
-   date:'March 29, 2026', time:'10:00 AM – 1:00 PM', venue:'Design Studio', deadline:'March 27',
-   p1:'₹4,000', p2:'₹2,500', p3:'₹1,500',
-   rules:['Figma or Adobe XD only','Theme revealed on day','3 hours to design','5-min pitch required','Bring your own laptop'],
+  {id:'bb', name:'BYTE BIDDERS', label:'Tech Auction Game', type:'Team', minTeam:2, maxTeam:4, tag:'Strategy',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-bb" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e67e22"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="url(#g-bb)"/></svg>', grad:'linear-gradient(135deg,#1f1200,#120b00)', accent:'#e67e22',
+   desc:'Bid smart, build smarter. A strategic auction game where tech knowledge meets financial acumen.',
+   date:'March 19, 2026', time:'2:00 PM – 4:00 PM', venue:'Lab', deadline:'March 17',
+   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
+   rules:['Team of 2–4','Virtual currency provided','Strategic bidding rounds','No external help','Final scores determine winner'],
    ec:'Ms. Keerthana R.', ep:'+91 92340 56789', sc:'Dr. Senthil P.', sp:'+91 91230 45678'},
-  {id:'quiz', name:'TECH QUIZ', label:'Knowledge · Speed · Accuracy', type:'Team', minTeam:2, maxTeam:3, tag:'Quiz',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-quiz" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-quiz)" fill="url(#g-quiz)" fill-opacity="0.15"/></svg>', grad:'linear-gradient(135deg,#1f0505,#120303)', accent:'#e74c3c',
-   desc:'Three rapid-fire rounds on AI, networks, OS, algorithms, and web tech.',
-   date:'March 28, 2026', time:'2:00 PM – 4:30 PM', venue:'Seminar Hall 2', deadline:'March 27',
-   p1:'₹2,000 + Trophy', p2:'₹1,500 + Medal', p3:'₹1,000 + Medal',
-   rules:['Team of 2–3','Round 1: MCQ prelims','Finals: Top 6','No phones in finals','Quizmaster decision final'],
+  {id:'tff', name:'THE FRANCHISE FORMATION', label:'Business Strategy Game', type:'Team', minTeam:2, maxTeam:4, tag:'Management',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tff" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#g-tff)"/><circle cx="9" cy="7" r="4" stroke="url(#g-tff)"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#g-tff)"/></svg>', grad:'linear-gradient(135deg,#1a1200,#100c00)', accent:'#f1c40f',
+   desc:'Build your dream franchise from scratch. Strategy, marketing & management all in one thrilling game.',
+   date:'March 19, 2026', time:'11:00 AM – 4:00 PM', venue:'Classroom', deadline:'March 17',
+   p1:'₹4,000', p2:'₹2,500', p3:'₹1,500',
+   rules:['Team of 2–4','Full day event','Business strategy game','Presentation required','Judges decision final'],
    ec:'Mr. Arun M.', ep:'+91 90120 34567', sc:'Prof. Lavanya S.', sp:'+91 89010 23456'},
-  {id:'idea', name:'IDEATHON', label:'Pitch Your Vision', type:'Team', minTeam:2, maxTeam:4, tag:'Innovation',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-idea" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-idea)" fill="url(#g-idea)" fill-opacity="0.2"/></svg>', grad:'linear-gradient(135deg,#1a1200,#100c00)', accent:'#f1c40f',
-   desc:'No code required. Just a bold idea and a killer pitch to industry judges.',
-   date:'March 29, 2026', time:'2:00 PM – 5:00 PM', venue:'Main Auditorium', deadline:'March 26',
+  {id:'ofi', name:'OOPS FIX IT!', label:'Debug & Repair Challenge', type:'Solo', minTeam:1, maxTeam:1, tag:'Coding',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ofi" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3M6 10l-4 4M22 14l-4-4" stroke="#e74c3c"/><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-ofi)" fill="url(#g-ofi)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-ofi)"/></svg>', grad:'linear-gradient(135deg,#1f0505,#120303)', accent:'#e74c3c',
+   desc:'Broken OOP code awaits. Find the bugs, fix the logic, and prove your debugging mastery.',
+   date:'March 20, 2026', time:'9:00 AM – 10:35 AM', venue:'Lab', deadline:'March 18',
+   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
+   rules:['Individual only','OOP concepts tested','Languages: C++, Java, Python','No internet','Time-limited rounds'],
+   ec:'Mr. Vijay T.', ep:'+91 94560 78901', sc:'Ms. Anitha L.', sp:'+91 93450 67890'},
+  {id:'tap', name:'THE ALGORITHMIC PALATE', label:'Algorithm & Logic Challenge', type:'Team', minTeam:2, maxTeam:3, tag:'Technical',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tap" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#9b59b6"/><stop offset="100%" stop-color="#3498db"/></linearGradient></defs><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="url(#g-tap)" fill="url(#g-tap)" fill-opacity="0.15"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" stroke="url(#g-tap)"/></svg>', grad:'linear-gradient(135deg,#150a28,#0a0518)', accent:'#9b59b6',
+   desc:'Serve up the perfect algorithm! A unique blend of problem-solving and algorithmic thinking.',
+   date:'March 20, 2026', time:'9:30 AM – 12:00 PM', venue:'Classroom', deadline:'March 18',
+   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
+   rules:['Team of 2–3','Algorithm-based challenges','Pen & paper rounds included','No electronic devices in prelims','Time-bound'],
+   ec:'Ms. Nithya B.', ep:'+91 88900 12345', sc:'Dr. Murugan A.', sp:'+91 87890 01234'},
+  {id:'lb', name:'LOGICAL BATON', label:'Relay Coding Challenge', type:'Team', minTeam:2, maxTeam:3, tag:'Coding',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-lb" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00cec9"/><stop offset="100%" stop-color="#0984e3"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-lb)"/></svg>', grad:'linear-gradient(135deg,#021a1a,#010f10)', accent:'#00cec9',
+   desc:'Pass the baton, pass the code! A relay-style coding challenge where teamwork is everything.',
+   date:'March 20, 2026', time:'10:55 AM – 12:35 PM', venue:'Lab', deadline:'March 18',
+   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
+   rules:['Team of 2–3','Relay format — members take turns','Languages: C, C++, Java, Python','No communication during coding','Judge decision final'],
+   ec:'Mr. Karthik R.', ep:'+91 98421 56789', sc:'Dr. Priya M.', sp:'+91 97890 12345'},
+  {id:'pe', name:'PROJECT EXPO', label:'Showcase Your Innovation', type:'Team', minTeam:1, maxTeam:4, tag:'Innovation',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-pe" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-pe)" fill="url(#g-pe)" fill-opacity="0.2"/></svg>', grad:'linear-gradient(135deg,#1a1200,#100c00)', accent:'#f1c40f',
+   desc:'Present your projects to expert judges. Hardware, software, or AI — bring your best work.',
+   date:'March 21, 2026', time:'11:30 AM – 12:30 PM', venue:'Classroom', deadline:'March 19',
    p1:'₹5,000', p2:'₹3,000', p3:'₹2,000',
-   rules:['Team of 2–4','Original ideas only','10-min pitch + 5-min Q&A','PPT mandatory','Any domain'],
-   ec:'Ms. Nithya B.', ep:'+91 88900 12345', sc:'Dr. Murugan A.', sp:'+91 87890 01234'}
+   rules:['Max 4 members','Working prototype required','5-min demo + Q&A','Any domain (CSE/IT)','Bring your own hardware if needed'],
+   ec:'Ms. Divya S.', ep:'+91 96780 34567', sc:'Prof. Ramesh K.', sp:'+91 95670 23456'},
+  {id:'cf', name:'CODE FREE', label:'Non-Coding Tech Challenge', type:'Solo', minTeam:1, maxTeam:1, tag:'Technical',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-cf" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-cf)" fill="url(#g-cf)" fill-opacity="0.15"/></svg>', grad:'linear-gradient(135deg,#1f0505,#120303)', accent:'#e74c3c',
+   desc:'No coding needed! A pure logic and tech knowledge challenge for everyone.',
+   date:'March 21, 2026', time:'11:30 AM – 12:30 PM', venue:'Classroom', deadline:'March 19',
+   p1:'₹2,000', p2:'₹1,500', p3:'₹1,000',
+   rules:['Individual only','No coding required','Logic & aptitude based','Multiple rounds','No electronic devices'],
+   ec:'Mr. Arun M.', ep:'+91 90120 34567', sc:'Prof. Lavanya S.', sp:'+91 89010 23456'}
 ];
 
 const CONTACTS = [
@@ -944,12 +998,10 @@ let teamMembers = [];
 
 /* ════════ INIT ════════ */
 function init() {
-  buildObs(); buildTicker(); renderTiles(); renderContacts();
+  buildObs(); buildTicker(); renderTiles(); renderContacts(); renderAllEvents();
   animStats(); tick(); setInterval(tick, 1000);
   buildWatermarks();
-  if (JSON.parse(localStorage.getItem('u26r') || '[]').length) {
-    document.getElementById('pass-nav-btn').style.display = 'block';
-  }
+  document.getElementById('pass-nav-btn').style.display = 'block';
   // Dock active state on scroll
   window.addEventListener('scroll', updateDockActive, {passive:true});
   updateDockActive();
@@ -957,12 +1009,12 @@ function init() {
 
 /* ════════ OUTLINE + TICKER ════════ */
 function buildObs() {
-  const w = ['UTSAV','2K26','CSE','PSNA'];
+  const w = ['CSE UTSAV','2K26','PSNA'];
   const d = [...w,...w,...w,...w,...w,...w];
   document.getElementById('obs').innerHTML = d.map(x=>`<span class="obi">${x}</span>`).join('');
 }
 function buildTicker() {
-  const items = ['UTSAV 2K26','EVENTS','TECHNOTHON','PAPER PRESENTATION','CODE DEBUGGING','UI/UX SPRINT','TECH QUIZ','IDEATHON','₹40,000+ PRIZES','FREE ENTRY','PSNA CSE','28–29 MARCH 2026'];
+  const items = ['CSE UTSAV 2K26','EVENTS','DESIGN UNDER PRESSURE','DIGITAL DYNAMO','CODE WITH COMALI','BYTE BIDDERS','THE FRANCHISE FORMATION','OOPS FIX IT!','THE ALGORITHMIC PALATE','LOGICAL BATON','PROJECT EXPO','CODE FREE','FREE ENTRY','PSNA CSE','19–21 MARCH 2026'];
   const d = [...items,...items];
   document.getElementById('ticker').innerHTML = d.map(t=>`<div class="ti">${t}<div class="td"></div></div>`).join('');
 }
@@ -981,7 +1033,6 @@ function renderTiles() {
         </div>
         <div class="ev-tile-overlay"></div>
         <div class="ev-tile-tag">${e.tag}</div>
-        <div class="ev-tile-prize">${e.p1}</div>
       </div>
       <div class="ev-tile-body">
         <div class="ev-tile-name">${e.name}</div>
@@ -1022,7 +1073,7 @@ function animStats() {
   }
   const obs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) {
-      count(document.getElementById('sev'), 6, '', 700);
+      count(document.getElementById('sev'), 10, '', 700);
       count(document.getElementById('spr'), 40, 'K+', 900);
       obs.disconnect();
     }
@@ -1161,9 +1212,10 @@ function addTeamMember() {
       <div class="tm-num">Member ${idx+2}</div>
       <button class="remove-tm" onclick="removeTeamMember(${idx})">✕</button>
     </div>
-    <div class="row2" style="margin-bottom:10px">
+    <div class="row3" style="margin-bottom:10px">
       <div class="fg" style="margin:0"><label class="fl">Name</label><input class="fi tm-name" data-idx="${idx}" type="text" placeholder="Full name"></div>
       <div class="fg" style="margin:0"><label class="fl">Reg Number</label><input class="fi tm-regno" data-idx="${idx}" type="text" placeholder="23039213..."></div>
+      <div class="fg" style="margin:0"><label class="fl">Gender</label><select class="fs tm-gender" data-idx="${idx}"><option value="">Gen</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
     </div>
     <div class="row3">
       <div class="fg" style="margin:0"><label class="fl">Year</label><select class="fs tm-year" data-idx="${idx}"><option value="">Yr</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
@@ -1204,7 +1256,8 @@ function goStep(n) {
     const section=document.getElementById('f-section').value;
     const phone=document.getElementById('f-phone').value.trim();
     const email=document.getElementById('f-email').value.trim();
-    if (!name||!regno||!year||!section||!phone||!email) { alert('Please fill all your personal details.'); return; }
+    const gender=document.getElementById('f-gender').value;
+    if (!name||!regno||!year||!section||!phone||!email||!gender) { alert('Please fill all your personal details.'); return; }
     if (regno.length < 7) { alert('Register number must be at least 7 characters.'); return; }
     if (!email.endsWith('@psnacet.edu.in')) { alert('Please use your college email (e.g. yourname@psnacet.edu.in)'); return; }
     if (phone.replace(/\D/g,'').length !== 10) { alert('Phone number must be exactly 10 digits.'); return; }
@@ -1217,25 +1270,37 @@ function goStep(n) {
       // Collect team member data
       teamMembers = [];
       let incomplete = false;
-      document.querySelectorAll('.tm-card').forEach(card => {
+      document.querySelectorAll('.tm-card').forEach((card, i) => {
         const nm = card.querySelector('.tm-name')?.value.trim() || '';
         const rg = card.querySelector('.tm-regno')?.value.trim() || '';
+        const gen = card.querySelector('.tm-gender')?.value || '';
         const yr = card.querySelector('.tm-year')?.value || '';
         const sc = card.querySelector('.tm-section')?.value || '';
         const ph = card.querySelector('.tm-phone')?.value.trim() || '';
         
-        // If name is present, all other details must be present
         if (nm) {
-          if (!rg || !yr || !sc || !ph) {
+          const leaderGender = document.getElementById('f-gender').value;
+          const leaderRegNo = document.getElementById('f-regno').value.trim();
+          
+          if (!rg || !yr || !sc || !ph || !gen) {
             incomplete = true;
+          } else if (gen !== leaderGender) {
+            alert(`Gender mismatch: Team member ${i+2} (${nm}) must be ${leaderGender}. Mixed gender teams are not allowed.`);
+            incomplete = true; return;
+          } else if (rg === leaderRegNo) {
+            alert(`Error: Team member ${i+2} has the same register number as the team leader.`);
+            incomplete = true; return;
+          } else if (teamMembers.some(prev => prev.regno === rg)) {
+            alert(`Error: Duplicate register number ${rg} found in team.`);
+            incomplete = true; return;
           } else if (rg.length < 7) {
             alert(`Team member ${i+2} register number must be at least 7 characters.`);
-            incomplete = true; return; // breaks the forEach
+            incomplete = true; return;
           } else if (ph.replace(/\D/g,'').length !== 10) {
             alert(`Team member ${i+2} phone number must be exactly 10 digits.`);
             incomplete = true; return;
           } else {
-            teamMembers.push({name:nm, regno:rg, year:yr, section:sc, phone:ph});
+            teamMembers.push({name:nm, regno:rg, gender:gen, year:yr, section:sc, phone:ph});
           }
         }
       });
@@ -1303,70 +1368,112 @@ async function submitReg() {
   const section=document.getElementById('f-section').value;
   const phone=document.getElementById('f-phone').value.trim();
   const email=document.getElementById('f-email').value.trim();
+  const gender=document.getElementById('f-gender').value;
   const tname = (currentEv?.type !== 'Solo') ? document.getElementById('f-teamname').value.trim() : '';
 
-  // Duplicate check (Local & Server)
+  // Duplicate check (Local)
   const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
-  const isLocalDupe = saved.some(r => r.regno === regno && r.eventId === currentEv.id);
   
-  if (isLocalDupe) {
-    alert('Already registered for ' + currentEv.name + ' on this device.');
+  // Create an array of all register numbers in the current submission
+  const currentRegNos = [{name: name, regno: regno}, ...teamMembers.map(m => ({name: m.name, regno: m.regno}))];
+  
+  let localDupeName = null;
+  let localDupeReg = null;
+
+  // Check if any of these register numbers are already saved locally for this event
+  for (const storedReg of saved) {
+    if (storedReg.eventId === currentEv.id) {
+      // Check stored leader
+      const match = currentRegNos.find(c => c.regno === storedReg.regno);
+      if (match) { localDupeName = match.name; localDupeReg = match.regno; break; }
+      
+      // Check stored team members
+      if (storedReg.teamMembers) {
+        for (const tm of storedReg.teamMembers) {
+           const tmMatch = currentRegNos.find(c => c.regno === tm.regno);
+           if (tmMatch) { localDupeName = tmMatch.name; localDupeReg = tmMatch.regno; break; }
+        }
+      }
+      if (localDupeName) break;
+    }
+  }
+  
+  if (localDupeName) {
+    alert(`Registration Error: ${localDupeName} (${localDupeReg}) is already registered for ${currentEv.name} on this device.`);
     if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
     return;
   }
 
-  // Server check (Checking if already registered via email)
+  // 2. Server check (Register Number & Email validation)
   if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-    showAdminLoader('Verifying Registration Status...');
+    showAdminLoader('Verifying Registrations...');
     try {
-      const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email);
+      // Gather all register numbers in the team
+      const allRegNos = [regno, ...teamMembers.map(m => m.regno)].join(',');
+      const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email) + '&regnos=' + encodeURIComponent(allRegNos) + '&eventId=' + currentEv.id;
+      
       const resp = await fetch(url);
       const data = await resp.json();
+      
       if (data.found && data.registrations.some(r => r.eventId === currentEv.id)) {
         hideAdminLoader();
-        alert('Verification Error: You are already registered for ' + currentEv.name + '.');
+        alert('Error: You are already registered for ' + currentEv.name + '.');
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
         return;
       }
-    } catch(e) { /* continue on network error to allow offline-ish fallback */ }
+      
+      if (data.duplicates && data.duplicates.length > 0) {
+        hideAdminLoader();
+        const dupeNames = data.duplicateDetails.map(d => `${d.name} (${d.regno})`).join(', ');
+        alert(`Verification Error: The following persons are already registered for this event (either as leader or in another team): ${dupeNames}`);
+        if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+        return;
+      }
+    } catch(e) { console.error("Server verify failed:", e); }
     hideAdminLoader();
   }
 
   const n = parseInt(localStorage.getItem('u26n') || '0') + 1;
   const rnd = Math.floor(Math.random() * 900 + 100);
-  const regId = 'UTSAV-' + String(n).padStart(4, '0') + '-' + rnd;
-  const ts = new Date().toISOString();
+  const regId = 'CSEUTSAV-' + String(n).padStart(4, '0') + '-' + rnd;
+  const ts = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', hour12: true });
 
   const reg = {
-    regId, name, regno, year, section, phone, email,
+    regId, name, regno, gender, year, section, phone, email,
     eventId: currentEv.id, eventName: currentEv.name,
     teamName: tname,
     teamMembers: teamMembers.slice(),
     ts
   };
 
-  // Sync to Sheets (Wait for success before showing pass)
+  // 3. Strict Server Commit (We must wait for success before saving the pass)
   if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    showAdminLoader('Securing Pass on Server...');
     try {
       const resp = await fetch(SHEETS_URL, {
         method: 'POST',
-        headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({action: 'addReg', data: reg})
+        // NO mode: 'no-cors' - we deliberately want to read the true response!
+        body: JSON.stringify({action: 'addReg', data: reg}) 
       });
-      const resData = await resp.json();
-      if (!resData.success) {
-        alert('Registration Failed: ' + (resData.error || 'Server error. Please try again.'));
+      const result = await resp.json();
+      
+      if (!result.success) {
+        hideAdminLoader();
+        alert('Registration Failed: ' + result.error);
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-        return; // HALT SUBMISSION
+        return; // STOP! Block phantom pass generation
       }
     } catch(e) {
-      alert('Network Error during registration. Please check your connection and try again.');
+      // If GAS times out (LockService limit) or throws a 500 HTML error, it causes a browser CORS crash, triggering here.
+      hideAdminLoader();
+      alert('The server is under heavy load and timed out. Your registration was not saved. Please wait a few moments and try again.');
       if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-      return; // HALT SUBMISSION
+      return; // STOP! Block phantom pass generation
     }
+    hideAdminLoader();
   }
 
-  // Save Locally ONLY if backend push succeeds (or if SHEETS_URL is not set)
+  // Save Locally ONLY if backend push definitively succeeded (or if SHEETS_URL is not deployed yet)
   localStorage.setItem('u26n', String(n));
   saved.push(reg); localStorage.setItem('u26r', JSON.stringify(saved));
 
@@ -1426,7 +1533,7 @@ function renderPassCards(regs) {
     return `
     <div class="pass-card">
       <div class="pass-top">
-        <div class="pass-fest">UTSAV 2K26 · PSNA COLLEGE · DEPT OF CSE</div>
+        <div class="pass-fest">CSE UTSAV 2K26 · PSNA COLLEGE · DEPT OF CSE</div>
         <div class="pass-ev-name">${r.eventName}</div>
         <div class="pass-status"><div class="sdot"></div>Confirmed</div>
       </div>
@@ -1441,7 +1548,7 @@ function renderPassCards(regs) {
           <div><div class="pfl">Department</div><div class="pfv">${r.department || 'CSE'}</div></div>
           <div><div class="pfl">Year & Section</div><div class="pfv">${r.year ? 'Year '+r.year+' · Sec '+(r.section||'—') : '—'}</div></div>
           <div><div class="pfl">Register Phone</div><div class="pfv">${r.phone||'—'}</div></div>
-          <div><div class="pfl">Date & Venue</div><div class="pfv">28–29 Mar · PSNA</div></div>
+          <div><div class="pfl">Date & Venue</div><div class="pfv">19–21 Mar · PSNA</div></div>
         </div>
         ${(r.teamName && !r.teamName.includes('[{"name"')) || members.length > 0 ? `
         <div class="team-pass-section">
@@ -1641,53 +1748,7 @@ async function openAdmin() {
   }
 
   allAdminRegs = regs;
-  const totalRegs = regs.length;
-  const totalMembers = regs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
-  const totalTeams = regs.filter(r => {
-    const ev = EVS.find(e=>e.id===r.eventId);
-    return ev && ev.type !== 'Solo';
-  }).length;
-  
-  document.getElementById('admin-stats').innerHTML = `
-    <div class="admin-stat"><span class="as-n">${totalRegs}</span><span class="as-l">Registrations</span></div>
-    <div class="admin-stat"><span class="as-n">${totalMembers}</span><span class="as-l">Total Members</span></div>
-    <div class="admin-stat"><span class="as-n">${totalTeams}</span><span class="as-l">Teams</span></div>
-    <div class="admin-stat"><span class="as-n">${EVS.length}</span><span class="as-l">Events</span></div>`;
-
-  // Department summary
-  const yearCounts = {}; const secCounts = {};
-  regs.forEach(r => {
-    yearCounts[r.year] = (yearCounts[r.year]||0) + 1;
-    secCounts[r.section] = (secCounts[r.section]||0) + 1;
-  });
-  let deptHtml = '<div style="font-size:11px;color:var(--muted);margin-bottom:8px">By Year</div><div class="admin-dept-grid">';
-  ['1','2','3','4'].forEach(y => {
-    deptHtml += `<div class="admin-dept-card"><span class="adc-n">${yearCounts[y]||0}</span><span class="adc-l">Year ${y}</span></div>`;
-  });
-  deptHtml += '</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px;margin-top:10px">By Section</div><div class="admin-dept-grid">';
-  ['A','B','C','D','E'].forEach(s => {
-    deptHtml += `<div class="admin-dept-card"><span class="adc-n">${secCounts[s]||0}</span><span class="adc-l">Sec ${s}</span></div>`;
-  });
-  deptHtml += '</div>';
-  document.getElementById('admin-dept-summary').innerHTML = deptHtml;
-
-  // Event breakdown
-  document.getElementById('admin-ev-breakdown').innerHTML = EVS.map(e => {
-    const evRegs = regs.filter(r => r.eventId === e.id);
-    const evMembers = evRegs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
-    return `<div class="admin-ev-row">
-      <div class="aer-left">
-        <div class="aer-icon">${e.icon}</div>
-        <div class="aer-name">${e.name}</div>
-      </div>
-      <div class="aer-stats">
-        <div class="aer-stat"><span class="aer-n">${evRegs.length}</span><span class="aer-l">${e.type === 'Solo' ? 'Regs' : 'Teams'}</span></div>
-        ${e.type !== 'Solo' ? `<div class="aer-stat"><span class="aer-n">${evMembers}</span><span class="aer-l">Members</span></div>` : ''}
-      </div>
-    </div>`;
-  }).join('');
-
-  renderAdminRegs(regs);
+  refreshAdminUI(regs);
   document.getElementById('admin-search').value = '';
   document.getElementById('admin-ov').classList.add('open');
 }
@@ -1744,6 +1805,7 @@ function renderAdminRegs(regs) {
       ${dateStr !== 'Unknown Date' ? `<div class="arc-member"><strong>Date of Registration:</strong> ${dateStr}</div>` : ''}
       <div class="arc-member" style="margin-top:4px"><strong>Email:</strong> ${r.email || 'N/A'}</div>
       <div class="arc-member"><strong>Phone:</strong> ${r.phone || 'N/A'}</div>
+      <div class="arc-member"><strong>Gender:</strong> ${r.gender || 'N/A'}</div>
     `;
 
     if (isTeam && parsedMembers.length > 0) {
@@ -1751,6 +1813,7 @@ function renderAdminRegs(regs) {
       expandedHtml += parsedMembers.map((m,i) => {
         let det = [];
         if (m.regno) det.push(m.regno);
+        if (m.gender) det.push(m.gender);
         if (m.year) det.push('Year ' + m.year);
         if (m.section) det.push('Sec ' + m.section);
         if (m.phone) det.push(m.phone);
@@ -1920,8 +1983,8 @@ function doPost(e) {
     var r = d.data;
     sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventId||"", r.eventName, r.teamName||"", JSON.stringify(r.teamMembers||[]), r.ts]);
     try {
-      var subject = "Registration Confirmed - " + r.eventName + " | UTSAV 2K26";
-      var body = "Hi " + r.name + ",\\n\\nYour registration for " + r.eventName + " is confirmed!\\n\\nPass ID: " + r.regId + "\\nDate: 28-29 March 2026\\nVenue: PSNA College, Dindigul\\n\\nPlease show your digital pass at the registration desk.\\n\\nBest regards,\\nUTSAV 2K26 Team";
+      var subject = "Registration Confirmed - " + r.eventName + " | CSE UTSAV 2K26";
+      var body = "Hi " + r.name + ",\\n\\nYour registration for " + r.eventName + " is confirmed!\\n\\nPass ID: " + r.regId + "\\nDate: 19-21 March 2026\\nVenue: PSNA College, Dindigul\\n\\nPlease show your digital pass at the registration desk.\\n\\nBest regards,\\nCSE UTSAV 2K26 Team";
       GmailApp.sendEmail(r.email, subject, body);
     } catch(ex) {}
   } else if (d.action === "deleteReg") {
@@ -1944,14 +2007,119 @@ function doPost(e) {
   document.getElementById('admin-ov').querySelector('.admin-wrap').insertBefore(setup, document.getElementById('sync-status'));
 }
 
-function clearAllData() {
-  if (confirm('Delete ALL registration data? This cannot be undone.')) {
-    localStorage.removeItem('u26r');
-    localStorage.removeItem('u26n');
-    document.getElementById('pass-nav-btn').style.display = 'none';
-    closeAdmin();
-    alert('All local data cleared.');
+async function deleteAllData() {
+  const code = prompt('WIPE OUT ALL DATA?\\n\\nThis will permanently delete ALL registrations from the database and invalidate ALL passes.\\n\\nType "DELETE" below to confirm:');
+  if (code !== 'DELETE') return;
+
+  showAdminLoader('Wiping all data from server...');
+
+  // 1. Clear local
+  localStorage.removeItem('u26r');
+  localStorage.removeItem('u26n');
+  document.getElementById('pass-nav-btn').style.display = 'none';
+
+  // 2. Clear remote (strict confirmation)
+  if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    try {
+      const resp = await fetch(SHEETS_URL, {
+        method: 'POST',
+        body: JSON.stringify({action: 'deleteAll'})
+      });
+      const result = await resp.json();
+      if (!result.success) {
+        hideAdminLoader();
+        alert('Failed to clear database: ' + result.error);
+        return;
+      }
+    } catch(e) {
+      hideAdminLoader();
+      alert('Server timeout while wiping data. Please try again.');
+      return;
+    }
   }
+
+  // 3. Clear UI
+  allAdminRegs = [];
+  refreshAdminUI([]);
+  hideAdminLoader();
+  alert('All data completely wiped out. Old passes and QR codes are now invalid.');
+  closeAdmin();
+}
+
+/* ── Refresh admin stats/breakdown/list without re-fetching ── */
+function refreshAdminUI(regs) {
+  const totalRegs = regs.length;
+  const totalMembers = regs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
+  const totalTeams = regs.filter(r => {
+    const ev = EVS.find(e=>e.id===r.eventId);
+    // If event not found in EVS, check teamName/teamMembers to determine if team
+    return ev ? ev.type !== 'Solo' : (r.teamName && r.teamName.trim() !== '' && !r.teamName.startsWith('['));
+  }).length;
+  
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="admin-stat"><span class="as-n">${totalRegs}</span><span class="as-l">Registrations</span></div>
+    <div class="admin-stat"><span class="as-n">${totalMembers}</span><span class="as-l">Total Members</span></div>
+    <div class="admin-stat"><span class="as-n">${totalTeams}</span><span class="as-l">Teams</span></div>
+    <div class="admin-stat"><span class="as-n">${EVS.length}</span><span class="as-l">Events</span></div>`;
+
+  // Department summary
+  const yearCounts = {}; const secCounts = {};
+  regs.forEach(r => {
+    yearCounts[r.year] = (yearCounts[r.year]||0) + 1;
+    secCounts[r.section] = (secCounts[r.section]||0) + 1;
+  });
+  let deptHtml = '<div style="font-size:11px;color:var(--muted);margin-bottom:8px">By Year</div><div class="admin-dept-grid">';
+  ['1','2','3','4'].forEach(y => {
+    deptHtml += `<div class="admin-dept-card"><span class="adc-n">${yearCounts[y]||0}</span><span class="adc-l">Year ${y}</span></div>`;
+  });
+  deptHtml += '</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px;margin-top:10px">By Section</div><div class="admin-dept-grid">';
+  ['A','B','C','D','E'].forEach(s => {
+    deptHtml += `<div class="admin-dept-card"><span class="adc-n">${secCounts[s]||0}</span><span class="adc-l">Sec ${s}</span></div>`;
+  });
+  deptHtml += '</div>';
+  document.getElementById('admin-dept-summary').innerHTML = deptHtml;
+
+  // Event breakdown — show all EVS events + any old events with registrations
+  const knownIds = EVS.map(e => e.id);
+  const oldEventRegs = regs.filter(r => !knownIds.includes(r.eventId));
+  const oldEventIds = [...new Set(oldEventRegs.map(r => r.eventId))];
+
+  let breakdownHtml = EVS.map(e => {
+    const evRegs = regs.filter(r => r.eventId === e.id);
+    const evMembers = evRegs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
+    return `<div class="admin-ev-row">
+      <div class="aer-left">
+        <div class="aer-icon">${e.icon}</div>
+        <div class="aer-name">${e.name}</div>
+      </div>
+      <div class="aer-stats">
+        <div class="aer-stat"><span class="aer-n">${evRegs.length}</span><span class="aer-l">${e.type === 'Solo' ? 'Regs' : 'Teams'}</span></div>
+        ${e.type !== 'Solo' ? `<div class="aer-stat"><span class="aer-n">${evMembers}</span><span class="aer-l">Members</span></div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Show old/unmatched events if any registrations exist for them
+  if (oldEventIds.length > 0) {
+    oldEventIds.forEach(eid => {
+      const evRegs = regs.filter(r => r.eventId === eid);
+      const evMembers = evRegs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
+      const evName = evRegs[0]?.eventName || eid;
+      breakdownHtml += `<div class="admin-ev-row">
+        <div class="aer-left">
+          <div class="aer-icon">📋</div>
+          <div class="aer-name">${evName} <span style="font-size:10px;color:var(--muted2)">(old)</span></div>
+        </div>
+        <div class="aer-stats">
+          <div class="aer-stat"><span class="aer-n">${evRegs.length}</span><span class="aer-l">Regs</span></div>
+          <div class="aer-stat"><span class="aer-n">${evMembers}</span><span class="aer-l">Members</span></div>
+        </div>
+      </div>`;
+    });
+  }
+  document.getElementById('admin-ev-breakdown').innerHTML = breakdownHtml;
+
+  renderAdminRegs(regs);
 }
 
 async function deleteSingleReg(regId) {
@@ -1960,29 +2128,38 @@ async function deleteSingleReg(regId) {
   showAdminLoader('Deleting Registration...');
 
   // 1. Remove from local storage
-  let regs = JSON.parse(localStorage.getItem('u26r') || '[]');
-  regs = regs.filter(r => r.regId !== regId);
-  localStorage.setItem('u26r', JSON.stringify(regs));
+  let localRegs = JSON.parse(localStorage.getItem('u26r') || '[]');
+  localRegs = localRegs.filter(r => r.regId !== regId);
+  localStorage.setItem('u26r', JSON.stringify(localRegs));
 
-  if (regs.length === 0) {
+  if (localRegs.length === 0) {
     document.getElementById('pass-nav-btn').style.display = 'none';
   }
 
-  // 2. Remove from Sheets
+  // 2. Remove from in-memory admin data & re-render UI immediately
+  allAdminRegs = allAdminRegs.filter(r => r.regId !== regId);
+  refreshAdminUI(allAdminRegs);
+
+  // 3. Delete definitively from Google Sheets (strict confirmation)
   if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
     try {
-      await fetch(SHEETS_URL, {
-        method: 'POST', mode: 'no-cors',
-        headers: {'Content-Type': 'text/plain'},
+      const resp = await fetch(SHEETS_URL, {
+        method: 'POST',
         body: JSON.stringify({action: 'deleteReg', data: { regId }})
       });
+      const result = await resp.json();
+      if (!result.success) {
+        hideAdminLoader();
+        alert('Failed to delete on server: ' + result.error);
+        return;
+      }
     } catch (e) {
-      console.error('Failed to delete from remote.', e);
+      hideAdminLoader();
+      alert('The server is under heavy load and timed out. Deletion failed.');
+      return;
     }
   }
-  
-  // 3. Refresh admin panel
-  await openAdmin();
+
   hideAdminLoader();
 }
 
@@ -1996,7 +2173,7 @@ function hideAdminLoader() {
 
 /* ════════ COUNTDOWN ════════ */
 function tick() {
-  const d = new Date('2026-03-28T09:00:00') - new Date();
+  const d = new Date('2026-03-19T09:00:00') - new Date();
   if (d <= 0) return;
   document.getElementById('cd-d').textContent = String(Math.floor(d/86400000)).padStart(2,'0');
   document.getElementById('cd-h').textContent = String(Math.floor(d%86400000/3600000)).padStart(2,'0');
@@ -2102,7 +2279,6 @@ function updateDockActive() {
   }
 }
 
-/* ════════ COMMITTEE ════════ */
 function openComm() {
   hideDock();
   document.getElementById('comm-ov').classList.add('open');
@@ -2110,6 +2286,32 @@ function openComm() {
 function closeComm() {
   document.getElementById('comm-ov').classList.remove('open');
   showDock();
+}
+
+/* ════════ ALL EVENTS MODAL ════════ */
+function openAllEvents() {
+  hideDock();
+  document.getElementById('allev-ov').classList.add('open');
+}
+function closeAllEvents() {
+  document.getElementById('allev-ov').classList.remove('open');
+  showDock();
+}
+function renderAllEvents() {
+  document.getElementById('allev-list').innerHTML = EVS.map(e => `
+    <div class="comm-card" style="align-items:flex-start;flex-direction:column;gap:12px;cursor:pointer" onclick="closeAllEvents();openEvMod('${e.id}')">
+      <div style="display:flex;gap:12px;align-items:center;width:100%">
+        <div style="width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${e.icon}</div>
+        <div>
+          <div class="comm-name" style="font-size:16px">${e.name}</div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--orange);text-transform:uppercase;margin-top:2px">${e.label}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;width:100%">
+        ${[['📅',e.date],['⏰',e.time],['📍',e.venue]].map(([i,t])=>`<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:4px 8px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;display:flex;gap:6px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
+      </div>
+    </div>
+  `).join('');
 }
 
 init();
