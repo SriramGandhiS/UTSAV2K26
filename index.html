@@ -1549,7 +1549,7 @@ async function submitReg() {
       const resp = await fetch(url);
       const data = await resp.json();
       
-      if (data.found && data.registrations.some(r => r.eventId === currentEv.id)) {
+      if (data.found && data.registrations.some(r => r.eventName === currentEv.name || r.eventId === currentEv.id)) {
         hideAdminLoader();
         showError('Duplicate Blocked', 'You are already registered', `You already hold a confirmed pass for ${currentEv.name}.`);
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
@@ -2204,7 +2204,7 @@ function refreshAdminUI(regs) {
   const totalRegs = regs.length;
   const totalMembers = regs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
   const totalTeams = regs.filter(r => {
-    const ev = EVS.find(e=>e.id===r.eventId);
+    const ev = EVS.find(e=> e.id===r.eventId || (r.eventName && e.name.toLowerCase() === r.eventName.trim().toLowerCase()));
     // If event not found in EVS, check teamName/teamMembers to determine if team
     return ev ? ev.type !== 'Solo' : (r.teamName && r.teamName.trim() !== '' && !r.teamName.startsWith('['));
   }).length;
@@ -2215,19 +2215,14 @@ function refreshAdminUI(regs) {
     <div class="admin-stat"><span class="as-n">${totalTeams}</span><span class="as-l">Teams</span></div>
     <div class="admin-stat"><span class="as-n">${EVS.length}</span><span class="as-l">Events</span></div>`;
 
-  // Department summary
-  const yearCounts = {}; const secCounts = {};
+  // Department summary (Year only)
+  const yearCounts = {};
   regs.forEach(r => {
     yearCounts[r.year] = (yearCounts[r.year]||0) + 1;
-    secCounts[r.section] = (secCounts[r.section]||0) + 1;
   });
   let deptHtml = '<div style="font-size:11px;color:var(--muted);margin-bottom:8px">By Year</div><div class="admin-dept-grid">';
   ['1','2','3','4'].forEach(y => {
     deptHtml += `<div class="admin-dept-card"><span class="adc-n">${yearCounts[y]||0}</span><span class="adc-l">Year ${y}</span></div>`;
-  });
-  deptHtml += '</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px;margin-top:10px">By Section</div><div class="admin-dept-grid">';
-  ['A','B','C','D','E'].forEach(s => {
-    deptHtml += `<div class="admin-dept-card"><span class="adc-n">${secCounts[s]||0}</span><span class="adc-l">Sec ${s}</span></div>`;
   });
   deptHtml += '</div>';
   document.getElementById('admin-dept-summary').innerHTML = deptHtml;
@@ -2241,7 +2236,10 @@ function refreshAdminUI(regs) {
   const nonTechEvsBd = EVS.filter(e => e.category === 'Non-Technical');
 
   function adminEvRow(e, regsArr) {
-    const evRegs = regsArr.filter(r => r.eventId === e.id);
+    const evRegs = regsArr.filter(r => 
+      r.eventId === e.id || 
+      (r.eventName && r.eventName.trim().toLowerCase() === e.name.toLowerCase())
+    );
     const evMembers = evRegs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
     return `<div class="admin-ev-row">
       <div class="aer-left">
