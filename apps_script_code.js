@@ -71,9 +71,12 @@ function doGet(e) {
     var checkEventName = (e.parameter.eventName || "").trim();
     var checkRegNosStr = e.parameter.regnos || "";
     var checkRegNos = checkRegNosStr ? checkRegNosStr.split(",").map(function (r) { return r.trim().toLowerCase(); }) : [];
+    var checkTimeSlot = (e.parameter.timeSlot || "").trim();
 
     var duplicates = [];
     var duplicateDetails = [];
+    var timeSlotConflicts = [];
+    var timeSlotConflictDetails = [];
 
     var data = sh.getDataRange().getValues();
     var headers = OFFICIAL_HEADERS;
@@ -127,13 +130,56 @@ function doGet(e) {
           }
         }
       }
+
+      // Check for Cross-Event Time Slot conflicts
+      // If the incoming event has a timeSlot (e.g., 'A'), and the row event shares the same timeSlot, AND it's a DIFFERENT event
+      if (checkTimeSlot && checkRegNos.length > 0) {
+        // We need a map of which events are in which time slots to know if rowEventName belongs to checkTimeSlot
+        var EVENT_SLOTS = {
+          "hackverse": "A",
+          "design decode": "B",
+          "checkmate coders": "A",
+          "uno reverse": "B",
+          "brand to billion": "C",
+          "zero code zone": "C",
+          "technotrace": "D",
+          "clash of minds": "A",
+          "franchise fiesta": "B",
+          "the algorithmic platter": "C"
+        };
+        var rowSlot = EVENT_SLOTS[rowEventName.toLowerCase()];
+        
+        if (rowSlot === checkTimeSlot && rowEventName.toLowerCase() !== checkEventName.toLowerCase()) {
+           var rowLeaderRegNo = String(row[headers.indexOf("RegNo")] || "").trim().toLowerCase();
+           var rowLeaderName = String(row[headers.indexOf("Name")] || "");
+           
+           if (checkRegNos.indexOf(rowLeaderRegNo) !== -1) {
+             if (timeSlotConflicts.indexOf(rowLeaderRegNo) === -1) {
+               timeSlotConflicts.push(rowLeaderRegNo);
+               timeSlotConflictDetails.push({ name: rowLeaderName, regno: rowLeaderRegNo, conflictingEvent: rowEventName });
+             }
+           }
+           
+           for (var j = 0; j < teamMembers.length; j++) {
+             var tmRegNo = String(teamMembers[j].regno || "").trim().toLowerCase();
+             if (tmRegNo && checkRegNos.indexOf(tmRegNo) !== -1) {
+               if (timeSlotConflicts.indexOf(tmRegNo) === -1) {
+                 timeSlotConflicts.push(tmRegNo);
+                 timeSlotConflictDetails.push({ name: teamMembers[j].name || "Team Member", regno: tmRegNo, conflictingEvent: rowEventName });
+               }
+             }
+           }
+        }
+      }
     }
 
     return ContentService.createTextOutput(JSON.stringify({
       found: results.length > 0,
       registrations: results,
       duplicates: duplicates,
-      duplicateDetails: duplicateDetails
+      duplicateDetails: duplicateDetails,
+      timeSlotConflicts: timeSlotConflicts,
+      timeSlotConflictDetails: timeSlotConflictDetails
     })).setMimeType(ContentService.MimeType.JSON);
   }
 

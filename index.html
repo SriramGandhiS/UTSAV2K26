@@ -473,6 +473,23 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
   .contact-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
   .footer { padding: 60px 6vw; }
 }
+
+/* ─── ERROR POPUP ─── */
+.err-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px}
+.err-ov.open{display:flex}
+.err-box{width:100%;max-width:380px;background:var(--card);border:1px solid rgba(231,76,60,.25);border-radius:14px;overflow:hidden;animation:rise .25s ease}
+.err-box-top{padding:18px 20px;background:rgba(231,76,60,.08);border-bottom:1px solid rgba(231,76,60,.15);display:flex;align-items:center;gap:12px}
+.err-icon{width:40px;height:40px;border-radius:10px;background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.err-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#e74c3c;text-transform:uppercase;letter-spacing:1px}
+.err-body{padding:18px 20px}
+.err-reason{font-size:13px;font-weight:700;color:#fff;margin-bottom:8px}
+.err-desc{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.err-contact{padding:12px;background:rgba(232,84,26,.06);border:1px solid rgba(232,84,26,.15);border-radius:8px;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.err-contact-icon{width:32px;height:32px;border-radius:6px;background:rgba(232,84,26,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.err-contact-info{font-size:11px;color:var(--muted2);line-height:1.5}
+.err-contact-name{font-weight:800;color:var(--orange);font-size:12px}
+.err-close-btn{width:100%;padding:13px;background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.25);border-radius:6px;color:#e74c3c;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.err-close-btn:active{opacity:.7}
 </style>
 </head>
 <body>
@@ -488,7 +505,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
     <button class="btn-ol" onclick="openAllEvents()" style="padding:8px 12px;font-size:11px;border-color:var(--border2);color:var(--text)">Event Details</button>
   </div>
   <div class="nr">
-    <div class="nl">CSE UT<span>SAV</span></div>
+    <div class="nl">CSE<span>UTSAV</span></div>
   </div>
 </nav>
 
@@ -616,7 +633,15 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
       <!-- STEP 1: Personal Details -->
       <div class="step active" id="step-0">
         <div id="ev-summary-here"></div>
-        <div class="fc-t">Your Details</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div class="fc-t" style="margin-bottom:0">Your Details</div>
+          <div style="display:flex;gap:4px">
+            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(1)">Tester 1</button>
+            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(2)">Tester 2</button>
+            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(3)">Tester 3</button>
+            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(4)">Tester 4</button>
+          </div>
+        </div>
         <div class="fg"><label class="fl">Full Name</label><input class="fi" id="f-name" type="text" placeholder="Enter your full name"></div>
         <div class="row2">
           <div class="fg"><label class="fl">Register Number</label><input class="fi" id="f-regno" type="text" placeholder="e.g. 2303921310421226"></div>
@@ -664,7 +689,15 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
       <!-- STEP 2: Team Details -->
       <div class="step" id="step-1">
         <div id="ev-summary-here2"></div>
-        <div class="fc-t">Team Details</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div class="fc-t" style="margin-bottom:0">Team Details</div>
+          <div style="display:flex;gap:4px">
+            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(1)">Tester 1</button>
+            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(2)">Tester 2</button>
+            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(3)">Tester 3</button>
+            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(4)">Tester 4</button>
+          </div>
+        </div>
         <div class="fg"><label class="fl">Team Name</label><input class="fi" id="f-teamname" type="text" placeholder="Enter your team name"></div>
         <div style="font-size:11px;color:var(--muted2);margin-bottom:14px;line-height:1.5" id="team-hint"></div>
         <div class="tm-grid" id="tm-grid"></div>
@@ -868,6 +901,27 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
   <div class="al-text" id="al-text">Processing...</div>
 </div>
 
+<!-- ERROR POPUP -->
+<div class="err-ov" id="err-ov">
+  <div class="err-box">
+    <div class="err-box-top">
+      <div class="err-icon">⚠</div>
+      <div class="err-title" id="err-title">Status</div>
+    </div>
+    <div class="err-body">
+      <div class="err-reason" id="err-reason"></div>
+      <div class="err-desc" id="err-desc"></div>
+      <div class="err-contact">
+        <div class="err-contact-icon">🎧</div>
+        <div class="err-contact-info">
+          <div>Need Help? Contact</div>
+          <div class="err-contact-name">Sriram S - Web Admin</div>
+        </div>
+      </div>
+      <button class="err-close-btn" onclick="document.getElementById('err-ov').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
 
 <!-- BOTTOM DOCK -->
 <div class="dock" id="dock">
@@ -912,76 +966,79 @@ const ADMIN_PASS = '93611';
 
 /* ════════ EVENT DATA ════════ */
 const EVS = [
-  {id:'dup', name:'DESIGN UNDER PRESSURE', label:'Creative Design Challenge', type:'Team', minTeam:1, maxTeam:2, tag:'Design',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dup" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fd79a8"/><stop offset="100%" stop-color="#e84393"/></linearGradient></defs><circle cx="13.5" cy="10.5" r="2.5" fill="#fd79a8" stroke="none"/><path d="m20.24 12.24-5.48 5.48a2.83 2.83 0 0 1-4 0l-5.48-5.48a2.83 2.83 0 0 1 0-4l5.48-5.48a2.83 2.83 0 0 1 4 0l5.48 5.48a2.83 2.83 0 0 1 0 4Z" stroke="url(#g-dup)" fill="url(#g-dup)" fill-opacity="0.15"/><path d="M3.76 11.76l5.48-5.48" stroke="#00cec9"/><path d="M14.76 20.24l5.48-5.48" stroke="#00cec9"/></svg>', grad:'linear-gradient(135deg,#1a0a28,#0f0518)', accent:'#e84393',
-   desc:'Race against the clock to create stunning designs under extreme time pressure. Creativity meets speed.',
-   date:'March 19, 2026', time:'9:00 AM – 10:35 AM', venue:'Lab', deadline:'March 17',
+  /* ── TECHNICAL EVENTS (7) ── */
+  {id:'hv', name:'HACKVERSE', label:'24-Hour Hackathon', category:'Technical', type:'Team', minTeam:2, maxTeam:4, tag:'Hackathon', timeSlot:'A',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-hv" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00cec9"/><stop offset="100%" stop-color="#0984e3"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-hv)"/></svg>', grad:'linear-gradient(135deg,#021a1a,#010f10)', accent:'#00cec9',
+   desc:'Build, innovate, and deploy! A high-intensity hackathon where teams race to develop solutions to real-world challenges.',
+   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   p1:'₹5,000', p2:'₹3,000', p3:'₹2,000',
+   rules:['Team of 2–4','Theme given on spot','Working prototype required','Any tech stack allowed','Judge decision final'],
+   ec:'Mr. Karthik R.', ep:'+91 98421 56789', sc:'Dr. Priya M.', sp:'+91 97890 12345'},
+  {id:'dd', name:'DESIGN DECODE', label:'UI/UX Design Challenge', category:'Technical', type:'Team', minTeam:1, maxTeam:2, tag:'Design', timeSlot:'B',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dd" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fd79a8"/><stop offset="100%" stop-color="#e84393"/></linearGradient></defs><circle cx="13.5" cy="10.5" r="2.5" fill="#fd79a8" stroke="none"/><path d="m20.24 12.24-5.48 5.48a2.83 2.83 0 0 1-4 0l-5.48-5.48a2.83 2.83 0 0 1 0-4l5.48-5.48a2.83 2.83 0 0 1 4 0l5.48 5.48a2.83 2.83 0 0 1 0 4Z" stroke="url(#g-dd)" fill="url(#g-dd)" fill-opacity="0.15"/><path d="M3.76 11.76l5.48-5.48" stroke="#00cec9"/><path d="M14.76 20.24l5.48-5.48" stroke="#00cec9"/></svg>', grad:'linear-gradient(135deg,#1a0a28,#0f0518)', accent:'#e84393',
+   desc:'Decode the design brief and craft pixel-perfect UI/UX solutions under time pressure. Creativity meets precision.',
+   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
    p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
    rules:['Max 2 members','Design tools provided','Time-bound rounds','Theme given on spot','Originality is key'],
+   ec:'Ms. Divya S.', ep:'+91 96780 34567', sc:'Prof. Ramesh K.', sp:'+91 95670 23456'},
+  {id:'cc', name:'CHECKMATE CODERS', label:'Competitive Coding Arena', category:'Technical', type:'Team', minTeam:2, maxTeam:3, tag:'Coding', timeSlot:'A',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-cc" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2ecc71"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-cc)"/></svg>', grad:'linear-gradient(135deg,#031a0d,#021008)', accent:'#2ecc71',
+   desc:'Strategize, code, and checkmate your opponents! A competitive programming showdown where logic is your weapon.',
+   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
+   rules:['Team of 2–3','Languages: C, C++, Java, Python','Multiple rounds','No internet','Judge decision final'],
+   ec:'Mr. Vijay T.', ep:'+91 94560 78901', sc:'Ms. Anitha L.', sp:'+91 93450 67890'},
+  {id:'ur', name:'UNO REVERSE', label:'Reverse Coding Challenge', category:'Technical', type:'Team', minTeam:2, maxTeam:3, tag:'Coding', timeSlot:'B',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ur" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-ur)" fill="url(#g-ur)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-ur)"/><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3" stroke="#e74c3c"/></svg>', grad:'linear-gradient(135deg,#1f0505,#120303)', accent:'#e74c3c',
+   desc:'Given the output, reverse-engineer the code! A twisted coding challenge that tests your logical deduction.',
+   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
+   rules:['Team of 2–3','Output provided, find the code','Languages: C, C++, Java, Python','No internet','Time-limited rounds'],
+   ec:'Ms. Keerthana R.', ep:'+91 92340 56789', sc:'Dr. Senthil P.', sp:'+91 91230 45678'},
+  {id:'btb', name:'BRAND TO BILLION', label:'Tech Startup Pitch', category:'Technical', type:'Team', minTeam:2, maxTeam:4, tag:'Strategy', timeSlot:'C',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-btb" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e67e22"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="url(#g-btb)"/></svg>', grad:'linear-gradient(135deg,#1f1200,#120b00)', accent:'#e67e22',
+   desc:'Pitch your billion-dollar idea! Build a brand strategy and convince the judges your startup can scale.',
+   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   p1:'₹4,000', p2:'₹2,500', p3:'₹1,500',
+   rules:['Team of 2–4','Pitch deck required','5-min presentation + Q&A','Any domain','Judges decision final'],
+   ec:'Mr. Arun M.', ep:'+91 90120 34567', sc:'Prof. Lavanya S.', sp:'+91 89010 23456'},
+  {id:'zcz', name:'ZERO CODE ZONE', label:'No-Code Tech Challenge', category:'Technical', type:'Solo', minTeam:1, maxTeam:1, tag:'Technical', timeSlot:'C',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-zcz" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-zcz)" fill="url(#g-zcz)" fill-opacity="0.15"/></svg>', grad:'linear-gradient(135deg,#1f0505,#120303)', accent:'#e74c3c',
+   desc:'No coding needed! A pure logic, aptitude, and tech knowledge challenge for everyone.',
+   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   p1:'₹2,000', p2:'₹1,500', p3:'₹1,000',
+   rules:['Individual only','No coding required','Logic & aptitude based','Multiple rounds','No electronic devices'],
+   ec:'Ms. Nithya B.', ep:'+91 88900 12345', sc:'Dr. Murugan A.', sp:'+91 87890 01234'},
+  {id:'tt', name:'TECHNOTRACE', label:'Tech Treasure Hunt', category:'Technical', type:'Team', minTeam:2, maxTeam:3, tag:'Fun', timeSlot:'D',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tt" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="url(#g-tt)" fill="url(#g-tt)" fill-opacity="0.15"></polygon></svg>', grad:'linear-gradient(135deg,#0d1f3c,#0a1428)', accent:'#3498db',
+   desc:'Follow the clues, crack the codes, and trace your way through a thrilling tech-themed treasure hunt!',
+   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
+   rules:['Team of 2–3','Multiple rounds','Phone required for clues','No external help','Fastest team wins'],
    ec:'Mr. Karthik R.', ep:'+91 98421 56789', sc:'Dr. Priya M.', sp:'+91 97890 12345'},
-  {id:'dd', name:'DIGITAL DYNAMO', label:'Tech Knowledge Battle', type:'Team', minTeam:2, maxTeam:3, tag:'Quiz',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dd" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="url(#g-dd)" fill="url(#g-dd)" fill-opacity="0.15"></polygon></svg>', grad:'linear-gradient(135deg,#0d1f3c,#0a1428)', accent:'#3498db',
-   desc:'Test your digital knowledge across multiple domains. Speed and accuracy will crown the champion.',
-   date:'March 19, 2026', time:'9:00 AM – 10:35 AM', venue:'Classroom', deadline:'March 17',
+
+  /* ── NON-TECHNICAL EVENTS (3) ── */
+  {id:'com', name:'CLASH OF MINDS', label:'Quiz & Debate Showdown', category:'Non-Technical', type:'Team', minTeam:2, maxTeam:3, tag:'Quiz', timeSlot:'A',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-com" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#9b59b6"/><stop offset="100%" stop-color="#3498db"/></linearGradient></defs><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="url(#g-com)" fill="url(#g-com)" fill-opacity="0.15"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" stroke="url(#g-com)"/></svg>', grad:'linear-gradient(135deg,#150a28,#0a0518)', accent:'#9b59b6',
+   desc:'Battle it out in a rapid-fire quiz and debate format! Test your general knowledge and persuasion skills.',
+   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
    p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
    rules:['Team of 2–3','Multiple rounds','No electronic devices','Quizmaster decision final','Time-limited answers'],
    ec:'Ms. Divya S.', ep:'+91 96780 34567', sc:'Prof. Ramesh K.', sp:'+91 95670 23456'},
-  {id:'cwc', name:'CODE WITH COMALI', label:'Fun Coding Challenge', type:'Team', minTeam:2, maxTeam:3, tag:'Coding',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-cwc" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2ecc71"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-cwc)"/></svg>', grad:'linear-gradient(135deg,#031a0d,#021008)', accent:'#2ecc71',
-   desc:'A hilarious twist on coding — one codes while the other guides, swapping roles each round. Chaos guaranteed!',
-   date:'March 19, 2026', time:'10:55 AM – 12:35 PM', venue:'Lab', deadline:'March 17',
-   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
-   rules:['Team of 2–3','Languages: C, C++, Java, Python','Fun + Coding combined','No internet','Judge decision final'],
-   ec:'Mr. Vijay T.', ep:'+91 94560 78901', sc:'Ms. Anitha L.', sp:'+91 93450 67890'},
-  {id:'bb', name:'BYTE BIDDERS', label:'Tech Auction Game', type:'Team', minTeam:2, maxTeam:4, tag:'Strategy',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-bb" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e67e22"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="url(#g-bb)"/></svg>', grad:'linear-gradient(135deg,#1f1200,#120b00)', accent:'#e67e22',
-   desc:'Bid smart, build smarter. A strategic auction game where tech knowledge meets financial acumen.',
-   date:'March 19, 2026', time:'2:00 PM – 4:00 PM', venue:'Lab', deadline:'March 17',
-   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
-   rules:['Team of 2–4','Virtual currency provided','Strategic bidding rounds','No external help','Final scores determine winner'],
-   ec:'Ms. Keerthana R.', ep:'+91 92340 56789', sc:'Dr. Senthil P.', sp:'+91 91230 45678'},
-  {id:'tff', name:'THE FRANCHISE FORMATION', label:'Business Strategy Game', type:'Team', minTeam:2, maxTeam:4, tag:'Management',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tff" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#g-tff)"/><circle cx="9" cy="7" r="4" stroke="url(#g-tff)"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#g-tff)"/></svg>', grad:'linear-gradient(135deg,#1a1200,#100c00)', accent:'#f1c40f',
-   desc:'Build your dream franchise from scratch. Strategy, marketing & management all in one thrilling game.',
-   date:'March 19, 2026', time:'11:00 AM – 4:00 PM', venue:'Classroom', deadline:'March 17',
+  {id:'ff', name:'FRANCHISE FIESTA', label:'Business Simulation Game', category:'Non-Technical', type:'Team', minTeam:2, maxTeam:4, tag:'Management', timeSlot:'B',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ff" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#g-ff)"/><circle cx="9" cy="7" r="4" stroke="url(#g-ff)"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#g-ff)"/></svg>', grad:'linear-gradient(135deg,#1a1200,#100c00)', accent:'#f1c40f',
+   desc:'Build your dream franchise from scratch! Strategy, marketing & management all in one thrilling game.',
+   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
    p1:'₹4,000', p2:'₹2,500', p3:'₹1,500',
-   rules:['Team of 2–4','Full day event','Business strategy game','Presentation required','Judges decision final'],
+   rules:['Team of 2–4','Business strategy game','Presentation required','All materials provided','Judges decision final'],
    ec:'Mr. Arun M.', ep:'+91 90120 34567', sc:'Prof. Lavanya S.', sp:'+91 89010 23456'},
-  {id:'ofi', name:'OOPS FIX IT!', label:'Debug & Repair Challenge', type:'Solo', minTeam:1, maxTeam:1, tag:'Coding',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ofi" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3M6 10l-4 4M22 14l-4-4" stroke="#e74c3c"/><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-ofi)" fill="url(#g-ofi)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-ofi)"/></svg>', grad:'linear-gradient(135deg,#1f0505,#120303)', accent:'#e74c3c',
-   desc:'Broken OOP code awaits. Find the bugs, fix the logic, and prove your debugging mastery.',
-   date:'March 20, 2026', time:'9:00 AM – 10:35 AM', venue:'Lab', deadline:'March 18',
+  {id:'tap', name:'THE ALGORITHMIC PLATTER', label:'Fun Algorithmic Puzzles', category:'Non-Technical', type:'Team', minTeam:2, maxTeam:3, tag:'Puzzle', timeSlot:'C',
+   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tap" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-tap)" fill="url(#g-tap)" fill-opacity="0.2"/></svg>', grad:'linear-gradient(135deg,#1a1200,#100c00)', accent:'#f1c40f',
+   desc:'Serve up the perfect solution! A fun mix of algorithmic puzzles and pattern recognition challenges.',
+   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
    p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
-   rules:['Individual only','OOP concepts tested','Languages: C++, Java, Python','No internet','Time-limited rounds'],
-   ec:'Mr. Vijay T.', ep:'+91 94560 78901', sc:'Ms. Anitha L.', sp:'+91 93450 67890'},
-  {id:'tap', name:'THE ALGORITHMIC PALATE', label:'Algorithm & Logic Challenge', type:'Team', minTeam:2, maxTeam:3, tag:'Technical',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tap" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#9b59b6"/><stop offset="100%" stop-color="#3498db"/></linearGradient></defs><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="url(#g-tap)" fill="url(#g-tap)" fill-opacity="0.15"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" stroke="url(#g-tap)"/></svg>', grad:'linear-gradient(135deg,#150a28,#0a0518)', accent:'#9b59b6',
-   desc:'Serve up the perfect algorithm! A unique blend of problem-solving and algorithmic thinking.',
-   date:'March 20, 2026', time:'9:30 AM – 12:00 PM', venue:'Classroom', deadline:'March 18',
-   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
-   rules:['Team of 2–3','Algorithm-based challenges','Pen & paper rounds included','No electronic devices in prelims','Time-bound'],
-   ec:'Ms. Nithya B.', ep:'+91 88900 12345', sc:'Dr. Murugan A.', sp:'+91 87890 01234'},
-  {id:'lb', name:'LOGICAL BATON', label:'Relay Coding Challenge', type:'Team', minTeam:2, maxTeam:3, tag:'Coding',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-lb" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00cec9"/><stop offset="100%" stop-color="#0984e3"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-lb)"/></svg>', grad:'linear-gradient(135deg,#021a1a,#010f10)', accent:'#00cec9',
-   desc:'Pass the baton, pass the code! A relay-style coding challenge where teamwork is everything.',
-   date:'March 20, 2026', time:'10:55 AM – 12:35 PM', venue:'Lab', deadline:'March 18',
-   p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
-   rules:['Team of 2–3','Relay format — members take turns','Languages: C, C++, Java, Python','No communication during coding','Judge decision final'],
-   ec:'Mr. Karthik R.', ep:'+91 98421 56789', sc:'Dr. Priya M.', sp:'+91 97890 12345'},
-  {id:'pe', name:'PROJECT EXPO', label:'Showcase Your Innovation', type:'Team', minTeam:1, maxTeam:4, tag:'Innovation',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-pe" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-pe)" fill="url(#g-pe)" fill-opacity="0.2"/></svg>', grad:'linear-gradient(135deg,#1a1200,#100c00)', accent:'#f1c40f',
-   desc:'Present your projects to expert judges. Hardware, software, or AI — bring your best work.',
-   date:'March 21, 2026', time:'11:30 AM – 12:30 PM', venue:'Classroom', deadline:'March 19',
-   p1:'₹5,000', p2:'₹3,000', p3:'₹2,000',
-   rules:['Max 4 members','Working prototype required','5-min demo + Q&A','Any domain (CSE/IT)','Bring your own hardware if needed'],
-   ec:'Ms. Divya S.', ep:'+91 96780 34567', sc:'Prof. Ramesh K.', sp:'+91 95670 23456'},
-  {id:'cf', name:'CODE FREE', label:'Non-Coding Tech Challenge', type:'Solo', minTeam:1, maxTeam:1, tag:'Technical',
-   icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-cf" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-cf)" fill="url(#g-cf)" fill-opacity="0.15"/></svg>', grad:'linear-gradient(135deg,#1f0505,#120303)', accent:'#e74c3c',
-   desc:'No coding needed! A pure logic and tech knowledge challenge for everyone.',
-   date:'March 21, 2026', time:'11:30 AM – 12:30 PM', venue:'Classroom', deadline:'March 19',
-   p1:'₹2,000', p2:'₹1,500', p3:'₹1,000',
-   rules:['Individual only','No coding required','Logic & aptitude based','Multiple rounds','No electronic devices'],
-   ec:'Mr. Arun M.', ep:'+91 90120 34567', sc:'Prof. Lavanya S.', sp:'+91 89010 23456'}
+   rules:['Team of 2–3','Puzzle-based challenges','Pen & paper rounds included','No electronic devices in prelims','Time-bound'],
+   ec:'Ms. Nithya B.', ep:'+91 88900 12345', sc:'Dr. Murugan A.', sp:'+91 87890 01234'}
 ];
 
 const CONTACTS = [
@@ -1009,21 +1066,20 @@ function init() {
 
 /* ════════ OUTLINE + TICKER ════════ */
 function buildObs() {
-  const w = ['CSE UTSAV','2K26','PSNA'];
+  const w = ['CSEUTSAV','2K26','PSNA'];
   const d = [...w,...w,...w,...w,...w,...w];
   document.getElementById('obs').innerHTML = d.map(x=>`<span class="obi">${x}</span>`).join('');
 }
 function buildTicker() {
-  const items = ['CSE UTSAV 2K26','EVENTS','DESIGN UNDER PRESSURE','DIGITAL DYNAMO','CODE WITH COMALI','BYTE BIDDERS','THE FRANCHISE FORMATION','OOPS FIX IT!','THE ALGORITHMIC PALATE','LOGICAL BATON','PROJECT EXPO','CODE FREE','FREE ENTRY','PSNA CSE','19–21 MARCH 2026'];
+  const items = ['CSEUTSAV 2K26','EVENTS','HACKVERSE','DESIGN DECODE','CHECKMATE CODERS','UNO REVERSE','BRAND TO BILLION','ZERO CODE ZONE','TECHNOTRACE','CLASH OF MINDS','FRANCHISE FIESTA','THE ALGORITHMIC PLATTER','FREE ENTRY','PSNA CSE','19–21 MARCH 2026'];
   const d = [...items,...items];
   document.getElementById('ticker').innerHTML = d.map(t=>`<div class="ti">${t}<div class="td"></div></div>`).join('');
 }
 
 /* ════════ RENDER TILES ════════ */
-function renderTiles() {
-  document.getElementById('ev-tiles').innerHTML = EVS.map(e => {
-    const startTime = e.time.split('–')[0].trim();
-    return `
+function renderTile(e) {
+  const startTime = e.time === 'TBA' ? 'TBA' : e.time.split('–')[0].trim();
+  return `
     <div class="ev-tile" onclick="openEvMod('${e.id}')">
       <div class="ev-tile-top">
         <div class="ev-tile-bg" style="background:${e.grad}">
@@ -1037,10 +1093,11 @@ function renderTiles() {
       <div class="ev-tile-body">
         <div class="ev-tile-name">${e.name}</div>
         <div class="ev-tile-sub">${e.label}</div>
-        <div class="ev-tile-time">⏰ ${e.date.replace(', 2026','')} · ${startTime}</div>
-        <div class="ev-tile-tags">
+        <div class="ev-tile-time">⏰ ${e.date === 'TBA' ? 'Date TBA' : e.date.replace(', 2026','')} · ${startTime}</div>
+        <div class="ev-tile-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
           <span class="etp etp-or">${e.type}</span>
           <span class="etp etp-nt">${e.type === 'Solo' ? 'Individual' : `${e.minTeam}–${e.maxTeam} Members`}</span>
+          ${e.timeSlot ? `<span class="etp" style="background:rgba(255,255,255,0.05);color:var(--muted2);border:1px solid rgba(255,255,255,0.1)">Slot ${e.timeSlot}</span>` : ''}
         </div>
         <div class="ev-tile-link" onclick="event.stopPropagation();openReg('${e.id}')">
           Register Now
@@ -1048,7 +1105,27 @@ function renderTiles() {
         </div>
       </div>
     </div>
-  `}).join('');
+  `;
+}
+function renderTiles() {
+  const techEvs = EVS.filter(e => e.category === 'Technical');
+  const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
+  document.getElementById('ev-tiles').innerHTML = `
+    <div style="grid-column:1/-1;margin-bottom:4px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#2ecc71;text-transform:uppercase;letter-spacing:3px;display:flex;align-items:center;gap:10px">
+        <span style="color:#2ecc71;text-shadow:0 0 8px rgba(46,204,113,.4);font-weight:900;font-size:24px">&lt;/&gt;</span>
+        <span>Technical Events</span>
+      </div>
+    </div>
+    ${techEvs.map(e => renderTile(e)).join('')}
+    <div style="grid-column:1/-1;margin-top:28px;margin-bottom:4px;padding-top:20px;border-top:1px solid var(--border)">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--orange);text-transform:uppercase;letter-spacing:3px;display:flex;align-items:center;gap:10px">
+        <span style="color:var(--orange);text-shadow:0 0 8px rgba(232,84,26,.4);font-weight:900;font-size:24px">{ }</span>
+        <span>Non-Technical Events</span>
+      </div>
+    </div>
+    ${nonTechEvs.map(e => renderTile(e)).join('')}
+  `;
 }
 
 /* ════════ CONTACTS ════════ */
@@ -1108,7 +1185,7 @@ function openEvMod(id) {
       <a href="tel:${e.ep}" style="flex:1;padding:12px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;display:block"><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:3px">Event Coord</div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:2px">${e.ec}</div><div style="font-size:11px;color:var(--orange)">${e.ep}</div></a>
       <a href="tel:${e.sp}" style="flex:1;padding:12px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;display:block"><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:3px">Staff Coord</div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:2px">${e.sc}</div><div style="font-size:11px;color:var(--orange)">${e.sp}</div></a>
     </div>
-    <button class="btn-fill" style="width:100%" onclick="closeEvMod(null,1);openReg('${e.id}')">Register for this Event — Free</button>
+    <button class="reg-next-btn" style="width:100%;margin-top:0" onclick="closeEvMod(null,1); setTimeout(()=>openReg('${e.id}'),300);">Register Now</button>
   `;
   document.getElementById('ev-modal').classList.add('open');
 }
@@ -1128,6 +1205,13 @@ function evSummaryCard(id) {
   </div>`;
 }
 
+function showError(title, reason, desc) {
+  document.getElementById('err-title').textContent = title;
+  document.getElementById('err-reason').textContent = reason;
+  document.getElementById('err-desc').textContent = desc;
+  document.getElementById('err-ov').classList.add('open');
+}
+
 function openReg(evId) {
   hideDock();
   currentEv = evId ? EVS.find(e => e.id === evId) : null;
@@ -1141,20 +1225,32 @@ function openReg(evId) {
     s2.innerHTML = evSummaryCard(currentEv.id);
     setupTeamStep();
   } else {
-    // Show event selector
+    // Show event selector grouped by category
+    const techEvs = EVS.filter(e => e.category === 'Technical');
+    const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
+    const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
+
+    function evRow(e) {
+      return `
+        <div onclick="selectEventInForm('${e.id}')" class="ev-sel-row">
+          <div class="ev-sel-icon">${e.icon}</div>
+          <div>
+            <div class="ev-sel-name">${e.name}</div>
+            <div class="ev-sel-meta"><span class="ev-sel-pill">${e.type==='Solo'?'Individual':`${e.minTeam}–${e.maxTeam} Members`}</span><span>${e.label}</span></div>
+          </div>
+          <div class="ev-sel-prize">${e.p1}</div>
+        </div>`;
+    }
+
     s1.innerHTML = `
       <div class="fc-t">Choose Event</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#2ecc71;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(46,204,113,.4);font-size:18px">&lt;/&gt;</span> Technical</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+        ${techEvs.map(e => evRow(e)).join('')}
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(232,84,26,.4);font-size:18px">{ }</span> Non-Technical</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
-        ${EVS.map(e=>`
-          <div onclick="selectEventInForm('${e.id}')" class="ev-sel-row">
-            <div class="ev-sel-icon">${e.icon}</div>
-            <div>
-              <div class="ev-sel-name">${e.name}</div>
-              <div class="ev-sel-meta"><span class="ev-sel-pill">${e.type==='Solo'?'Individual':`${e.minTeam}–${e.maxTeam} Members`}</span><span>${e.label}</span></div>
-            </div>
-            <div class="ev-sel-prize">${e.p1}</div>
-          </div>
-        `).join('')}
+        ${nonTechEvs.map(e => evRow(e)).join('')}
       </div>`;
     s2.innerHTML = '';
   }
@@ -1163,7 +1259,8 @@ function openReg(evId) {
 }
 
 function selectEventInForm(id) {
-  currentEv = EVS.find(e => e.id === id);
+  const ev = EVS.find(e => e.id === id);
+  currentEv = ev;
   const s1 = document.getElementById('ev-summary-here');
   const s2 = document.getElementById('ev-summary-here2');
   s1.innerHTML = evSummaryCard(id);
@@ -1188,6 +1285,7 @@ function setupTeamStep() {
     document.getElementById('f-teamname').closest('.fg').style.display = 'block';
     document.getElementById('add-tm-btn').style.display = 'block';
     document.getElementById('team-hint').textContent = `Add ${e.minTeam-1}–${e.maxTeam-1} more team members (you are Member 1)`;
+    document.getElementById('tm-grid').innerHTML = '';
     teamMembers = [];
     if (e.minTeam > 1) {
       // Pre-add minimum required members
@@ -1249,7 +1347,7 @@ function removeTeamMember(idx) {
 function goStep(n) {
   if (n === 1) {
     // Validate step 0
-    if (!currentEv) { alert('Please select an event first.'); return; }
+    if (!currentEv) { showError('Missing Info', 'Select an Event', 'Please choose an event to proceed.'); return; }
     const name=document.getElementById('f-name').value.trim();
     const regno=document.getElementById('f-regno').value.trim();
     const year=document.getElementById('f-year').value;
@@ -1257,16 +1355,16 @@ function goStep(n) {
     const phone=document.getElementById('f-phone').value.trim();
     const email=document.getElementById('f-email').value.trim();
     const gender=document.getElementById('f-gender').value;
-    if (!name||!regno||!year||!section||!phone||!email||!gender) { alert('Please fill all your personal details.'); return; }
-    if (regno.length < 7) { alert('Register number must be at least 7 characters.'); return; }
-    if (!email.endsWith('@psnacet.edu.in')) { alert('Please use your college email (e.g. yourname@psnacet.edu.in)'); return; }
-    if (phone.replace(/\D/g,'').length !== 10) { alert('Phone number must be exactly 10 digits.'); return; }
+    if (!name||!regno||!year||!section||!phone||!email||!gender) { showError('Missing Info', 'Incomplete Form', 'Please fill all your personal details block before continuing.'); return; }
+    if (regno.length < 7) { showError('Invalid Input', 'Register Number short', 'Your register number must be at least 7 characters long.'); return; }
+    if (!email.endsWith('@psnacet.edu.in')) { showError('Invalid Email', 'College Email Required', 'Please use your official college email ending in @psnacet.edu.in'); return; }
+    if (phone.replace(/\D/g,'').length !== 10) { showError('Invalid Phone', 'Check your number', 'Phone number must be exactly 10 digits without country code.'); return; }
   }
   if (n === 2) {
     // Validate step 1 (team)
     if (currentEv && currentEv.type !== 'Solo') {
       const tname = document.getElementById('f-teamname').value.trim();
-      if (!tname) { alert('Please enter a team name.'); return; }
+      if (!tname) { showError('Missing Info', 'Team Name Required', 'Please enter a team name to proceed.'); return; }
       // Collect team member data
       teamMembers = [];
       let incomplete = false;
@@ -1285,28 +1383,28 @@ function goStep(n) {
           if (!rg || !yr || !sc || !ph || !gen) {
             incomplete = true;
           } else if (gen !== leaderGender) {
-            alert(`Gender mismatch: Team member ${i+2} (${nm}) must be ${leaderGender}. Mixed gender teams are not allowed.`);
+            showError('Rule Violation', 'Mixed Gender Team', `Team member ${i+2} (${nm}) must be ${leaderGender}. Mixed gender teams are strictly not allowed.`);
             incomplete = true; return;
           } else if (rg === leaderRegNo) {
-            alert(`Error: Team member ${i+2} has the same register number as the team leader.`);
+            showError('Invalid Input', 'Duplicate Register Number', `Team member ${i+2} has the exact same register number as you (the leader).`);
             incomplete = true; return;
           } else if (teamMembers.some(prev => prev.regno === rg)) {
-            alert(`Error: Duplicate register number ${rg} found in team.`);
+            showError('Invalid Input', 'Duplicate Register Number', `Register number ${rg} has been entered multiple times for different team members.`);
             incomplete = true; return;
           } else if (rg.length < 7) {
-            alert(`Team member ${i+2} register number must be at least 7 characters.`);
+            showError('Invalid Input', 'Register Number short', `Team member ${i+2}'s register number must be at least 7 characters.`);
             incomplete = true; return;
           } else if (ph.replace(/\D/g,'').length !== 10) {
-            alert(`Team member ${i+2} phone number must be exactly 10 digits.`);
+            showError('Invalid Input', 'Check Phone Number', `Team member ${i+2}'s phone number must be exactly 10 digits.`);
             incomplete = true; return;
           } else {
             teamMembers.push({name:nm, regno:rg, gender:gen, year:yr, section:sc, phone:ph});
           }
         }
       });
-      if (incomplete) { alert('Please fill all details for the added team members.'); return; }
+      if (incomplete) { if(document.getElementById('err-ov').classList.contains('open')) return; showError('Missing Info', 'Incomplete Team Details', 'Please fill all details for the added team members.'); return; }
       if (teamMembers.length < currentEv.minTeam - 1) {
-        alert(`Please add at least ${currentEv.minTeam - 1} more team member(s).`); return;
+        showError('Rule Violation', 'Not enough members', `Your team needs at least ${currentEv.minTeam} members total (You + ${currentEv.minTeam - 1} more).`); return;
       }
     }
     buildReview();
@@ -1326,6 +1424,43 @@ function updateStepUI() {
   });
   // Scroll sheet to top
   document.querySelector('.reg-sheet')?.scrollTo(0,0);
+}
+
+// Quick Test Fill — real names, real-looking reg numbers, team members = other testers
+const TESTERS = [
+  { name:'Sriram S',     regno:'2303921310421227', phone:'9361123688', email:'sriram@psnacet.edu.in',   team:'Team Blaze' },
+  { name:'Visva V',      regno:'2303921310421229', phone:'9876501234', email:'visva@psnacet.edu.in',    team:'Team Inferno' },
+  { name:'Srinivas K',   regno:'2303921310421246', phone:'9445678901', email:'srinivas@psnacet.edu.in', team:'Team Storm' },
+  { name:'Sanjay M',     regno:'2303921310421218', phone:'9087654321', email:'sanjay@psnacet.edu.in',   team:'Team Vortex' }
+];
+
+function fillTester(n) {
+  const me = TESTERS[n - 1];
+  const others = TESTERS.filter((_, i) => i !== n - 1);
+  
+  document.getElementById('f-name').value = me.name;
+  document.getElementById('f-regno').value = me.regno;
+  document.getElementById('f-gender').value = 'Male';
+  document.getElementById('f-year').value = '3';
+  document.getElementById('f-section').value = 'A';
+  document.getElementById('f-phone').value = me.phone;
+  document.getElementById('f-email').value = me.email;
+  
+  const tn = document.getElementById('f-teamname');
+  if (tn && currentEv && currentEv.type !== 'Solo') tn.value = me.team;
+  
+  if (currentEv && currentEv.type !== 'Solo') {
+    document.querySelectorAll('.tm-card').forEach((card, idx) => {
+      if (idx >= others.length) return;
+      const m = others[idx];
+      card.querySelector('.tm-name').value = m.name;
+      card.querySelector('.tm-regno').value = m.regno;
+      card.querySelector('.tm-gender').value = 'Male';
+      card.querySelector('.tm-year').value = '3';
+      card.querySelector('.tm-section').value = 'A';
+      card.querySelector('.tm-phone').value = m.phone;
+    });
+  }
 }
 
 function buildReview() {
@@ -1399,33 +1534,41 @@ async function submitReg() {
   }
   
   if (localDupeName) {
-    alert(`Registration Error: ${localDupeName} (${localDupeReg}) is already registered for ${currentEv.name} on this device.`);
+    showError('Duplicate Blocked', 'Already registered', `${localDupeName} (${localDupeReg}) is already locally registered for ${currentEv.name} on this device.`);
     if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
     return;
   }
 
-  // 2. Server check (Register Number & Email validation)
+  // 2. Server check & Time-Slot Conflict Check
   if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-    showAdminLoader('Verifying Registrations...');
+    showAdminLoader('Checking DB Records...');
     try {
-      // Gather all register numbers in the team
       const allRegNos = [regno, ...teamMembers.map(m => m.regno)].join(',');
-      const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email) + '&regnos=' + encodeURIComponent(allRegNos) + '&eventId=' + currentEv.id;
+      const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email) + '&regnos=' + encodeURIComponent(allRegNos) + '&eventId=' + encodeURIComponent(currentEv.id) + '&eventName=' + encodeURIComponent(currentEv.name) + '&timeSlot=' + encodeURIComponent(currentEv.timeSlot||'');
       
       const resp = await fetch(url);
       const data = await resp.json();
       
       if (data.found && data.registrations.some(r => r.eventId === currentEv.id)) {
         hideAdminLoader();
-        alert('Error: You are already registered for ' + currentEv.name + '.');
+        showError('Duplicate Blocked', 'You are already registered', `You already hold a confirmed pass for ${currentEv.name}.`);
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
         return;
       }
       
       if (data.duplicates && data.duplicates.length > 0) {
         hideAdminLoader();
-        const dupeNames = data.duplicateDetails.map(d => `${d.name} (${d.regno})`).join(', ');
-        alert(`Verification Error: The following persons are already registered for this event (either as leader or in another team): ${dupeNames}`);
+        const dupeNames = data.duplicateDetails.map(d => `${d.name} (${d.regno})`).join(' / ');
+        showError('Duplicate Detected', 'Team members already participating', `The following persons are already registered for this event (either as a leader or in another team): \n\n${dupeNames}`);
+        if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+        return;
+      }
+
+      // Check cross-event time-slot conflicts returned by server
+      if (data.timeSlotConflicts && data.timeSlotConflicts.length > 0) {
+        hideAdminLoader();
+        const conflictNames = data.timeSlotConflictDetails.map(d => `${d.name} (${d.regno}) in [${d.conflictingEvent}]`).join(' \n ');
+        showError('Time Slot Conflict!', 'Simultaneous Events Selected', `The following team members are already registered for another event happening at the exactly same time (${currentEv.timeSlot}): \n\n${conflictNames}\n\nPlease choose a different event or update team members.`);
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
         return;
       }
@@ -1452,23 +1595,21 @@ async function submitReg() {
     try {
       const resp = await fetch(SHEETS_URL, {
         method: 'POST',
-        // NO mode: 'no-cors' - we deliberately want to read the true response!
         body: JSON.stringify({action: 'addReg', data: reg}) 
       });
       const result = await resp.json();
       
       if (!result.success) {
         hideAdminLoader();
-        alert('Registration Failed: ' + result.error);
+        showError('Server Error', 'Failed to save', result.error);
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-        return; // STOP! Block phantom pass generation
+        return; 
       }
     } catch(e) {
-      // If GAS times out (LockService limit) or throws a 500 HTML error, it causes a browser CORS crash, triggering here.
       hideAdminLoader();
-      alert('The server is under heavy load and timed out. Your registration was not saved. Please wait a few moments and try again.');
+      showError('Timeout Error', 'Heavy Network Load', 'The server is under heavy load and timed out. Your registration was not saved. Please wait a few moments and try again.');
       if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-      return; // STOP! Block phantom pass generation
+      return; 
     }
     hideAdminLoader();
   }
@@ -1533,7 +1674,7 @@ function renderPassCards(regs) {
     return `
     <div class="pass-card">
       <div class="pass-top">
-        <div class="pass-fest">CSE UTSAV 2K26 · PSNA COLLEGE · DEPT OF CSE</div>
+        <div class="pass-fest">CSEUTSAV 2K26 · PSNA COLLEGE · DEPT OF CSE</div>
         <div class="pass-ev-name">${r.eventName}</div>
         <div class="pass-status"><div class="sdot"></div>Confirmed</div>
       </div>
@@ -1765,18 +1906,30 @@ function renderAdminRegs(regs) {
     };
     
     if (r.ts && !isBracketOrEmpty(r.ts)) {
-      const d = new Date(r.ts);
+      let d = new Date(r.ts);
+      // Fallback parser for en-IN format (DD/MM/YYYY, h:mm:ss a) generated securely by the frontend
+      if (isNaN(d.getTime()) && typeof r.ts === 'string') {
+        const parts = r.ts.split(', ');
+        if (parts.length === 2) {
+          const dateParts = parts[0].split('/');
+          if (dateParts.length === 3) {
+            // Reconstruct as MM/DD/YYYY for JS Date parsing
+            d = new Date(`${dateParts[1]}/${dateParts[0]}/${dateParts[2]} ${parts[1]}`);
+          }
+        }
+      }
+      
       if (!isNaN(d.getTime())) {
         const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
-        const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        const dateOptions = { month: 'short', day: 'numeric' };
         
         let tStr = d.toLocaleTimeString('en-US', timeOptions);
         let dStr = d.toLocaleDateString('en-US', dateOptions);
         
-        dateStr = tStr + ' ' + dStr;
+        dateStr = dStr + ' · ' + tStr;
       } else { 
-        // Don't display raw garbage values — just mark as unknown
-        dateStr = 'Unknown Date'; 
+        // Display the raw string as fallback if it's not totally weird JSON
+        dateStr = typeof r.ts === 'string' && r.ts.length < 30 ? r.ts : 'Unknown Date';
       }
     }
 
@@ -2084,12 +2237,15 @@ function refreshAdminUI(regs) {
   const oldEventRegs = regs.filter(r => !knownIds.includes(r.eventId));
   const oldEventIds = [...new Set(oldEventRegs.map(r => r.eventId))];
 
-  let breakdownHtml = EVS.map(e => {
-    const evRegs = regs.filter(r => r.eventId === e.id);
+  const techEvsBd = EVS.filter(e => e.category === 'Technical');
+  const nonTechEvsBd = EVS.filter(e => e.category === 'Non-Technical');
+
+  function adminEvRow(e, regsArr) {
+    const evRegs = regsArr.filter(r => r.eventId === e.id);
     const evMembers = evRegs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
     return `<div class="admin-ev-row">
       <div class="aer-left">
-        <div class="aer-icon">${e.icon}</div>
+        <div class="aer-icon" style="width:32px;height:32px;border-radius:6px;background:${e.accent}15;border:1px solid ${e.accent}30;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:${e.accent};font-weight:900;font-size:11px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">${e.tag.slice(0,3).toUpperCase()}</span></div>
         <div class="aer-name">${e.name}</div>
       </div>
       <div class="aer-stats">
@@ -2097,26 +2253,14 @@ function refreshAdminUI(regs) {
         ${e.type !== 'Solo' ? `<div class="aer-stat"><span class="aer-n">${evMembers}</span><span class="aer-l">Members</span></div>` : ''}
       </div>
     </div>`;
-  }).join('');
-
-  // Show old/unmatched events if any registrations exist for them
-  if (oldEventIds.length > 0) {
-    oldEventIds.forEach(eid => {
-      const evRegs = regs.filter(r => r.eventId === eid);
-      const evMembers = evRegs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
-      const evName = evRegs[0]?.eventName || eid;
-      breakdownHtml += `<div class="admin-ev-row">
-        <div class="aer-left">
-          <div class="aer-icon">📋</div>
-          <div class="aer-name">${evName} <span style="font-size:10px;color:var(--muted2)">(old)</span></div>
-        </div>
-        <div class="aer-stats">
-          <div class="aer-stat"><span class="aer-n">${evRegs.length}</span><span class="aer-l">Regs</span></div>
-          <div class="aer-stat"><span class="aer-n">${evMembers}</span><span class="aer-l">Members</span></div>
-        </div>
-      </div>`;
-    });
   }
+
+  let breakdownHtml = `<div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#2ecc71;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;display:flex;align-items:center;gap:6px"><span style="text-shadow:0 0 6px rgba(46,204,113,.4);font-size:16px">&lt;/&gt;</span> Technical</div>`;
+  breakdownHtml += techEvsBd.map(e => adminEvRow(e, regs)).join('');
+  breakdownHtml += `<div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:2px;margin:14px 0 8px;padding-top:12px;border-top:1px solid var(--border);display:flex;align-items:center;gap:6px"><span style="text-shadow:0 0 6px rgba(232,84,26,.4);font-size:16px">{ }</span> Non-Technical</div>`;
+  breakdownHtml += nonTechEvsBd.map(e => adminEvRow(e, regs)).join('');
+
+
   document.getElementById('admin-ev-breakdown').innerHTML = breakdownHtml;
 
   renderAdminRegs(regs);
@@ -2298,8 +2442,10 @@ function closeAllEvents() {
   showDock();
 }
 function renderAllEvents() {
-  document.getElementById('allev-list').innerHTML = EVS.map(e => `
-    <div class="comm-card" style="align-items:flex-start;flex-direction:column;gap:12px;cursor:pointer" onclick="closeAllEvents();openEvMod('${e.id}')">
+  const techEvs = EVS.filter(e => e.category === 'Technical');
+  const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
+  function evCard(e) {
+    return `<div class="comm-card" style="align-items:flex-start;flex-direction:column;gap:12px;cursor:pointer" onclick="closeAllEvents();openEvMod('${e.id}')">
       <div style="display:flex;gap:12px;align-items:center;width:100%">
         <div style="width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${e.icon}</div>
         <div>
@@ -2310,8 +2456,14 @@ function renderAllEvents() {
       <div style="display:flex;flex-wrap:wrap;gap:6px;width:100%">
         ${[['📅',e.date],['⏰',e.time],['📍',e.venue]].map(([i,t])=>`<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:4px 8px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;display:flex;gap:6px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }
+  document.getElementById('allev-list').innerHTML = `
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#2ecc71;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(46,204,113,.4);font-size:20px">&lt;/&gt;</span> Technical</div>
+    ${techEvs.map(e => evCard(e)).join('')}
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--orange);text-transform:uppercase;letter-spacing:2px;margin-top:16px;margin-bottom:4px;padding-top:16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(232,84,26,.4);font-size:20px">{ }</span> Non-Technical</div>
+    ${nonTechEvs.map(e => evCard(e)).join('')}
+  `;
 }
 
 init();
