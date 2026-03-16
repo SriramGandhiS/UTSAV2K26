@@ -2294,6 +2294,22 @@
       padding: 22px 22px 36px
     }
 
+    .ev-coord-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .ev-coord-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .esc {
+        padding: 16px 16px 24px;
+      }
+    }
+
     /* CONTACT */
     .contact-grid {
       display: flex;
@@ -3861,7 +3877,24 @@
   `;
     }
     function renderTiles() {
-      document.getElementById('ev-tiles').innerHTML = EVS.map(e => renderTile(e)).join('');
+      const techEvs = EVS.filter(e => e.category === 'Technical');
+      const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
+      document.getElementById('ev-tiles').innerHTML = `
+    <div style="grid-column:1/-1;margin-bottom:4px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#2ecc71;text-transform:uppercase;letter-spacing:3px;display:flex;align-items:center;gap:10px">
+        <span style="color:#2ecc71;text-shadow:0 0 8px rgba(46,204,113,.4);font-weight:900;font-size:24px">&lt;/&gt;</span>
+        <span>Technical Events</span>
+      </div>
+    </div>
+    ${techEvs.map(e => renderTile(e)).join('')}
+    <div style="grid-column:1/-1;margin-top:28px;margin-bottom:4px;padding-top:20px;border-top:1px solid var(--border)">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--orange);text-transform:uppercase;letter-spacing:3px;display:flex;align-items:center;gap:10px">
+        <span style="color:var(--orange);text-shadow:0 0 8px rgba(232,84,26,.4);font-weight:900;font-size:24px">{ }</span>
+        <span>Non-Technical Events</span>
+      </div>
+    </div>
+    ${nonTechEvs.map(e => renderTile(e)).join('')}
+  `;
     }
 
     /* ════════ CONTACTS ════════ */
@@ -3987,7 +4020,7 @@
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
         <span style="width:24px;height:1px;background:${catColor}"></span> COORDINATORS & JUDGES
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="ev-coord-grid">
         <!-- Event Head (Pranav/Arjun) -->
         <a href="tel:${e.ep}" style="text-decoration:none;padding:20px;background:${isTech ? 'rgba(46,204,113,0.05)' : 'rgba(232,84,26,0.05)'};border:1px solid ${isTech ? 'rgba(46,204,113,0.1)' : 'rgba(232,84,26,0.1)'};border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
           <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.ec)}&background=${isTech ? '2ecc71' : 'e8541a'}&color=fff&size=128" style="width:60px;height:60px;border-radius:50%;border:2px solid ${catColor};margin-bottom:12px">
@@ -4069,8 +4102,13 @@
 
         s1.innerHTML = `
       <div class="fc-t">Choose Event</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#2ecc71;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(46,204,113,.4);font-size:18px">&lt;/&gt;</span> Technical</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+        ${techEvs.map(e => evRow(e)).join('')}
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(232,84,26,.4);font-size:18px">{ }</span> Non-Technical</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
-        ${EVS.map(e => evRow(e)).join('')}
+        ${nonTechEvs.map(e => evRow(e)).join('')}
       </div>`;
         s2.innerHTML = '';
       }
@@ -5323,8 +5361,6 @@ function doPost(e) {
       showDock();
     }
     function renderAllEvents() {
-      const techEvs = EVS.filter(e => e.category === 'Technical');
-      const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
       function evCard(e) {
         return `<div class="ev-item-card" onclick="closeAllEvents();openEvMod('${e.id}')">
       <div style="display:flex;gap:12px;align-items:center;width:100%">
@@ -5340,10 +5376,7 @@ function doPost(e) {
     </div>`;
       }
       document.getElementById('allev-list').innerHTML = `
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#2ecc71;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(46,204,113,.4);font-size:20px">&lt;/&gt;</span> Technical</div>
-    <div class="ev-listing-grid">${techEvs.map(e => evCard(e)).join('')}</div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--orange);text-transform:uppercase;letter-spacing:2px;margin-top:24px;margin-bottom:12px;padding-top:16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(232,84,26,.4);font-size:20px">{ }</span> Non-Technical</div>
-    <div class="ev-listing-grid">${nonTechEvs.map(e => evCard(e)).join('')}</div>
+    <div class="ev-listing-grid">${EVS.map(e => evCard(e)).join('')}</div>
   `;
     }
 
