@@ -169,10 +169,10 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 .fc-t{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .fg{margin-bottom:14px}
 .fl{display:block;font-size:10px;font-weight:700;letter-spacing:2.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:7px}
-.fi,.fs{width:100%;padding:12px 14px;background:rgba(255,255,255,.04);border:1.5px solid var(--border2);border-radius:6px;color:#fff;font-family:'Barlow',sans-serif;font-size:14px;-webkit-appearance:none;appearance:none;transition:border-color .2s}
+.fi,.fs{width:100%;padding:12px 14px;background:rgba(255,255,255,.04);border:1.5px solid var(--border2);border-radius:6px;color:#fff;font-family:'Barlow',sans-serif;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;transition:border-color .2s}
 .fi::placeholder{color:var(--muted2)}
 .fi:focus,.fs:focus{outline:none;border-color:var(--orange)}
-.fs{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;color:rgba(255,255,255,.8);-webkit-appearance:none;appearance:none}
+.fs{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;color:rgba(255,255,255,.8);-webkit-appearance:none;-moz-appearance:none;appearance:none}
 .fs option{background:#111;color:#fff}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
@@ -327,7 +327,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 .comm-dtl{position:relative;z-index:2}
 .comm-role-p{font-size:10px;font-weight:800;letter-spacing:3px;color:var(--orange);text-transform:uppercase;margin-bottom:6px}
 .comm-name-p{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;line-height:1}
-.comm-bio{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;margin-bottom:20px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.comm-bio{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;margin-bottom:20px;display:-webkit-box;display:box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .comm-footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1)}
 .comm-stats{display:flex;gap:12px}
 .cstat{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,0.5);font-weight:600}
@@ -409,7 +409,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 .arc-expanded.show{display:block;animation:rise .2s ease}
 .arc-member{padding:6px 0;font-size:11px;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.03)}
 .arc-member:last-child{border-bottom:none}
-.admin-search{width:100%;padding:12px 14px;background:rgba(255,255,255,.04);border:1.5px solid var(--border2);border-radius:6px;color:#fff;font-family:'Barlow',sans-serif;font-size:14px;margin-bottom:16px;-webkit-appearance:none}
+.admin-search{width:100%;padding:12px 14px;background:rgba(255,255,255,.04);border:1.5px solid var(--border2);border-radius:6px;color:#fff;font-family:'Barlow',sans-serif;font-size:14px;margin-bottom:16px;-webkit-appearance:none;-moz-appearance:none;appearance:none}
 .admin-search:focus{outline:none;border-color:var(--orange)}
 .admin-search::placeholder{color:var(--muted2)}
 .admin-dept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-bottom:20px}
@@ -1122,8 +1122,12 @@ function renderTiles() {
 
 /* ════════ CONTACTS ════════ */
 const COMMITTEE = [
-  { name: 'Sriram S', role: 'Symposium Secretary', dept: 'CSE 3rd Year', bio: 'Web Development & System Admin', phone: '9361131042', img: 'assets/committee/sriram.jpg', linkedin: '#' },
-  { name: 'Anna Lorenza', role: 'Event Coordinator', dept: 'CSE 3rd Year', bio: 'Through the lens, I create stories worth remembering.', phone: '9087654321', img: 'assets/committee/anna.jpg', linkedin: '#' }
+  { name: 'Pranav', role: 'Symposium Secretary', dept: 'Whole Head', bio: 'Leading the vision of UTSAV 2K26', phone: '9361131042', img: 'assets/committee/pranav.jpg', linkedin: '#' },
+  { name: 'Sabarish', role: 'Symposium Coordinator', dept: 'Core Team', bio: 'Overseeing logistics and event operations', phone: '9361131042', img: 'assets/committee/sabarish.jpg', linkedin: '#' },
+  { name: 'Arjun', role: 'Event Coordinator', dept: 'Core Team', bio: 'Coordinating all technical and non-technical showdowns', phone: '9087654321', img: 'assets/committee/arjun.jpg', linkedin: '#' },
+  { name: 'Sanjay Kumar KS', role: 'AV Head', dept: 'Technical Team', bio: 'Ensuring audio-visual excellence across the symposium', phone: '9361131042', img: 'assets/committee/sanjay_ks.jpg', linkedin: '#' },
+  { name: 'Naveen', role: 'Media Team Head', dept: 'Creative Team', bio: 'Capturing the best moments and highlights of UTSAV', phone: '9361131042', img: 'assets/committee/naveen.jpg', linkedin: '#' },
+  { name: 'Sanjay Kumar M', role: 'Core Committee', dept: 'Management', bio: 'Strategic planning and administrative oversight', phone: '9361131042', img: 'assets/committee/sanjay_m.jpg', linkedin: '#' }
 ];
 
 function renderComm() {
