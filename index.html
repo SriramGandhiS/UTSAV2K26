@@ -514,7 +514,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
   <!-- Watermark ghost names -->
   <div class="wm-layer" id="wm-layer"></div>
   <div class="hero-left">
-    <div class="hero-meta">19–21 March 2026 &nbsp;|&nbsp; PSNA College, Dindigul</div>
+    <div class="hero-meta">2–4 April 2026 &nbsp;|&nbsp; PSNA College, Dindigul</div>
     <h1 class="hero-h">
       <span class="wh">THE</span><span class="or"> CSE UTSAV</span>
       <br><span class="wh">BEGINS</span>
@@ -535,7 +535,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
     <div class="poster">
       <div class="poster-inner">
         <div class="poster-ot">CSE UTSAV</div>
-        <div class="poster-dt">19 — 21 March 2026</div>
+        <div class="poster-dt">2 — 4 April 2026</div>
         <div class="poster-su">PSNA CSE · Dindigul</div>
       </div>
     </div>
@@ -633,16 +633,17 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
       <!-- STEP 1: Personal Details -->
       <div class="step active" id="step-0">
         <div id="ev-summary-here"></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <div class="fc-t" style="margin-bottom:0">Your Details</div>
-          <div style="display:flex;gap:4px">
-            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(1)">Tester 1</button>
-            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(2)">Tester 2</button>
-            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(3)">Tester 3</button>
-            <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(4)">Tester 4</button>
+        <div id="step-0-content" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div class="fc-t" style="margin-bottom:0">Your Details</div>
+            <div style="display:flex;gap:4px">
+              <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(1)">Tester 1</button>
+              <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(2)">Tester 2</button>
+              <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(3)">Tester 3</button>
+              <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(4)">Tester 4</button>
+            </div>
           </div>
-        </div>
-        <div class="fg"><label class="fl">Full Name</label><input class="fi" id="f-name" type="text" placeholder="Enter your full name"></div>
+          <div class="fg"><label class="fl">Full Name</label><input class="fi" id="f-name" type="text" placeholder="Enter your full name"></div>
         <div class="row2">
           <div class="fg"><label class="fl">Register Number</label><input class="fi" id="f-regno" type="text" placeholder="e.g. 2303921310421226"></div>
           <div class="fg">
@@ -684,6 +685,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
         <div class="fg"><label class="fl">College Email</label><input class="fi" id="f-email" type="email" placeholder="yourname@psnacet.edu.in"></div>
         <div class="free-note">CSE Department Only · Free Registration</div>
         <button class="reg-next-btn" onclick="goStep(1)">Next — Team Details</button>
+        </div>
       </div>
 
       <!-- STEP 2: Team Details -->
@@ -711,6 +713,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
         <div class="fc-t">Review & Confirm</div>
         <div id="review-content"></div>
         <div class="free-note">Registration is completely FREE</div>
+        <div style="font-size:11px;color:rgba(232,84,26,0.9);text-align:center;margin-bottom:12px;padding:0 10px;font-weight:600">During heavy traffic, registration may take a few seconds.<br>Please click submit only once.</div>
         <button class="reg-next-btn" onclick="submitReg()">Confirm Registration</button>
         <button class="reg-back-btn" onclick="goStep(1)">← Edit Details</button>
       </div>
@@ -1071,7 +1074,7 @@ function buildObs() {
   document.getElementById('obs').innerHTML = d.map(x=>`<span class="obi">${x}</span>`).join('');
 }
 function buildTicker() {
-  const items = ['CSEUTSAV 2K26','EVENTS','HACKVERSE','DESIGN DECODE','CHECKMATE CODERS','UNO REVERSE','BRAND TO BILLION','ZERO CODE ZONE','TECHNOTRACE','CLASH OF MINDS','FRANCHISE FIESTA','THE ALGORITHMIC PLATTER','FREE ENTRY','PSNA CSE','19–21 MARCH 2026'];
+  const items = ['CSEUTSAV 2K26','EVENTS','HACKVERSE','DESIGN DECODE','CHECKMATE CODERS','UNO REVERSE','BRAND TO BILLION','ZERO CODE ZONE','TECHNOTRACE','CLASH OF MINDS','FRANCHISE FIESTA','THE ALGORITHMIC PLATTER','FREE ENTRY','PSNA CSE','2–4 APRIL 2026'];
   const d = [...items,...items];
   document.getElementById('ticker').innerHTML = d.map(t=>`<div class="ti">${t}<div class="td"></div></div>`).join('');
 }
@@ -1253,6 +1256,10 @@ function openReg(evId) {
         ${nonTechEvs.map(e => evRow(e)).join('')}
       </div>`;
     s2.innerHTML = '';
+    
+    // Hide the rest of the form when no event is selected
+    const stepContent = document.getElementById('step-0-content');
+    if (stepContent) stepContent.style.display = 'none';
   }
   updateStepUI();
   document.getElementById('reg-ov').classList.add('open');
@@ -1266,6 +1273,14 @@ function selectEventInForm(id) {
   s1.innerHTML = evSummaryCard(id);
   s2.innerHTML = evSummaryCard(id);
   setupTeamStep();
+  
+  // Show the rest of the form now that an event is selected
+  const stepContent = document.getElementById('step-0-content');
+  if (stepContent) {
+    stepContent.style.display = 'block';
+    // Add a slight fade-in animation to make it smooth
+    stepContent.style.animation = 'fo .3s ease';
+  }
 }
 
 function clearEvent() {
@@ -1493,9 +1508,44 @@ function buildReview() {
 }
 
 /* ── SUBMIT ── */
-async function submitReg() {
+let isCooldown = false;
+let cooldownTimer = null;
+
+function activateCooldown() {
   const btn = document.querySelector('#step-2 .reg-next-btn');
+  const backBtn = document.querySelector('#step-2 .reg-back-btn');
+  isCooldown = true;
+  let timeleft = 25; // 25 seconds cooldown
+  
+  if (btn) {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.textContent = `Try Again in ${timeleft}s`;
+    
+    clearInterval(cooldownTimer);
+    cooldownTimer = setInterval(() => {
+      timeleft--;
+      if (timeleft <= 0) {
+        clearInterval(cooldownTimer);
+        isCooldown = false;
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.textContent = 'Confirm Registration';
+        if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
+      } else {
+        btn.textContent = `Try Again in ${timeleft}s`;
+      }
+    }, 1000);
+  }
+}
+
+async function submitReg() {
+  if (isCooldown) return;
+
+  const btn = document.querySelector('#step-2 .reg-next-btn');
+  const backBtn = document.querySelector('#step-2 .reg-back-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; btn.style.opacity = '0.7'; }
+  if (backBtn) { backBtn.style.pointerEvents = 'none'; backBtn.style.opacity = '0.5'; }
 
   const name=document.getElementById('f-name').value.trim();
   const regno=document.getElementById('f-regno').value.trim();
@@ -1536,12 +1586,16 @@ async function submitReg() {
   if (localDupeName) {
     showError('Duplicate Blocked', 'Already registered', `${localDupeName} (${localDupeReg}) is already locally registered for ${currentEv.name} on this device.`);
     if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+    if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
     return;
   }
 
   // 2. Server check & Time-Slot Conflict Check
   if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-    showAdminLoader('Checking DB Records...');
+    // Randomized networking delay to reduce same-second bursts
+    await new Promise(r => setTimeout(r, Math.floor(Math.random() * 800) + 200));
+
+    showAdminLoader('Checking DB Records...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600;letter-spacing:1px;text-transform:none">Please wait, do not refresh or close this page.</span>');
     try {
       const allRegNos = [regno, ...teamMembers.map(m => m.regno)].join(',');
       const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email) + '&regnos=' + encodeURIComponent(allRegNos) + '&eventId=' + encodeURIComponent(currentEv.id) + '&eventName=' + encodeURIComponent(currentEv.name) + '&timeSlot=' + encodeURIComponent(currentEv.timeSlot||'');
@@ -1553,6 +1607,7 @@ async function submitReg() {
         hideAdminLoader();
         showError('Duplicate Blocked', 'You are already registered', `You already hold a confirmed pass for ${currentEv.name}.`);
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+        if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
         return;
       }
       
@@ -1561,6 +1616,7 @@ async function submitReg() {
         const dupeNames = data.duplicateDetails.map(d => `${d.name} (${d.regno})`).join(' / ');
         showError('Duplicate Detected', 'Team members already participating', `The following persons are already registered for this event (either as a leader or in another team): \n\n${dupeNames}`);
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+        if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
         return;
       }
 
@@ -1570,6 +1626,7 @@ async function submitReg() {
         const conflictNames = data.timeSlotConflictDetails.map(d => `${d.name} (${d.regno}) in [${d.conflictingEvent}]`).join(' \n ');
         showError('Time Slot Conflict!', 'Simultaneous Events Selected', `The following team members are already registered for another event happening at the exactly same time (${currentEv.timeSlot}): \n\n${conflictNames}\n\nPlease choose a different event or update team members.`);
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+        if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
         return;
       }
     } catch(e) { console.error("Server verify failed:", e); }
@@ -1591,7 +1648,7 @@ async function submitReg() {
 
   // 3. Strict Server Commit (We must wait for success before saving the pass)
   if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-    showAdminLoader('Securing Pass on Server...');
+    showAdminLoader('Securing Final Pass...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600;letter-spacing:1px;text-transform:none">Please wait, do not refresh or close this page.</span>');
     try {
       const resp = await fetch(SHEETS_URL, {
         method: 'POST',
@@ -1601,14 +1658,20 @@ async function submitReg() {
       
       if (!result.success) {
         hideAdminLoader();
-        showError('Server Error', 'Failed to save', result.error);
-        if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+        if (result.error && result.error.includes("Server busy")) {
+           showError('High Traffic Detected', 'Server Busy', 'High traffic detected. Your registration was not saved. Please wait 20-30 seconds and try again.');
+           activateCooldown();
+        } else {
+           showError('Server Error', 'Failed to save', result.error);
+           if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+           if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
+        }
         return; 
       }
     } catch(e) {
       hideAdminLoader();
-      showError('Timeout Error', 'Heavy Network Load', 'The server is under heavy load and timed out. Your registration was not saved. Please wait a few moments and try again.');
-      if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+      showError('High Traffic Detected', 'Request Timed Out', 'The server is under heavy load and timed out. Your registration was not saved. Please wait 20-30 seconds and try again.');
+      activateCooldown();
       return; 
     }
     hideAdminLoader();
@@ -1636,6 +1699,7 @@ async function submitReg() {
   ['f-year','f-section'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   teamMembers = []; currentEv = null; currentStep = 0;
   if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+  if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
 }
 
 function syncSingle(reg) {
@@ -1689,7 +1753,7 @@ function renderPassCards(regs) {
           <div><div class="pfl">Department</div><div class="pfv">${r.department || 'CSE'}</div></div>
           <div><div class="pfl">Year & Section</div><div class="pfv">${r.year ? 'Year '+r.year+' · Sec '+(r.section||'—') : '—'}</div></div>
           <div><div class="pfl">Register Phone</div><div class="pfv">${r.phone||'—'}</div></div>
-          <div><div class="pfl">Date & Venue</div><div class="pfv">19–21 Mar · PSNA</div></div>
+          <div><div class="pfl">Date & Venue</div><div class="pfv">2–4 April · PSNA</div></div>
         </div>
         ${(r.teamName && !r.teamName.includes('[{"name"')) || members.length > 0 ? `
         <div class="team-pass-section">
@@ -2137,7 +2201,7 @@ function doPost(e) {
     sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventId||"", r.eventName, r.teamName||"", JSON.stringify(r.teamMembers||[]), r.ts]);
     try {
       var subject = "Registration Confirmed - " + r.eventName + " | CSE UTSAV 2K26";
-      var body = "Hi " + r.name + ",\\n\\nYour registration for " + r.eventName + " is confirmed!\\n\\nPass ID: " + r.regId + "\\nDate: 19-21 March 2026\\nVenue: PSNA College, Dindigul\\n\\nPlease show your digital pass at the registration desk.\\n\\nBest regards,\\nCSE UTSAV 2K26 Team";
+      var body = "Hi " + r.name + ",\\n\\nYour registration for " + r.eventName + " is confirmed!\\n\\nPass ID: " + r.regId + "\\nDate: 2-4 April 2026\\nVenue: PSNA College, Dindigul\\n\\nPlease show your digital pass at the registration desk.\\n\\nBest regards,\\nCSE UTSAV 2K26 Team";
       GmailApp.sendEmail(r.email, subject, body);
     } catch(ex) {}
   } else if (d.action === "deleteReg") {
@@ -2306,7 +2370,7 @@ async function deleteSingleReg(regId) {
 }
 
 function showAdminLoader(msg) {
-  document.getElementById('al-text').textContent = msg || 'Processing...';
+  document.getElementById('al-text').innerHTML = msg || 'Processing...';
   document.getElementById('admin-loader-ov').classList.add('active');
 }
 function hideAdminLoader() {
@@ -2315,7 +2379,7 @@ function hideAdminLoader() {
 
 /* ════════ COUNTDOWN ════════ */
 function tick() {
-  const d = new Date('2026-03-19T09:00:00') - new Date();
+  const d = new Date('2026-04-02T09:00:00') - new Date();
   if (d <= 0) return;
   document.getElementById('cd-d').textContent = String(Math.floor(d/86400000)).padStart(2,'0');
   document.getElementById('cd-h').textContent = String(Math.floor(d%86400000/3600000)).padStart(2,'0');

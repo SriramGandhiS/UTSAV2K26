@@ -189,7 +189,7 @@ function doGet(e) {
 // ── POST requests (Save registrations) ──
 function doPost(e) {
   var lock = LockService.getScriptLock();
-  var successLock = lock.tryLock(10000);
+  var successLock = lock.tryLock(28000);
 
   if (!successLock) {
     return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Server busy, please try again." })).setMimeType(ContentService.MimeType.JSON);
