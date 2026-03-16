@@ -312,20 +312,29 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 /* COMMITTEE MODAL */
 .comm-ov{position:fixed;inset:0;z-index:850;background:var(--black);display:none;overflow-y:auto}
 .comm-ov.open{display:block;animation:fo .3s ease}
-.comm-wrap{padding:20px 20px 60px;max-width:500px;margin:0 auto}
-.comm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-top:10px}
-.comm-title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#fff;letter-spacing:1px;text-transform:uppercase}
-.comm-close{padding:8px 16px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--muted);font-size:12px;font-weight:600;letter-spacing:1px}
-.comm-grid{display:flex;flex-direction:column;gap:12px}
-.comm-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;transition:border-color .2s}
-.comm-card:hover{border-color:var(--orange)}
-.comm-info{display:flex;flex-direction:column;gap:4px}
-.comm-role{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase}
-.comm-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:1px;text-transform:uppercase}
-.comm-meta{font-size:11px;color:var(--muted2)}
-.comm-action{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);transition:all .2s;flex-shrink:0}
-.comm-action:hover{background:var(--orange);border-color:var(--orange);color:#fff}
-.comm-action svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.comm-wrap{padding:20px 20px 80px;max-width:1100px;margin:0 auto}
+.comm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-top:10px}
+.comm-title{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase}
+.comm-title span{color:var(--orange)}
+.comm-close{padding:10px 20px;background:rgba(255,255,255,.05);border:1.5px solid var(--border2);border-radius:6px;color:rgba(255,255,255,.6);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+
+.comm-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:24px}
+.comm-card{position:relative;background:var(--card);border-radius:20px;overflow:hidden;border:1px solid var(--border);aspect-ratio:3/4.2;transition:transform .3s ease, border-color .3s ease}
+.comm-card:hover{transform:translateY(-8px);border-color:rgba(232,84,26,0.4);z-index:10}
+.comm-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.comm-card:hover .comm-img{transform:scale(1.05)}
+.comm-overlay{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 70%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+.comm-dtl{position:relative;z-index:2}
+.comm-role-p{font-size:10px;font-weight:800;letter-spacing:3px;color:var(--orange);text-transform:uppercase;margin-bottom:6px}
+.comm-name-p{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;line-height:1}
+.comm-bio{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;margin-bottom:20px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.comm-footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1)}
+.comm-stats{display:flex;gap:12px}
+.cstat{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,0.5);font-weight:600}
+.cstat svg{width:14px;height:14px;opacity:0.7}
+.comm-btn{width:40px;height:40px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;color:#000;transition:transform .2s ease}
+.comm-btn:hover{transform:scale(1.1);background:var(--orange);color:#fff}
+
 
 /* EVENT DETAIL MODAL */
 .ev-modal-ov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);display:none;align-items:flex-end}
@@ -769,34 +778,14 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 <div class="comm-ov" id="comm-ov">
   <div class="comm-wrap">
     <div class="comm-head">
-      <div class="comm-title">Committee <span>Members</span></div>
-      <button class="comm-close" onclick="closeComm()">Close ✕</button>
+      <div class="comm-title">Symposium <span>Committee</span></div>
+      <button class="comm-close" onclick="closeComm()">✕ Close</button>
     </div>
-    
-    <div class="comm-grid">
-      <!-- President -->
-      <div class="comm-card">
-        <div class="comm-info">
-          <div class="comm-role">President</div>
-          <div class="comm-name">[Name TBD]</div>
-          <div class="comm-meta">[Designation TBD]</div>
-        </div>
-        <a href="tel:" class="comm-action" aria-label="Call">
-          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
-        </a>
-      </div>
-      
-      <!-- Vice President -->
-      <div class="comm-card">
-        <div class="comm-info">
-          <div class="comm-role">Vice President</div>
-          <div class="comm-name">[Name TBD]</div>
-          <div class="comm-meta">[Designation TBD]</div>
-        </div>
-        <a href="tel:" class="comm-action" aria-label="Call">
-          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
-        </a>
-      </div>
+    <div class="comm-grid" id="comm-list">
+      <!-- Dynamic rendering via JS -->
+    </div>
+  </div>
+</div>
 
       <!-- Event Head -->
       <div class="comm-card">
@@ -1132,6 +1121,34 @@ function renderTiles() {
 }
 
 /* ════════ CONTACTS ════════ */
+const COMMITTEE = [
+  { name: 'Sriram S', role: 'Symposium Secretary', dept: 'CSE 3rd Year', bio: 'Web Development & System Admin', phone: '9361131042', img: 'assets/committee/sriram.jpg', linkedin: '#' },
+  { name: 'Anna Lorenza', role: 'Event Coordinator', dept: 'CSE 3rd Year', bio: 'Through the lens, I create stories worth remembering.', phone: '9087654321', img: 'assets/committee/anna.jpg', linkedin: '#' }
+];
+
+function renderComm() {
+  document.getElementById('comm-list').innerHTML = COMMITTEE.map(c => `
+    <div class="comm-card">
+      <img src="${c.img}" class="comm-img" alt="${c.name}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(c.name)}&background=161616&color=e8541a&size=512'">
+      <div class="comm-overlay">
+        <div class="comm-dtl">
+          <div class="comm-role-p">${c.role}</div>
+          <div class="comm-name-p">${c.name}</div>
+          <div class="comm-bio">${c.bio || c.dept}</div>
+          <div class="comm-footer">
+            <div class="comm-stats">
+              <div class="cstat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</div>
+            </div>
+            <a href="tel:${c.phone}" class="comm-btn" aria-label="Call ${c.name}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
 function renderContacts() {
   document.getElementById('cg').innerHTML = CONTACTS.map(c => `
     <a class="cc" href="tel:${c.phone}">
@@ -2499,6 +2516,7 @@ function updateDockActive() {
 
 function openComm() {
   hideDock();
+  renderComm();
   document.getElementById('comm-ov').classList.add('open');
 }
 function closeComm() {
