@@ -1999,6 +1999,36 @@
     .sync-status.err {
       color: #e74c3c
     }
+    .ev-listing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px
+    }
+
+    .ev-item-card {
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease
+    }
+
+    .ev-item-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--orange)
+    }
+
+    @media (max-width: 600px) {
+      .ev-listing-grid {
+        grid-template-columns: 1fr;
+        gap: 12px
+      }
+    }
+
 
     /* COMMITTEE MODAL */
     .comm-ov {
@@ -2181,6 +2211,48 @@
       transform: scale(1.1);
       background: var(--orange);
       color: #fff
+    }
+
+    @media (max-width: 600px) {
+      .comm-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding-bottom: 40px;
+      }
+      .comm-card {
+        border-radius: 12px;
+        aspect-ratio: 3/4.5;
+      }
+      .comm-overlay {
+        padding: 12px;
+      }
+      .comm-name-p {
+        font-size: 16px;
+      }
+      .comm-role-p {
+        font-size: 8px;
+        letter-spacing: 1.5px;
+      }
+      .comm-bio {
+        font-size: 10px;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        margin-bottom: 12px;
+      }
+      .comm-footer {
+        padding-top: 10px;
+      }
+      .comm-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+      }
+      .cstat {
+        font-size: 10px;
+      }
+      .comm-wrap {
+        padding: 16px 16px 80px;
+      }
     }
 
 
@@ -3624,7 +3696,7 @@
         date: 'April 2–3, 2026', time: '10:00 AM – 10:00 AM', venue: 'CSE Lab 1', deadline: 'Mar 30',
         p1: '₹5,000', p2: '₹3,000', p3: '₹2,000',
         rules: ['Team of 2–4', 'Theme given on spot', 'Working prototype required', 'Any tech stack allowed', 'Judge decision final'],
-        ec: 'Mr. Karthik R.', ep: '+91 98421 56789', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
+        ec: 'Pranav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
       },
       {
         id: 'dd', name: 'DESIGN DECODE', label: 'UI/UX Design Challenge', category: 'Technical', type: 'Team', minTeam: 1, maxTeam: 2, tag: 'Design', timeSlot: 'B',
@@ -3633,7 +3705,7 @@
         date: 'April 2, 2026', time: '02:00 PM – 05:00 PM', venue: 'IT Lab 2', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Max 2 members', 'Design tools provided', 'Time-bound rounds', 'Theme given on spot', 'Originality is key'],
-        ec: 'Ms. Divya S.', ep: '+91 96780 34567', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
+        ec: 'Pranav', ep: '9361131042', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
       },
       {
         id: 'cc', name: 'CHECKMATE CODERS', label: 'Competitive Coding Arena', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Coding', timeSlot: 'A',
@@ -3642,7 +3714,7 @@
         date: 'April 2, 2026', time: '10:00 AM – 01:00 PM', venue: 'CSE Lab 3', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Languages: C, C++, Java, Python', 'Multiple rounds', 'No internet', 'Judge decision final'],
-        ec: 'Mr. Vijay T.', ep: '+91 94560 78901', sc: 'Ms. Anitha L.', sp: '+91 93450 67890'
+        ec: 'Pranav', ep: '9361131042', sc: 'Ms. Anitha L.', sp: '+91 93450 67890'
       },
       {
         id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding Challenge', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Coding', timeSlot: 'B',
@@ -3651,7 +3723,7 @@
         date: 'April 2, 2026', time: '02:00 PM – 05:00 PM', venue: 'CSE Lab 2', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Output provided, find the code', 'Languages: C, C++, Java, Python', 'No internet', 'Time-limited rounds'],
-        ec: 'Ms. Keerthana R.', ep: '+91 92340 56789', sc: 'Dr. Senthil P.', sp: '+91 91230 45678'
+        ec: 'Pranav', ep: '9361131042', sc: 'Dr. Senthil P.', sp: '+91 91230 45678'
       },
       {
         id: 'btb', name: 'BRAND TO BILLION', label: 'Tech Startup Pitch', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Strategy', timeSlot: 'C',
@@ -3660,7 +3732,7 @@
         date: 'April 3, 2026', time: '10:00 AM – 01:00 PM', venue: 'Seminar Hall', deadline: 'Mar 30',
         p1: '₹4,000', p2: '₹2,500', p3: '₹1,500',
         rules: ['Team of 2–4', 'Pitch deck required', '5-min presentation + Q&A', 'Any domain', 'Judges decision final'],
-        ec: 'Mr. Arun M.', ep: '+91 90120 34567', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
+        ec: 'Pranav', ep: '9361131042', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
       },
       {
         id: 'zcz', name: 'ZERO CODE ZONE', label: 'No-Code Tech Challenge', category: 'Technical', type: 'Solo', minTeam: 1, maxTeam: 1, tag: 'Technical', timeSlot: 'C',
@@ -3669,7 +3741,7 @@
         date: 'April 3, 2026', time: '10:00 AM – 01:00 PM', venue: 'IT Lab 1', deadline: 'Mar 30',
         p1: '₹2,000', p2: '₹1,500', p3: '₹1,000',
         rules: ['Individual only', 'No coding required', 'Logic & aptitude based', 'Multiple rounds', 'No electronic devices'],
-        ec: 'Ms. Nithya B.', ep: '+91 88900 12345', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
+        ec: 'Pranav', ep: '9361131042', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
       },
       {
         id: 'tt', name: 'TECHNOTRACE', label: 'Tech Treasure Hunt', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Fun', timeSlot: 'D',
@@ -3678,7 +3750,7 @@
         date: 'April 3, 2026', time: '02:00 PM – 05:00 PM', venue: 'Campus Wide', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Multiple rounds', 'Phone required for clues', 'No external help', 'Fastest team wins'],
-        ec: 'Mr. Karthik R.', ep: '+91 98421 56789', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
+        ec: 'Pranav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
       },
 
       /* ── NON-TECHNICAL EVENTS (3) ── */
@@ -3689,7 +3761,7 @@
         date: 'April 4, 2026', time: '10:00 AM – 01:00 PM', venue: 'Auditorium', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Multiple rounds', 'No electronic devices', 'Quizmaster decision final', 'Time-limited answers'],
-        ec: 'Ms. Divya S.', ep: '+91 96780 34567', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
+        ec: 'Arjun', ep: '9087654321', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
       },
       {
         id: 'ff', name: 'FRANCHISE FIESTA', label: 'Business Simulation Game', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Management', timeSlot: 'B',
@@ -3698,7 +3770,7 @@
         date: 'April 4, 2026', time: '02:00 PM – 05:00 PM', venue: 'MBA Block', deadline: 'Mar 30',
         p1: '₹4,000', p2: '₹2,500', p3: '₹1,500',
         rules: ['Team of 2–4', 'Business strategy game', 'Presentation required', 'All materials provided', 'Judges decision final'],
-        ec: 'Mr. Arun M.', ep: '+91 90120 34567', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
+        ec: 'Arjun', ep: '9087654321', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
       },
       {
         id: 'tap', name: 'THE ALGORITHMIC PLATTER', label: 'Fun Algorithmic Puzzles', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Puzzle', timeSlot: 'C',
@@ -3707,7 +3779,7 @@
         date: 'April 4, 2026', time: '10:00 AM – 01:00 PM', venue: 'MCA Lab', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Puzzle-based challenges', 'Pen & paper rounds included', 'No electronic devices in prelims', 'Time-bound'],
-        ec: 'Ms. Nithya B.', ep: '+91 88900 12345', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
+        ec: 'Arjun', ep: '9087654321', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
       }
     ];
 
@@ -3864,31 +3936,92 @@
     /* ════════ EVENT MODAL ════════ */
     function openEvMod(id) {
       const e = EVS.find(ev => ev.id === id); if (!e) return;
+      const isTech = e.category === 'Technical';
+      const catColor = isTech ? '#2ecc71' : 'var(--orange)';
+      
       document.getElementById('esc').innerHTML = `
-    <div class="ev-modal-close">
-      <div style="font-size:10px;font-weight:700;letter-spacing:3px;color:var(--orange);text-transform:uppercase">${e.tag}</div>
-      <button class="ev-modal-close-btn" onclick="closeEvMod(null,1)">✕ Close</button>
+    <div style="position:sticky;top:0;z-index:10;background:rgba(10,10,10,0.8);backdrop-filter:blur(12px);margin:-20px -20px 20px -20px;padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:10px;height:10px;border-radius:50%;background:${catColor};box-shadow:0 0 10px ${catColor}"></div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:3px;color:${catColor};text-transform:uppercase">${e.category}</div>
+      </div>
+      <button class="ev-modal-close-btn" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:8px 16px;border-radius:8px;color:#fff;font-size:12px;font-weight:700" onclick="closeEvMod(null,1)">✕ CLOSE</button>
     </div>
-    <div style="margin-bottom:18px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">${e.name}</div>
-      <div style="font-size:12px;color:var(--muted)">${e.label} · ${e.type === 'Solo' ? 'Individual' : `Team ${e.minTeam}–${e.maxTeam}`}</div>
+
+    <!-- Page Header -->
+    <div style="margin-bottom:32px">
+       <div style="display:flex;gap:20px;align-items:flex-start">
+         <div style="width:80px;height:80px;border-radius:20px;background:${e.grad};border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;box-shadow:0 10px 30px rgba(0,0,0,0.3)">${e.icon}</div>
+         <div>
+           <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;line-height:1;margin:0 0 8px 0">${e.name}</h1>
+           <div style="font-family:'Outfit',sans-serif;font-size:14px;color:var(--muted);font-weight:600;letter-spacing:1px">${e.label}</div>
+         </div>
+       </div>
     </div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.7;padding:13px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;margin-bottom:16px">${e.desc}</div>
-    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px">
-      ${[['📅', e.date], ['⏰', e.time], ['📍', e.venue], ['⏳', 'Deadline: ' + e.deadline]].map(([i, t]) => `<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:5px 10px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;display:flex;gap:5px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
+
+    <!-- Quick Stats Grid -->
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px">
+      ${[['📅 Date', e.date], ['⏰ Time', e.time], ['📍 Venue', e.venue], ['👥 Team', e.type === 'Solo' ? 'Individual' : `Team ${e.minTeam}–${e.maxTeam}`]].map(([l, t]) => `
+        <div style="padding:16px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;transition:border-color .3s" onmouseover="this.style.borderColor='${catColor}'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:10px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">${l}</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;letter-spacing:0.5px">${t}</div>
+        </div>
+      `).join('')}
     </div>
-    <div style="display:flex;gap:8px;margin-bottom:18px">
-      ${[['1st', e.p1, true], ['2nd', e.p2, false], ['3rd', e.p3, false]].map(([r, a, h]) => `<div style="flex:1;padding:12px 6px;border-radius:6px;text-align:center;background:${h ? 'rgba(232,84,26,.08)' : 'rgba(255,255,255,.03)'};border:1px solid ${h ? 'rgba(232,84,26,.2)' : 'var(--border)'}"><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:5px">${r} Prize</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;color:${h ? 'var(--orange)' : '#fff'}">${a}</div></div>`).join('')}
+
+    <!-- About Section -->
+    <div style="margin-bottom:32px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+        <span style="width:24px;height:1px;background:${catColor}"></span> ABOUT EVENT
+      </div>
+      <p style="font-size:15px;color:rgba(255,255,255,0.7);line-height:1.8;padding-left:4px;margin:0">${e.desc}</p>
     </div>
-    <div style="font-size:10px;font-weight:700;letter-spacing:3px;color:var(--muted2);text-transform:uppercase;margin-bottom:8px">Rules</div>
-    <div style="background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:16px">
-      ${e.rules.map(r => `<div style="display:flex;gap:8px;padding:6px 0;font-size:12px;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.04);line-height:1.4"><span style="color:var(--orange);font-weight:800;flex-shrink:0">—</span>${r}</div>`).join('')}
+
+    <!-- Rules Section -->
+    <div style="margin-bottom:32px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+        <span style="width:24px;height:1px;background:${catColor}"></span> RULES & GUIDELINES
+      </div>
+      <div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+        ${e.rules.map((r, i) => `
+          <div style="display:flex;gap:16px;padding:16px 20px;font-size:13px;color:rgba(255,255,255,0.8);border-bottom:1px solid rgba(255,255,255,.05);line-height:1.5">
+            <span style="color:${catColor};font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:16px;min-width:20px">${String(i+1).padStart(2,'0')}</span>
+            <span>${r}</span>
+          </div>
+        `).join('')}
+      </div>
     </div>
-    <div style="display:flex;gap:8px;margin-bottom:18px">
-      <a href="tel:${e.ep}" style="flex:1;padding:12px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;display:block"><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:3px">Event Coord</div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:2px">${e.ec}</div><div style="font-size:11px;color:var(--orange)">${e.ep}</div></a>
-      <a href="tel:${e.sp}" style="flex:1;padding:12px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;display:block"><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:3px">Staff Coord</div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:2px">${e.sc}</div><div style="font-size:11px;color:var(--orange)">${e.sp}</div></a>
+
+    <!-- Team Section (Coordinators) -->
+    <div style="margin-bottom:100px"> <!-- Extra margin for bottom action bar -->
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+        <span style="width:24px;height:1px;background:${catColor}"></span> COORDINATORS & JUDGES
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <!-- Event Head (Pranav/Arjun) -->
+        <a href="tel:${e.ep}" style="text-decoration:none;padding:20px;background:${isTech ? 'rgba(46,204,113,0.05)' : 'rgba(232,84,26,0.05)'};border:1px solid ${isTech ? 'rgba(46,204,113,0.1)' : 'rgba(232,84,26,0.1)'};border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.ec)}&background=${isTech ? '2ecc71' : 'e8541a'}&color=fff&size=128" style="width:60px;height:60px;border-radius:50%;border:2px solid ${catColor};margin-bottom:12px">
+          <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">EVENT HEAD</div>
+          <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;font-family:'Barlow Condensed'">${e.ec}</div>
+          <div style="font-size:12px;color:${catColor};font-weight:700">${e.ep}</div>
+        </a>
+        <!-- Staff Coordinator/Judge -->
+        <a href="tel:${e.sp}" style="text-decoration:none;padding:20px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.sc)}&background=333&color=fff&size=128" style="width:60px;height:60px;border-radius:50%;border:2px solid var(--border);margin-bottom:12px">
+          <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">STAFF / JUDGE</div>
+          <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;font-family:'Barlow Condensed'">${e.sc}</div>
+          <div style="font-size:12px;color:var(--muted2);font-weight:700">${e.sp}</div>
+        </a>
+      </div>
     </div>
-    <button class="reg-next-btn" style="width:100%;margin-top:0" onclick="closeEvMod(null,1); setTimeout(()=>openReg('${e.id}'),300);">Register Now</button>
+
+    <!-- Fixed Bottom Action Section -->
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top, var(--black) 80%, transparent);border-top:1px solid var(--border);z-index:15">
+      <button class="reg-next-btn" style="width:100%;height:58px;margin-top:0;font-size:18px;font-weight:900;border-radius:12px;box-shadow:0 10px 40px rgba(232,84,26,0.4);display:flex;align-items:center;justify-content:center;gap:12px" onclick="closeEvMod(null,1); setTimeout(()=>openReg('${e.id}'),300);">
+        <span>SECURE YOUR SPOT</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
   `;
       document.getElementById('ev-modal').classList.add('open');
     }
@@ -5221,24 +5354,24 @@ function doPost(e) {
       const techEvs = EVS.filter(e => e.category === 'Technical');
       const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
       function evCard(e) {
-        return `<div class="comm-card" style="align-items:flex-start;flex-direction:column;gap:12px;cursor:pointer" onclick="closeAllEvents();openEvMod('${e.id}')">
+        return `<div class="ev-item-card" onclick="closeAllEvents();openEvMod('${e.id}')">
       <div style="display:flex;gap:12px;align-items:center;width:100%">
-        <div style="width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${e.icon}</div>
+        <div style="width:42px;height:42px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${e.icon}</div>
         <div>
           <div class="comm-name" style="font-size:16px">${e.name}</div>
           <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--orange);text-transform:uppercase;margin-top:2px">${e.label}</div>
         </div>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;width:100%">
-        ${[['📅', e.date], ['⏰', e.time], ['📍', e.venue]].map(([i, t]) => `<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:4px 8px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;display:flex;gap:6px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
+        ${[['📅', e.date], ['⏰', e.time]].map(([i, t]) => `<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:4px 8px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;display:flex;gap:6px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
       </div>
     </div>`;
       }
       document.getElementById('allev-list').innerHTML = `
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#2ecc71;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(46,204,113,.4);font-size:20px">&lt;/&gt;</span> Technical</div>
-    ${techEvs.map(e => evCard(e)).join('')}
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--orange);text-transform:uppercase;letter-spacing:2px;margin-top:16px;margin-bottom:4px;padding-top:16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(232,84,26,.4);font-size:20px">{ }</span> Non-Technical</div>
-    ${nonTechEvs.map(e => evCard(e)).join('')}
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#2ecc71;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(46,204,113,.4);font-size:20px">&lt;/&gt;</span> Technical</div>
+    <div class="ev-listing-grid">${techEvs.map(e => evCard(e)).join('')}</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--orange);text-transform:uppercase;letter-spacing:2px;margin-top:24px;margin-bottom:12px;padding-top:16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(232,84,26,.4);font-size:20px">{ }</span> Non-Technical</div>
+    <div class="ev-listing-grid">${nonTechEvs.map(e => evCard(e)).join('')}</div>
   `;
     }
 
