@@ -2200,11 +2200,7 @@ function doPost(e) {
   } else if (d.action === "addReg") {
     var r = d.data;
     sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventId||"", r.eventName, r.teamName||"", JSON.stringify(r.teamMembers||[]), r.ts]);
-    try {
-      var subject = "Registration Confirmed - " + r.eventName + " | CSE UTSAV 2K26";
-      var body = "Hi " + r.name + ",\\n\\nYour registration for " + r.eventName + " is confirmed!\\n\\nPass ID: " + r.regId + "\\nDate: 2-4 April 2026\\nVenue: PSNA College, Dindigul\\n\\nPlease show your digital pass at the registration desk.\\n\\nBest regards,\\nCSE UTSAV 2K26 Team";
-      GmailApp.sendEmail(r.email, subject, body);
-    } catch(ex) {}
+
   } else if (d.action === "deleteReg") {
     var data = sh.getDataRange().getValues();
     for(var i = data.length - 1; i >= 1; i--) {
