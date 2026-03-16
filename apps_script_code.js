@@ -206,9 +206,12 @@ function doPost(e) {
 
     if (d.action === "syncAll") {
       d.data.forEach(function (r) {
-        // Force server time on sync & prepend apostrophe for text formatting
+        // Matured Logic: Handle Solo events clearly in the sheet
+        var teamNameValue = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
+        var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
+        
         var finalTs = r.ts && r.ts.indexOf("T") === -1 ? "'" + r.ts : "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, r.teamName || "", JSON.stringify(r.teamMembers || []), finalTs, r.gender || ""];
+        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || ""];
         sh.appendRow(rowToAppend);
       });
       SpreadsheetApp.flush(); // Ensure instantly saved
@@ -273,9 +276,13 @@ function doPost(e) {
 
       // Forcefully overwrite the frontend's timestamp with the server's exact Indian Standard Time
       // Prepending an apostrophe (') forces Google Sheets to treat it as plain text instead of trying to autoconvert to an ISO Date
+      // Matured Logic: Explicitly label Solo registrations in the sheet for clarity
+      var teamNameValue = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
+      var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
+      
       var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
 
-      var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, r.teamName || "", JSON.stringify(r.teamMembers || []), finalTs, r.gender || ""];
+      var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || ""];
       sh.appendRow(rowToAppend);
       SpreadsheetApp.flush(); // Forces the sheet to save and sync instantly, preventing the "blank screen" effect
 

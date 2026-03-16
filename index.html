@@ -1729,6 +1729,9 @@ function getParsedMembers(r) {
   if (m.length === 0 && typeof r.teamName === 'string' && r.teamName.includes('[{"name"')) {
     try { m = JSON.parse(r.teamName); } catch(e) {}
   }
+  // Handle "Solo" string written by matured script version
+  if (m.length === 0 && r.teamMembers === "Solo") return [];
+  
   return m;
 }
 
@@ -1756,7 +1759,7 @@ function renderPassCards(regs) {
           <div><div class="pfl">Register Phone</div><div class="pfv">${r.phone||'—'}</div></div>
           <div><div class="pfl">Date & Venue</div><div class="pfv">19–21 Mar · PSNA</div></div>
         </div>
-        ${(r.teamName && !r.teamName.includes('[{"name"')) || members.length > 0 ? `
+        ${(r.teamName && r.teamName.trim() !== 'Solo' && !r.teamName.includes('[{"name"')) || members.length > 0 ? `
         <div class="team-pass-section">
           <div class="team-pass-title">Team: ${r.teamName && !r.teamName.includes('[{"name"') ? r.teamName : 'Team'}</div>
           <div class="team-member-row"><span>Member 1 (You)</span><strong>${r.name} · ${r.regno||''}</strong></div>
@@ -1783,7 +1786,8 @@ function generateQRs(regs) {
         const verifyUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'verify.html';
         const members = getParsedMembers(r);
         const tmQR = members.map(m => ({ n: m.name||'', r: m.regno||'', y: m.year||'', s: m.section||'', p: m.phone||'' }));
-        const data = { n: r.name, em: r.email, t: r.teamName && !r.teamName.includes('[{"name"') ? r.teamName : 'Solo', e: r.eventName, id: r.regId, rn: r.regno||'', yr: r.year||'', sec: r.section||'', ph: r.phone||'', tm: tmQR };
+        const tNameForQr = (r.teamName && r.teamName.trim() !== 'Solo' && !r.teamName.includes('[{"name"')) ? r.teamName : 'Solo';
+        const data = { n: r.name, em: r.email, t: tNameForQr, e: r.eventName, id: r.regId, rn: r.regno||'', yr: r.year||'', sec: r.section||'', ph: r.phone||'', tm: tmQR };
         // Use encodeURIComponent to handle special characters before btoa
         const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
         try { new QRCode(el, {text:qrText, width:140, height:140, colorDark:'#000', colorLight:'#fff', correctLevel:QRCode.CorrectLevel.L}); } catch(ex){ console.error("QR Code rendering blocked:", ex); }
@@ -2001,7 +2005,7 @@ function renderAdminRegs(regs) {
     // Use centralized helper for parsing team members with fallbacks
     let parsedMembers = getParsedMembers(r);
 
-    const isTeam = (r.teamName && r.teamName.trim() !== '') || (parsedMembers.length > 0);
+    const isTeam = (r.teamName && r.teamName.trim() !== '' && r.teamName.trim() !== 'Solo') || (parsedMembers.length > 0);
     
     // Fix: Sometimes old code stored the raw JSON array inside the `teamName` field.
     let teamNameDisplay = 'Solo';
@@ -2110,20 +2114,24 @@ function showSheetsSetup() {
       <li>Go to <strong style="color:#fff">Extensions → Apps Script</strong></li>
       <li><strong style="color:#fff">Delete ALL existing code</strong> and paste this entire code:
       <div style="padding:10px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1);border-radius:6px;margin:8px 0;max-height:200px;overflow-y:auto;font-family:monospace;font-size:10px;color:#aaa;line-height:1.4;white-space:pre">
+var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "Email", "Event", "TeamName", "TeamMembers", "Timestamp", "Gender"];
+
+function enforceHeaders(sh) {
+  sh.getRange(1, 1, 1, OFFICIAL_HEADERS.length).setValues([OFFICIAL_HEADERS]);
+  var lc = sh.getLastColumn();
+  if (lc > OFFICIAL_HEADERS.length) sh.getRange(1, OFFICIAL_HEADERS.length + 1, sh.getMaxRows(), lc - OFFICIAL_HEADERS.length).clearContent();
+}
+
 function doGet(e) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName("Registrations");
   if (!sh) return ContentService.createTextOutput(JSON.stringify({found:false, registrations:[]})).setMimeType(ContentService.MimeType.JSON);
-
+  enforceHeaders(sh);
   var action = (e.parameter.action || "").trim();
-
-  // Action: getRegs (for Admin Panel — returns ALL registrations)
   if (action === "getRegs") {
     var data = sh.getDataRange().getValues();
-    if (data.length <= 1) {
-      return ContentService.createTextOutput(JSON.stringify({registrations:[]})).setMimeType(ContentService.MimeType.JSON);
-    }
-    var headers = data[0];
+    if (data.length <= 1) return ContentService.createTextOutput(JSON.stringify({registrations:[]})).setMimeType(ContentService.MimeType.JSON);
+    var headers = OFFICIAL_HEADERS;
     var results = [];
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
@@ -2138,7 +2146,7 @@ function doGet(e) {
         section: String(row[headers.indexOf("Section")] || ""),
         phone: String(row[headers.indexOf("Phone")] || ""),
         email: String(row[headers.indexOf("Email")] || ""),
-        eventId: String(row[headers.indexOf("EventID")] || ""),
+        gender: String(row[headers.indexOf("Gender")] || ""),
         eventName: String(row[headers.indexOf("Event")] || ""),
         teamName: String(row[headers.indexOf("TeamName")] || ""),
         teamMembers: teamMembers,
@@ -2147,72 +2155,79 @@ function doGet(e) {
     }
     return ContentService.createTextOutput(JSON.stringify({registrations: results})).setMimeType(ContentService.MimeType.JSON);
   }
-
-  // Action: lookup (for "Fetch My Pass" — finds registrations by email)
   if (action === "lookup") {
     var email = (e.parameter.email || "").toLowerCase().trim();
     if (!email) return ContentService.createTextOutput(JSON.stringify({found:false, registrations:[]})).setMimeType(ContentService.MimeType.JSON);
-
+    var checkEventName = (e.parameter.eventName || "").trim();
+    var checkRegNosStr = e.parameter.regnos || "";
+    var checkRegNos = checkRegNosStr ? checkRegNosStr.split(",").map(function(r){return r.trim().toLowerCase();}) : [];
     var data = sh.getDataRange().getValues();
-    var headers = data[0];
-    var results = [];
+    var headers = OFFICIAL_HEADERS;
+    var results = [], duplicates = [], duplicateDetails = [];
     for (var i = 1; i < data.length; i++) {
-      var row = data[i];
-      var rowEmail = String(row[headers.indexOf("Email")] || "").toLowerCase().trim();
-      if (rowEmail === email) {
-        var teamMembersRaw = row[headers.indexOf("TeamMembers")] || "[]";
-        var teamMembers = [];
-        try { teamMembers = JSON.parse(teamMembersRaw); } catch(ex) {}
-        results.push({
-          regId: String(row[headers.indexOf("RegID")] || ("GF-" + (i+1))),
-          name: String(row[headers.indexOf("Name")] || ""),
-          regno: String(row[headers.indexOf("RegNo")] || ""),
-          year: String(row[headers.indexOf("Year")] || ""),
-          section: String(row[headers.indexOf("Section")] || ""),
-          phone: String(row[headers.indexOf("Phone")] || ""),
-          email: rowEmail,
-          eventId: String(row[headers.indexOf("EventID")] || ""),
-          eventName: String(row[headers.indexOf("Event")] || ""),
-          teamName: String(row[headers.indexOf("TeamName")] || ""),
-          teamMembers: teamMembers,
-          ts: String(row[headers.indexOf("Timestamp")] || "")
-        });
+      var row = data[i], rowEmail = String(row[headers.indexOf("Email")]||"").toLowerCase().trim();
+      var rowEventName = String(row[headers.indexOf("Event")]||"").trim();
+      var teamMembersRaw = row[headers.indexOf("TeamMembers")]||"[]", teamMembers = [];
+      try { teamMembers = JSON.parse(teamMembersRaw); } catch(ex){}
+      if (email && rowEmail === email) {
+        results.push({ regId: String(row[headers.indexOf("RegID")]||""), name: String(row[headers.indexOf("Name")]||""), regno: String(row[headers.indexOf("RegNo")]||""), gender: String(row[headers.indexOf("Gender")]||""), year: String(row[headers.indexOf("Year")]||""), section: String(row[headers.indexOf("Section")]||""), phone: String(row[headers.indexOf("Phone")]||""), email: rowEmail, eventName: rowEventName, teamName: String(row[headers.indexOf("TeamName")]||""), teamMembers: teamMembers, ts: String(row[headers.indexOf("Timestamp")]||"") });
+      }
+      if (checkEventName && rowEventName.toLowerCase() === checkEventName.toLowerCase() && checkRegNos.length > 0) {
+        var rowLeaderRegNo = String(row[headers.indexOf("RegNo")]||"").trim().toLowerCase();
+        if (checkRegNos.indexOf(rowLeaderRegNo) !== -1) {
+          if (duplicates.indexOf(rowLeaderRegNo) === -1) { duplicates.push(rowLeaderRegNo); duplicateDetails.push({name: String(row[headers.indexOf("Name")]||""), regno: rowLeaderRegNo}); }
+        }
+        for (var j = 0; j < teamMembers.length; j++) {
+          var tmRegNo = String(teamMembers[j].regno||"").trim().toLowerCase();
+          if (tmRegNo && checkRegNos.indexOf(tmRegNo) !== -1) {
+            if (duplicates.indexOf(tmRegNo) === -1) { duplicates.push(tmRegNo); duplicateDetails.push({name: teamMembers[j].name||"Member", regno: tmRegNo}); }
+          }
+        }
       }
     }
-    return ContentService.createTextOutput(JSON.stringify({found: results.length > 0, registrations: results})).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({found: results.length > 0, registrations: results, duplicates: duplicates, duplicateDetails: duplicateDetails})).setMimeType(ContentService.MimeType.JSON);
   }
   return ContentService.createTextOutput(JSON.stringify({found:false, registrations:[]})).setMimeType(ContentService.MimeType.JSON);
 }
 
-// ── POST requests (Save registrations) ──
 function doPost(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sh = ss.getSheetByName("Registrations") || ss.insertSheet("Registrations");
-  if (sh.getLastRow() === 0) {
-    sh.appendRow(["RegID","Name","RegNo","Year","Section","Phone","Email","EventID","Event","TeamName","TeamMembers","Timestamp"]);
-  }
-  var d = JSON.parse(e.postData.contents);
-
-  if (d.action === "syncAll") {
-    d.data.forEach(function(r) {
-      sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventId||"", r.eventName, r.teamName||"", JSON.stringify(r.teamMembers||[]), r.ts]);
-    });
-  } else if (d.action === "addReg") {
-    var r = d.data;
-    sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventId||"", r.eventName, r.teamName||"", JSON.stringify(r.teamMembers||[]), r.ts]);
-
-  } else if (d.action === "deleteReg") {
-    var data = sh.getDataRange().getValues();
-    for(var i = data.length - 1; i >= 1; i--) {
-      // Find the row where RegID matches
-      if(data[i][0] === d.data.regId) {
-        // Adding 1 because sheets are 1-indexed
-        sh.deleteRow(i + 1);
-        break;
+  var lock = LockService.getScriptLock();
+  var successLock = lock.tryLock(28000);
+  if (!successLock) return ContentService.createTextOutput(JSON.stringify({success:false, error:"Server busy, please try again."})).setMimeType(ContentService.MimeType.JSON);
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet(), sh = ss.getSheetByName("Registrations") || ss.insertSheet("Registrations");
+    enforceHeaders(sh);
+    var d = JSON.parse(e.postData.contents);
+    if (d.action === "syncAll") {
+      d.data.forEach(function(r) {
+        var tName = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
+        var tMem = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
+        sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, tName, tMem, r.ts, r.gender||""]);
+      });
+      SpreadsheetApp.flush();
+      return ContentService.createTextOutput(JSON.stringify({success:true})).setMimeType(ContentService.MimeType.JSON);
+    } else if (d.action === "addReg") {
+      var r = d.data;
+      var tName = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
+      var tMem = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
+      var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
+      sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, tName, tMem, finalTs, r.gender||""]);
+      SpreadsheetApp.flush();
+      return ContentService.createTextOutput(JSON.stringify({success:true, regId:r.regId})).setMimeType(ContentService.MimeType.JSON);
+    } else if (d.action === "deleteReg") {
+      var data = sh.getDataRange().getValues();
+      for(var i = data.length - 1; i >= 1; i--) {
+        if (String(data[i][0]) === String(d.data.regId)) { sh.deleteRow(i + 1); break; }
       }
+      SpreadsheetApp.flush();
+      return ContentService.createTextOutput(JSON.stringify({success: true}));
+    } else if (d.action === "deleteAll") {
+      var lastRow = sh.getLastRow();
+      if (lastRow > 1) { sh.deleteRows(2, lastRow - 1); SpreadsheetApp.flush(); }
+      return ContentService.createTextOutput(JSON.stringify({success: true}));
     }
-  }
-  return ContentService.createTextOutput("ok");
+  } catch(ex) { return ContentService.createTextOutput(JSON.stringify({success:false, error:ex.message})).setMimeType(ContentService.MimeType.JSON); }
+  finally { lock.releaseLock(); }
 }</div>
       </li>
       <li>Click <strong style="color:#fff">Deploy → Manage Deployments</strong></li>
@@ -2266,8 +2281,8 @@ function refreshAdminUI(regs) {
   const totalMembers = regs.reduce((a,r) => a + 1 + getParsedMembers(r).length, 0);
   const totalTeams = regs.filter(r => {
     const ev = EVS.find(e=> e.id===r.eventId || (r.eventName && e.name.toLowerCase() === r.eventName.trim().toLowerCase()));
-    // If event not found in EVS, check teamName/teamMembers to determine if team
-    return ev ? ev.type !== 'Solo' : (r.teamName && r.teamName.trim() !== '' && !r.teamName.startsWith('['));
+    // Matured Logic: Filter out "Solo" labeled registrations from team count
+    return ev ? ev.type !== 'Solo' : (r.teamName && r.teamName.trim() !== '' && r.teamName.trim() !== 'Solo' && !r.teamName.startsWith('['));
   }).length;
   
   document.getElementById('admin-stats').innerHTML = `
