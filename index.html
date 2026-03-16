@@ -633,7 +633,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
       <!-- STEP 1: Personal Details -->
       <div class="step active" id="step-0">
         <div id="ev-summary-here"></div>
-        <div id="step-0-content" style="display:none;">
+        <div id="reg-fields-container" style="display:none">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <div class="fc-t" style="margin-bottom:0">Your Details</div>
             <div style="display:flex;gap:4px">
@@ -973,49 +973,49 @@ const EVS = [
   {id:'hv', name:'HACKVERSE', label:'24-Hour Hackathon', category:'Technical', type:'Team', minTeam:2, maxTeam:4, tag:'Hackathon', timeSlot:'A',
    icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-hv" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00cec9"/><stop offset="100%" stop-color="#0984e3"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-hv)"/></svg>', grad:'linear-gradient(135deg,#021a1a,#010f10)', accent:'#00cec9',
    desc:'Build, innovate, and deploy! A high-intensity hackathon where teams race to develop solutions to real-world challenges.',
-   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   date:'April 2–3, 2026', time:'10:00 AM – 10:00 AM', venue:'CSE Lab 1', deadline:'Mar 30',
    p1:'₹5,000', p2:'₹3,000', p3:'₹2,000',
    rules:['Team of 2–4','Theme given on spot','Working prototype required','Any tech stack allowed','Judge decision final'],
    ec:'Mr. Karthik R.', ep:'+91 98421 56789', sc:'Dr. Priya M.', sp:'+91 97890 12345'},
   {id:'dd', name:'DESIGN DECODE', label:'UI/UX Design Challenge', category:'Technical', type:'Team', minTeam:1, maxTeam:2, tag:'Design', timeSlot:'B',
    icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dd" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fd79a8"/><stop offset="100%" stop-color="#e84393"/></linearGradient></defs><circle cx="13.5" cy="10.5" r="2.5" fill="#fd79a8" stroke="none"/><path d="m20.24 12.24-5.48 5.48a2.83 2.83 0 0 1-4 0l-5.48-5.48a2.83 2.83 0 0 1 0-4l5.48-5.48a2.83 2.83 0 0 1 4 0l5.48 5.48a2.83 2.83 0 0 1 0 4Z" stroke="url(#g-dd)" fill="url(#g-dd)" fill-opacity="0.15"/><path d="M3.76 11.76l5.48-5.48" stroke="#00cec9"/><path d="M14.76 20.24l5.48-5.48" stroke="#00cec9"/></svg>', grad:'linear-gradient(135deg,#1a0a28,#0f0518)', accent:'#e84393',
    desc:'Decode the design brief and craft pixel-perfect UI/UX solutions under time pressure. Creativity meets precision.',
-   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   date:'April 2, 2026', time:'02:00 PM – 05:00 PM', venue:'IT Lab 2', deadline:'Mar 30',
    p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
    rules:['Max 2 members','Design tools provided','Time-bound rounds','Theme given on spot','Originality is key'],
    ec:'Ms. Divya S.', ep:'+91 96780 34567', sc:'Prof. Ramesh K.', sp:'+91 95670 23456'},
   {id:'cc', name:'CHECKMATE CODERS', label:'Competitive Coding Arena', category:'Technical', type:'Team', minTeam:2, maxTeam:3, tag:'Coding', timeSlot:'A',
    icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-cc" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2ecc71"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-cc)"/></svg>', grad:'linear-gradient(135deg,#031a0d,#021008)', accent:'#2ecc71',
    desc:'Strategize, code, and checkmate your opponents! A competitive programming showdown where logic is your weapon.',
-   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   date:'April 2, 2026', time:'10:00 AM – 01:00 PM', venue:'CSE Lab 3', deadline:'Mar 30',
    p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
    rules:['Team of 2–3','Languages: C, C++, Java, Python','Multiple rounds','No internet','Judge decision final'],
    ec:'Mr. Vijay T.', ep:'+91 94560 78901', sc:'Ms. Anitha L.', sp:'+91 93450 67890'},
   {id:'ur', name:'UNO REVERSE', label:'Reverse Coding Challenge', category:'Technical', type:'Team', minTeam:2, maxTeam:3, tag:'Coding', timeSlot:'B',
    icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ur" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-ur)" fill="url(#g-ur)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-ur)"/><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3" stroke="#e74c3c"/></svg>', grad:'linear-gradient(135deg,#1f0505,#120303)', accent:'#e74c3c',
    desc:'Given the output, reverse-engineer the code! A twisted coding challenge that tests your logical deduction.',
-   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   date:'April 2, 2026', time:'02:00 PM – 05:00 PM', venue:'CSE Lab 2', deadline:'Mar 30',
    p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
    rules:['Team of 2–3','Output provided, find the code','Languages: C, C++, Java, Python','No internet','Time-limited rounds'],
    ec:'Ms. Keerthana R.', ep:'+91 92340 56789', sc:'Dr. Senthil P.', sp:'+91 91230 45678'},
   {id:'btb', name:'BRAND TO BILLION', label:'Tech Startup Pitch', category:'Technical', type:'Team', minTeam:2, maxTeam:4, tag:'Strategy', timeSlot:'C',
    icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-btb" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e67e22"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="url(#g-btb)"/></svg>', grad:'linear-gradient(135deg,#1f1200,#120b00)', accent:'#e67e22',
    desc:'Pitch your billion-dollar idea! Build a brand strategy and convince the judges your startup can scale.',
-   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   date:'April 3, 2026', time:'10:00 AM – 01:00 PM', venue:'Seminar Hall', deadline:'Mar 30',
    p1:'₹4,000', p2:'₹2,500', p3:'₹1,500',
    rules:['Team of 2–4','Pitch deck required','5-min presentation + Q&A','Any domain','Judges decision final'],
    ec:'Mr. Arun M.', ep:'+91 90120 34567', sc:'Prof. Lavanya S.', sp:'+91 89010 23456'},
   {id:'zcz', name:'ZERO CODE ZONE', label:'No-Code Tech Challenge', category:'Technical', type:'Solo', minTeam:1, maxTeam:1, tag:'Technical', timeSlot:'C',
    icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-zcz" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-zcz)" fill="url(#g-zcz)" fill-opacity="0.15"/></svg>', grad:'linear-gradient(135deg,#1f0505,#120303)', accent:'#e74c3c',
    desc:'No coding needed! A pure logic, aptitude, and tech knowledge challenge for everyone.',
-   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   date:'April 3, 2026', time:'10:00 AM – 01:00 PM', venue:'IT Lab 1', deadline:'Mar 30',
    p1:'₹2,000', p2:'₹1,500', p3:'₹1,000',
    rules:['Individual only','No coding required','Logic & aptitude based','Multiple rounds','No electronic devices'],
    ec:'Ms. Nithya B.', ep:'+91 88900 12345', sc:'Dr. Murugan A.', sp:'+91 87890 01234'},
   {id:'tt', name:'TECHNOTRACE', label:'Tech Treasure Hunt', category:'Technical', type:'Team', minTeam:2, maxTeam:3, tag:'Fun', timeSlot:'D',
    icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tt" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="url(#g-tt)" fill="url(#g-tt)" fill-opacity="0.15"></polygon></svg>', grad:'linear-gradient(135deg,#0d1f3c,#0a1428)', accent:'#3498db',
    desc:'Follow the clues, crack the codes, and trace your way through a thrilling tech-themed treasure hunt!',
-   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   date:'April 3, 2026', time:'02:00 PM – 05:00 PM', venue:'Campus Wide', deadline:'Mar 30',
    p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
    rules:['Team of 2–3','Multiple rounds','Phone required for clues','No external help','Fastest team wins'],
    ec:'Mr. Karthik R.', ep:'+91 98421 56789', sc:'Dr. Priya M.', sp:'+91 97890 12345'},
@@ -1024,21 +1024,21 @@ const EVS = [
   {id:'com', name:'CLASH OF MINDS', label:'Quiz & Debate Showdown', category:'Non-Technical', type:'Team', minTeam:2, maxTeam:3, tag:'Quiz', timeSlot:'A',
    icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-com" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#9b59b6"/><stop offset="100%" stop-color="#3498db"/></linearGradient></defs><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="url(#g-com)" fill="url(#g-com)" fill-opacity="0.15"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" stroke="url(#g-com)"/></svg>', grad:'linear-gradient(135deg,#150a28,#0a0518)', accent:'#9b59b6',
    desc:'Battle it out in a rapid-fire quiz and debate format! Test your general knowledge and persuasion skills.',
-   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   date:'April 4, 2026', time:'10:00 AM – 01:00 PM', venue:'Auditorium', deadline:'Mar 30',
    p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
    rules:['Team of 2–3','Multiple rounds','No electronic devices','Quizmaster decision final','Time-limited answers'],
    ec:'Ms. Divya S.', ep:'+91 96780 34567', sc:'Prof. Ramesh K.', sp:'+91 95670 23456'},
   {id:'ff', name:'FRANCHISE FIESTA', label:'Business Simulation Game', category:'Non-Technical', type:'Team', minTeam:2, maxTeam:4, tag:'Management', timeSlot:'B',
    icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ff" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#g-ff)"/><circle cx="9" cy="7" r="4" stroke="url(#g-ff)"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#g-ff)"/></svg>', grad:'linear-gradient(135deg,#1a1200,#100c00)', accent:'#f1c40f',
    desc:'Build your dream franchise from scratch! Strategy, marketing & management all in one thrilling game.',
-   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   date:'April 4, 2026', time:'02:00 PM – 05:00 PM', venue:'MBA Block', deadline:'Mar 30',
    p1:'₹4,000', p2:'₹2,500', p3:'₹1,500',
    rules:['Team of 2–4','Business strategy game','Presentation required','All materials provided','Judges decision final'],
    ec:'Mr. Arun M.', ep:'+91 90120 34567', sc:'Prof. Lavanya S.', sp:'+91 89010 23456'},
   {id:'tap', name:'THE ALGORITHMIC PLATTER', label:'Fun Algorithmic Puzzles', category:'Non-Technical', type:'Team', minTeam:2, maxTeam:3, tag:'Puzzle', timeSlot:'C',
    icon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tap" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-tap)" fill="url(#g-tap)" fill-opacity="0.2"/></svg>', grad:'linear-gradient(135deg,#1a1200,#100c00)', accent:'#f1c40f',
    desc:'Serve up the perfect solution! A fun mix of algorithmic puzzles and pattern recognition challenges.',
-   date:'TBA', time:'TBA', venue:'TBA', deadline:'TBA',
+   date:'April 4, 2026', time:'10:00 AM – 01:00 PM', venue:'MCA Lab', deadline:'Mar 30',
    p1:'₹3,000', p2:'₹2,000', p3:'₹1,000',
    rules:['Team of 2–3','Puzzle-based challenges','Pen & paper rounds included','No electronic devices in prelims','Time-bound'],
    ec:'Ms. Nithya B.', ep:'+91 88900 12345', sc:'Dr. Murugan A.', sp:'+91 87890 01234'}
@@ -1241,7 +1241,6 @@ function openReg(evId) {
             <div class="ev-sel-name">${e.name}</div>
             <div class="ev-sel-meta"><span class="ev-sel-pill">${e.type==='Solo'?'Individual':`${e.minTeam}–${e.maxTeam} Members`}</span><span>${e.label}</span></div>
           </div>
-          <div class="ev-sel-prize">${e.p1}</div>
         </div>`;
     }
 
@@ -1256,11 +1255,14 @@ function openReg(evId) {
         ${nonTechEvs.map(e => evRow(e)).join('')}
       </div>`;
     s2.innerHTML = '';
-    
-    // Hide the rest of the form when no event is selected
-    const stepContent = document.getElementById('step-0-content');
-    if (stepContent) stepContent.style.display = 'none';
   }
+  
+  // Toggle visibility of the registration fields based on whether an event is selected
+  const fieldsContainer = document.getElementById('reg-fields-container');
+  if (fieldsContainer) {
+    fieldsContainer.style.display = currentEv ? 'block' : 'none';
+  }
+  
   updateStepUI();
   document.getElementById('reg-ov').classList.add('open');
 }
@@ -1274,12 +1276,11 @@ function selectEventInForm(id) {
   s2.innerHTML = evSummaryCard(id);
   setupTeamStep();
   
-  // Show the rest of the form now that an event is selected
-  const stepContent = document.getElementById('step-0-content');
-  if (stepContent) {
-    stepContent.style.display = 'block';
-    // Add a slight fade-in animation to make it smooth
-    stepContent.style.animation = 'fo .3s ease';
+  // Reveal the form fields smoothly
+  const fieldsContainer = document.getElementById('reg-fields-container');
+  if (fieldsContainer) {
+    fieldsContainer.style.display = 'block';
+    fieldsContainer.style.animation = 'su 0.4s cubic-bezier(0.22, 0.68, 0, 1.1)';
   }
 }
 
@@ -1753,7 +1754,7 @@ function renderPassCards(regs) {
           <div><div class="pfl">Department</div><div class="pfv">${r.department || 'CSE'}</div></div>
           <div><div class="pfl">Year & Section</div><div class="pfv">${r.year ? 'Year '+r.year+' · Sec '+(r.section||'—') : '—'}</div></div>
           <div><div class="pfl">Register Phone</div><div class="pfv">${r.phone||'—'}</div></div>
-          <div><div class="pfl">Date & Venue</div><div class="pfv">2–4 April · PSNA</div></div>
+          <div><div class="pfl">Date & Venue</div><div class="pfv">19–21 Mar · PSNA</div></div>
         </div>
         ${(r.teamName && !r.teamName.includes('[{"name"')) || members.length > 0 ? `
         <div class="team-pass-section">
@@ -2201,7 +2202,7 @@ function doPost(e) {
     sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventId||"", r.eventName, r.teamName||"", JSON.stringify(r.teamMembers||[]), r.ts]);
     try {
       var subject = "Registration Confirmed - " + r.eventName + " | CSE UTSAV 2K26";
-      var body = "Hi " + r.name + ",\\n\\nYour registration for " + r.eventName + " is confirmed!\\n\\nPass ID: " + r.regId + "\\nDate: 2-4 April 2026\\nVenue: PSNA College, Dindigul\\n\\nPlease show your digital pass at the registration desk.\\n\\nBest regards,\\nCSE UTSAV 2K26 Team";
+      var body = "Hi " + r.name + ",\\n\\nYour registration for " + r.eventName + " is confirmed!\\n\\nPass ID: " + r.regId + "\\nDate: 19-21 March 2026\\nVenue: PSNA College, Dindigul\\n\\nPlease show your digital pass at the registration desk.\\n\\nBest regards,\\nCSE UTSAV 2K26 Team";
       GmailApp.sendEmail(r.email, subject, body);
     } catch(ex) {}
   } else if (d.action === "deleteReg") {
@@ -2379,7 +2380,7 @@ function hideAdminLoader() {
 
 /* ════════ COUNTDOWN ════════ */
 function tick() {
-  const d = new Date('2026-04-02T09:00:00') - new Date();
+  const d = new Date('2026-03-19T09:00:00') - new Date();
   if (d <= 0) return;
   document.getElementById('cd-d').textContent = String(Math.floor(d/86400000)).padStart(2,'0');
   document.getElementById('cd-h').textContent = String(Math.floor(d%86400000/3600000)).padStart(2,'0');
