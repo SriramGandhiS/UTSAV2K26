@@ -2503,6 +2503,14 @@
       margin-bottom: 6px
     }
 
+    /* HONEYPOT */
+    .hp-f {
+      position: absolute;
+      left: -9999px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .admin-login-sub {
       text-align: center;
       font-size: 12px;
@@ -3367,8 +3375,11 @@
                 <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(4)">Tester 4</button>
               </div>
             </div>
-            <div class="fg"><label class="fl">Full Name</label><input class="fi" id="f-name" type="text"
-                placeholder="Enter your full name"></div>
+            <div class="fg">
+              <label class="fl">Full Name</label>
+              <input class="fi" id="f-name" type="text" placeholder="Enter your full name">
+              <input type="text" id="f-hp" class="hp-f" tabindex="-1" autocomplete="off">
+            </div>
             <div class="row2">
               <div class="fg"><label class="fl">Register Number</label><input class="fi" id="f-regno" type="text"
                   placeholder="e.g. 2303921310421226"></div>
@@ -3850,24 +3861,7 @@
   `;
     }
     function renderTiles() {
-      const techEvs = EVS.filter(e => e.category === 'Technical');
-      const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
-      document.getElementById('ev-tiles').innerHTML = `
-    <div style="grid-column:1/-1;margin-bottom:4px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#2ecc71;text-transform:uppercase;letter-spacing:3px;display:flex;align-items:center;gap:10px">
-        <span style="color:#2ecc71;text-shadow:0 0 8px rgba(46,204,113,.4);font-weight:900;font-size:24px">&lt;/&gt;</span>
-        <span>Technical Events</span>
-      </div>
-    </div>
-    ${techEvs.map(e => renderTile(e)).join('')}
-    <div style="grid-column:1/-1;margin-top:28px;margin-bottom:4px;padding-top:20px;border-top:1px solid var(--border)">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--orange);text-transform:uppercase;letter-spacing:3px;display:flex;align-items:center;gap:10px">
-        <span style="color:var(--orange);text-shadow:0 0 8px rgba(232,84,26,.4);font-weight:900;font-size:24px">{ }</span>
-        <span>Non-Technical Events</span>
-      </div>
-    </div>
-    ${nonTechEvs.map(e => renderTile(e)).join('')}
-  `;
+      document.getElementById('ev-tiles').innerHTML = EVS.map(e => renderTile(e)).join('');
     }
 
     /* ════════ CONTACTS ════════ */
@@ -3940,11 +3934,7 @@
       const catColor = isTech ? '#2ecc71' : 'var(--orange)';
       
       document.getElementById('esc').innerHTML = `
-    <div style="position:sticky;top:0;z-index:10;background:rgba(10,10,10,0.8);backdrop-filter:blur(12px);margin:-20px -20px 20px -20px;padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-      <div style="display:flex;align-items:center;gap:12px">
-        <div style="width:10px;height:10px;border-radius:50%;background:${catColor};box-shadow:0 0 10px ${catColor}"></div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:3px;color:${catColor};text-transform:uppercase">${e.category}</div>
-      </div>
+    <div style="position:sticky;top:0;z-index:10;background:rgba(10,10,10,0.8);backdrop-filter:blur(12px);margin:-20px -20px 20px -20px;padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:flex-end;align-items:center">
       <button class="ev-modal-close-btn" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:8px 16px;border-radius:8px;color:#fff;font-size:12px;font-weight:700" onclick="closeEvMod(null,1)">✕ CLOSE</button>
     </div>
 
@@ -4079,13 +4069,8 @@
 
         s1.innerHTML = `
       <div class="fc-t">Choose Event</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#2ecc71;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(46,204,113,.4);font-size:18px">&lt;/&gt;</span> Technical</div>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
-        ${techEvs.map(e => evRow(e)).join('')}
-      </div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(232,84,26,.4);font-size:18px">{ }</span> Non-Technical</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
-        ${nonTechEvs.map(e => evRow(e)).join('')}
+        ${EVS.map(e => evRow(e)).join('')}
       </div>`;
         s2.innerHTML = '';
       }
@@ -4349,8 +4334,7 @@
       const btn = document.querySelector('#step-2 .reg-next-btn');
       const backBtn = document.querySelector('#step-2 .reg-back-btn');
       isCooldown = true;
-      let timeleft = 25; // 25 seconds cooldown
-
+      let timeleft = 25; 
       if (btn) {
         btn.disabled = true;
         btn.style.opacity = '0.5';
@@ -4374,12 +4358,19 @@
     }
 
     async function submitReg() {
+      if (document.getElementById('f-hp').value) return; // Honeypot bot block
       if (isCooldown) return;
 
       const btn = document.querySelector('#step-2 .reg-next-btn');
       const backBtn = document.querySelector('#step-2 .reg-back-btn');
+      
+      // Tab Protection Start
+      const protectOn = () => window.onbeforeunload = () => "Registration is in progress. Closing this page might result in lost data. Are you sure?";
+      const protectOff = () => window.onbeforeunload = null;
+
       if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; btn.style.opacity = '0.7'; }
       if (backBtn) { backBtn.style.pointerEvents = 'none'; backBtn.style.opacity = '0.5'; }
+      protectOn();
 
       const name = document.getElementById('f-name').value.trim();
       const regno = document.getElementById('f-regno').value.trim();
@@ -4392,21 +4383,15 @@
 
       // Duplicate check (Local)
       const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
-
-      // Create an array of all register numbers in the current submission
       const currentRegNos = [{ name: name, regno: regno }, ...teamMembers.map(m => ({ name: m.name, regno: m.regno }))];
 
       let localDupeName = null;
       let localDupeReg = null;
 
-      // Check if any of these register numbers are already saved locally for this event
       for (const storedReg of saved) {
         if (storedReg.eventId === currentEv.id) {
-          // Check stored leader
           const match = currentRegNos.find(c => c.regno === storedReg.regno);
           if (match) { localDupeName = match.name; localDupeReg = match.regno; break; }
-
-          // Check stored team members
           if (storedReg.teamMembers) {
             for (const tm of storedReg.teamMembers) {
               const tmMatch = currentRegNos.find(c => c.regno === tm.regno);
@@ -4417,19 +4402,23 @@
         }
       }
 
-      if (localDupeName) {
-        showError('Duplicate Blocked', 'Already registered', `${localDupeName} (${localDupeReg}) is already locally registered for ${currentEv.name} on this device.`);
+      const resetUI = () => {
+        protectOff();
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
         if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
-        return;
+      };
+
+      if (localDupeName) {
+        showError('Duplicate Blocked', 'Already registered', `${localDupeName} (${localDupeReg}) is already registered for ${currentEv.name} on this device.`);
+        resetUI(); return;
       }
 
-      // 2. Server check & Time-Slot Conflict Check
       if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-        // Randomized networking delay to reduce same-second bursts
+        // Networking Jitter
         await new Promise(r => setTimeout(r, Math.floor(Math.random() * 800) + 200));
 
-        showAdminLoader('Checking DB Records...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600;letter-spacing:1px;text-transform:none">Please wait, do not refresh or close this page.</span>');
+        showAdminLoader('Validating Records...<br><span style="font-size:10px;rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Please do not refresh this page.</span>');
+        
         try {
           const allRegNos = [regno, ...teamMembers.map(m => m.regno)].join(',');
           const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email) + '&regnos=' + encodeURIComponent(allRegNos) + '&eventId=' + encodeURIComponent(currentEv.id) + '&eventName=' + encodeURIComponent(currentEv.name) + '&timeSlot=' + encodeURIComponent(currentEv.timeSlot || '');
@@ -4438,38 +4427,26 @@
           const data = await resp.json();
 
           if (data.found && data.registrations.some(r => r.eventName === currentEv.name || r.eventId === currentEv.id)) {
-            hideAdminLoader();
-            showError('Duplicate Blocked', 'You are already registered', `You already hold a confirmed pass for ${currentEv.name}.`);
-            if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-            if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
-            return;
+            hideAdminLoader(); showError('Duplicate Blocked', 'Already registered', `You already hold a confirmed pass for ${currentEv.name}.`);
+            resetUI(); return;
           }
-
           if (data.duplicates && data.duplicates.length > 0) {
-            hideAdminLoader();
-            const dupeNames = data.duplicateDetails.map(d => `${d.name} (${d.regno})`).join(' / ');
-            showError('Duplicate Detected', 'Team members already participating', `The following persons are already registered for this event (either as a leader or in another team): \n\n${dupeNames}`);
-            if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-            if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
-            return;
+            hideAdminLoader(); const dupeNames = data.duplicateDetails.map(d => `${d.name} (${d.regno})`).join(' / ');
+            showError('Duplicate Detected', 'Member already registered', `Person(s) already registered for this event: \n\n${dupeNames}`);
+            resetUI(); return;
           }
-
-          // Check cross-event time-slot conflicts returned by server
           if (data.timeSlotConflicts && data.timeSlotConflicts.length > 0) {
-            hideAdminLoader();
-            const conflictNames = data.timeSlotConflictDetails.map(d => `${d.name} (${d.regno}) in [${d.conflictingEvent}]`).join(' \n ');
-            showError('Time Slot Conflict!', 'Simultaneous Events Selected', `The following team members are already registered for another event happening at the exactly same time (${currentEv.timeSlot}): \n\n${conflictNames}\n\nPlease choose a different event or update team members.`);
-            if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-            if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
-            return;
+            hideAdminLoader(); const conflictNames = data.timeSlotConflictDetails.map(d => `${d.name} (${d.regno}) in [${d.conflictingEvent}]`).join(' \n ');
+            showError('Time Slot Conflict!', 'Concurrent Event', `The following members are already in another event at this time (${currentEv.timeSlot}): \n\n${conflictNames}`);
+            resetUI(); return;
           }
-        } catch (e) { console.error("Server verify failed:", e); }
+        } catch (e) { console.error("Verify failed:", e); }
         hideAdminLoader();
       }
 
       const n = parseInt(localStorage.getItem('u26n') || '0') + 1;
       const rnd = Math.floor(Math.random() * 900 + 100);
-      const regId = 'CSEUTSAV-' + String(n).padStart(4, '0') + '-' + rnd;
+      const regId = 'U26-' + String(n).padStart(4, '0') + '-' + rnd;
       const ts = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', hour12: true });
 
       const reg = {
@@ -4480,60 +4457,55 @@
         ts
       };
 
-      // 3. Strict Server Commit (We must wait for success before saving the pass)
       if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-        showAdminLoader('Securing Final Pass...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600;letter-spacing:1px;text-transform:none">Please wait, do not refresh or close this page.</span>');
-        try {
-          const resp = await fetch(SHEETS_URL, {
-            method: 'POST',
-            body: JSON.stringify({ action: 'addReg', data: reg })
-          });
-          const result = await resp.json();
+        showAdminLoader('Securing Final Pass...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Syncing with database. Please wait.</span>');
+        
+        let attempts = 0;
+        let success = false;
+        
+        while (attempts < 2 && !success) {
+          try {
+            const resp = await fetch(SHEETS_URL, { method: 'POST', body: JSON.stringify({ action: 'addReg', data: reg }) });
+            const result = await resp.json();
 
-          if (!result.success) {
-            hideAdminLoader();
-            if (result.error && result.error.includes("Server busy")) {
-              showError('High Traffic Detected', 'Server Busy', 'High traffic detected. Your registration was not saved. Please wait 20-30 seconds and try again.');
-              activateCooldown();
+            if (result.success) {
+              success = true;
+            } else if (result.error && result.error.includes("Server busy")) {
+              if (attempts === 0) {
+                attempts++;
+                showAdminLoader('Database Busy. Retrying in 2s...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Connecting to secure server...</span>');
+                await new Promise(r => setTimeout(r, 2000));
+                continue;
+              }
+              hideAdminLoader();
+              showError('High Traffic', 'Server Busy', 'The server is currently handling many requests. Please wait 20s and try again.');
+              activateCooldown(); resetUI(); return;
             } else {
-              showError('Server Error', 'Failed to save', result.error);
-              if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-              if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
+              hideAdminLoader(); showError('Server Error', 'Failed to save', result.error);
+              resetUI(); return;
             }
-            return;
+          } catch (e) {
+            if (attempts === 0) {
+              attempts++;
+              showAdminLoader('Network glitch. Retrying...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Re-establishing connection...</span>');
+              await new Promise(r => setTimeout(r, 2000));
+              continue;
+            }
+            hideAdminLoader(); showError('Connection Error', 'Network Timeout', 'Unable to reach the database. Please check your internet and try again.');
+            resetUI(); return;
           }
-        } catch (e) {
-          hideAdminLoader();
-          showError('High Traffic Detected', 'Request Timed Out', 'The server is under heavy load and timed out. Your registration was not saved. Please wait 20-30 seconds and try again.');
-          activateCooldown();
-          return;
         }
         hideAdminLoader();
       }
 
-      // Save Locally ONLY if backend push definitively succeeded (or if SHEETS_URL is not deployed yet)
-      localStorage.setItem('u26n', String(n));
-      saved.push(reg); localStorage.setItem('u26r', JSON.stringify(saved));
-
-      // Remove Email confirmation note from confirmation screen as email is disabled for load
-      document.getElementById('conf-wa-container').innerHTML = `
-    <div style="padding:12px;background:rgba(232,84,26,.08);border:1px solid rgba(232,84,26,.25);border-radius:8px;text-align:center">
-      <div style="font-size:13px;font-weight:700;color:var(--orange);margin-bottom:4px">✓ Pass Secured & Synced</div>
-      <div style="font-size:11px;color:var(--muted)">Your registration has been confirmed with the central database.</div>
-    </div>`;
-
-      document.getElementById('reg-ov').classList.remove('open');
-      showDock();
-      document.getElementById('conf-id-v').textContent = regId;
-      document.getElementById('conf-screen').classList.add('open');
-      document.getElementById('pass-nav-btn').style.display = 'block';
-
-      // Reset
-      ['f-name', 'f-regno', 'f-email', 'f-phone', 'f-teamname'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-      ['f-year', 'f-section'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-      teamMembers = []; currentEv = null; currentStep = 0;
-      if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-      if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
+      // Final Step: Data is confirmed saved in Google Sheets. Now save locally.
+      localStorage.setItem('u26n', n);
+      saved.push(reg);
+      localStorage.setItem('u26r', JSON.stringify(saved));
+      
+      protectOff();
+      showRegStep(3);
+      renderPassCards();
     }
 
     function syncSingle(reg) {

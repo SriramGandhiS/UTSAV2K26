@@ -197,6 +197,17 @@ function doPost(e) {
 
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // MASTER SWITCH CHECK (Remote Control)
+    // To close registrations instantly: Create a sheet named 'Config' and write 'CLOSED' in cell A1.
+    var configSh = ss.getSheetByName("Config");
+    if (configSh) {
+      var status = String(configSh.getRange("A1").getValue()).toUpperCase().trim();
+      if (status === "CLOSED") {
+        return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Registrations are currently closed by the administrator." })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
     var sh = ss.getSheetByName("Registrations") || ss.insertSheet("Registrations");
 
     enforceHeaders(sh); // Ensure alignment is perfect before saving!
