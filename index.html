@@ -2202,7 +2202,7 @@ function doPost(e) {
     sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventId||"", r.eventName, r.teamName||"", JSON.stringify(r.teamMembers||[]), r.ts]);
     try {
       var subject = "Registration Confirmed - " + r.eventName + " | CSE UTSAV 2K26";
-      var body = "Hi " + r.name + ",\\n\\nYour registration for " + r.eventName + " is confirmed!\\n\\nPass ID: " + r.regId + "\\nDate: 19-21 March 2026\\nVenue: PSNA College, Dindigul\\n\\nPlease show your digital pass at the registration desk.\\n\\nBest regards,\\nCSE UTSAV 2K26 Team";
+      var body = "Hi " + r.name + ",\\n\\nYour registration for " + r.eventName + " is confirmed!\\n\\nPass ID: " + r.regId + "\\nDate: 2-4 April 2026\\nVenue: PSNA College, Dindigul\\n\\nPlease show your digital pass at the registration desk.\\n\\nBest regards,\\nCSE UTSAV 2K26 Team";
       GmailApp.sendEmail(r.email, subject, body);
     } catch(ex) {}
   } else if (d.action === "deleteReg") {
@@ -2380,7 +2380,7 @@ function hideAdminLoader() {
 
 /* ════════ COUNTDOWN ════════ */
 function tick() {
-  const d = new Date('2026-03-19T09:00:00') - new Date();
+  const d = new Date('2026-04-02T09:00:00') - new Date();
   if (d <= 0) return;
   document.getElementById('cd-d').textContent = String(Math.floor(d/86400000)).padStart(2,'0');
   document.getElementById('cd-h').textContent = String(Math.floor(d%86400000/3600000)).padStart(2,'0');
