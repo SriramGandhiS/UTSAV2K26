@@ -4321,6 +4321,18 @@
       });
       // Scroll sheet to top
       document.querySelector('.reg-sheet')?.scrollTo(0, 0);
+
+      const btn = document.querySelector('#step-2 .reg-next-btn');
+      const backBtn = document.querySelector('#step-2 .reg-back-btn');
+      if (btn && !isCooldown) { 
+        btn.disabled = false; 
+        btn.textContent = 'Confirm Registration'; 
+        btn.style.opacity = '1'; 
+      }
+      if (backBtn) {
+        backBtn.style.pointerEvents = 'auto';
+        backBtn.style.opacity = '1';
+      }
     }
 
     // Quick Test Fill — real names, real-looking reg numbers, team members = other testers
@@ -4563,7 +4575,7 @@
       saved.push(reg);
       localStorage.setItem('u26r', JSON.stringify(saved));
       
-      protectOff();
+      resetUI();
       
       // Close registration overlay and show confirmation screen
       document.getElementById('reg-ov').classList.remove('open');
