@@ -72,27 +72,6 @@
       font-family: 'Barlow', sans-serif
     }
 
-    /* WATERMARK NAMES */
-    .wm-layer {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0
-    }
-
-    .wm-name {
-      position: absolute;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(232, 84, 26, 0.07);
-      white-space: nowrap;
-      user-select: none;
-      line-height: 1;
-    }
 
     /* NAV */
     .nav {
@@ -171,6 +150,61 @@
       opacity: .85
     }
 
+    .btn-ev-glow {
+      position: relative;
+      padding: 8px 14px;
+      background: #0a0a0a;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      transition: transform 0.2s;
+    }
+
+    .btn-ev-glow::before {
+      content: '';
+      position: absolute;
+      width: 150%;
+      height: 150%;
+      background: conic-gradient(from 0deg, transparent 0% 80%, var(--orange) 100%);
+      animation: rotate-glow 3s linear infinite;
+      z-index: -2;
+    }
+
+    .btn-ev-glow::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: linear-gradient(135deg, #161616, #0a0a0a);
+      border-radius: 5px;
+      z-index: -1;
+    }
+
+    @keyframes rotate-glow {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .btn-ev-glow:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(232, 84, 26, 0.3);
+    }
+
     /* HERO */
     .hero {
       min-height: 100svh;
@@ -214,11 +248,12 @@
     .hero-h {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: clamp(54px, 13vw, 84px);
-      font-weight: 900;
+      font-weight: 950;
       line-height: .9;
       text-transform: uppercase;
       letter-spacing: -1px;
-      margin-bottom: 16px
+      margin-top: 10px;
+      margin-bottom: 20px
     }
 
     .hero-h .wh {
@@ -568,7 +603,7 @@
     .ev-tiles {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px
+      gap: 14px
     }
 
     /* mobile-first: keep 2 columns max */
@@ -576,7 +611,7 @@
     .ev-tile {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       cursor: pointer;
       transition: border-color .25s, transform .2s;
@@ -600,6 +635,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    /* Featured full-width tile */
+    .ev-tile-featured {
+      grid-column: 1 / -1;
+    }
+
+    .ev-tile-featured .ev-tile-top {
+      aspect-ratio: 21/9;
     }
 
     .ev-tile-bg {
@@ -649,7 +693,7 @@
     }
 
     .ev-tile-body {
-      padding: 14px;
+      padding: 12px 10px;
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -658,33 +702,37 @@
 
     .ev-tile-name {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
+      font-size: 19px;
+      font-weight: 900;
       color: #fff;
       text-transform: uppercase;
       letter-spacing: .5px;
       margin-bottom: 3px;
       line-height: 1.1;
-      text-align: center
+      text-align: center;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
 
     .ev-tile-sub {
-      font-size: 10px;
-      color: var(--muted2);
-      font-weight: 500;
+      font-size: 11px;
+      color: #dfdfdf;
+      font-weight: 600;
       margin-bottom: 6px;
-      text-align: center
+      text-align: center;
+      opacity: 1;
     }
 
     .ev-tile-time {
-      font-size: 9px;
-      color: var(--muted2);
+      font-size: 11px;
+      color: #cccccc;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 4px;
-      opacity: .8
+      opacity: 1;
+      font-weight: 600;
     }
 
     .ev-tile-tags {
@@ -696,24 +744,24 @@
     }
 
     .etp {
-      font-size: 9px;
-      font-weight: 700;
+      font-size: 10px;
+      font-weight: 800;
       letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 3px
+      padding: 4px 10px;
+      border-radius: 4px
     }
 
     .etp-or {
-      background: rgba(232, 84, 26, .1);
-      border: 1px solid rgba(232, 84, 26, .2);
+      background: rgba(232, 84, 26, .15);
+      border: 1px solid rgba(232, 84, 26, .4);
       color: var(--orange)
     }
 
     .etp-nt {
-      background: rgba(255, 255, 255, .04);
-      border: 1px solid var(--border);
-      color: var(--muted2)
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .2);
+      color: #fff
     }
 
     .ev-tile-link {
@@ -815,10 +863,12 @@
     /* Event summary card (shows in form after click) */
     .ev-summary-card {
       display: flex;
+      flex-direction: column;
       align-items: center;
+      text-align: center;
       gap: 14px;
-      padding: 14px 16px;
-      border-radius: 8px;
+      padding: 20px 16px;
+      border-radius: 12px;
       background: rgba(232, 84, 26, .08);
       border: 1.5px solid rgba(232, 84, 26, .3);
       margin-bottom: 22px;
@@ -2011,11 +2061,18 @@
     }
     .ev-listing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      justify-content: center;
+      justify-items: center;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto
     }
 
     .ev-item-card {
+      width: 100%;
+      max-width: 450px;
       background: var(--card);
       border-radius: 12px;
       border: 1px solid var(--border);
@@ -2065,19 +2122,22 @@
 
     .comm-head {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      margin-bottom: 32px;
-      padding-top: 10px
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-top: 10px;
+      text-align: center
     }
 
     .comm-title {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 32px;
+      font-size: 42px;
       font-weight: 900;
       color: #fff;
-      letter-spacing: 2px;
-      text-transform: uppercase
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      line-height: 1
     }
 
     .comm-title span {
@@ -2085,15 +2145,16 @@
     }
 
     .comm-close {
-      padding: 10px 20px;
+      padding: 8px 16px;
       background: rgba(255, 255, 255, .05);
-      border: 1.5px solid var(--border2);
-      border-radius: 6px;
+      border: 1px solid var(--border2);
+      border-radius: 8px;
       color: rgba(255, 255, 255, .6);
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
       letter-spacing: 1px;
-      text-transform: uppercase
+      text-transform: uppercase;
+      cursor: pointer
     }
 
     .comm-grid {
@@ -2105,7 +2166,7 @@
     .comm-card {
       position: relative;
       background: var(--card);
-      border-radius: 20px;
+      border-radius: 12px;
       overflow: hidden;
       border: 1px solid var(--border);
       aspect-ratio: 3/4.2;
@@ -2124,6 +2185,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: top center;
       transition: transform .5s ease
     }
 
@@ -2134,11 +2196,11 @@
     .comm-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.4) 40%, transparent 70%);
+      background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 35%, rgba(0,0,0,0.2) 60%, transparent 90%);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 24px
+      padding: 16px;
     }
 
     .comm-dtl {
@@ -2148,29 +2210,29 @@
 
     .comm-role-p {
       font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 3px;
+      font-weight: 700;
+      letter-spacing: 2px;
       color: var(--orange);
       text-transform: uppercase;
-      margin-bottom: 6px
+      margin-bottom: 4px
     }
 
     .comm-name-p {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 24px;
-      font-weight: 900;
+      font-size: 22px;
+      font-weight: 950;
       color: #fff;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       line-height: 1
     }
 
     .comm-bio {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.6);
-      line-height: 1.5;
-      margin-bottom: 20px;
+      font-size: 11px;
+      color: #aaa;
+      line-height: 1.4;
+      margin-bottom: 16px;
       display: -webkit-box;
       display: box;
       -webkit-line-clamp: 2;
@@ -2228,42 +2290,73 @@
     @media (max-width: 600px) {
       .comm-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 16px;
         padding-bottom: 40px;
       }
       .comm-card {
-        border-radius: 12px;
-        aspect-ratio: 3/4.5;
+        border-radius: 16px;
+        aspect-ratio: 1/1.4;
+      }
+      .comm-img {
+        object-position: top center;
       }
       .comm-overlay {
-        padding: 12px;
+        padding: 14px;
+        background: linear-gradient(to top, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.75) 45%, rgba(0,0,0,0.05) 70%, transparent 90%);
       }
       .comm-name-p {
-        font-size: 16px;
+        font-size: 18px;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
       }
       .comm-role-p {
-        font-size: 8px;
-        letter-spacing: 1.5px;
+        font-size: 9px;
+        letter-spacing: 2px;
+        font-weight: 900;
+        margin-bottom: 4px;
       }
       .comm-bio {
-        font-size: 10px;
-        -webkit-line-clamp: 1;
-        line-clamp: 1;
-        margin-bottom: 12px;
+        font-size: 11px;
+        line-height: 1.4;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        margin-bottom: 14px;
+        color: rgba(255, 255, 255, 0.8);
       }
       .comm-footer {
-        padding-top: 10px;
+        padding-top: 12px;
       }
       .comm-btn {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
       }
       .cstat {
-        font-size: 10px;
+        font-size: 11px;
       }
       .comm-wrap {
-        padding: 16px 16px 80px;
+        padding: 20px 16px 80px;
+      }
+      .comm-title {
+        font-size: 26px;
+        text-align: center;
+        width: 100%;
+      }
+      /* Center everything on mobile */
+      .hero-left, .sec, .form-container {
+        text-align: center !important;
+        align-items: center !important;
+      }
+      .hero-desc, .ss, .hero-meta {
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      .hero-btns {
+        justify-content: center !important;
+      }
+      .cd-row {
+        margin-left: auto !important;
+        margin-right: auto !important;
       }
     }
 
@@ -2324,64 +2417,76 @@
 
     /* CONTACT */
     .contact-grid {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px
     }
 
     .cc {
       display: flex;
       align-items: center;
-      gap: 14px;
-      background: var(--card);
+      gap: 12px;
+      background: rgba(255, 255, 255, .03);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: inherit;
       text-decoration: none;
-      transition: border-color .2s
+      transition: all .3s ease;
     }
 
     .cc:hover {
-      border-color: var(--orange)
+      background: rgba(255, 255, 255, .05);
+      border-color: var(--orange);
+      transform: translateY(-2px);
     }
 
     .cc-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 6px;
-      background: var(--od);
-      border: 1px solid rgba(232, 84, 26, .2);
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(232, 84, 26, .1);
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0
+      color: var(--orange);
+      flex-shrink: 0;
     }
 
     .cc-icon svg {
       width: 16px;
       height: 16px;
-      color: var(--orange)
+    }
+
+    .cc-info {
+      flex: 1;
+      text-align: left;
     }
 
     .cc-role {
       font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--muted2);
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--muted);
       text-transform: uppercase;
-      margin-bottom: 2px
+      margin-bottom: 2px;
+      line-height: 1;
     }
 
     .cc-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 2px;
+      line-height: 1.1;
     }
 
     .cc-ph {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--orange);
-      margin-top: 1px
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
     /* FOOTER */
@@ -2678,12 +2783,44 @@
       transition: color .2s
     }
 
+    .dock-item.active {
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .dock-item.active::before {
+      content: '';
+      position: absolute;
+      width: 180%;
+      height: 180%;
+      background: conic-gradient(from 0deg, transparent 0% 80%, var(--orange) 100%);
+      animation: rotate-glow 3s linear infinite;
+      z-index: -2;
+      top: -40%;
+      left: -40%;
+      will-change: transform;
+    }
+
+    .dock-item.active::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: rgba(15, 15, 15, 0.9);
+      border-radius: 10px;
+      z-index: -1;
+    }
+
     .dock-item.active svg {
-      stroke: var(--orange)
+      stroke: var(--orange);
+      position: relative;
+      z-index: 2;
     }
 
     .dock-item.active span {
-      color: var(--orange)
+      color: var(--orange);
+      position: relative;
+      z-index: 2;
     }
 
     .dock-item:active {
@@ -3216,37 +3353,252 @@
     .err-close-btn:active {
       opacity: .7
     }
+
+    /* ─── CINEMATIC INTRO ─── */
+    #intro-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: linear-gradient(135deg, #1a0800 0%, #0d0400 40%, #1f0a00 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: opacity .8s ease;
+    }
+
+    #intro-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #intro-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .intro-text {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      animation: intro-appear 1.5s cubic-bezier(.22,.68,0,1.1) forwards;
+      opacity: 0;
+    }
+
+    .intro-text h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(36px, 10vw, 72px);
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      line-height: 1.1;
+      text-shadow:
+        0 0 20px rgba(232, 84, 26, .6),
+        0 0 60px rgba(232, 84, 26, .3),
+        0 0 120px rgba(232, 84, 26, .15);
+    }
+
+    .intro-text h1 span {
+      color: var(--orange);
+    }
+
+    .intro-text .intro-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      color: rgba(255,255,255,.35);
+      text-transform: uppercase;
+      margin-top: 16px;
+    }
+
+    @keyframes intro-appear {
+      0% {
+        opacity: 0;
+        transform: scale(.85);
+        filter: blur(8px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+      }
+    }
+
+    /* ─── MOBILE OPTIMIZATION ─── */
+    @media (max-width: 767px) {
+      .ev-tiles {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .ev-tile-name {
+        font-size: 16px;
+      }
+
+      .ev-tile-sub {
+        font-size: 10px;
+      }
+
+      .ev-tile-time {
+        font-size: 10px;
+      }
+
+      .ev-tile-body {
+        padding: 10px 8px;
+      }
+
+      .ev-tile-tags {
+        margin-bottom: 8px;
+      }
+
+      .etp {
+        font-size: 9px;
+        padding: 3px 6px;
+      }
+
+      .ev-tile-link {
+        font-size: 10px;
+      }
+
+      .ev-tile-tag {
+        font-size: 8px;
+        top: 6px;
+        left: 6px;
+        padding: 3px 6px;
+      }
+
+      .ev-tile-prize {
+        font-size: 12px;
+        bottom: 6px;
+        right: 6px;
+        padding: 3px 8px;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cc {
+        padding: 10px 12px;
+        gap: 10px;
+      }
+
+      .cc-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+      }
+
+      .cc-icon svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .cc-name {
+        font-size: 16px;
+      }
+
+      .cc-ph {
+        font-size: 11px;
+      }
+
+      .sub-nav-bar {
+        padding: 0 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .ev-tile-top {
+        aspect-ratio: 16/10;
+      }
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- CINEMATIC INTRO -->
+  <div id="intro-screen">
+    <canvas id="intro-canvas"></canvas>
+    <div class="intro-text">
+      <h1>CSE <span>UTSAV</span><br>2K26 BEGINS</h1>
+      <div class="intro-sub">PSNA CSE · Dindigul</div>
+    </div>
+  </div>
+
   <!-- NAV -->
   <nav class="nav">
-    <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;gap:8px">
       <button class="admin-icon-btn" onclick="openAdminLogin()" aria-label="Admin">
         <svg viewBox="0 0 24 24">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
         </svg>
       </button>
-      <button class="btn-fi" id="pass-nav-btn" onclick="openPass()" style="padding:8px 12px;font-size:11px">My
-        Pass</button>
-      <button class="btn-ol" onclick="openReg(null)" style="padding:8px 12px;font-size:11px">Register</button>
-      <button class="btn-ol" onclick="openAllEvents()"
-        style="padding:8px 12px;font-size:11px;border-color:var(--border2);color:var(--text)">Event Details</button>
+      <button class="btn-fi" id="pass-nav-btn" onclick="openPass()" style="padding:8px 10px;font-size:10px">My Pass</button>
+      <button class="btn-ol" onclick="openReg(null)" style="padding:8px 10px;font-size:10px">Register</button>
+      <button class="btn-ev-glow" onclick="openAllEvents()">Event Details</button>
     </div>
-    <div class="nr">
-      <div class="nl">CSE<span>UTSAV</span></div>
-    </div>
+    <div class="nl">CSE<span>UTSAV</span></div>
   </nav>
+
+  <!-- SUB-NAV / STATUS BAR (scrolls naturally with page) -->
+  <div class="sub-nav-bar"
+    style="position:relative;margin-top:64px;height:42px;background:rgba(10,10,10,0.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:90">
+    <div style="font-size:10px;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase;opacity:0.8">2–4 April 2026 · PSNA Campus</div>
+    <div class="traffic-box" id="traffic-box"
+      style="display:flex; align-items:center; gap:10px; opacity:0; transition:opacity 0.5s ease;">
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0px">
+        <span id="t-status"
+          style="font-size:9px; font-weight:900; color:var(--muted); text-transform:uppercase; letter-spacing:1px">Calculating...</span>
+        <div style="width:100px; height:4px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; border:1px solid rgba(255,255,255,0.1)">
+          <div id="t-bar" style="width:0%; height:100%; background:var(--green); transition:width 1s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;"></div>
+        </div>
+      </div>
+      <div style="display:flex; gap:3px; align-items:flex-end; height:18px">
+        <div id="t-low"
+          style="width:4px; height:6px; background:#2ecc71; border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
+        </div>
+        <div id="t-mid"
+          style="width:4px; height:6px; background:#f1c40f; border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
+        </div>
+        <div id="t-high"
+          style="width:4px; height:6px; background:#e74c3c; border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    @keyframes t-pulse {
+      0% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.5);
+        box-shadow: 0 0 4px currentColor;
+      }
+
+      100% {
+        filter: brightness(1);
+      }
+    }
+
+    .t-active {
+      animation: t-pulse 2s infinite;
+      opacity: 1 !important;
+    }
+  </style>
 
   <!-- HERO -->
   <section class="hero" id="home">
     <!-- Watermark ghost names -->
-    <div class="wm-layer" id="wm-layer"></div>
     <div class="hero-left">
-      <div class="hero-meta">2–4 April 2026 &nbsp;|&nbsp; PSNA College, Dindigul</div>
       <h1 class="hero-h">
         <span class="wh">THE</span><span class="or"> CSE UTSAV</span>
         <br><span class="wh">BEGINS</span>
@@ -3571,7 +3923,7 @@
         style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;background:rgba(255,255,255,.03);padding:14px;border-radius:8px;border:1px solid var(--border);text-align:center">
         Detailed schedule, venues, rules, and timings for all events at CSE UTSAV 2K26. Tap any card below to open its
         full details.</div>
-      <div class="comm-grid" id="allev-list"></div>
+      <div id="allev-list"></div>
     </div>
   </div>
 
@@ -3735,7 +4087,7 @@
         date: 'April 2–3, 2026', time: '10:00 AM – 10:00 AM', venue: 'CSE Lab 1', deadline: 'Mar 30',
         p1: '₹5,000', p2: '₹3,000', p3: '₹2,000',
         rules: ['Team of 2–4', 'Theme given on spot', 'Working prototype required', 'Any tech stack allowed', 'Judge decision final'],
-        ec: 'Pranav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
+        ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
       },
       {
         id: 'dd', name: 'DESIGN DECODE', label: 'UI/UX Design Challenge', category: 'Technical', type: 'Team', minTeam: 1, maxTeam: 2, tag: 'Design', timeSlot: 'B',
@@ -3744,7 +4096,7 @@
         date: 'April 2, 2026', time: '02:00 PM – 05:00 PM', venue: 'IT Lab 2', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Max 2 members', 'Design tools provided', 'Time-bound rounds', 'Theme given on spot', 'Originality is key'],
-        ec: 'Pranav', ep: '9361131042', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
+        ec: 'Pranaav', ep: '9361131042', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
       },
       {
         id: 'cc', name: 'CHECKMATE CODERS', label: 'Competitive Coding Arena', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Coding', timeSlot: 'A',
@@ -3753,7 +4105,7 @@
         date: 'April 2, 2026', time: '10:00 AM – 01:00 PM', venue: 'CSE Lab 3', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Languages: C, C++, Java, Python', 'Multiple rounds', 'No internet', 'Judge decision final'],
-        ec: 'Pranav', ep: '9361131042', sc: 'Ms. Anitha L.', sp: '+91 93450 67890'
+        ec: 'Pranaav', ep: '9361131042', sc: 'Ms. Anitha L.', sp: '+91 93450 67890'
       },
       {
         id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding Challenge', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Coding', timeSlot: 'B',
@@ -3762,7 +4114,7 @@
         date: 'April 2, 2026', time: '02:00 PM – 05:00 PM', venue: 'CSE Lab 2', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Output provided, find the code', 'Languages: C, C++, Java, Python', 'No internet', 'Time-limited rounds'],
-        ec: 'Pranav', ep: '9361131042', sc: 'Dr. Senthil P.', sp: '+91 91230 45678'
+        ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Senthil P.', sp: '+91 91230 45678'
       },
       {
         id: 'btb', name: 'BRAND TO BILLION', label: 'Tech Startup Pitch', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Strategy', timeSlot: 'C',
@@ -3771,7 +4123,7 @@
         date: 'April 3, 2026', time: '10:00 AM – 01:00 PM', venue: 'Seminar Hall', deadline: 'Mar 30',
         p1: '₹4,000', p2: '₹2,500', p3: '₹1,500',
         rules: ['Team of 2–4', 'Pitch deck required', '5-min presentation + Q&A', 'Any domain', 'Judges decision final'],
-        ec: 'Pranav', ep: '9361131042', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
+        ec: 'Pranaav', ep: '9361131042', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
       },
       {
         id: 'zcz', name: 'ZERO CODE ZONE', label: 'No-Code Tech Challenge', category: 'Technical', type: 'Solo', minTeam: 1, maxTeam: 1, tag: 'Technical', timeSlot: 'C',
@@ -3780,7 +4132,7 @@
         date: 'April 3, 2026', time: '10:00 AM – 01:00 PM', venue: 'IT Lab 1', deadline: 'Mar 30',
         p1: '₹2,000', p2: '₹1,500', p3: '₹1,000',
         rules: ['Individual only', 'No coding required', 'Logic & aptitude based', 'Multiple rounds', 'No electronic devices'],
-        ec: 'Pranav', ep: '9361131042', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
+        ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
       },
       {
         id: 'tt', name: 'TECHNOTRACE', label: 'Tech Treasure Hunt', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Fun', timeSlot: 'D',
@@ -3789,7 +4141,7 @@
         date: 'April 3, 2026', time: '02:00 PM – 05:00 PM', venue: 'Campus Wide', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Multiple rounds', 'Phone required for clues', 'No external help', 'Fastest team wins'],
-        ec: 'Pranav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
+        ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
       },
 
       /* ── NON-TECHNICAL EVENTS (3) ── */
@@ -3823,10 +4175,12 @@
     ];
 
     const CONTACTS = [
-      { role: 'Events', name: 'Mr. Karthik R.', phone: '+91 98421 56789' },
-      { role: 'Registration', name: 'Ms. Divya S.', phone: '+91 96780 34567' },
-      { role: 'General Queries', name: 'Mr. Vijay T.', phone: '+91 94560 78901' },
-      { role: 'Staff Coordinator', name: 'Dr. Priya M.', phone: '+91 97890 12345' },
+      { role: 'Non-Technical Events', name: 'Arjun', phone: '9087654321' },
+      { role: 'Technical Events', name: 'Pranaav', phone: '9361131042' },
+      { role: 'Website Admin', name: 'Sriram S', phone: '9361131042' },
+      { role: 'General Issues', name: 'Sanjay Kumar KS', phone: '9361131042' },
+      { role: 'Registration Issues', name: 'Sanjay Kumar M', phone: '9361131042' },
+      { role: 'Staff Coordinator', name: 'Padma Priya', phone: 'Ast Prof CSE' }
     ];
 
     /* ════════ STATE ════════ */
@@ -3838,11 +4192,58 @@
     function init() {
       buildObs(); buildTicker(); renderTiles(); renderContacts(); renderAllEvents();
       animStats(); tick(); setInterval(tick, 1000);
-      buildWatermarks();
+      initTraffic();
       document.getElementById('pass-nav-btn').style.display = 'block';
       // Dock active state on scroll
       window.addEventListener('scroll', updateDockActive, { passive: true });
       updateDockActive();
+    }
+
+    function initTraffic() {
+      const box = document.getElementById('traffic-box');
+      const low = document.getElementById('t-low'), mid = document.getElementById('t-mid'), high = document.getElementById('t-high');
+      const status = document.getElementById('t-status');
+      if (!box) return;
+
+      const updateTraffic = (regs) => {
+        // Logic: Scale based on registrations (0-100: Low/Easy, 100-500: Moderate, 500+: High/Steady)
+        // We use local regs + a random baseline to simulate real server data
+        const baseline = 45; 
+        const totalRegs = baseline + regs;
+        
+        let val = 10; // Default
+        if (totalRegs < 100) {
+          val = 15 + Math.random() * 10;
+          status.textContent = 'LOW TRAFFIC'; status.style.color = '#2ecc71';
+          document.getElementById('t-bar').style.background = '#2ecc71';
+          low.classList.add('t-active'); low.style.height = '10px';
+        } else if (totalRegs < 500) {
+          val = 40 + Math.random() * 15;
+          status.textContent = 'STEADY TRAFFIC'; status.style.color = '#f1c40f';
+          document.getElementById('t-bar').style.background = '#f1c40f';
+          low.classList.add('t-active');
+          mid.classList.add('t-active'); mid.style.height = '14px';
+        } else {
+          val = 75 + Math.random() * 20;
+          status.textContent = 'HIGH DENSITY'; status.style.color = '#e74c3c';
+          document.getElementById('t-bar').style.background = '#e74c3c';
+          low.classList.add('t-active');
+          mid.classList.add('t-active');
+          high.classList.add('t-active'); high.style.height = '18px';
+        }
+        
+        document.getElementById('t-bar').style.width = Math.min(100, val) + '%';
+      };
+
+      const update = () => {
+        const regs = JSON.parse(localStorage.getItem('u26r') || '[]').length;
+        [low, mid, high].forEach(el => { el.classList.remove('t-active'); el.style.height = '6px'; });
+        updateTraffic(regs);
+        box.style.opacity = '1';
+      };
+
+      update();
+      setInterval(update, 15000 + Math.random() * 15000); // Less frequent updates
     }
 
     /* ════════ OUTLINE + TICKER ════════ */
@@ -3858,14 +4259,15 @@
     }
 
     /* ════════ RENDER TILES ════════ */
-    function renderTile(e) {
+    function renderTile(e, isFeatured) {
       const startTime = e.time === 'TBA' ? 'TBA' : e.time.split('–')[0].trim();
+      const featuredClass = isFeatured ? ' ev-tile-featured' : '';
       return `
-    <div class="ev-tile" onclick="openEvMod('${e.id}')">
+    <div class="ev-tile${featuredClass}" onclick="openEvMod('${e.id}')">
       <div class="ev-tile-top">
         <div class="ev-tile-bg" style="background:${e.grad}">
           <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
-            <span style="font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;color:transparent;-webkit-text-stroke:1px ${e.accent};opacity:.2;text-transform:uppercase;letter-spacing:2px">${e.name.split(' ')[0]}</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:${e.accent};opacity:.25;text-transform:uppercase;letter-spacing:2px;text-shadow:0 0 20px ${e.accent}, 0 0 40px ${e.accent}">${e.name.split(' ')[0]}</span>
           </div>
         </div>
         <div class="ev-tile-overlay"></div>
@@ -3875,7 +4277,7 @@
         <div class="ev-tile-name">${e.name}</div>
         <div class="ev-tile-sub">${e.label}</div>
         <div class="ev-tile-time">⏰ ${e.date === 'TBA' ? 'Date TBA' : e.date.replace(', 2026', '')} · ${startTime}</div>
-        <div class="ev-tile-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+        <div class="ev-tile-tags" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">
           <span class="etp etp-or">${e.type}</span>
           <span class="etp etp-nt">${e.type === 'Solo' ? 'Individual' : `${e.minTeam}–${e.maxTeam} Members`}</span>
           ${e.timeSlot ? `<span class="etp" style="background:rgba(255,255,255,0.05);color:var(--muted2);border:1px solid rgba(255,255,255,0.1)">Slot ${e.timeSlot}</span>` : ''}
@@ -3891,6 +4293,9 @@
     function renderTiles() {
       const techEvs = EVS.filter(e => e.category === 'Technical');
       const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
+      // Featured indices: 0, 3, 6 for alternating big/small pattern
+      const techFeatured = [0, 3, 6];
+      const nonTechFeatured = [0];
       document.getElementById('ev-tiles').innerHTML = `
     <div style="grid-column:1/-1;margin-bottom:4px">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#2ecc71;text-transform:uppercase;letter-spacing:3px;display:flex;align-items:center;gap:10px">
@@ -3898,25 +4303,24 @@
         <span>Technical Events</span>
       </div>
     </div>
-    ${techEvs.map(e => renderTile(e)).join('')}
+    ${techEvs.map((e, i) => renderTile(e, techFeatured.includes(i))).join('')}
     <div style="grid-column:1/-1;margin-top:28px;margin-bottom:4px;padding-top:20px;border-top:1px solid var(--border)">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--orange);text-transform:uppercase;letter-spacing:3px;display:flex;align-items:center;gap:10px">
         <span style="color:var(--orange);text-shadow:0 0 8px rgba(232,84,26,.4);font-weight:900;font-size:24px">{ }</span>
         <span>Non-Technical Events</span>
       </div>
     </div>
-    ${nonTechEvs.map(e => renderTile(e)).join('')}
+    ${nonTechEvs.map((e, i) => renderTile(e, nonTechFeatured.includes(i))).join('')}
   `;
     }
 
     /* ════════ CONTACTS ════════ */
     const COMMITTEE = [
-      { name: 'Pranav', role: 'Symposium Secretary', dept: 'Whole Head', bio: 'Leading the vision of UTSAV 2K26', phone: '9361131042', img: 'assets/committee/pranav.jpg', linkedin: '#' },
+      { name: 'Pranaav', role: 'Symposium Secretary', dept: 'Whole Head', bio: 'Leading the vision of UTSAV 2K26', phone: '9361131042', img: 'assets/committee/pranav.jpg', linkedin: '#' },
       { name: 'Sriram S', role: 'Web Development & System Admin', dept: 'Core Team', bio: 'Architect of the UTSAV 2K26 Digital Experience & System Administrator', phone: '9361131042', img: 'assets/committee/sriram.jpg', linkedin: 'https://www.linkedin.com/in/sriram-s-432a99296' },
       { name: 'Sabarish', role: 'Symposium Coordinator', dept: 'Core Team', bio: 'Overseeing logistics and event operations', phone: '9361131042', img: 'assets/committee/sabarish.jpg', linkedin: '#' },
       { name: 'Arjun', role: 'Event Coordinator', dept: 'Core Team', bio: 'Coordinating all technical and non-technical showdowns', phone: '9087654321', img: 'assets/committee/arjun.jpg', linkedin: '#' },
       { name: 'Sanjay Kumar KS', role: 'AV Head', dept: 'Technical Team', bio: 'Ensuring audio-visual excellence across the symposium', phone: '9361131042', img: 'assets/committee/sanjay_ks.jpg', linkedin: '#' },
-      { name: 'Naveen', role: 'Media Team Head', dept: 'Creative Team', bio: 'Capturing the best moments and highlights of UTSAV', phone: '9361131042', img: 'assets/committee/naveen.jpg', linkedin: '#' },
       { name: 'Sanjay Kumar M', role: 'Core Committee', dept: 'Management', bio: 'Strategic planning and administrative oversight', phone: '9361131042', img: 'assets/committee/sanjay_m.jpg', linkedin: '#' }
     ];
 
@@ -3947,7 +4351,7 @@
       document.getElementById('cg').innerHTML = CONTACTS.map(c => `
     <a class="cc" href="tel:${c.phone}">
       <div class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg></div>
-      <div>
+      <div class="cc-info">
         <div class="cc-role">${c.role}</div>
         <div class="cc-name">${c.name}</div>
         <div class="cc-ph">${c.phone}</div>
@@ -3979,43 +4383,41 @@
       const catColor = isTech ? '#2ecc71' : 'var(--orange)';
       
       document.getElementById('esc').innerHTML = `
-    <div style="position:sticky;top:0;z-index:10;background:rgba(10,10,10,0.8);backdrop-filter:blur(12px);margin:-20px -20px 20px -20px;padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:flex-end;align-items:center">
-      <button class="ev-modal-close-btn" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:8px 16px;border-radius:8px;color:#fff;font-size:12px;font-weight:700" onclick="closeEvMod(null,1)">✕ CLOSE</button>
+    <div style="position:sticky;top:0;z-index:10;background:rgba(10,10,10,0.8);backdrop-filter:blur(12px);margin:-20px -20px 20px -20px;padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:center;align-items:center">
+      <button class="ev-modal-close-btn" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:8px 16px;border-radius:8px;color:#fff;font-size:12px;font-weight:700;cursor:pointer" onclick="closeEvMod(null,1)">✕ CLOSE WINDOW</button>
     </div>
 
     <!-- Page Header -->
-    <div style="margin-bottom:32px">
-       <div style="display:flex;gap:20px;align-items:flex-start">
-         <div style="width:80px;height:80px;border-radius:20px;background:${e.grad};border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;box-shadow:0 10px 30px rgba(0,0,0,0.3)">${e.icon}</div>
-         <div>
-           <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;line-height:1;margin:0 0 8px 0">${e.name}</h1>
-           <div style="font-family:'Outfit',sans-serif;font-size:14px;color:var(--muted);font-weight:600;letter-spacing:1px">${e.label}</div>
-         </div>
+    <div style="margin-bottom:32px; display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 10px">
+       <div style="width:85px;height:85px;border-radius:24px;background:${e.grad};border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,0.4); border-color:${catColor}; color:${catColor}">${e.icon}</div>
+       <div style="width:100%">
+         <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px, 8vw, 48px);font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;line-height:1.1;margin:0 0 10px 0; word-break:break-word">${e.name}</h1>
+         <div style="font-family:'Outfit',sans-serif;font-size:15px;color:${catColor};font-weight:700;letter-spacing:1.5px;text-transform:uppercase">${e.label}</div>
        </div>
     </div>
 
     <!-- Quick Stats Grid -->
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px">
       ${[['📅 Date', e.date], ['⏰ Time', e.time], ['📍 Venue', e.venue], ['👥 Team', e.type === 'Solo' ? 'Individual' : `Team ${e.minTeam}–${e.maxTeam}`]].map(([l, t]) => `
-        <div style="padding:16px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;transition:border-color .3s" onmouseover="this.style.borderColor='${catColor}'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="font-size:10px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">${l}</div>
-          <div style="font-size:14px;font-weight:700;color:#fff;letter-spacing:0.5px">${t}</div>
+        <div style="padding:16px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;transition:border-color .3s" onmouseover="this.style.borderColor='${catColor}'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:11px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px; opacity:0.9">${l}</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;letter-spacing:0.5px">${t}</div>
         </div>
       `).join('')}
     </div>
 
     <!-- About Section -->
-    <div style="margin-bottom:32px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
-        <span style="width:24px;height:1px;background:${catColor}"></span> ABOUT EVENT
+    <div style="margin-bottom:32px; text-align:center">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
+        <span style="width:24px;height:1px;background:${catColor}"></span> ABOUT EVENT <span style="width:24px;height:1px;background:${catColor}"></span>
       </div>
-      <p style="font-size:15px;color:rgba(255,255,255,0.7);line-height:1.8;padding-left:4px;margin:0">${e.desc}</p>
+      <p style="font-size:15px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0;max-width:600px;margin-left:auto;margin-right:auto">${e.desc}</p>
     </div>
 
     <!-- Rules Section -->
-    <div style="margin-bottom:32px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
-        <span style="width:24px;height:1px;background:${catColor}"></span> RULES & GUIDELINES
+    <div style="margin-bottom:32px; text-align:center">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
+        <span style="width:24px;height:1px;background:${catColor}"></span> RULES & GUIDELINES <span style="width:24px;height:1px;background:${catColor}"></span>
       </div>
       <div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:16px;overflow:hidden">
         ${e.rules.map((r, i) => `
@@ -4028,9 +4430,9 @@
     </div>
 
     <!-- Team Section (Coordinators) -->
-    <div style="margin-bottom:100px"> <!-- Extra margin for bottom action bar -->
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
-        <span style="width:24px;height:1px;background:${catColor}"></span> COORDINATORS & JUDGES
+    <div style="margin-bottom:100px; text-align:center"> <!-- Extra margin for bottom action bar -->
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
+        <span style="width:24px;height:1px;background:${catColor}"></span> COORDINATORS & JUDGES <span style="width:24px;height:1px;background:${catColor}"></span>
       </div>
       <div class="ev-coord-grid">
         <!-- Event Head (Pranav/Arjun) -->
@@ -4443,7 +4845,7 @@
       const protectOn = () => window.onbeforeunload = () => "Registration is in progress. Closing this page might result in lost data. Are you sure?";
       const protectOff = () => window.onbeforeunload = null;
 
-      if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; btn.style.opacity = '0.7'; }
+      if (btn) { btn.disabled = true; btn.textContent = 'Confirming...'; btn.style.opacity = '0.7'; }
       if (backBtn) { backBtn.style.pointerEvents = 'none'; backBtn.style.opacity = '0.5'; }
       protectOn();
 
@@ -4670,12 +5072,11 @@
           if (el && !el.hasChildNodes()) {
             const verifyUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'verify.html';
             const members = getParsedMembers(r);
-            const tmQR = members.map(m => ({ n: m.name || '', r: m.regno || '', y: m.year || '', s: m.section || '', p: m.phone || '' }));
-            const tNameForQr = (r.teamName && r.teamName.trim() !== 'Solo' && !r.teamName.includes('[{"name"')) ? r.teamName : 'Solo';
-            const data = { n: r.name, em: r.email, t: tNameForQr, e: r.eventName, id: r.regId, rn: r.regno || '', yr: r.year || '', sec: r.section || '', ph: r.phone || '', tm: tmQR };
-            // Use encodeURIComponent to handle special characters before btoa
+            // Optimized payload for maximum scannability: ID, Name, Event, and minimal Team info
+            const tmQR = members.map(m => ({ n: m.name || '', r: (m.regno || '').slice(-4) })); 
+            const data = { id: r.regId, n: r.name, e: r.eventName, rn: (r.regno || '').slice(-4), ph: (r.phone || '').slice(-4), tm: tmQR }; 
             const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-            try { new QRCode(el, { text: qrText, width: 140, height: 140, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.L }); } catch (ex) { console.error("QR Code rendering blocked:", ex); }
+            try { new QRCode(el, { text: qrText, width: 140, height: 140, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); } catch (ex) { console.error("QR Code rendering blocked:", ex); }
           }
         });
       }, 100);
@@ -5289,35 +5690,6 @@ function doPost(e) {
       document.querySelector('.nav').style.background = window.scrollY > 50 ? 'rgba(10,10,10,.98)' : 'rgba(10,10,10,.95)';
     });
 
-    /* ════════ WATERMARK NAMES ════════ */
-    function buildWatermarks() {
-      const names = [
-        'SRIRAM', 'KARTHIK', 'DIVYA', 'PRIYA', 'ARUN', 'RAMESH',
-        'KEERTHANA', 'VIJAY', 'ANITHA', 'SENTHIL', 'LAVANYA', 'MURUGAN',
-        'NITHYA', 'DEEPAK', 'SWATHI', 'HARI', 'MEENA', 'SURYA',
-        'KAVYA', 'RAJA', 'POOJA', 'VENKAT', 'SINDHU', 'PRAKASH'
-      ];
-      const layer = document.getElementById('wm-layer');
-      if (!layer) return;
-      const positions = [
-        { top: '8%', left: '-2%', size: 'clamp(48px,9vw,88px)', rot: '-12deg', op: .045 },
-        { top: '18%', left: '52%', size: 'clamp(36px,7vw,68px)', rot: '8deg', op: .03 },
-        { top: '35%', left: '5%', size: 'clamp(40px,8vw,76px)', rot: '-6deg', op: .04 },
-        { top: '52%', left: '38%', size: 'clamp(32px,6vw,60px)', rot: '15deg', op: .025 },
-        { top: '68%', left: '-1%', size: 'clamp(44px,8vw,80px)', rot: '-18deg', op: .035 },
-        { top: '78%', left: '55%', size: 'clamp(36px,7vw,64px)', rot: '5deg', op: .03 },
-        { top: '12%', left: '28%', size: 'clamp(28px,5vw,52px)', rot: '20deg', op: .02 },
-        { top: '44%', left: '62%', size: 'clamp(40px,7vw,72px)', rot: '-8deg', op: .04 },
-        { top: '88%', left: '20%', size: 'clamp(32px,6vw,58px)', rot: '12deg', op: .025 },
-      ];
-      positions.forEach((p, i) => {
-        const span = document.createElement('span');
-        span.className = 'wm-name';
-        span.textContent = names[i % names.length];
-        span.style.cssText = `top:${p.top};left:${p.left};font-size:${p.size};transform:rotate(${p.rot});-webkit-text-stroke:1px rgba(232,84,26,${p.op});`;
-        layer.appendChild(span);
-      });
-    }
 
     /* ════════ ADMIN LOGIN ════════ */
     function openAdminLogin() {
@@ -5371,15 +5743,22 @@ function doPost(e) {
       const dockEvents = document.getElementById('dock-events');
       const dockReg = document.getElementById('dock-registration');
       if (!eventsEl || !dockHome || !dockEvents) return;
+      
       const scrollMid = window.scrollY + window.innerHeight / 2;
-      document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
+      let targetId = 'dock-home';
+      
       if (regEl && scrollMid >= regEl.offsetTop) {
-        dockReg.classList.add('active');
+        targetId = 'dock-registration';
       } else if (scrollMid >= eventsEl.offsetTop) {
-        dockEvents.classList.add('active');
-      } else {
-        dockHome.classList.add('active');
+        targetId = 'dock-events';
       }
+      
+      const currentActive = document.querySelector('.dock-item.active');
+      if (currentActive && currentActive.id === targetId) return; // No change, avoid flicker
+      
+      document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
+      const newActive = document.getElementById(targetId);
+      if (newActive) newActive.classList.add('active');
     }
 
     function openComm() {
@@ -5402,26 +5781,167 @@ function doPost(e) {
       showDock();
     }
     function renderAllEvents() {
-      function evCard(e) {
+      const container = document.getElementById('allev-list');
+      if (!container) return;
+      
+      const cards = EVS.map(e => {
         return `<div class="ev-item-card" onclick="closeAllEvents();openEvMod('${e.id}')">
-      <div style="display:flex;gap:12px;align-items:center;justify-content:center;width:100%">
-        <div style="width:42px;height:42px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${e.icon}</div>
-        <div style="text-align:left">
-          <div class="comm-name" style="font-size:16px">${e.name}</div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--orange);text-transform:uppercase;margin-top:2px">${e.label}</div>
-        </div>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;width:100%;justify-content:center">
-        ${[['📅', e.date], ['⏰', e.time]].map(([i, t]) => `<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:4px 8px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;display:flex;gap:6px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
-      </div>
-    </div>`;
-      }
-      document.getElementById('allev-list').innerHTML = `
-    <div class="ev-listing-grid">${EVS.map(e => evCard(e)).join('')}</div>
-  `;
+          <div style="display:flex; flex-direction:column; gap:14px; align-items:center; text-align:center; width:100%">
+            <div style="width:54px;height:54px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 4px 15px rgba(0,0,0,0.2)">${e.icon}</div>
+            <div>
+              <div class="comm-name" style="font-size:18px;margin-bottom:4px">${e.name}</div>
+              <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--orange);text-transform:uppercase">${e.label}</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;width:100%;justify-content:center">
+            ${[['📅', e.date], ['⏰', e.time]].map(([i, t]) => `<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:4px 8px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;display:flex;gap:6px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
+          </div>
+        </div>`;
+      }).join('');
+      
+      container.innerHTML = cards;
+      container.className = 'ev-listing-grid';
     }
 
     init();
+
+    /* ════════ CINEMATIC INTRO ════════ */
+    (function initIntro() {
+      const screen = document.getElementById('intro-screen');
+      if (!screen) return;
+
+      // Show only once per session
+      if (sessionStorage.getItem('introShown')) {
+        screen.remove();
+        return;
+      }
+
+      const canvas = document.getElementById('intro-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H;
+      const particles = [];
+      const sparks = [];
+      let animId;
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Floating particles (ambient)
+      for (let i = 0; i < 40; i++) {
+        particles.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 2 + 0.5,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: -Math.random() * 0.8 - 0.2,
+          alpha: Math.random() * 0.5 + 0.2,
+          color: Math.random() > 0.5 ? '#e8541a' : '#ff6830'
+        });
+      }
+
+      // Firecracker burst function
+      function burst(x, y) {
+        const count = 20 + Math.floor(Math.random() * 15);
+        for (let i = 0; i < count; i++) {
+          const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
+          const speed = 1.5 + Math.random() * 3;
+          const colors = ['#e8541a', '#ff6830', '#ffaa44', '#fff4e0', '#ff4500'];
+          sparks.push({
+            x, y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            r: Math.random() * 2.5 + 0.5,
+            alpha: 1,
+            decay: 0.015 + Math.random() * 0.01,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            trail: []
+          });
+        }
+      }
+
+      // Schedule bursts
+      setTimeout(() => burst(W * 0.3, H * 0.35), 300);
+      setTimeout(() => burst(W * 0.7, H * 0.3), 600);
+      setTimeout(() => burst(W * 0.5, H * 0.25), 1000);
+      setTimeout(() => burst(W * 0.2, H * 0.5), 1400);
+      setTimeout(() => burst(W * 0.8, H * 0.45), 1800);
+      setTimeout(() => burst(W * 0.4, H * 0.6), 2200);
+
+      function animate() {
+        ctx.clearRect(0, 0, W, H);
+
+        // Draw ambient particles
+        for (const p of particles) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.alpha;
+          ctx.fill();
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
+          if (p.x < -10) p.x = W + 10;
+          if (p.x > W + 10) p.x = -10;
+        }
+
+        // Draw sparks with trails
+        for (let i = sparks.length - 1; i >= 0; i--) {
+          const s = sparks[i];
+          // Draw trail
+          for (let t = 0; t < s.trail.length; t++) {
+            const tp = s.trail[t];
+            ctx.beginPath();
+            ctx.arc(tp.x, tp.y, s.r * 0.5, 0, Math.PI * 2);
+            ctx.fillStyle = s.color;
+            ctx.globalAlpha = tp.alpha * 0.3;
+            ctx.fill();
+            tp.alpha -= 0.03;
+          }
+          s.trail = s.trail.filter(t => t.alpha > 0);
+
+          // Draw spark
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = s.alpha;
+          ctx.fill();
+
+          // Glow effect
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = s.alpha * 0.1;
+          ctx.fill();
+
+          s.trail.push({ x: s.x, y: s.y, alpha: s.alpha });
+          s.x += s.vx;
+          s.y += s.vy;
+          s.vy += 0.03; // gravity
+          s.alpha -= s.decay;
+          s.vx *= 0.99;
+
+          if (s.alpha <= 0) sparks.splice(i, 1);
+        }
+
+        ctx.globalAlpha = 1;
+        animId = requestAnimationFrame(animate);
+      }
+      animate();
+
+      // Fade out after 3 seconds
+      setTimeout(() => {
+        screen.classList.add('fade-out');
+        setTimeout(() => {
+          screen.remove();
+          cancelAnimationFrame(animId);
+          sessionStorage.setItem('introShown', '1');
+        }, 900);
+      }, 3000);
+    })();
 
     /* ════════════════════════════════
        GOOGLE APPS SCRIPT CODE (v3)
