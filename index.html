@@ -3517,6 +3517,254 @@
         aspect-ratio: 16/10;
       }
     }
+
+    /* ══════════════════════════════
+       PREMIUM VIDEO SHOWCASE
+    ══════════════════════════════ */
+    .vid-showcase {
+      width: 100%;
+      padding: 0 24px 52px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .vid-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .vid-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(32px, 8vw, 58px);
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 28px;
+      line-height: 1;
+    }
+
+    .vid-title span {
+      color: var(--orange);
+      text-shadow: 0 0 24px rgba(232,84,26,0.55);
+    }
+
+    /* Glow spinning border container */
+    .vid-glow-ring {
+      position: relative;
+      width: 100%;
+      max-width: 800px;                   /* Wider horizontal layout */
+      border-radius: 20px;
+      padding: 3px;                       /* border thickness */
+      background: conic-gradient(
+        from var(--angle, 0deg),
+        transparent 0% 60%,
+        rgba(232,84,26,0.9) 70%,
+        rgba(255,104,48,1) 80%,
+        rgba(232,84,26,0.9) 90%,
+        transparent 100%
+      );
+      animation: spin-glow 4s linear infinite;
+      box-shadow:
+        0 0 30px rgba(232,84,26,0.25),
+        0 0 60px rgba(232,84,26,0.1);
+      opacity: 0;
+      transform: scale(0.97);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .vid-glow-ring.vid-visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    @property --angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    @keyframes spin-glow {
+      to { --angle: 360deg; }
+    }
+
+    /* Inner dark box that holds the video */
+    .vid-inner {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;              /* Revert to horizontal ratio */
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .vid-inner video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      z-index: 1;
+      /* Boost contrast and saturation to hide noise in shadows, plus subtle blur to mask blockiness */
+      filter: contrast(1.15) saturate(1.2) blur(0.45px);
+    }
+
+    /* Film Grain Noise Overlay (Masks compression artifacts) */
+    .vid-grain {
+      position: absolute;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.22;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: grain-flicker 0.2s steps(4) infinite;
+    }
+
+    @keyframes grain-flicker {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-1%, -1%); }
+      50% { transform: translate(1%, 1%); }
+      75% { transform: translate(-0.5%, 0.5%); }
+    }
+
+    /* Subtle dark vignette overlay */
+    .vid-inner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0,0,0,0.7) 100%);
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    /* Fallback when video hasn't loaded */
+    .vid-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a0800, #0a0500, #1a0a00);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(36px, 10vw, 72px);
+      font-weight: 900;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(232,84,26,0.45);
+      transition: opacity 0.5s ease;
+      z-index: 0;
+    }
+
+    @media (max-width: 767px) {
+      .vid-showcase { padding: 0 16px 36px; }
+      .vid-glow-ring { border-radius: 14px; padding: 2px; }
+      .vid-inner { border-radius: 12px; }
+    }
+
+    @media (max-width: 480px) {
+      .vid-showcase { padding: 0 12px 28px; }
+      .vid-title { margin-bottom: 18px; }
+    }
+
+    /* ══════════════════════════════
+       HERO PARTICLE CANVAS
+    ══════════════════════════════ */
+    #hero-particles {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;        /* behind hero text */
+    }
+
+    /* ══════════════════════════════
+       UNIFORM EVENT CARDS FIX
+    ══════════════════════════════ */
+    .ev-tiles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    /* Remove featured full-width on mobile — ALL cards equal size */
+    .ev-tile-featured {
+      grid-column: auto !important;
+    }
+
+    .ev-tile-featured .ev-tile-top {
+      aspect-ratio: 4/3 !important;
+    }
+
+    /* Tablet: 3 columns */
+    @media (min-width: 640px) {
+      .ev-tiles {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+    }
+
+    /* Desktop: 4 columns */
+    @media (min-width: 960px) {
+      .ev-tiles {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+      }
+    }
+
+    /* Card body uniform height */
+    .ev-tile {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .ev-tile-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 10px;
+      box-sizing: border-box;
+    }
+
+    .ev-tile-link {
+      margin-top: auto;
+    }
+
+    /* Mobile tweaks for clean equal cards */
+    @media (max-width: 480px) {
+      .ev-tile-top {
+        aspect-ratio: 4/3 !important;
+      }
+      .ev-tile-featured .ev-tile-top {
+        aspect-ratio: 4/3 !important;
+      }
+      .ev-tile-name {
+        font-size: 16px;
+      }
+      .ev-tiles {
+        gap: 10px;
+      }
+      .vid-showcase {
+        padding: 0 12px 28px;
+      }
+
+    }
   </style>
 </head>
 
@@ -3640,8 +3888,36 @@
     </div>
   </div>
 
+
+
+
+  <!-- PREMIUM VIDEO SHOWCASE -->
+  <div class="vid-showcase" id="vid-section">
+    <div class="vid-label">Live Preview</div>
+    <div class="vid-title">IT'S <span>HAPPENING</span></div>
+    <div class="vid-glow-ring" id="vid-wrapper">
+      <div class="vid-inner">
+        <!-- Film Grain to mask noise -->
+        <div class="vid-grain"></div>
+        <!-- Fallback: visible instantly while video loads -->
+        <div class="vid-fallback" id="vid-fallback">UTSAV 2K26</div>
+        <!-- Video lazy-loaded after first paint — zero blocking -->
+        <video
+          id="hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="none"
+        ></video>
+      </div>
+    </div>
+  </div>
+
+
   <!-- ABOUT -->
   <section class="sec" id="about">
+
     <div class="sl">About</div>
     <div class="st">A Legacy of<br>Excellence</div>
     <p class="ss">PSNA CSE brings together the sharpest minds for a day of competition, innovation and celebration.</p>
@@ -4193,10 +4469,122 @@
       buildObs(); buildTicker(); renderTiles(); renderContacts(); renderAllEvents();
       animStats(); tick(); setInterval(tick, 1000);
       initTraffic();
+      initHeroVideo();
+      initHeroParticles();
       document.getElementById('pass-nav-btn').style.display = 'block';
       // Dock active state on scroll
       window.addEventListener('scroll', updateDockActive, { passive: true });
       updateDockActive();
+    }
+
+    /* ════════ LAZY VIDEO LOADER ════════ */
+    function initHeroVideo() {
+      const wrapper  = document.getElementById('vid-wrapper');   // .vid-glow-ring
+      const video    = document.getElementById('hero-video');
+      const fallback = document.getElementById('vid-fallback');
+      if (!wrapper || !video) return;
+
+      const loadVideo = () => {
+        video.src = 'assets/unboxing.mp4';
+        video.load();
+        video.play().catch(() => {});
+
+        // Fade-in glow ring when it scrolls into view
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(en => {
+            if (en.isIntersecting) {
+              wrapper.classList.add('vid-visible');
+              obs.disconnect();
+            }
+          });
+        }, { threshold: 0.1 });
+        obs.observe(wrapper);
+
+        // Immediately visible if already in viewport on load
+        if (wrapper.getBoundingClientRect().top < window.innerHeight) {
+          wrapper.classList.add('vid-visible');
+        }
+
+        // Fade out fallback text once video starts playing
+        video.addEventListener('playing', () => {
+          if (fallback) { fallback.style.transition = 'opacity 0.5s'; fallback.style.opacity = '0'; }
+        }, { once: true });
+      };
+
+      // Defer — never blocks first paint
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadVideo, { timeout: 2000 });
+      } else {
+        setTimeout(loadVideo, 300);
+      }
+    }
+
+    /* ════════ HERO PARTICLE CANVAS ════════ */
+    function initHeroParticles() {
+      const hero = document.querySelector('.hero');
+      if (!hero) return;
+
+      // Create and inject canvas
+      const canvas = document.createElement('canvas');
+      canvas.id = 'hero-particles';
+      hero.insertBefore(canvas, hero.firstChild);
+      const ctx = canvas.getContext('2d');
+
+      const PARTICLE_COUNT = 18;
+      let particles = [];
+      let W, H;
+
+      function resize() {
+        const rect = hero.getBoundingClientRect();
+        W = canvas.width  = rect.width;
+        H = canvas.height = rect.height || window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      // Build particles
+      function makeParticle() {
+        return {
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: 1.2 + Math.random() * 2.5,          // radius 1.2–3.7px
+          vx: (Math.random() - 0.5) * 0.3,        // slow horizontal drift
+          vy: -(0.25 + Math.random() * 0.55),      // float upward
+          opacity: 0.15 + Math.random() * 0.55,
+          opDir: Math.random() < 0.5 ? 1 : -1,
+          blur: 1 + Math.random() * 3
+        };
+      }
+      for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(makeParticle());
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+          // Soft glow via shadow
+          ctx.save();
+          ctx.globalAlpha = Math.max(0.05, Math.min(1, p.opacity));
+          ctx.shadowColor  = 'rgba(232, 84, 26, 0.9)';
+          ctx.shadowBlur   = p.blur * 8;
+          ctx.fillStyle    = `rgba(255, ${80 + Math.random() * 30 | 0}, 20, 1)`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+
+          // Move
+          p.x += p.vx;
+          p.y += p.vy;
+          p.opacity += 0.003 * p.opDir;
+          if (p.opacity > 0.75 || p.opacity < 0.08) p.opDir *= -1;
+
+          // Recycle when off top or sides
+          if (p.y < -8 || p.x < -8 || p.x > W + 8) {
+            Object.assign(p, makeParticle(), { y: H + 5, x: Math.random() * W });
+          }
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
     }
 
     function initTraffic() {
