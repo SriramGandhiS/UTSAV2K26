@@ -707,8 +707,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:'Barlow',
 // 5. Paste the URL below
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx_En8x8MhnhIV1qYboX9kAftQ23dHtjJAO8wGouGgwlaBP8GOgUHTS-7Va4nErc0MWKg/exec';
 // Admin credentials
-const ADMIN_ID = 'sriram';
-const ADMIN_PASS = '93611';
+// Credentials removed for security. Authenticated via backend.
 
 /* ════════ EVENT DATA ════════ */
 const EVS = [
@@ -1662,18 +1661,42 @@ function openAdminLogin() {
 function closeAdminLogin() {
   document.getElementById('admin-login-ov').classList.remove('open');
 }
-function checkAdminLogin() {
+async function checkAdminLogin() {
   const uid = document.getElementById('admin-uid').value.trim();
   const pwd = document.getElementById('admin-pwd').value.trim();
-  if (uid === ADMIN_ID && pwd === ADMIN_PASS) {
-    closeAdminLogin();
-    openAdmin();
-  } else {
-    document.getElementById('admin-login-err').classList.add('show');
-    document.getElementById('admin-login-ov').querySelector('.admin-login-box').style.animation = 'none';
-    requestAnimationFrame(() => {
-      document.getElementById('admin-login-ov').querySelector('.admin-login-box').style.animation = '';
-    });
+  const errEl = document.getElementById('admin-login-err');
+  const btn = document.querySelector('#admin-login-ov .reg-next-btn');
+
+  if (!uid || !pwd) {
+    errEl.textContent = 'Please enter both User ID and Password.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Verifying...'; }
+  errEl.classList.remove('show');
+
+  try {
+    const url = SHEETS_URL + '?action=adminLogin&uid=' + encodeURIComponent(uid) + '&pwd=' + encodeURIComponent(pwd);
+    const resp = await fetch(url);
+    const data = await resp.json();
+    
+    if (data.success) {
+      closeAdminLogin();
+      openAdmin();
+    } else {
+      errEl.textContent = data.error || 'Invalid credentials. Try again.';
+      errEl.classList.add('show');
+      document.getElementById('admin-login-ov').querySelector('.admin-login-box').style.animation = 'none';
+      requestAnimationFrame(() => {
+        document.getElementById('admin-login-ov').querySelector('.admin-login-box').style.animation = '';
+      });
+    }
+  } catch(e) {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.add('show');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Login'; }
   }
 }
 

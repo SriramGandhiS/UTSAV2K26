@@ -74,31 +74,46 @@ async function init() {
 
   try {
     const data = JSON.parse(decodeURIComponent(escape(atob(dataStr))));
-    const regId = data.id || ""; // The QR should contain the ID
+    const regId = data.id || ""; 
     const email = data.em || ""; 
 
-    container.innerHTML = `<div style="color:var(--muted)">Verifying digital signature...</div>`;
+    container.innerHTML = `
+      <div class="check-ring" style="border-color:rgba(232,84,26,.3);background:rgba(232,84,26,.05);animation:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--orange)">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" style="animation:spin 1s linear infinite; transform-origin: center;"></path>
+        </svg>
+      </div>
+      <style>@keyframes spin { 100% { transform:rotate(360deg); } }</style>
+      <div class="verify-title" style="color:var(--orange)">Validating...</div>
+      <div class="verify-sub" style="color:var(--muted)">Marking attendance...</div>
+    `;
 
-    // Live check (Optional background check, we trust the QR payload first for speed)
     let syncStatusHtml = '';
+
+    // POST TO BACKEND FIRST (DATA INTEGRITY & SPEED)
     if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
       try {
-        const url = SHEETS_URL + '?action=lookup&email=' + encodeURIComponent(email || "");
-        const resp = await fetch(url);
-        const db = await resp.json();
+        const payload = {
+          regId: data.id, name: data.n, regno: data.rn,
+          eventName: data.e, teamName: data.t, scannerId: "volunteer"
+        };
+        const resp = await fetch(SHEETS_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: "handleScan", data: payload })
+        });
+        const result = await resp.json();
         
-        // We do a loose check. If the DB answers but we don't find it, it might still be syncing.
-        const exists = db.registrations && db.registrations.some(r => r.regId === regId || (r.name === data.n && r.eventName === data.e));
-        
-        if (!exists && db.registrations && db.registrations.length > 0) {
-           // We found this user, but NOT this pass. It could be a revoked pass or a very new one.
-           syncStatusHtml = `<div style="color:#e67e22; font-size:11px; margin-top:12px; font-weight:600;">⚠️ Pass not yet synced to central database.</div>`;
-        } else if (exists) {
-           syncStatusHtml = `<div style="color:var(--green); font-size:11px; margin-top:12px; font-weight:600;">✓ Synced with central database</div>`;
+        if (!result.success) {
+          showError("Scan Rejected", result.error || "Pass already scanned or invalid.");
+          return;
         }
+        syncStatusHtml = `<div style="color:var(--green); font-size:11px; margin-top:12px; font-weight:600;">✓ Verified & Attendance Marked</div>`;
       } catch(ex) {
-        console.warn("Live check failed", ex);
+        showError("Network Error", "Could not reach database. Check connection.");
+        return;
       }
+    } else {
+       syncStatusHtml = `<div style="color:#e67e22; font-size:11px; margin-top:12px; font-weight:600;">⚠️ Demo Mode</div>`;
     }
     
     // Build team members HTML
@@ -139,30 +154,16 @@ async function init() {
           <div class="dv dv-w">${data.n || '—'}</div>
         </div>
         <div class="detail-row">
-          <div class="dl">Register Number</div>
+          <div class="dl">Reg Number (Last 4)</div>
           <div class="dv dv-w">${data.rn || '—'}</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div class="detail-row">
-            <div class="dl">Year</div>
-            <div class="dv dv-w">${data.yr ? 'Year ' + data.yr : '—'}</div>
-          </div>
-          <div class="detail-row">
-            <div class="dl">Section</div>
-            <div class="dv dv-w">${data.sec ? 'Sec ' + data.sec : '—'}</div>
-          </div>
-        </div>
         <div class="detail-row">
-          <div class="dl">Phone</div>
+          <div class="dl">Phone (Last 4)</div>
           <div class="dv dv-w">${data.ph || '—'}</div>
         </div>
         <div class="detail-row">
-          <div class="dl">Event</div>
+          <div class="dl">Event Name</div>
           <div class="dv">${data.e || '—'}</div>
-        </div>
-        <div class="detail-row">
-          <div class="dl">Team</div>
-          <div class="dv dv-w">${data.t || 'Solo'}</div>
         </div>
       </div>
       ${teamHtml}

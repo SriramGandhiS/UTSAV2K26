@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CSE UTSAV 2K26 — PSNA CSE</title>
+  <title>CSEUTSAV 2K26 | PSNA CET</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
@@ -1409,6 +1411,242 @@
       animation: fo .3s ease
     }
 
+    /* HIDDEN PORTAL */
+    .portal-ov {
+      position: fixed;
+      inset: 0;
+      z-index: 1500;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .portal-ov.open {
+      display: flex;
+      animation: fo .3s ease;
+    }
+
+    .portal-box {
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .portal-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .portal-sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 32px;
+    }
+
+    .portal-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .portal-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 24px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .portal-btn:hover {
+      background: rgba(232, 84, 26, 0.1);
+      border-color: var(--orange);
+      transform: translateY(-4px);
+    }
+
+    .portal-btn svg {
+      width: 32px;
+      height: 32px;
+      color: var(--orange);
+    }
+
+    .portal-btn span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    /* QR SCANNER */
+    .scanner-ov {
+      position: fixed;
+      inset: 0;
+      z-index: 1600;
+      background: var(--black);
+      display: none;
+      flex-direction: column;
+    }
+
+    .scanner-ov.open {
+      display: flex;
+    }
+
+    .scanner-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.95);
+    }
+
+    .sc-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    #reader {
+      width: 100%;
+      aspect-ratio: 1 / 1; /* FORCES SQUARE ON ALL PHONES */
+      max-width: 400px;
+      margin: 0 auto;
+      background: #000;
+      position: relative;
+      border: 2px solid var(--border);
+    }
+
+    #scan-status-msg {
+      padding: 12px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--orange);
+      background: #111;
+      font-weight: 700;
+      border-top: 1px solid #222;
+    }
+
+    .v-tag {
+      font-size: 9px;
+      color: var(--muted);
+      opacity: 0.5;
+      position: absolute;
+      bottom: 10px;
+      right: 15px;
+    }
+
+    .scanner-results {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #161616;
+      border-top: 1px solid var(--border);
+      border-radius: 24px 24px 0 0;
+      padding: 24px;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .scanner-results.open {
+      transform: translateY(0);
+    }
+
+    .res-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .res-badge-new {
+      background: rgba(46, 204, 113, 0.15);
+      color: #2ecc71;
+      border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+
+    .res-badge-warn {
+      background: rgba(231, 76, 60, 0.15);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+
+    .res-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .res-ev {
+      color: var(--orange);
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .res-grid {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .res-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .res-l { font-size: 11px; color: var(--muted2); }
+    .res-v { font-size: 12px; color: #fff; font-weight: 600; }
+
+    .res-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--orange);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+
+    .res-btn:disabled {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      cursor: not-allowed;
+    }
+
     .pass-wrap {
       padding: 20px 16px 80px;
       max-width: 440px;
@@ -1745,7 +1983,8 @@
     .admin-action-row {
       display: flex;
       gap: 10px;
-      margin-bottom: 24px
+      margin-bottom: 24px;
+      flex-wrap: wrap;
     }
 
     .admin-sync-btn {
@@ -3782,17 +4021,11 @@
   <!-- NAV -->
   <nav class="nav">
     <div style="display:flex;align-items:center;gap:8px">
-      <button class="admin-icon-btn" onclick="openAdminLogin()" aria-label="Admin">
-        <svg viewBox="0 0 24 24">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-        </svg>
-      </button>
       <button class="btn-fi" id="pass-nav-btn" onclick="openPass()" style="padding:8px 10px;font-size:10px">My Pass</button>
       <button class="btn-ol" onclick="openReg(null)" style="padding:8px 10px;font-size:10px">Register</button>
       <button class="btn-ev-glow" onclick="openAllEvents()">Event Details</button>
     </div>
-    <div class="nl">CSE<span>UTSAV</span></div>
+    <div class="nl" id="logo-trigger">CSE<span>UTSAV</span></div>
   </nav>
 
   <!-- SUB-NAV / STATUS BAR (scrolls naturally with page) -->
@@ -3848,7 +4081,7 @@
     <!-- Watermark ghost names -->
     <div class="hero-left">
       <h1 class="hero-h">
-        <span class="wh">THE</span><span class="or"> CSE UTSAV</span>
+        <span class="wh">THE</span><span class="or"> CSEUTSAV</span>
         <br><span class="wh">BEGINS</span>
       </h1>
       <p class="hero-desc">The Annual Technical Symposium of the Department of Computer Science & Engineering. Compete.
@@ -3868,8 +4101,8 @@
     <div class="hero-right">
       <div class="poster">
         <div class="poster-inner">
-          <div class="poster-ot">CSE UTSAV</div>
-          <div class="poster-dt">2 — 4 April 2026</div>
+          <div class="poster-ot">CSEUTSAV</div>
+          <div class="poster-dt">18 — 20 April 2026</div>
           <div class="poster-su">PSNA CSE · Dindigul</div>
         </div>
       </div>
@@ -3893,7 +4126,6 @@
 
   <!-- PREMIUM VIDEO SHOWCASE -->
   <div class="vid-showcase" id="vid-section">
-    <div class="vid-label">Live Preview</div>
     <div class="vid-title">IT'S <span>HAPPENING</span></div>
     <div class="vid-glow-ring" id="vid-wrapper">
       <div class="vid-inner">
@@ -3988,10 +4220,10 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="fl-logo">CSE UT<span>SAV</span></div>
+    <div class="fl-logo">CSEUT<span>SAV</span></div>
     <div class="fl-info">PSNA College of Engineering & Technology<br>Department of Computer Science &
       Engineering<br>Dindigul, Tamil Nadu — 624 622</div>
-    <div class="fl-copy">© 2026 CSE UTSAV · PSNA CSE · All Rights Reserved</div>
+    <div class="fl-copy">© 2026 CSEUTSAV · PSNA CSE · All Rights Reserved</div>
   </footer>
 
   <!-- EVENT DETAIL MODAL -->
@@ -4197,7 +4429,7 @@
       </div>
       <div
         style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;background:rgba(255,255,255,.03);padding:14px;border-radius:8px;border:1px solid var(--border);text-align:center">
-        Detailed schedule, venues, rules, and timings for all events at CSE UTSAV 2K26. Tap any card below to open its
+        Detailed schedule, venues, rules, and timings for all events at CSEUTSAV 2K26. Tap any card below to open its
         full details.</div>
       <div id="allev-list"></div>
     </div>
@@ -4222,7 +4454,7 @@
         <button class="admin-btn-ol" onclick="logoutAdmin()"
           style="border-color:rgba(231,76,60,.3);color:#e74c3c">Logout</button>
         <a href="https://docs.google.com/spreadsheets/d/1UqAHW4DpWAWnm9TSwpaAu9qnh4533twCljoHzUceWoM/edit?gid=936722095#gid=936722095"
-          target="_blank" class="admin-btn-ol" id="admin-sheet-link" style="margin-left:auto">View Sheet</a>
+          target="_blank" class="admin-btn-ol" id="admin-sheet-link">View Sheet</a>
       </div>
 
       <div class="admin-sec-title">Overall Stats</div>
@@ -4264,6 +4496,44 @@
   <div class="admin-loader-ov" id="admin-loader-ov">
     <div class="al-spinner"></div>
     <div class="al-text" id="al-text">Processing...</div>
+  </div>
+
+  <!-- HIDDEN PORTAL OVERLAY -->
+  <div class="portal-ov" id="portal-ov" onclick="if(event.target===this)closePortal()">
+    <div class="portal-box">
+      <div class="portal-title">Hidden <span style="color:var(--orange)">Portal</span></div>
+      <div class="portal-sub">Secret management area for organizers</div>
+      <div class="portal-grid">
+        <div class="portal-btn" onclick="portalToAdmin()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          <span>Admin Panel</span>
+        </div>
+        <div class="portal-btn" onclick="portalToScanner()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+          <span>QR Scanner</span>
+        </div>
+      </div>
+      <button class="reg-back-btn" style="margin-top:32px" onclick="closePortal()">Exit Portal</button>
+    </div>
+  </div>
+
+  <!-- QR SCANNER OVERLAY -->
+  <div class="scanner-ov" id="scanner-ov">
+    <div class="scanner-header">
+      <div class="sc-title">Symposium <span style="color:var(--orange)">Scanner</span></div>
+      <button class="reg-back-btn" style="width:auto;padding:8px 16px" onclick="closeScanner()">Close</button>
+    </div>
+    <div id="reader"></div>
+    <div id="scan-status-msg">Initializing...</div>
+    <div style="padding: 20px; text-align: center; background: #111; border-top: 1px solid #222; position:relative">
+      <button class="btn-ol" onclick="promptManualEntry()" style="font-size:12px;opacity:0.8">Manual ID Entry</button>
+      <div class="v-tag">UTSAV-V4.2.1-FIXED</div>
+    </div>
+    <div class="scanner-results" id="scanner-results">
+      <div id="res-content"></div>
+      <button class="res-btn" id="mark-scanned-btn" onclick="markEntryScanned()">Mark Entry</button>
+      <button class="reg-back-btn" style="margin-top:12px" onclick="closeScanResults()">Resume Scanning</button>
+    </div>
   </div>
 
   <!-- ERROR POPUP -->
@@ -4360,7 +4630,7 @@
         id: 'hv', name: 'HACKVERSE', label: '24-Hour Hackathon', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Hackathon', timeSlot: 'A',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-hv" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00cec9"/><stop offset="100%" stop-color="#0984e3"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-hv)"/></svg>', grad: 'linear-gradient(135deg,#021a1a,#010f10)', accent: '#00cec9',
         desc: 'Build, innovate, and deploy! A high-intensity hackathon where teams race to develop solutions to real-world challenges.',
-        date: 'April 2–3, 2026', time: '10:00 AM – 10:00 AM', venue: 'CSE Lab 1', deadline: 'Mar 30',
+        date: 'April 18–19, 2026', time: '10:00 AM – 10:00 AM', venue: 'CSE Lab 1', deadline: 'Mar 30',
         p1: '₹5,000', p2: '₹3,000', p3: '₹2,000',
         rules: ['Team of 2–4', 'Theme given on spot', 'Working prototype required', 'Any tech stack allowed', 'Judge decision final'],
         ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
@@ -4369,7 +4639,7 @@
         id: 'dd', name: 'DESIGN DECODE', label: 'UI/UX Design Challenge', category: 'Technical', type: 'Team', minTeam: 1, maxTeam: 2, tag: 'Design', timeSlot: 'B',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dd" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fd79a8"/><stop offset="100%" stop-color="#e84393"/></linearGradient></defs><circle cx="13.5" cy="10.5" r="2.5" fill="#fd79a8" stroke="none"/><path d="m20.24 12.24-5.48 5.48a2.83 2.83 0 0 1-4 0l-5.48-5.48a2.83 2.83 0 0 1 0-4l5.48-5.48a2.83 2.83 0 0 1 4 0l5.48 5.48a2.83 2.83 0 0 1 0 4Z" stroke="url(#g-dd)" fill="url(#g-dd)" fill-opacity="0.15"/><path d="M3.76 11.76l5.48-5.48" stroke="#00cec9"/><path d="M14.76 20.24l5.48-5.48" stroke="#00cec9"/></svg>', grad: 'linear-gradient(135deg,#1a0a28,#0f0518)', accent: '#e84393',
         desc: 'Decode the design brief and craft pixel-perfect UI/UX solutions under time pressure. Creativity meets precision.',
-        date: 'April 2, 2026', time: '02:00 PM – 05:00 PM', venue: 'IT Lab 2', deadline: 'Mar 30',
+        date: 'April 18, 2026', time: '02:00 PM – 05:00 PM', venue: 'IT Lab 2', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Max 2 members', 'Design tools provided', 'Time-bound rounds', 'Theme given on spot', 'Originality is key'],
         ec: 'Pranaav', ep: '9361131042', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
@@ -4378,7 +4648,7 @@
         id: 'cc', name: 'CHECKMATE CODERS', label: 'Competitive Coding Arena', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Coding', timeSlot: 'A',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-cc" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2ecc71"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-cc)"/></svg>', grad: 'linear-gradient(135deg,#031a0d,#021008)', accent: '#2ecc71',
         desc: 'Strategize, code, and checkmate your opponents! A competitive programming showdown where logic is your weapon.',
-        date: 'April 2, 2026', time: '10:00 AM – 01:00 PM', venue: 'CSE Lab 3', deadline: 'Mar 30',
+        date: 'April 18, 2026', time: '10:00 AM – 01:00 PM', venue: 'CSE Lab 3', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Languages: C, C++, Java, Python', 'Multiple rounds', 'No internet', 'Judge decision final'],
         ec: 'Pranaav', ep: '9361131042', sc: 'Ms. Anitha L.', sp: '+91 93450 67890'
@@ -4387,7 +4657,7 @@
         id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding Challenge', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Coding', timeSlot: 'B',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ur" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-ur)" fill="url(#g-ur)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-ur)"/><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3" stroke="#e74c3c"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
         desc: 'Given the output, reverse-engineer the code! A twisted coding challenge that tests your logical deduction.',
-        date: 'April 2, 2026', time: '02:00 PM – 05:00 PM', venue: 'CSE Lab 2', deadline: 'Mar 30',
+        date: 'April 18, 2026', time: '02:00 PM – 05:00 PM', venue: 'CSE Lab 2', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Output provided, find the code', 'Languages: C, C++, Java, Python', 'No internet', 'Time-limited rounds'],
         ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Senthil P.', sp: '+91 91230 45678'
@@ -4396,7 +4666,7 @@
         id: 'btb', name: 'BRAND TO BILLION', label: 'Tech Startup Pitch', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Strategy', timeSlot: 'C',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-btb" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e67e22"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="url(#g-btb)"/></svg>', grad: 'linear-gradient(135deg,#1f1200,#120b00)', accent: '#e67e22',
         desc: 'Pitch your billion-dollar idea! Build a brand strategy and convince the judges your startup can scale.',
-        date: 'April 3, 2026', time: '10:00 AM – 01:00 PM', venue: 'Seminar Hall', deadline: 'Mar 30',
+        date: 'April 19, 2026', time: '10:00 AM – 01:00 PM', venue: 'Seminar Hall', deadline: 'Mar 30',
         p1: '₹4,000', p2: '₹2,500', p3: '₹1,500',
         rules: ['Team of 2–4', 'Pitch deck required', '5-min presentation + Q&A', 'Any domain', 'Judges decision final'],
         ec: 'Pranaav', ep: '9361131042', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
@@ -4405,7 +4675,7 @@
         id: 'zcz', name: 'ZERO CODE ZONE', label: 'No-Code Tech Challenge', category: 'Technical', type: 'Solo', minTeam: 1, maxTeam: 1, tag: 'Technical', timeSlot: 'C',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-zcz" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-zcz)" fill="url(#g-zcz)" fill-opacity="0.15"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
         desc: 'No coding needed! A pure logic, aptitude, and tech knowledge challenge for everyone.',
-        date: 'April 3, 2026', time: '10:00 AM – 01:00 PM', venue: 'IT Lab 1', deadline: 'Mar 30',
+        date: 'April 19, 2026', time: '10:00 AM – 01:00 PM', venue: 'IT Lab 1', deadline: 'Mar 30',
         p1: '₹2,000', p2: '₹1,500', p3: '₹1,000',
         rules: ['Individual only', 'No coding required', 'Logic & aptitude based', 'Multiple rounds', 'No electronic devices'],
         ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
@@ -4414,7 +4684,7 @@
         id: 'tt', name: 'TECHNOTRACE', label: 'Tech Treasure Hunt', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Fun', timeSlot: 'D',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tt" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="url(#g-tt)" fill="url(#g-tt)" fill-opacity="0.15"></polygon></svg>', grad: 'linear-gradient(135deg,#0d1f3c,#0a1428)', accent: '#3498db',
         desc: 'Follow the clues, crack the codes, and trace your way through a thrilling tech-themed treasure hunt!',
-        date: 'April 3, 2026', time: '02:00 PM – 05:00 PM', venue: 'Campus Wide', deadline: 'Mar 30',
+        date: 'April 19, 2026', time: '02:00 PM – 05:00 PM', venue: 'Campus Wide', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Multiple rounds', 'Phone required for clues', 'No external help', 'Fastest team wins'],
         ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
@@ -4425,7 +4695,7 @@
         id: 'com', name: 'CLASH OF MINDS', label: 'Quiz & Debate Showdown', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Quiz', timeSlot: 'A',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-com" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#9b59b6"/><stop offset="100%" stop-color="#3498db"/></linearGradient></defs><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="url(#g-com)" fill="url(#g-com)" fill-opacity="0.15"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" stroke="url(#g-com)"/></svg>', grad: 'linear-gradient(135deg,#150a28,#0a0518)', accent: '#9b59b6',
         desc: 'Battle it out in a rapid-fire quiz and debate format! Test your general knowledge and persuasion skills.',
-        date: 'April 4, 2026', time: '10:00 AM – 01:00 PM', venue: 'Auditorium', deadline: 'Mar 30',
+        date: 'April 20, 2026', time: '10:00 AM – 01:00 PM', venue: 'Auditorium', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Multiple rounds', 'No electronic devices', 'Quizmaster decision final', 'Time-limited answers'],
         ec: 'Arjun', ep: '9087654321', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
@@ -4434,7 +4704,7 @@
         id: 'ff', name: 'FRANCHISE FIESTA', label: 'Business Simulation Game', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Management', timeSlot: 'B',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ff" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#g-ff)"/><circle cx="9" cy="7" r="4" stroke="url(#g-ff)"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#g-ff)"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
         desc: 'Build your dream franchise from scratch! Strategy, marketing & management all in one thrilling game.',
-        date: 'April 4, 2026', time: '02:00 PM – 05:00 PM', venue: 'MBA Block', deadline: 'Mar 30',
+        date: 'April 20, 2026', time: '02:00 PM – 05:00 PM', venue: 'MBA Block', deadline: 'Mar 30',
         p1: '₹4,000', p2: '₹2,500', p3: '₹1,500',
         rules: ['Team of 2–4', 'Business strategy game', 'Presentation required', 'All materials provided', 'Judges decision final'],
         ec: 'Arjun', ep: '9087654321', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
@@ -4443,7 +4713,7 @@
         id: 'tap', name: 'THE ALGORITHMIC PLATTER', label: 'Fun Algorithmic Puzzles', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Puzzle', timeSlot: 'C',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tap" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-tap)" fill="url(#g-tap)" fill-opacity="0.2"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
         desc: 'Serve up the perfect solution! A fun mix of algorithmic puzzles and pattern recognition challenges.',
-        date: 'April 4, 2026', time: '10:00 AM – 01:00 PM', venue: 'MCA Lab', deadline: 'Mar 30',
+        date: 'April 20, 2026', time: '10:00 AM – 01:00 PM', venue: 'MCA Lab', deadline: 'Mar 30',
         p1: '₹3,000', p2: '₹2,000', p3: '₹1,000',
         rules: ['Team of 2–3', 'Puzzle-based challenges', 'Pen & paper rounds included', 'No electronic devices in prelims', 'Time-bound'],
         ec: 'Arjun', ep: '9087654321', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
@@ -4641,7 +4911,7 @@
       document.getElementById('obs').innerHTML = d.map(x => `<span class="obi">${x}</span>`).join('');
     }
     function buildTicker() {
-      const items = ['CSEUTSAV 2K26', 'EVENTS', 'HACKVERSE', 'DESIGN DECODE', 'CHECKMATE CODERS', 'UNO REVERSE', 'BRAND TO BILLION', 'ZERO CODE ZONE', 'TECHNOTRACE', 'CLASH OF MINDS', 'FRANCHISE FIESTA', 'THE ALGORITHMIC PLATTER', 'FREE ENTRY', 'PSNA CSE', '2–4 APRIL 2026'];
+      const items = ['CSEUTSAV 2K26', 'EVENTS', 'HACKVERSE', 'DESIGN DECODE', 'CHECKMATE CODERS', 'UNO REVERSE', 'BRAND TO BILLION', 'ZERO CODE ZONE', 'TECHNOTRACE', 'CLASH OF MINDS', 'FRANCHISE FIESTA', 'THE ALGORITHMIC PLATTER', 'FREE ENTRY', 'PSNA CSE', '18–20 APRIL 2026'];
       const d = [...items, ...items];
       document.getElementById('ticker').innerHTML = d.map(t => `<div class="ti">${t}<div class="td"></div></div>`).join('');
     }
@@ -5193,6 +5463,7 @@
 
     /* ── SUBMIT ── */
     let isCooldown = false;
+    let isSubmitting = false;
     let cooldownTimer = null;
 
     function activateCooldown() {
@@ -5224,7 +5495,8 @@
 
     async function submitReg() {
       if (document.getElementById('f-hp').value) return; // Honeypot bot block
-      if (isCooldown) return;
+      if (isCooldown || isSubmitting) return;
+      isSubmitting = true;
 
       const btn = document.querySelector('#step-2 .reg-next-btn');
       const backBtn = document.querySelector('#step-2 .reg-back-btn');
@@ -5254,7 +5526,8 @@
       let localDupeReg = null;
 
       for (const storedReg of saved) {
-        if (storedReg.eventId === currentEv.id) {
+        // Fix: Use both eventName and eventId for robust duplicate checking locally
+        if (storedReg.eventId === currentEv.id || storedReg.eventName === currentEv.name) {
           const match = currentRegNos.find(c => c.regno === storedReg.regno);
           if (match) { localDupeName = match.name; localDupeReg = match.regno; break; }
           if (storedReg.teamMembers) {
@@ -5269,6 +5542,7 @@
 
       const resetUI = () => {
         protectOff();
+        isSubmitting = false;
         if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
         if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
       };
@@ -5431,7 +5705,7 @@
           <div><div class="pfl">Department</div><div class="pfv">${r.department || 'CSE'}</div></div>
           <div><div class="pfl">Year & Section</div><div class="pfv">${r.year ? 'Year ' + r.year + ' · Sec ' + (r.section || '—') : '—'}</div></div>
           <div><div class="pfl">Register Phone</div><div class="pfv">${r.phone || '—'}</div></div>
-          <div><div class="pfl">Date & Venue</div><div class="pfv">19–21 Mar · PSNA</div></div>
+          <div><div class="pfl">Date & Venue</div><div class="pfv">18–20 Apr · PSNA</div></div>
         </div>
         ${(r.teamName && r.teamName.trim() !== 'Solo' && !r.teamName.includes('[{"name"')) || members.length > 0 ? `
         <div class="team-pass-section">
@@ -6065,7 +6339,7 @@ function doPost(e) {
 
     /* ════════ COUNTDOWN ════════ */
     function tick() {
-      const d = new Date('2026-04-02T09:00:00') - new Date();
+      const d = new Date('2026-04-18T09:00:00') - new Date();
       if (d <= 0) return;
       document.getElementById('cd-d').textContent = String(Math.floor(d / 86400000)).padStart(2, '0');
       document.getElementById('cd-h').textContent = String(Math.floor(d % 86400000 / 3600000)).padStart(2, '0');
@@ -6080,33 +6354,361 @@ function doPost(e) {
 
 
     /* ════════ ADMIN LOGIN ════════ */
-    function openAdminLogin() {
+    let loginType = 'admin'; // 'admin' or 'scanner'
+
+    function openAdminLogin(type) {
+      loginType = type || 'admin';
+      const title = document.getElementById('admin-login-ov').querySelector('.admin-login-title');
+      const sub = document.getElementById('admin-login-ov').querySelector('.admin-login-sub');
+      
+      if (loginType === 'scanner') {
+        title.innerHTML = 'Scanner <span style="color:var(--orange)">Login</span>';
+        sub.textContent = 'Enter scanner credentials (utsavqr)';
+      } else {
+        title.innerHTML = 'Admin <span style="color:var(--orange)">Login</span>';
+        sub.textContent = 'Enter admin credentials to access the panel';
+      }
+
       document.getElementById('admin-uid').value = '';
       document.getElementById('admin-pwd').value = '';
       document.getElementById('admin-login-err').classList.remove('show');
       document.getElementById('admin-login-ov').classList.add('open');
     }
+
     function closeAdminLogin() {
       document.getElementById('admin-login-ov').classList.remove('open');
     }
-    // Attach to window explicitly to bypass any scope issues from nested calls
+
     window.checkAdminLogin = async function () {
       const uid = document.getElementById('admin-uid').value.trim();
       const pwd = document.getElementById('admin-pwd').value.trim();
-      if (uid === ADMIN_ID && pwd === ADMIN_PASS) {
-        showAdminLoader('Authenticating Admin...');
-        closeAdminLogin();
-        await openAdmin();
-        hideAdminLoader();
-      } else {
-        document.getElementById('admin-login-err').classList.add('show');
-        const box = document.getElementById('admin-login-ov').querySelector('.admin-login-box');
-        box.style.animation = 'none';
-        // Trigger reflow to restart animation
-        void box.offsetWidth;
-        box.style.animation = '';
+      
+      if (loginType === 'admin') {
+        if (uid === ADMIN_ID && pwd === ADMIN_PASS) {
+          showAdminLoader('Authenticating Admin...');
+          closeAdminLogin();
+          await openAdmin();
+          hideAdminLoader();
+        } else {
+          showLoginError();
+        }
+      } else if (loginType === 'scanner') {
+        if (uid === 'utsavqr' && pwd === '93611') {
+          showAdminLoader('Initializing Scanner...');
+          closeAdminLogin();
+          await openScanner();
+          hideAdminLoader();
+        } else {
+          showLoginError();
+        }
       }
     };
+
+    function showLoginError() {
+      document.getElementById('admin-login-err').classList.add('show');
+      const box = document.getElementById('admin-login-ov').querySelector('.admin-login-box');
+      box.style.animation = 'none';
+      void box.offsetWidth;
+      box.style.animation = '';
+    }
+
+    /* ════════ HIDDEN PORTAL ════════ */
+    let portalTimer = null;
+    function startPortalTrigger() {
+      const el = document.getElementById('logo-trigger');
+      if (!el) return;
+      const start = (e) => {
+        e.preventDefault();
+        portalTimer = setTimeout(() => {
+          openPortal();
+        }, 1000);
+      };
+      const end = () => clearTimeout(portalTimer);
+      el.addEventListener('mousedown', start);
+      el.addEventListener('touchstart', start, { passive: false });
+      el.addEventListener('mouseup', end);
+      el.addEventListener('mouseleave', end);
+      el.addEventListener('touchend', end);
+    }
+
+    function openPortal() { document.getElementById('portal-ov').classList.add('open'); }
+    function closePortal() { document.getElementById('portal-ov').classList.remove('open'); }
+
+    function portalToAdmin() { closePortal(); openAdminLogin('admin'); }
+    function portalToScanner() { closePortal(); openAdminLogin('scanner'); }
+
+    /* ════════ QR SCANNER ════════ */
+    let html5QrCode = null;
+    let currentScanData = null;
+
+    let scannerRegistry = []; // Local cache for instant lookup
+    
+    async function openScanner() {
+      hideDock();
+      document.getElementById('scanner-ov').classList.add('open');
+      document.getElementById('scan-status-msg').textContent = 'Flash Mode Syncing...';
+      
+      // OPTIMIZATION: Start background registry sync once
+      if (scannerRegistry.length === 0) {
+        fetch(`${SHEETS_URL}?action=getRegs`)
+          .then(r => r.json())
+          .then(d => {
+            if (d.registrations) {
+              scannerRegistry = d.registrations;
+              document.getElementById('scan-status-msg').textContent = 'Flash Mode Ready ⚡';
+            }
+          }).catch(() => {});
+      } else {
+         document.getElementById('scan-status-msg').textContent = 'Camera Ready';
+      }
+
+      if (!html5QrCode) {
+        html5QrCode = new Html5Qrcode("reader");
+      }
+      
+      const config = { 
+        fps: 20, 
+        qrbox: { width: 250, height: 250 }, 
+        aspectRatio: 1.0,
+        formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ]
+      };
+      
+      try {
+        await html5QrCode.start(
+          { facingMode: "environment" }, 
+          config, 
+          onScanSuccess
+        ).catch(() => {
+          return html5QrCode.start({ facingMode: "user" }, config, onScanSuccess);
+        });
+        if (!scannerRegistry.length) document.getElementById('scan-status-msg').textContent = 'Camera Ready';
+      } catch (e) {
+        document.getElementById('scan-status-msg').textContent = 'Camera Error: Check Permissions';
+      }
+    }
+
+    function closeScanner() {
+      if (html5QrCode) html5QrCode.stop();
+      document.getElementById('scanner-ov').classList.remove('open');
+      showDock();
+    }
+
+    async function onScanSuccess(decodedText) {
+      if (typeof navigator.vibrate === "function") navigator.vibrate(100);
+      
+      let regId = null;
+      let instantDataRaw = null;
+      
+      // 1. DECODE INSTANTLY (0 Seconds Delay)
+      if (decodedText.includes('?d=')) {
+        try {
+          const b64 = decodedText.split('?d=')[1];
+          instantDataRaw = JSON.parse(decodeURIComponent(escape(atob(b64))));
+          regId = instantDataRaw.id;
+        } catch (e) { }
+      }
+      
+      if (!regId) {
+        const match = decodedText.match(/(CSEUTSAV|U26)-[A-Z0-9-]+/i);
+        if (match) regId = match[0].toUpperCase();
+      }
+
+      if (regId) {
+        if (html5QrCode) {
+          try { await html5QrCode.stop(); } catch(e) {}
+        }
+        
+        // Unify the data format so 'markEntryScanned' always works
+        let localReg = scannerRegistry.find(r => r.regId === regId);
+        
+        if (!localReg && instantDataRaw) {
+          localReg = {
+            regId: instantDataRaw.id,
+            name: instantDataRaw.n,
+            regno: instantDataRaw.rn.includes('-') ? instantDataRaw.rn : '...'+instantDataRaw.rn,
+            eventName: instantDataRaw.e,
+            phone: instantDataRaw.ph ? '...'+instantDataRaw.ph : '—',
+            teamName: 'Solo', // Default if unknown
+            year: '',
+            section: '',
+            teamMembers: []
+          };
+        }
+        
+        if (localReg) {
+          renderScannerResultUI(localReg, { isAlreadyScanned: false, loading: true });
+          document.getElementById('scanner-results').classList.add('open');
+        } else {
+          showAdminLoader('Checking Cloud...');
+        }
+        
+        // 3. BACKGROUND VERIFY (Duplicate Check)
+        verifyQR(regId, localReg);
+      }
+    }
+
+    async function verifyQR(regId, localReg) {
+      try {
+        const resp = await fetch(`${SHEETS_URL}?action=lookupScan&regId=${regId}`);
+        const result = await resp.json();
+        
+        if (!result.success || !result.participant) {
+          if (!localReg) {
+            alert('ID NOT FOUND: ' + regId);
+            openScanner(); 
+          }
+          return;
+        }
+
+        renderScannerResultUI(result.participant, { 
+          isAlreadyScanned: result.isAlreadyScanned, 
+          scanInfo: result.scanInfo,
+          loading: false 
+        });
+        document.getElementById('scanner-results').classList.add('open');
+
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderScannerResultUI(reg, state) {
+        currentScanData = reg;
+        const members = getParsedMembers(reg);
+        
+        const content = `
+          <div style="text-align:center;margin-bottom:25px">
+            <div class="res-badge ${state.loading ? 'res-badge-loading' : (state.isAlreadyScanned ? 'res-badge-warn' : 'res-badge-new')}" style="padding:12px 24px;font-size:14px">
+              ${state.loading ? '⏳ VERIFYING RECORD...' : (state.isAlreadyScanned ? '⚠️ DUPLICATE ENTRY DETECTED' : '✅ VALID ENTRANCE PASS')}
+            </div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px">
+            <div style="font-size:10px;color:var(--orange);font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Participant Profile</div>
+            <div style="font-size:32px;font-weight:900;color:#fff;line-height:1.1">${reg.name}</div>
+            <div style="font-size:14px;color:var(--muted);margin-top:4px">${reg.regno} · Year ${reg.year} · ${reg.section}</div>
+            <div style="margin-top:15px;display:flex;align-items:center;gap:10px">
+              <span style="background:rgba(232,84,26,0.1);color:var(--orange);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase">${reg.eventName}</span>
+              <span style="color:var(--muted2);font-size:12px">ID: ${reg.regId}</span>
+            </div>
+          </div>
+          
+          <div class="res-grid" style="grid-template-columns:1fr 1fr;gap:12px">
+            <div class="res-item" style="background:rgba(255,255,255,0.02);padding:15px;border-radius:12px;display:block">
+              <div class="res-l" style="margin-bottom:4px">Phone Number</div>
+              <div class="res-v" style="font-size:16px">${reg.phone}</div>
+            </div>
+            <div class="res-item" style="background:rgba(255,255,255,0.02);padding:15px;border-radius:12px;display:block">
+              <div class="res-l" style="margin-bottom:4px">Team Name</div>
+              <div class="res-v" style="font-size:16px">${reg.teamName || 'Solo'}</div>
+            </div>
+          </div>
+
+          ${members.length > 0 ? `
+            <div style="margin-top:20px;background:rgba(255,255,255,0.02);padding:20px;border-radius:12px">
+              <div style="font-size:11px;font-weight:900;color:var(--orange);letter-spacing:1px;margin-bottom:15px;text-transform:uppercase">Team Members (${members.length + 1})</div>
+              <div style="display:grid;gap:10px">
+                <div style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">
+                  <span style="color:#fff">1. ${reg.name} (Lead)</span>
+                  <span style="color:var(--muted2)">${reg.regno}</span>
+                </div>
+                ${members.map((m, i) => `
+                <div style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">
+                  <span style="color:#fff">${i + 2}. ${m.name || 'N/A'}</span>
+                  <span style="color:var(--muted2)">${m.regno || ''}</span>
+                </div>`).join('')}
+              </div>
+            </div>` : ''}
+
+          ${state.isAlreadyScanned ? `
+            <div style="background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:12px;padding:20px;margin:25px 0;text-align:center">
+              <div style="color:#e74c3c;font-weight:900;font-size:13px;letter-spacing:1px;margin-bottom:6px">PREVIOUS SCAN RECORDED</div>
+              <div style="color:#fff;font-size:18px;font-weight:900">${state.scanInfo.timestamp}</div>
+              <div style="color:var(--muted);font-size:11px;margin-top:6px">Scanner: ${state.scanInfo.scannerId}</div>
+            </div>` : ''}
+        `;
+        
+        document.getElementById('res-content').innerHTML = content;
+        // Keep the button VISIBLE even during verification so user can tap right away!
+        // Only hide if we are CERTAIN it's a duplicate.
+        document.getElementById('mark-scanned-btn').style.display = (state.isAlreadyScanned) ? 'none' : 'block';
+    }
+
+    async function markEntryScanned() {
+      if (!currentScanData) return;
+      
+      const btn = document.getElementById('mark-scanned-btn');
+      btn.disabled = true;
+      btn.innerHTML = '⌛ SAVING...';
+
+      try {
+        const payload = {
+          action: 'handleScan',
+          data: {
+            regId: currentScanData.regId,
+            name: currentScanData.name,
+            regno: currentScanData.regno,
+            eventName: currentScanData.eventName,
+            teamName: currentScanData.teamName || 'Solo',
+            scannerId: 'utsavqr' 
+          }
+        };
+
+        // 100% RELIABILITY FIX: Send as 'text/plain' to skip CORS PREFLIGHT (OPTIONS request).
+        // This ensures the browser sends the POST directly to Google without error.
+        await fetch(SHEETS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(payload)
+        });
+
+        // UI OPTIMISM: Assume success since 'no-cors' sent it.
+        btn.innerHTML = '✅ RECORDED';
+        btn.style.background = '#27ae60';
+        if (typeof navigator.vibrate === "function") navigator.vibrate([30, 30]);
+        
+        setTimeout(() => {
+          document.getElementById('scanner-results').classList.remove('open');
+          openScanner();
+        }, 1000);
+
+      } catch (e) {
+        btn.disabled = false;
+        btn.innerHTML = '⚠️ RETRY';
+        alert('Network Error. Please try again.');
+      }
+    }
+
+    function closeScanResults() {
+      document.getElementById('scanner-results').classList.remove('open');
+      openScanner(); // resume camera
+    }
+
+    function promptManualEntry() {
+      const id = prompt("Enter Registration ID (e.g. U26-0001-XYZ):");
+      if (id && id.trim().length > 5) {
+        const cleanId = id.trim().toUpperCase();
+        if (html5QrCode) {
+          try { html5QrCode.stop(); } catch(e) {}
+        }
+        showAdminLoader('Fetching Details...');
+        verifyQR(cleanId);
+        hideAdminLoader();
+      }
+    }
+
+    /* ── Helper to parse team members safely ── */
+    function getParsedMembers(reg) {
+      if (!reg.teamMembers) return [];
+      if (Array.isArray(reg.teamMembers)) return reg.teamMembers;
+      try {
+        const p = JSON.parse(reg.teamMembers);
+        return Array.isArray(p) ? p : [];
+      } catch (e) {
+        return [];
+      }
+    }
 
     /* ════════ DOCK ════════ */
     function hideDock() { document.getElementById('dock').classList.add('hidden'); }
@@ -6192,6 +6794,7 @@ function doPost(e) {
     }
 
     init();
+    startPortalTrigger();
 
     /* ════════ CINEMATIC INTRO ════════ */
     (function initIntro() {
