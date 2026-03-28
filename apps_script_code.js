@@ -205,7 +205,7 @@ function doGet(e) {
     var scanInfo = null;
     for (var i = 1; i < scanData.length; i++) {
       if (String(scanData[i][0]) === regId) {
-        scanInfo = { timestamp: scanData[i][1], scannerId: scanData[i][2] };
+        scanInfo = { timestamp: scanData[i][5], scannerId: scanData[i][6] };
         break;
       }
     }

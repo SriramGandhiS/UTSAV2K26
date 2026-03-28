@@ -2393,6 +2393,73 @@
     .sync-status.err {
       color: #e74c3c
     }
+
+    /* ─── NEW SCANNER UI ENHANCEMENTS ─── */
+    .res-badge-loading {
+      background: rgba(232, 84, 26, 0.1) !important;
+      color: var(--orange) !important;
+      border: 1px solid var(--orange) !important;
+      animation: res-pulse 1.5s infinite;
+    }
+    
+    .res-badge-new {
+      background: rgba(46, 204, 113, 0.1) !important;
+      color: #2ecc71 !important;
+      border: 1px solid #2ecc71 !important;
+      animation: res-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .res-badge-warn {
+      background: rgba(231, 76, 60, 0.1) !important;
+      color: #e74c3c !important;
+      border: 1px solid #e74c3c !important;
+      animation: res-shake 0.4s ease-in-out;
+    }
+
+    .scanner-result-card {
+      animation: res-slide-up 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    @keyframes res-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(0.98); }
+    }
+
+    @keyframes res-pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes res-shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    @keyframes res-slide-up {
+      0% { transform: translateY(30px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .mark-scanned-btn:disabled {
+      background: var(--border2) !important;
+      color: var(--muted) !important;
+      box-shadow: none !important;
+      cursor: not-allowed;
+    }
+
+    .verifying-screen {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      backdrop-filter: blur(4px);
+      border-radius: 20px;
+    }
     .ev-listing-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -6816,62 +6883,87 @@ function doPost(e) {
         currentScanData = reg;
         const members = getParsedMembers(reg);
         
-        const content = `
-          <div style="text-align:center;margin-bottom:25px">
-            <div class="res-badge ${state.loading ? 'res-badge-loading' : (state.isAlreadyScanned ? 'res-badge-warn' : 'res-badge-new')}" style="padding:12px 24px;font-size:14px">
-              ${state.loading ? '⏳ VERIFYING RECORD...' : (state.isAlreadyScanned ? '⚠️ DUPLICATE ENTRY DETECTED' : '✅ VALID ENTRANCE PASS')}
-            </div>
-          </div>
-
-          <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px">
-            <div style="font-size:10px;color:var(--orange);font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Participant Profile</div>
-            <div style="font-size:32px;font-weight:900;color:#fff;line-height:1.1">${reg.name}</div>
-            <div style="font-size:14px;color:var(--muted);margin-top:4px">${reg.regno} · Year ${reg.year} · ${reg.section}</div>
-            <div style="margin-top:15px;display:flex;align-items:center;gap:10px">
-              <span style="background:rgba(232,84,26,0.1);color:var(--orange);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase">${reg.eventName}</span>
-              <span style="color:var(--muted2);font-size:12px">ID: ${reg.regId}</span>
-            </div>
-          </div>
-          
-          <div class="res-grid" style="grid-template-columns:1fr 1fr;gap:12px">
-            <div class="res-item" style="background:rgba(255,255,255,0.02);padding:15px;border-radius:12px;display:block">
-              <div class="res-l" style="margin-bottom:4px">Phone Number</div>
-              <div class="res-v" style="font-size:16px">${reg.phone}</div>
-            </div>
-            <div class="res-item" style="background:rgba(255,255,255,0.02);padding:15px;border-radius:12px;display:block">
-              <div class="res-l" style="margin-bottom:4px">Team Name</div>
-              <div class="res-v" style="font-size:16px">${reg.teamName || 'Solo'}</div>
-            </div>
-          </div>
-
-          ${members.length > 0 ? `
-            <div style="margin-top:20px;background:rgba(255,255,255,0.02);padding:20px;border-radius:12px">
-              <div style="font-size:11px;font-weight:900;color:var(--orange);letter-spacing:1px;margin-bottom:15px;text-transform:uppercase">Team Members (${members.length + 1})</div>
-              <div style="display:grid;gap:10px">
-                <div style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">
-                  <span style="color:#fff">1. ${reg.name} (Lead)</span>
-                  <span style="color:var(--muted2)">${reg.regno}</span>
-                </div>
-                ${members.map((m, i) => `
-                <div style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">
-                  <span style="color:#fff">${i + 2}. ${m.name || 'N/A'}</span>
-                  <span style="color:var(--muted2)">${m.regno || ''}</span>
-                </div>`).join('')}
+        // If loading, we show a special centered overlay for "Flash" verification feel
+        let content = `
+          <div class="scanner-result-card">
+            ${state.loading ? `
+              <div class="verifying-screen">
+                <div class="al-spinner" style="width:60px;height:60px;border-width:4px"></div>
+                <div style="margin-top:20px;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;animation:res-pulse 1.5s infinite">Verifying Entrance...</div>
+                <div style="margin-top:8px;font-size:12px;color:var(--muted2);letter-spacing:1px">Checking database for duplicates</div>
               </div>
-            </div>` : ''}
+            ` : ''}
 
-          ${state.isAlreadyScanned ? `
-            <div style="background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:12px;padding:20px;margin:25px 0;text-align:center">
-              <div style="color:#e74c3c;font-weight:900;font-size:13px;letter-spacing:1px;margin-bottom:6px">PREVIOUS SCAN RECORDED</div>
-              <div style="color:#fff;font-size:18px;font-weight:900">${state.scanInfo.timestamp}</div>
-              <div style="color:var(--muted);font-size:11px;margin-top:6px">Scanner: ${state.scanInfo.scannerId}</div>
-            </div>` : ''}
+            <div style="text-align:center;margin-bottom:25px">
+              <div class="res-badge ${state.loading ? 'res-badge-loading' : (state.isAlreadyScanned ? 'res-badge-warn' : 'res-badge-new')}" style="padding:12px 24px;font-size:14px;border-radius:50px;display:inline-flex;align-items:center;gap:8px">
+                ${state.loading ? '⏳ VERIFYING RECORD...' : (state.isAlreadyScanned ? '⚠️ DUPLICATE ENTRY DETECTED' : '✅ VALID ENTRANCE PASS')}
+              </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden">
+              <div style="font-size:10px;color:var(--orange);font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Participant Profile</div>
+              <div style="font-size:32px;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.5px">${reg.name}</div>
+              <div style="font-size:14px;color:var(--muted);margin-top:6px;font-weight:500">${reg.regno} · Year ${reg.year} · ${reg.section}</div>
+              
+              <div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+                <span style="background:rgba(232,84,26,0.1);color:var(--orange);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:800;text-transform:uppercase;border:1px solid rgba(232,84,26,0.2)">${reg.eventName}</span>
+                <span style="color:var(--muted2);font-size:12px;font-family:monospace;background:rgba(255,255,255,0.03);padding:4px 8px;border-radius:4px">ID: ${reg.regId}</span>
+              </div>
+            </div>
+            
+            <div class="res-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+              <div class="res-item" style="background:rgba(255,255,255,0.02);padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)">
+                <div class="res-l" style="margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted2)">Phone Number</div>
+                <div class="res-v" style="font-size:16px;font-weight:700;color:#fff">${reg.phone}</div>
+              </div>
+              <div class="res-item" style="background:rgba(255,255,255,0.02);padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)">
+                <div class="res-l" style="margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted2)">Team Name</div>
+                <div class="res-v" style="font-size:16px;font-weight:700;color:#fff">${reg.teamName || 'Solo'}</div>
+              </div>
+            </div>
+
+            ${state.isAlreadyScanned ? `
+              <div style="background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:14px;padding:20px;margin-bottom:20px;text-align:center">
+                <div style="font-size:11px;font-weight:900;color:#e74c3c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px">Last Scanned At</div>
+                <div style="font-size:15px;color:#fff;font-weight:700">${state.scanInfo ? state.scanInfo.timestamp : 'Previously recorded'}</div>
+                <div style="font-size:11px;color:var(--muted2);margin-top:4px">Scanner: ${state.scanInfo ? state.scanInfo.scannerId : 'Unknown'}</div>
+              </div>
+            ` : ''}
+
+            ${members.length > 0 ? `
+              <div style="margin-top:20px;background:rgba(255,255,255,0.02);padding:20px;border-radius:16px;border:1px solid rgba(255,255,255,0.03)">
+                <div style="font-size:11px;font-weight:900;color:var(--orange);letter-spacing:1.5px;margin-bottom:15px;text-transform:uppercase;display:flex;justify-content:space-between">
+                  <span>Team Members</span> 
+                  <span style="opacity:0.6">${members.length + 1} Total</span>
+                </div>
+                <div style="display:grid;gap:12px">
+                  <div style="display:flex;align-items:center;gap:12px;padding:8px;background:rgba(232,84,26,0.05);border-radius:8px">
+                    <div style="width:8px;height:8px;background:var(--orange);border-radius:50%"></div>
+                    <div style="font-size:14px;font-weight:700;color:#fff">${reg.name} <span style="font-size:10px;color:var(--orange);margin-left:6px;font-weight:900;text-transform:uppercase">(Leader)</span></div>
+                  </div>
+                  ${members.map(m => `
+                    <div style="display:flex;align-items:center;gap:12px;padding:8px;background:rgba(255,255,255,0.02);border-radius:8px">
+                      <div style="width:8px;height:8px;background:var(--border2);border-radius:50%"></div>
+                      <div style="font-size:14px;font-weight:600;color:var(--muted)">${m.name} <span style="font-size:10px;color:var(--muted2);margin-left:6px">${m.regno}</span></div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
         `;
         
         document.getElementById('res-content').innerHTML = content;
-        // Keep the button VISIBLE even during verification so user can tap right away!
-        // Only hide if we are CERTAIN it's a duplicate.
-        document.getElementById('mark-scanned-btn').style.display = (state.isAlreadyScanned) ? 'none' : 'block';
+        
+        const markBtn = document.getElementById('mark-scanned-btn');
+        if (state.loading || state.isAlreadyScanned) {
+          markBtn.style.display = 'none';
+        } else {
+          markBtn.style.display = 'block';
+          markBtn.disabled = false;
+          markBtn.innerHTML = '✅ MARK AS ENTRANCE SCAN';
+          markBtn.style.background = 'var(--orange)';
+        }
     }
 
     async function markEntryScanned() {
