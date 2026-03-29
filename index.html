@@ -7452,6 +7452,12 @@ function doPost(e) {
       const fireParticles = [];
       let treeIsBurning = false;
       let animId;
+      let userInteracted = false;
+
+      // Listen for background interaction to quietly unlock the vibration API
+      const unlockInteraction = () => { userInteracted = true; };
+      window.addEventListener('touchstart', unlockInteraction, { passive: true, once: true });
+      window.addEventListener('click', unlockInteraction, { passive: true, once: true });
 
       function resize() {
         W = canvas.width = window.innerWidth;
@@ -7668,15 +7674,19 @@ function doPost(e) {
 
       // FINAL CLIMAX: Lightning Hits the Tree directly!
       setTimeout(() => {
-        // Trigger haptic vibration synced perfectly with the final lightning strike
+        // Trigger haptic vibration only if user has interacted (hidden unlock)
         // Wrapped in setTimeout(.., 0) to ensure asynchronous execution without blocking UI/animation
-        if (navigator.vibrate) {
+        if (userInteracted && navigator.vibrate) {
           setTimeout(() => {
             try { navigator.vibrate([50, 100, 200]); } catch (e) {}
           }, 0);
         }
 
         screen.classList.add('fade-out'); // Trigger global white flash CSS
+        
+        // Clean up hidden listeners
+        window.removeEventListener('touchstart', unlockInteraction);
+        window.removeEventListener('click', unlockInteraction);
         
         // Massive bolt hitting dead center bottom (the tree)
         createLightning(W * 0.5, 0, W * 0.5, H * 0.8); 
