@@ -158,7 +158,6 @@
       text-transform: uppercase;
       font-weight: 700;
       cursor: pointer;
-      display: none; /* JS will toggle to inline-flex */
       transition: all 0.2s;
     }
     .btn-qr:hover {
@@ -377,7 +376,9 @@
 
     /* Elite fire effect on Explore button */
     .btn-fire {
-      background: transparent !important;
+      background: rgba(232, 84, 26, 0.05) !important;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
       border: 1.5px solid var(--orange) !important;
       color: var(--orange) !important;
       position: relative;
@@ -4365,8 +4366,8 @@
   <!-- NAV -->
   <nav class="nav">
     <div style="display:flex;align-items:center;gap:8px">
-      <button class="nav-btn btn-qr" id="pass-nav-btn" onclick="openPass()"><span>My Pass</span></button>
-      <button class="nav-btn btn-ol btn-fire" onclick="openReg(null)"><span>Register</span></button>
+      <button class="nav-btn btn-qr" id="pass-nav-btn" onclick="openPass()" style="display:none;"><span>My Pass</span></button>
+      <button class="nav-btn btn-qr" onclick="openReg(null)"><span>Register</span></button>
       <button class="nav-btn btn-ev-glow" onclick="openAllEvents()"><span>Event Details</span></button>
     </div>
     <div class="nl" id="logo-trigger">CSE<span>UTSAV</span></div>
