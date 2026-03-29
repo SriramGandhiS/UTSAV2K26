@@ -765,7 +765,7 @@ button{cursor:pointer;font-family:'Barlow',sans-serif}
     <div class="about-card">
       <div class="about-num">01</div>
       <div class="about-title">Compete & Win Big</div>
-      <div class="about-body">Six high-stakes events across coding, design, research, and innovation. Over ₹40,000 in prizes — walk in, walk out a winner.</div>
+      <div class="about-body">Six high-stakes events across coding, design, research, and innovation. Over ₹33,000 in prizes — walk in, walk out a winner.</div>
     </div>
     <div class="about-card">
       <div class="about-num">02</div>
@@ -950,7 +950,7 @@ function buildOutline(){
 
 /* ─── TICKER ─── */
 function buildTicker(){
-  const items=['UTSAV 2K26','EVENTS','TECHNOTHON','PAPER PRESENTATION','CODE DEBUGGING','UI/UX SPRINT','TECH QUIZ','IDEATHON','₹40,000+ PRIZES','FREE ENTRY','PSNA CSE','28–29 MARCH 2026'];
+  const items=['UTSAV 2K26','EVENTS','TECHNOTHON','PAPER PRESENTATION','CODE DEBUGGING','UI/UX SPRINT','TECH QUIZ','IDEATHON','₹33,000+ PRIZES','FREE ENTRY','PSNA CSE','28–29 MARCH 2026'];
   const doubled=[...items,...items];
   document.getElementById('ticker').innerHTML=doubled.map(t=>`<div class="ticker-item">${t}<div class="ticker-dot"></div></div>`).join('');
 }
@@ -1010,7 +1010,7 @@ function animStats(){
   const obs=new IntersectionObserver(entries=>{
     if(entries[0].isIntersecting){
       count(document.getElementById('stat-ev'),6,'',700);
-      count(document.getElementById('stat-p'),40,'K+',900);
+      count(document.getElementById('stat-p'),33,'K+',900);
       count(document.getElementById('stat-d'),8,'',700);
       obs.disconnect();
     }

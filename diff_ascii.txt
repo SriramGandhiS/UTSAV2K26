@@ -1,0 +1,167 @@
+diff --git a/index.html b/index.html
+index e73e71c..2db6ff6 100644
+--- a/index.html
++++ b/index.html
+@@ -649,7 +649,11 @@
+     }
+ 
+     .ev-tile-body {
+-      padding: 14px
++      padding: 14px;
++      text-align: center;
++      display: flex;
++      flex-direction: column;
++      align-items: center
+     }
+ 
+     .ev-tile-name {
+@@ -660,14 +664,16 @@
+       text-transform: uppercase;
+       letter-spacing: .5px;
+       margin-bottom: 3px;
+-      line-height: 1.1
++      line-height: 1.1;
++      text-align: center
+     }
+ 
+     .ev-tile-sub {
+       font-size: 10px;
+       color: var(--muted2);
+       font-weight: 500;
+-      margin-bottom: 6px
++      margin-bottom: 6px;
++      text-align: center
+     }
+ 
+     .ev-tile-time {
+@@ -676,6 +682,7 @@
+       margin-bottom: 8px;
+       display: flex;
+       align-items: center;
++      justify-content: center;
+       gap: 4px;
+       opacity: .8
+     }
+@@ -684,6 +691,7 @@
+       display: flex;
+       gap: 5px;
+       flex-wrap: wrap;
++      justify-content: center;
+       margin-bottom: 10px
+     }
+ 
+@@ -711,13 +719,15 @@
+     .ev-tile-link {
+       display: flex;
+       align-items: center;
++      justify-content: center;
+       gap: 5px;
+       font-size: 11px;
+       font-weight: 700;
+       letter-spacing: 1px;
+       text-transform: uppercase;
+       color: var(--orange);
+-      transition: gap .2s
++      transition: gap .2s;
++      width: 100%
+     }
+ 
+     .ev-tile:hover .ev-tile-link {
+@@ -2012,6 +2022,8 @@
+       padding: 16px;
+       display: flex;
+       flex-direction: column;
++      align-items: center;
++      text-align: center;
+       gap: 12px;
+       cursor: pointer;
+       transition: transform .2s ease, border-color .2s ease
+@@ -3556,7 +3568,7 @@
+         <button class="comm-close" onclick="closeAllEvents()">Close ???</button>
+       </div>
+       <div
+-        style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;background:rgba(255,255,255,.03);padding:14px;border-radius:8px;border:1px solid var(--border)">
++        style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;background:rgba(255,255,255,.03);padding:14px;border-radius:8px;border:1px solid var(--border);text-align:center">
+         Detailed schedule, venues, rules, and timings for all events at CSE UTSAV 2K26. Tap any card below to open its
+         full details.</div>
+       <div class="comm-grid" id="allev-list"></div>
+@@ -4119,6 +4131,19 @@
+         fieldsContainer.style.display = currentEv ? 'block' : 'none';
+       }
+ 
++      // Quick Auto-fill for returning users
++      const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
++      if (saved.length > 0 && !document.getElementById('f-name').value) {
++        const last = saved[saved.length - 1];
++        document.getElementById('f-name').value = last.name || '';
++        document.getElementById('f-regno').value = last.regno || '';
++        document.getElementById('f-year').value = last.year || '';
++        document.getElementById('f-section').value = last.section || '';
++        document.getElementById('f-phone').value = last.phone || '';
++        document.getElementById('f-email').value = last.email || '';
++        document.getElementById('f-gender').value = last.gender || '';
++      }
++
+       updateStepUI();
+       document.getElementById('reg-ov').classList.add('open');
+     }
+@@ -4296,6 +4321,13 @@
+       });
+       // Scroll sheet to top
+       document.querySelector('.reg-sheet')?.scrollTo(0, 0);
++
++      const btn = document.querySelector('#step-2 .reg-next-btn');
++      if (btn && !isCooldown) { 
++        btn.disabled = false; 
++        btn.textContent = 'Confirm Registration'; 
++        btn.style.opacity = '1'; 
++      }
+     }
+ 
+     // Quick Test Fill ??? real names, real-looking reg numbers, team members = other testers
+@@ -4452,9 +4484,6 @@
+       }
+ 
+       if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+-        // Networking Jitter
+-        await new Promise(r => setTimeout(r, Math.floor(Math.random() * 800) + 200));
+-
+         showAdminLoader('Validating Records...<br><span style="font-size:10px;rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Please do not refresh this page.</span>');
+         
+         try {
+@@ -4542,8 +4571,15 @@
+       localStorage.setItem('u26r', JSON.stringify(saved));
+       
+       protectOff();
+-      showRegStep(3);
+-      renderPassCards();
++      
++      // Close registration overlay and show confirmation screen
++      document.getElementById('reg-ov').classList.remove('open');
++      document.getElementById('conf-id-v').textContent = regId;
++      document.getElementById('conf-screen').classList.add('open');
++      
++      // Ensure the "My Pass" button in the nav bar is visible
++      const passBtn = document.getElementById('pass-nav-btn');
++      if (passBtn) passBtn.style.display = 'block';
+     }
+ 
+     function syncSingle(reg) {
+@@ -5363,14 +5399,14 @@ function doPost(e) {
+     function renderAllEvents() {
+       function evCard(e) {
+         return `<div class="ev-item-card" onclick="closeAllEvents();openEvMod('${e.id}')">
+-      <div style="display:flex;gap:12px;align-items:center;width:100%">
++      <div style="display:flex;gap:12px;align-items:center;justify-content:center;width:100%">
+         <div style="width:42px;height:42px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${e.icon}</div>
+-        <div>
++        <div style="text-align:left">
+           <div class="comm-name" style="font-size:16px">${e.name}</div>
+           <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--orange);text-transform:uppercase;margin-top:2px">${e.label}</div>
+         </div>
+       </div>
+-      <div style="display:flex;flex-wrap:wrap;gap:6px;width:100%">
++      <div style="display:flex;flex-wrap:wrap;gap:6px;width:100%;justify-content:center">
+         ${[['????', e.date], ['???', e.time]].map(([i, t]) => `<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:4px 8px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;display:flex;gap:6px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
+       </div>
+     </div>`;

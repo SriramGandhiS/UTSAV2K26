@@ -133,119 +133,23 @@
       color: #fff
     }
 
-    .nav-btn {
-      width: 88px !important;
-      height: 32px !important;
-      padding: 0 !important;
-      font-size: 11px !important;
-      line-height: 1 !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      letter-spacing: 0.8px !important;
-      box-sizing: border-box !important;
-      border-radius: 4px !important;
-      white-space: nowrap !important;
-    }
-
-    /* Distinct My Pass styling — Cyber scan grid */
-    .btn-qr {
-      position: relative;
-      background: #0f0702 !important;
-      border: 1px dashed rgba(255,255,255,0.2) !important;
-      color: #fff !important;
-      overflow: hidden;
+    .btn-fi {
+      padding: 8px 18px;
+      background: var(--orange);
+      border: 1.5px solid var(--orange);
+      color: #fff;
       font-family: 'Barlow Condensed', sans-serif;
-      text-transform: uppercase;
+      font-size: 13px;
       font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(4px);
-    }
-    
-    /* Elite Glass Flag Colors */
-    .btn-qr.btn-saffron {
-      background: rgba(255, 103, 31, 0.18) !important;
-      border-color: rgba(255, 103, 31, 0.5) !important;
-      color: #FFFFFF !important;
-    }
-    .btn-qr.btn-saffron:hover {
-      background: rgba(255, 103, 31, 0.3) !important;
-      border-color: rgba(255, 103, 31, 0.9) !important;
-      box-shadow: 0 0 15px rgba(255, 103, 31, 0.4);
-      transform: translateY(-2px);
-    }
-    .btn-qr.btn-saffron::before {
-      background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
-    }
-    .btn-qr.btn-saffron::after {
-      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.6), transparent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-radius: 4px;
+      transition: opacity .2s;
+      display: none
     }
 
-    .btn-qr.btn-white {
-      background: rgba(255, 255, 255, 0.08) !important;
-      border-color: rgba(255, 255, 255, 0.4) !important;
-      color: #FFFFFF !important;
-    }
-    .btn-qr.btn-white:hover {
-      background: rgba(255, 255, 255, 0.15) !important;
-      border-color: rgba(255, 255, 255, 0.8) !important;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-      transform: translateY(-2px);
-    }
-    .btn-qr.btn-white::before {
-      background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-    }
-    .btn-qr.btn-white::after {
-      background: linear-gradient(to bottom, transparent, rgba(6,3,141,0.5), transparent); /* Blue laser for chakra feel */
-    }
-
-    .btn-qr.btn-green {
-      background: rgba(4, 106, 56, 0.25) !important;
-      border-color: rgba(4, 106, 56, 0.5) !important;
-      color: #FFFFFF !important;
-    }
-    .btn-qr.btn-green:hover {
-      background: rgba(4, 106, 56, 0.4) !important;
-      border-color: rgba(4, 106, 56, 0.9) !important;
-      box-shadow: 0 0 15px rgba(4, 106, 56, 0.4);
-      transform: translateY(-2px);
-    }
-    .btn-qr.btn-green::before {
-      background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
-    }
-    .btn-qr.btn-green::after {
-      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.6), transparent);
-    }
-
-    .btn-qr::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-size: 6px 6px;
-      z-index: 0;
-      opacity: 0.8;
-    }
-    .btn-qr::after {
-      content: '';
-      position: absolute;
-      top: -100%;
-      left: 0;
-      width: 100%;
-      height: 35%;
-      animation: qr-scan 6s ease-in-out infinite;
-      z-index: 1;
-    }
-    .btn-qr span {
-      position: relative;
-      z-index: 2;
-      text-shadow: 0 0 8px rgba(255,255,255,0.3);
-    }
-    @keyframes qr-scan {
-      0%, 80%   { top: -40%; opacity: 0; }
-      83%  { opacity: 1; }
-      97%  { opacity: 1; }
-      100% { top: 120%; opacity: 0; }
+    .btn-fi:active {
+      opacity: .85
     }
 
     .btn-ev-glow {
@@ -373,16 +277,7 @@
     .hero-btns {
       display: flex;
       gap: 10px;
-      flex-wrap: wrap;
-      width: 100%;
-      max-width: 340px
-    }
-    .hero-btns .btn-or,
-    .hero-btns .btn-fill {
-      flex: 1;
-      min-width: 150px;
-      text-align: center;
-      justify-content: center
+      flex-wrap: wrap
     }
 
     .btn-or {
@@ -416,65 +311,11 @@
       letter-spacing: 2.5px;
       text-transform: uppercase;
       border-radius: 4px;
-      transition: opacity .2s;
-      position: relative;
-      overflow: hidden
+      transition: opacity .2s
     }
 
     .btn-fill:active {
       opacity: .85
-    }
-
-    /* Elite fire effect on Explore button */
-    .btn-fire {
-      background: rgba(232, 84, 26, 0.05) !important;
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      border: 1.5px solid var(--orange) !important;
-      color: var(--orange) !important;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-fire span {
-      position: relative;
-      z-index: 2
-    }
-    /* Shimmer sweep — hot metal sheen gliding across */
-    .btn-fire::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(105deg, transparent 20%, rgba(255,140,50,0.12) 40%, rgba(232,84,26,0.22) 50%, rgba(255,140,50,0.12) 60%, transparent 80%);
-      animation: fire-sweep 3s ease-in-out infinite;
-      pointer-events: none;
-      z-index: 1
-    }
-    /* Warm glow pool at bottom — breathes gently */
-    .btn-fire::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 10%;
-      right: 10%;
-      height: 20px;
-      background: radial-gradient(ellipse at center, rgba(232,84,26,0.35), rgba(255,120,40,0.15) 50%, transparent 75%);
-      filter: blur(6px);
-      animation: glow-breathe 2s ease-in-out infinite;
-      pointer-events: none;
-      z-index: 0
-    }
-    @keyframes fire-sweep {
-      0%   { left: -100%; opacity: 0; }
-      15%  { opacity: 1; }
-      85%  { opacity: 1; }
-      100% { left: 160%; opacity: 0; }
-    }
-    @keyframes glow-breathe {
-      0%, 100% { opacity: 0.4; transform: scaleX(0.85); }
-      50%      { opacity: 0.8; transform: scaleX(1.1); }
     }
 
     .cd-row {
@@ -894,112 +735,6 @@
       gap: 4px;
       opacity: 1;
       font-weight: 600;
-    }
-
-    /* Red Glow for Conflicts */
-    .ev-time-red-glow {
-      color: #ff4d4d !important;
-      text-shadow: 0 0 8px rgba(255, 77, 77, 0.6), 0 0 15px rgba(255, 77, 77, 0.3);
-      animation: flash-red 2s ease-in-out infinite;
-    }
-
-    /* ─── INSTAGRAM GLOW BUTTON ─── */
-    .insta-btn-wrap {
-      margin-top: 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      perspective: 1000px;
-    }
-
-    .insta-glow-btn {
-      position: relative;
-      background: transparent;
-      color: var(--orange);
-      padding: 14px 28px;
-      border-radius: 50px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      border: 1.5px solid var(--orange);
-      transition: all 0.3s ease;
-      overflow: hidden;
-    }
-    .insta-glow-btn::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 0;
-      background: linear-gradient(to top, rgba(232,84,26,0.15), transparent);
-      transition: height 0.3s ease;
-      pointer-events: none;
-    }
-    .insta-glow-btn:hover::before {
-      height: 100%;
-    }
-
-    .insta-glow-btn:hover {
-      transform: translateY(-2px);
-      border-color: #ff6a2a;
-      color: #ff6a2a;
-    }
-
-    .insta-glow-btn:active {
-      transform: scale(0.98);
-    }
-
-    .insta-glow-btn svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-    }
-
-    .insta-promo-text {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--muted);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      opacity: 0.8;
-      animation: pulse-text 2s infinite;
-    }
-
-    @keyframes multi-glow {
-      0% { box-shadow: 0 0 15px rgba(232,84,26,0.3), 0 0 30px rgba(232,84,26,0.15); }
-      50% { box-shadow: 0 0 20px rgba(232,84,26,0.4), 0 0 40px rgba(232,84,26,0.2); }
-      100% { box-shadow: 0 0 15px rgba(232,84,26,0.3), 0 0 30px rgba(232,84,26,0.15); }
-    }
-
-    @keyframes pulse-text {
-      0%, 100% { transform: scale(1); opacity: 0.7; }
-      50% { transform: scale(1.05); opacity: 1; color: var(--orange); }
-    }
-
-    @keyframes flash-red {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.8; }
-    }
-
-    .ev-caution-tag {
-      font-size: 9px;
-      font-weight: 800;
-      color: #ff4d4d;
-      background: rgba(255, 77, 77, 0.1);
-      border: 1px solid rgba(255, 77, 77, 0.3);
-      padding: 3px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
     }
 
     .ev-tile-tags {
@@ -2563,73 +2298,6 @@
     .sync-status.err {
       color: #e74c3c
     }
-
-    /* ─── NEW SCANNER UI ENHANCEMENTS ─── */
-    .res-badge-loading {
-      background: rgba(232, 84, 26, 0.1) !important;
-      color: var(--orange) !important;
-      border: 1px solid var(--orange) !important;
-      animation: res-pulse 1.5s infinite;
-    }
-    
-    .res-badge-new {
-      background: rgba(46, 204, 113, 0.1) !important;
-      color: #2ecc71 !important;
-      border: 1px solid #2ecc71 !important;
-      animation: res-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    
-    .res-badge-warn {
-      background: rgba(231, 76, 60, 0.1) !important;
-      color: #e74c3c !important;
-      border: 1px solid #e74c3c !important;
-      animation: res-shake 0.4s ease-in-out;
-    }
-
-    .scanner-result-card {
-      animation: res-slide-up 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    @keyframes res-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(0.98); }
-    }
-
-    @keyframes res-pop {
-      0% { transform: scale(0.8); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    @keyframes res-shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
-    }
-
-    @keyframes res-slide-up {
-      0% { transform: translateY(30px); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
-    }
-
-    .mark-scanned-btn:disabled {
-      background: var(--border2) !important;
-      color: var(--muted) !important;
-      box-shadow: none !important;
-      cursor: not-allowed;
-    }
-
-    .verifying-screen {
-      position: absolute;
-      inset: 0;
-      background: rgba(10, 10, 10, 0.9);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      backdrop-filter: blur(4px);
-      border-radius: 20px;
-    }
     .ev-listing-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -2677,20 +2345,18 @@
       z-index: 850;
       background: var(--black);
       display: none;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border2) transparent;
+      overflow-y: auto
     }
 
     .comm-ov.open {
       display: block;
-      animation: fo .3s ease;
+      animation: fo .3s ease
     }
 
     .comm-wrap {
-      padding: 40px 24px 100px;
+      padding: 20px 20px 80px;
       max-width: 1100px;
-      margin: 0 auto;
+      margin: 0 auto
     }
 
     .comm-head {
@@ -2698,103 +2364,89 @@
       flex-direction: column;
       align-items: center;
       gap: 16px;
-      margin-bottom: 50px;
-      padding-top: 20px;
-      text-align: center;
+      margin-bottom: 24px;
+      padding-top: 10px;
+      text-align: center
     }
 
     .comm-title {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(38px, 8vw, 60px);
-      font-weight: 950;
+      font-size: 42px;
+      font-weight: 900;
       color: #fff;
       letter-spacing: 4px;
       text-transform: uppercase;
-      line-height: .9;
-      text-shadow: 0 0 30px rgba(232, 84, 26, 0.3);
+      line-height: 1
     }
 
     .comm-title span {
-      color: var(--orange);
-      display: block;
-      margin-top: 4px;
-      letter-spacing: 10px;
-      opacity: 0.95;
+      color: var(--orange)
     }
 
     .comm-close {
-      padding: 10px 24px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      color: rgba(255, 255, 255, 0.6);
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      color: rgba(255, 255, 255, .6);
       font-size: 11px;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .comm-close:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border-color: var(--orange);
-      transform: scale(1.05);
+      cursor: pointer
     }
 
     .comm-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 900px) and (min-width: 601px) {
       .comm-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .comm-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 14px;
       }
     }
 
     .comm-card {
       position: relative;
+      width: calc(33.333% - 11px);
       background: var(--card);
-      border-radius: 16px;
+      border-radius: 12px;
       overflow: hidden;
       border: 1px solid var(--border);
       aspect-ratio: 3/4.2;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      transition: transform .3s ease, border-color .3s ease
+    }
+
+    @media (max-width: 900px) and (min-width: 601px) {
+      .comm-card {
+        width: calc(50% - 7px);
+      }
     }
 
     .comm-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      border-color: var(--orange);
-      box-shadow: 0 25px 50px rgba(232, 84, 26, 0.2);
-      z-index: 10;
+      transform: translateY(-8px);
+      border-color: rgba(232, 84, 26, 0.4);
+      z-index: 10
     }
 
     .comm-initials {
       position: absolute;
-      top: 15%;
+      top: 12%;
       left: 50%;
       transform: translateX(-50%);
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(80px, 15vw, 150px);
-      font-weight: 950;
+      font-size: clamp(72px, 12vw, 130px);
+      font-weight: 900;
       color: var(--orange);
-      opacity: 0.12;
+      opacity: 0.9;
       line-height: 1;
-      letter-spacing: -4px;
-      z-index: 0;
-      filter: blur(1px);
+      letter-spacing: -2px;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0
     }
 
     .comm-img {
@@ -2804,132 +2456,127 @@
       height: 100%;
       object-fit: cover;
       object-position: top center;
-      transition: transform .6s ease;
-      filter: grayscale(0.2);
+      transition: transform .5s ease
     }
 
     .comm-card:hover .comm-img {
-      transform: scale(1.1);
-      filter: grayscale(0);
+      transform: scale(1.05)
     }
 
     .comm-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, 
-        rgba(10,10,10, 1) 0%, 
-        rgba(10,10,10, 0.95) 20%, 
-        rgba(10,10,10, 0.4) 50%, 
-        transparent 100%
-      );
+      background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 35%, rgba(0,0,0,0.2) 60%, transparent 90%);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 24px;
-      z-index: 2;
+      padding: 16px;
     }
 
     .comm-dtl {
       position: relative;
-      z-index: 3;
+      z-index: 2
     }
 
     .comm-role-p {
-      font-size: 11px;
-      font-weight: 800;
+      font-size: 10px;
+      font-weight: 700;
       letter-spacing: 2px;
       color: var(--orange);
       text-transform: uppercase;
-      margin-bottom: 6px;
-      display: inline-block;
-      padding-bottom: 2px;
-      border-bottom: 1.5px solid rgba(232, 84, 26, 0.4);
+      margin-bottom: 4px
     }
 
     .comm-name-p {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(18px, 2vw, 24px);
+      font-size: clamp(14px, 1.6vw, 20px);
       font-weight: 950;
       color: #fff;
       letter-spacing: 0.5px;
       text-transform: uppercase;
       margin-bottom: 4px;
-      line-height: 1;
+      line-height: 1.1;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
+      text-overflow: ellipsis
     }
 
     .comm-bio {
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 16px;
+      font-size: 11px;
+      color: #aaa;
       line-height: 1.4;
-      font-weight: 500;
+      margin-bottom: 14px;
       display: -webkit-box;
+      display: box;
       -webkit-line-clamp: 1;
       line-clamp: 1;
       -webkit-box-orient: vertical;
-      overflow: hidden;
+      overflow: hidden
     }
 
     .comm-footer {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      justify-content: space-between;
       padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1)
+    }
+
+    .comm-stats {
+      display: flex;
+      gap: 12px
     }
 
     .cstat {
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.3);
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all .2s;
-    }
-
-    .cstat:hover {
-      color: #fff;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 600
     }
 
     .cstat svg {
       width: 14px;
       height: 14px;
-      color: var(--orange);
+      opacity: 0.7
     }
 
     .comm-btn {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
-      background: var(--orange);
-      color: #fff;
+      background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 4px 15px rgba(232, 84, 26, 0.4);
+      color: #000;
+      transition: transform .2s ease
     }
 
     .comm-btn:hover {
-      transform: scale(1.1) rotate(8deg);
-      background: #ff7c4d;
-      box-shadow: 0 8px 25px rgba(232, 84, 26, 0.6);
+      transform: scale(1.1);
+      background: var(--orange);
+      color: #fff
     }
 
     @media (max-width: 600px) {
-      .comm-wrap { padding: 40px 16px 80px; }
-      .comm-head { margin-bottom: 32px; }
-      .comm-overlay { padding: 16px; }
-      .comm-name-p { font-size: 16px; }
-      .comm-bio { display: none; }
-      .comm-footer { padding-top: 12px; }
-      .comm-btn { width: 36px; height: 36px; border-radius: 10px; }
-      .comm-btn:hover {
+      .comm-grid {
+        gap: 16px;
+        padding-bottom: 40px;
+      }
+      .comm-card {
+        width: calc(50% - 8px);
+        border-radius: 16px;
+        aspect-ratio: 1/1.4;
+      }
+      .comm-initials {
+        font-size: clamp(60px, 18vw, 90px);
+      }
+      .comm-img {
+        object-position: top center;
+      }
+      .comm-overlay {
         padding: 14px;
         background: linear-gradient(to top, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.75) 45%, rgba(0,0,0,0.05) 70%, transparent 90%);
       }
@@ -3994,7 +3641,7 @@
       position: fixed;
       inset: 0;
       z-index: 99999;
-      background: linear-gradient(135deg, #050505 0%, #000000 50%, #0a0500 100%);
+      background: linear-gradient(135deg, #1a0800 0%, #0d0400 40%, #1f0a00 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -4004,15 +3651,8 @@
     }
 
     #intro-screen.fade-out {
-      background: #FFFFFF !important; /* Flashbang transition! */
       opacity: 0;
       pointer-events: none;
-      transition: background 0.1s ease, opacity 1.5s ease 0.1s;
-    }
-    
-    #intro-screen.white-flash {
-      background: #FFFFFF !important;
-      transition: background 0.05s ease;
     }
 
     #intro-canvas {
@@ -4020,28 +3660,6 @@
       inset: 0;
       width: 100%;
       height: 100%;
-    }
-
-    .firecracker-txt {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: 4px;
-      color: var(--orange);
-      text-shadow: 0 0 20px rgba(232,84,26,0.8);
-      white-space: nowrap;
-      opacity: 1;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      z-index: 3;
-    }
-    
-    .firecracker-txt.fade-out {
-      opacity: 0;
-      transform: translate(-50%, -60%) scale(0.9);
     }
 
     .intro-text {
@@ -4068,25 +3686,6 @@
 
     .intro-text h1 span {
       color: var(--orange);
-    }
-    
-    .thunder-line {
-      opacity: 0;
-      filter: brightness(0);
-      transition: opacity 0.1s ease, filter 0.1s ease, text-shadow 0.1s ease;
-    }
-    
-    .thunder-line.revealed {
-      opacity: 1;
-      filter: brightness(1) drop-shadow(0 0 15px rgba(255,255,255,0.4));
-      animation: thunder-flicker 0.4s ease-out;
-    }
-    
-    @keyframes thunder-flicker {
-      0% { filter: brightness(4) drop-shadow(0 0 30px #fff); }
-      20% { filter: brightness(1); }
-      40% { filter: brightness(3) drop-shadow(0 0 20px #fff); }
-      100% { filter: brightness(1) drop-shadow(0 0 15px rgba(255,100,50,0.5)); }
     }
 
     .intro-text .intro-sub {
@@ -4456,20 +4055,18 @@
   <!-- CINEMATIC INTRO -->
   <div id="intro-screen">
     <canvas id="intro-canvas"></canvas>
-
     <div class="intro-text">
-      <h1 class="thunder-line" id="t-line-1">CSE<span>UTSAV</span></h1>
-      <h1 class="thunder-line" id="t-line-2" style="font-size:36px; margin-top:-10px;">2K26 BEGINS</h1>
-      <div class="intro-sub thunder-line" id="t-line-3" style="margin-top:10px;">PSNA CSE · Dindigul</div>
+      <h1>CSE <span>UTSAV</span><br>2K26 BEGINS</h1>
+      <div class="intro-sub">PSNA CSE · Dindigul</div>
     </div>
   </div>
 
   <!-- NAV -->
   <nav class="nav">
     <div style="display:flex;align-items:center;gap:8px">
-      <button class="nav-btn btn-qr btn-saffron" id="pass-nav-btn" onclick="openPass()" style="display:none;"><span>My Pass</span></button>
-      <button class="nav-btn btn-qr btn-white" onclick="openReg(null)"><span>Register</span></button>
-      <button class="nav-btn btn-qr btn-green" onclick="openAllEvents()"><span>Event Details</span></button>
+      <button class="btn-fi" id="pass-nav-btn" onclick="openPass()" style="padding:8px 10px;font-size:10px">My Pass</button>
+      <button class="btn-ol" onclick="openReg(null)" style="padding:8px 10px;font-size:10px">Register</button>
+      <button class="btn-ev-glow" onclick="openAllEvents()">Event Details</button>
     </div>
     <div class="nl" id="logo-trigger">CSE<span>UTSAV</span></div>
   </nav>
@@ -4533,15 +4130,15 @@
       <p class="hero-desc">The Annual Technical Symposium of the Department of Computer Science & Engineering. Compete.
         Collaborate. Conquer.</p>
       <div class="hero-btns">
-        <button class="btn-or btn-fire" onclick="openReg(null)"><span>Register Free</span></button>
-        <button class="btn-fill btn-fire" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})"><span>Explore Events</span></button>
+        <button class="btn-or" onclick="openReg(null)">Register Free</button>
+        <button class="btn-fill" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})">Explore
+          Events</button>
       </div>
       <div class="cd-row">
         <div class="cd-c"><span class="cdn" id="cd-d">00</span><span class="cdl">Days</span></div>
         <div class="cd-c"><span class="cdn" id="cd-h">00</span><span class="cdl">Hours</span></div>
         <div class="cd-c"><span class="cdn" id="cd-m">00</span><span class="cdl">Mins</span></div>
         <div class="cd-c"><span class="cdn" id="cd-s">00</span><span class="cdl">Secs</span></div>
-      </div>
       </div>
     </div>
     <div class="hero-right">
@@ -4590,19 +4187,6 @@
         ></video>
       </div>
     </div>
-
-    <!-- INSTAGRAM PROMO CTA (Moved under video) -->
-    <div class="insta-btn-wrap" style="margin-top: 40px; margin-bottom: 20px;">
-      <a href="https://www.instagram.com/cseutsav_26?igsh=cDRhM2g3ZzBtdTdi" target="_blank" class="insta-glow-btn btn-fire">
-        <span style="display:flex;align-items:center;gap:10px;position:relative;z-index:2">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-          </svg>
-          INSTAGRAM
-        </span>
-      </a>
-      <div class="insta-promo-text">Click for interesting promos</div>
-    </div>
   </div>
 
 
@@ -4621,7 +4205,7 @@
       <div class="ab-card">
         <div class="ab-num">01</div>
         <div class="ab-t">Compete & Win</div>
-        <div class="ab-b">Six events across coding, design, research and innovation. Over ₹33,000 in prizes.</div>
+        <div class="ab-b">Six events across coding, design, research and innovation. Over ₹40,000 in prizes.</div>
       </div>
       <div class="ab-card">
         <div class="ab-num">02</div>
@@ -4701,6 +4285,7 @@
         <button class="reg-close-btn" onclick="forceCloseReg()">✕ Close</button>
       </div>
       <div class="rsc">
+
         <!-- STEP DOTS -->
         <div class="step-nav" id="step-nav">
           <div class="step-dot current" id="dot-0"></div>
@@ -4712,13 +4297,19 @@
         <div class="step active" id="step-0">
           <div id="ev-summary-here"></div>
           <div id="reg-fields-container" style="display:none">
-            <div style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
               <div class="fc-t" style="margin-bottom:0">Your Details</div>
+              <div style="display:flex;gap:4px">
+                <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(1)">Tester 1</button>
+                <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(2)">Tester 2</button>
+                <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(3)">Tester 3</button>
+                <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(4)">Tester 4</button>
+              </div>
             </div>
             <div class="fg">
               <label class="fl">Full Name</label>
               <input class="fi" id="f-name" type="text" placeholder="Enter your full name">
-              <input type="text" id="f-hp" style="display:none" autocomplete="off">
+              <input type="text" id="f-hp" class="hp-f" tabindex="-1" autocomplete="off">
             </div>
             <div class="row2">
               <div class="fg"><label class="fl">Register Number</label><input class="fi" id="f-regno" type="text"
@@ -4769,8 +4360,14 @@
         <!-- STEP 2: Team Details -->
         <div class="step" id="step-1">
           <div id="ev-summary-here2"></div>
-          <div style="margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <div class="fc-t" style="margin-bottom:0">Team Details</div>
+            <div style="display:flex;gap:4px">
+              <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(1)">Tester 1</button>
+              <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(2)">Tester 2</button>
+              <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(3)">Tester 3</button>
+              <button class="btn-ol" style="padding:4px 8px;font-size:10px" onclick="fillTester(4)">Tester 4</button>
+            </div>
           </div>
           <div class="fg"><label class="fl">Team Name</label><input class="fi" id="f-teamname" type="text"
               placeholder="Enter your team name"></div>
@@ -5071,114 +4668,107 @@
 
     /* ════════ EVENT DATA ════════ */
     const EVS = [
+      /* ── TECHNICAL EVENTS (7) ── */
       {
-        id: 'dd', name: 'DESIGN DECODE', label: 'Graphic Design', category: 'Technical', type: 'Solo', minTeam: 1, maxTeam: 1, tag: 'Design',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dd" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fd79a8"/><stop offset="100%" stop-color="#e84393"/></linearGradient></defs><circle cx="13.5" cy="10.5" r="2.5" fill="#fd79a8" stroke="none"/><path d="m20.24 12.24-5.48 5.48a2.83 2.83 0 0 1-4 0l-5.48-5.48a2.83 2.83 0 0 1 0-4l5.48-5.48a2.83 2.83 0 0 1 4 0l5.48 5.48a2.83 2.83 0 0 1 0 4Z" stroke="url(#g-dd)" fill="url(#g-dd)" fill-opacity="0.15"/><path d="M3.76 11.76l5.48-5.48" stroke="#00cec9"/><path d="M14.76 20.24l5.48-5.48" stroke="#00cec9"/></svg>', grad: 'linear-gradient(135deg,#1a0a28,#0f0518)', accent: '#e84393',
-        desc: 'Designers compete solo to create stunning posters under time constraints. Starting with a given theme, they have complete creative freedom, but every 20 minutes, a new challenge is introduced, testing their adaptability and innovation.',
-        date: 'April 13', time: '09:00 AM to 10:35 AM', venue: 'IT Lab 2', deadline: 'Mar 30',
-        p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
-        rules: ['Individual', 'Design tools provided', 'Time-bound rounds', 'Theme given on spot', 'Originality is key'],
-        ec: 'Lekeetha Sri', ep: '9361131042', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456',
-        jcs: ['Sriram', 'Naresh Balaji', 'Ragul', 'Vinuvarsan']
-      },
-      {
-        id: 'ff', name: 'FRANCHISE FIESTA', label: 'Business Simulation Game', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Management',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ff" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#g-ff)"/><circle cx="9" cy="7" r="4" stroke="url(#g-ff)"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#g-ff)"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
-        desc: 'Build your dream team. Rule the auction. Step into the shoes of an IPL franchise owner and craft the ultimate squad within a budget. Every bid matters, every choice counts. Strategy, balance, and smart decisions will lead you to championship glory.',
-        date: 'April 13', time: '11:00 AM to 04:00 PM', venue: 'MBA Block', deadline: 'Mar 30',
-        p1: 'Rs.4,000', p2: 'Rs.2,500', p3: 'Rs.1,500',
-        rules: ['Team of 4 members', 'Teams selected through a quiz round, top 10 advance to live auction', 'Virtual budget of 100 Crores to build a squad of minimum 11 players including 5 batsmen, 1 wicketkeeper, 2 all-rounders, and at least 5 bowlers', 'Strategic bidding, smart budgeting, and perfect team balance are the keys to victory', 'Plan wisely. Bid smartly. Build the ultimate champion team'],
-        ec: 'Sriram Adithya', ep: '9087654321', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456',
-        jcs: ['Arjhun', 'Nitheesh', 'Abinayaa']
-      },
-      {
-        id: 'cc', name: 'CHECKMATE CODERS', label: 'Bug Gambit and Arena', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Coding',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-cc" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2ecc71"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-cc)"/></svg>', grad: 'linear-gradient(135deg,#031a0d,#021008)', accent: '#2ecc71',
-        desc: 'Enter the arena where code meets strategy. Bug Gambit and Power Coding Arena is not just a coding contest, it is a battle of logic and mind games. Crack buggy programs to rise through the ranks, then step into a chess-inspired showdown where your role Queen, Knight, or Pawn unlocks powerful moves. Outsmart, outcode, and outplay your opponents to claim victory.',
-        date: 'April 13', time: '02:00 PM to 04:30 PM', venue: 'CSE Lab 3', deadline: 'Mar 30',
-        p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
-        rules: ['Team of 2', 'Round 1 - Bug Gambit: Teams must identify and fix errors in buggy programs within the given time. Top 10 teams qualify for Round 2 and receive chess roles based on rank', 'Round 2 - Power Coding Arena: Qualified teams solve coding challenges while using chess-based powers. Queen can skip a problem, Knight can freeze another team, Pawn earns bonus points', 'Languages: C, C++, Java, Python', 'No internet, Judge decision final'],
-        ec: 'Kalaiselvi', ep: '9361131042', sc: 'Ms. Anitha L.', sp: '+91 93450 67890',
-        jcs: ['Hirthick', 'Jeevesh', 'Narene']
-      },
-      {
-        id: 'hv', name: 'HACKVERSE', label: '24-Hour Hackathon', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Hackathon', timeSlot: 'A', isSimultaneous: true,
+        id: 'hv', name: 'HACKVERSE', label: '24-Hour Hackathon', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Hackathon', timeSlot: 'A',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-hv" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00cec9"/><stop offset="100%" stop-color="#0984e3"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-hv)"/></svg>', grad: 'linear-gradient(135deg,#021a1a,#010f10)', accent: '#00cec9',
         desc: 'Build, innovate, and deploy! A high-intensity hackathon where teams race to develop solutions to real-world challenges.',
         date: 'April 15', time: '09:00 AM to 11:00 AM', venue: 'CSE Lab 1', deadline: 'Mar 30',
         p1: 'Rs.5,000', p2: 'Rs.3,000', p3: 'Rs.2,000',
         rules: ['Team of 2 to 4', 'Theme given on spot', 'Working prototype required', 'Any tech stack allowed', 'Judge decision final'],
-        ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345',
-        jcs: ['Dharshan', 'Jeevesh', 'Narene', 'Naga Nandhini', 'Mathivadhana']
+        ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
       },
       {
-        id: 'zcz', name: 'ZERO CODE ZONE', label: 'Non Coding Tech', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Logic', timeSlot: 'A', isSimultaneous: true,
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-zcz" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-zcz)" fill="url(#g-zcz)" fill-opacity="0.15"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
-        desc: 'No coding, just pure brainpower. From fast-paced visual quizzes to spotting impostors and racing through puzzle-filled checkpoints, this event is a rollercoaster of logic, teamwork, and quick thinking. Stay sharp because not everything is as it seems.',
-        date: 'April 15', time: '09:00 AM to 11:00 AM', venue: 'IT Lab 1', deadline: 'Mar 30',
-        p1: 'Rs.2,000', p2: 'Rs.1,500', p3: 'Rs.1,000',
-        rules: ['Team of 2 to 4, Non coding event', 'Round 1: Live visual quiz of technical and non technical questions using a buzzer-based platform. Top performing groups will be selected', 'Round 2 - Find the Impostor: All teams receive the same tasks, but a few are secretly given altered information. Spot inconsistencies to identify the impostor teams', 'Round 3 - Scavenger Hunt: Participants embark on an exciting journey filled with multiple checkpoints solving puzzles to reveal the next destination'],
-        ec: 'Reshmaa', ep: '9361131042', sc: 'Dr. Murugan A.', sp: '+91 87890 01234',
-        jcs: ['Naga Nandhini', 'Mathivadhana', 'Adharsini']
-      },
-      {
-        id: 'tt', name: 'TECHNOTRACE', label: 'Tech Treasure Hunt', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Fun',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tt" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="url(#g-tt)" fill="url(#g-tt)" fill-opacity="0.15"></polygon></svg>', grad: 'linear-gradient(135deg,#0d1f3c,#0a1428)', accent: '#3498db',
-        desc: 'Follow the trail. Solve the mystery. From tackling real-world tech challenges to unlocking layers of encrypted files, every step takes you deeper into a high-stakes digital chase. Only the sharpest minds will crack the codes and reach the final breakthrough.',
-        date: 'April 15', time: '02:00 PM to 04:30 PM', venue: 'Campus Wide', deadline: 'Mar 30',
+        id: 'dd', name: 'DESIGN DECODE', label: 'Graphic Design', category: 'Technical', type: 'Solo', minTeam: 1, maxTeam: 1, tag: 'Design', timeSlot: 'B',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dd" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fd79a8"/><stop offset="100%" stop-color="#e84393"/></linearGradient></defs><circle cx="13.5" cy="10.5" r="2.5" fill="#fd79a8" stroke="none"/><path d="m20.24 12.24-5.48 5.48a2.83 2.83 0 0 1-4 0l-5.48-5.48a2.83 2.83 0 0 1 0-4l5.48-5.48a2.83 2.83 0 0 1 4 0l5.48 5.48a2.83 2.83 0 0 1 0 4Z" stroke="url(#g-dd)" fill="url(#g-dd)" fill-opacity="0.15"/><path d="M3.76 11.76l5.48-5.48" stroke="#00cec9"/><path d="M14.76 20.24l5.48-5.48" stroke="#00cec9"/></svg>', grad: 'linear-gradient(135deg,#1a0a28,#0f0518)', accent: '#e84393',
+        desc: 'Designers compete solo to create stunning posters under time constraints. Starting with a given theme, they have complete creative freedom, but every 20 minutes, a new challenge is introduced, testing their adaptability and innovation.',
+        date: 'April 13', time: '09:00 AM to 10:35 AM', venue: 'IT Lab 2', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
-        rules: ['Team of 2 to 3', 'Round 1 - Tech Code Challenge: Participants analyze short real world technology scenarios and write a program or logic to solve them within a limited time', 'Round 2 - Password Trace: Finalist teams are given a system containing multiple password-protected files. After unlocking a file, they must solve the question inside it to obtain the password for the next file. The team that completes the challenge in the shortest time wins', 'No external help', 'Fastest team wins'],
-        ec: 'Hariharan', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345',
-        jcs: ['Ariram', 'Deva Priyan', 'Dhanusiya']
+        rules: ['Individual', 'Design tools provided', 'Time-bound rounds', 'Theme given on spot', 'Originality is key'],
+        ec: 'Lekeetha Sri', ep: '9361131042', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
       },
       {
-        id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Coding',
+        id: 'cc', name: 'CHECKMATE CODERS', label: 'Bug Gambit and Arena', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Coding', timeSlot: 'A',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-cc" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2ecc71"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-cc)"/></svg>', grad: 'linear-gradient(135deg,#031a0d,#021008)', accent: '#2ecc71',
+        desc: 'Enter the arena where code meets strategy. Bug Gambit and Power Coding Arena is not just a coding contest, it is a battle of logic and mind games. Crack buggy programs to rise through the ranks, then step into a chess-inspired showdown where your role Queen, Knight, or Pawn unlocks powerful moves. Outsmart, outcode, and outplay your opponents to claim victory.',
+        date: 'April 13', time: '02:00 PM to 04:30 PM', venue: 'CSE Lab 3', deadline: 'Mar 30',
+        p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
+        rules: ['Team of 2', 'Round 1 - Bug Gambit: Teams must identify and fix errors in buggy programs within the given time. Top 10 teams qualify for Round 2 and receive chess roles based on rank', 'Round 2 - Power Coding Arena: Qualified teams solve coding challenges while using chess-based powers. Queen can skip a problem, Knight can freeze another team, Pawn earns bonus points', 'Languages: C, C++, Java, Python', 'No internet, Judge decision final'],
+        ec: 'Kalaiselvi', ep: '9361131042', sc: 'Ms. Anitha L.', sp: '+91 93450 67890'
+      },
+      {
+        id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Coding', timeSlot: 'A',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ur" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-ur)" fill="url(#g-ur)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-ur)"/><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3" stroke="#e74c3c"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
         desc: 'Expect the unexpected. Teams are formed on the spot, roles are split, and just when you think you are settled, UNO cards flip the game. With surprise swaps and unpredictable twists, this event is all about adaptability, teamwork, and thinking on your feet.',
         date: 'April 16', time: '09:00 AM to 12:00 PM', venue: 'CSE Lab 2', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Exclusive to 1st and 2nd years', 'Junior senior random tag team selection on the spot', 'Junior will be coding, senior will be sitting beside', 'We will shuffle UNO cards and circulate cards', 'Surprise Rule: Swap teams'],
-        ec: 'Arikara Sudhan', ep: '9361131042', sc: 'Dr. Senthil P.', sp: '+91 91230 45678',
-        jcs: ['Sankari', 'Srinidhi', 'Sudharsan', 'Vijay Kasthuri']
+        ec: 'Arikara Sudhan', ep: '9361131042', sc: 'Dr. Senthil P.', sp: '+91 91230 45678'
       },
       {
-        id: 'tap', name: 'THE ALGORITHMIC PLATTER', label: 'Fun Algorithmic Puzzles', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Puzzle',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tap" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-tap)" fill="url(#g-tap)" fill-opacity="0.2"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
-        desc: 'Where cooking meets computation. Create a dish without fire, just like designing an efficient algorithm, optimize ingredients, maximize creativity, and present your idea as a masterpiece. It is innovation, but delicious.',
-        date: 'April 16', time: '01:30 PM to 04:30 PM', venue: 'MCA Lab', deadline: 'Mar 30',
-        p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
-        rules: ['Team of 2 to 3', 'A Fireless Cooking Innovation Challenge - No fire or electricity allowed', 'Participants create an innovative dish optimizing ingredients, creativity, and presentation within given constraints', 'Round - Logic of Flavors: Teams prepare a dish based on a surprise theme or ingredient and present it as a unique product concept', 'Time-bound, Judges decision final'],
-        ec: 'Priyanka M', ep: '9087654321', sc: 'Dr. Murugan A.', sp: '+91 87890 01234',
-        jcs: ['Arjhun', 'Meeran', 'Abirami']
-      },
-      {
-        id: 'btb', name: 'BRAND TO BILLION', label: 'Tech Startup Pitch', category: 'Technical', type: 'Team', minTeam: 1, maxTeam: 3, tag: 'Strategy', timeSlot: 'B', isSimultaneous: true,
+        id: 'btb', name: 'BRAND TO BILLION', label: 'Tech Startup Pitch', category: 'Technical', type: 'Team', minTeam: 1, maxTeam: 3, tag: 'Strategy', timeSlot: 'C',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-btb" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e67e22"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="url(#g-btb)"/></svg>', grad: 'linear-gradient(135deg,#1f1200,#120b00)', accent: '#e67e22',
         desc: 'Turn the absurd into unforgettable. From selling the silliest product to pitching a million-dollar startup idea, this event tests your creativity, persuasion, and business instincts. Think fast, pitch smarter, and convince the investors that your idea is the next big thing.',
         date: 'April 18', time: '11:30 AM to 12:30 PM', venue: 'Seminar Hall', deadline: 'Mar 30',
         p1: 'Rs.4,000', p2: 'Rs.2,500', p3: 'Rs.1,500',
         rules: ['Open to all, max of 3 in a team', 'Round 1 - Sell the Silliest: Participants are given a random funny object and must transform it into a desirable product through a creative advertisement and marketing pitch', 'Round 2 - Start-up Investment Pitch: Shortlisted teams present their original start-up idea to the judges, who act as investors, and compete to secure the maximum funding based on innovation, feasibility, and presentation', 'Judges decision final'],
-        ec: 'Syedali Fathima', ep: '9361131042', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456',
-        jcs: ['Dharshan', 'Devadharshini', 'Adharsini']
+        ec: 'Syedali Fathima', ep: '9361131042', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
       },
       {
-        id: 'com', name: 'CLASH OF MINDS', label: 'Quiz and Debate Showdown', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Quiz', timeSlot: 'B', isSimultaneous: true,
+        id: 'zcz', name: 'ZERO CODE ZONE', label: 'Non Coding Tech', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Logic', timeSlot: 'C',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-zcz" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-zcz)" fill="url(#g-zcz)" fill-opacity="0.15"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
+        desc: 'No coding, just pure brainpower. From fast-paced visual quizzes to spotting impostors and racing through puzzle-filled checkpoints, this event is a rollercoaster of logic, teamwork, and quick thinking. Stay sharp because not everything is as it seems.',
+        date: 'April 15', time: '09:00 AM to 11:00 AM', venue: 'IT Lab 1', deadline: 'Mar 30',
+        p1: 'Rs.2,000', p2: 'Rs.1,500', p3: 'Rs.1,000',
+        rules: ['Team of 2 to 4, Non coding event', 'Round 1: Live visual quiz of technical and non technical questions using a buzzer-based platform. Top performing groups will be selected', 'Round 2 - Find the Impostor: All teams receive the same tasks, but a few are secretly given altered information. Spot inconsistencies to identify the impostor teams', 'Round 3 - Scavenger Hunt: Participants embark on an exciting journey filled with multiple checkpoints solving puzzles to reveal the next destination'],
+        ec: 'Reshmaa', ep: '9361131042', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
+      },
+      {
+        id: 'tt', name: 'TECHNOTRACE', label: 'Tech Treasure Hunt', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Fun', timeSlot: 'D',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tt" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="url(#g-tt)" fill="url(#g-tt)" fill-opacity="0.15"></polygon></svg>', grad: 'linear-gradient(135deg,#0d1f3c,#0a1428)', accent: '#3498db',
+        desc: 'Follow the trail. Solve the mystery. From tackling real-world tech challenges to unlocking layers of encrypted files, every step takes you deeper into a high-stakes digital chase. Only the sharpest minds will crack the codes and reach the final breakthrough.',
+        date: 'April 15', time: '02:00 PM to 04:30 PM', venue: 'Campus Wide', deadline: 'Mar 30',
+        p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
+        rules: ['Team of 2 to 3', 'Round 1 - Tech Code Challenge: Participants analyze short real world technology scenarios and write a program or logic to solve them within a limited time', 'Round 2 - Password Trace: Finalist teams are given a system containing multiple password-protected files. After unlocking a file, they must solve the question inside it to obtain the password for the next file. The team that completes the challenge in the shortest time wins', 'No external help', 'Fastest team wins'],
+        ec: 'Hariharan', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
+      },
+
+      /* ── NON-TECHNICAL EVENTS (3) ── */
+      {
+        id: 'com', name: 'CLASH OF MINDS', label: 'Quiz and Debate Showdown', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Quiz', timeSlot: 'A',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-com" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#9b59b6"/><stop offset="100%" stop-color="#3498db"/></linearGradient></defs><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="url(#g-com)" fill="url(#g-com)" fill-opacity="0.15"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" stroke="url(#g-com)"/></svg>', grad: 'linear-gradient(135deg,#150a28,#0a0518)', accent: '#9b59b6',
         desc: 'Debate. Defend. Dominate. Get paired on the spot, receive unpredictable topics, and argue for or against with limited prep time. It is a battle of perspectives where quick thinking and strong reasoning decide the winner.',
         date: 'April 18', time: '11:30 AM to 12:30 PM', venue: 'Auditorium', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Participants will be randomly paired into teams on the spot', 'Each team will receive a debate topic given by another team, making the competition more dynamic and unpredictable', 'Teams will be assigned either FOR or AGAINST the topic', 'Short preparation time before presenting arguments', 'Judges decision final'],
-        ec: 'Jai Sri', ep: '9087654321', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456',
-        jcs: ['Arjhun', 'Devadharshini', 'Srinidhi']
+        ec: 'Jai Sri', ep: '9087654321', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
+      },
+      {
+        id: 'ff', name: 'FRANCHISE FIESTA', label: 'Business Simulation Game', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Management', timeSlot: 'B',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ff" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#g-ff)"/><circle cx="9" cy="7" r="4" stroke="url(#g-ff)"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#g-ff)"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
+        desc: 'Build your dream team. Rule the auction. Step into the shoes of an IPL franchise owner and craft the ultimate squad within a budget. Every bid matters, every choice counts. Strategy, balance, and smart decisions will lead you to championship glory.',
+        date: 'April 13', time: '11:00 AM to 04:00 PM', venue: 'MBA Block', deadline: 'Mar 30',
+        p1: 'Rs.4,000', p2: 'Rs.2,500', p3: 'Rs.1,500',
+        rules: ['Team of 4 members', 'Teams selected through a quiz round, top 10 advance to live auction', 'Virtual budget of 100 Crores to build a squad of minimum 11 players including 5 batsmen, 1 wicketkeeper, 2 all-rounders, and at least 5 bowlers', 'Strategic bidding, smart budgeting, and perfect team balance are the keys to victory', 'Plan wisely. Bid smartly. Build the ultimate champion team'],
+        ec: 'Sriram Adithya', ep: '9087654321', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
+      },
+      {
+        id: 'tap', name: 'THE ALGORITHMIC PLATTER', label: 'Fun Algorithmic Puzzles', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Puzzle', timeSlot: 'C',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tap" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-tap)" fill="url(#g-tap)" fill-opacity="0.2"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
+        desc: 'Where cooking meets computation. Create a dish without fire, just like designing an efficient algorithm, optimize ingredients, maximize creativity, and present your idea as a masterpiece. It is innovation, but delicious.',
+        date: 'April 16', time: '01:30 PM to 04:30 PM', venue: 'MCA Lab', deadline: 'Mar 30',
+        p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
+        rules: ['Team of 2 to 3', 'A Fireless Cooking Innovation Challenge - No fire or electricity allowed', 'Participants create an innovative dish optimizing ingredients, creativity, and presentation within given constraints', 'Round - Logic of Flavors: Teams prepare a dish based on a surprise theme or ingredient and present it as a unique product concept', 'Time-bound, Judges decision final'],
+        ec: 'Priyanka M', ep: '9087654321', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
       }
     ];
 
     const CONTACTS = [
-      { role: 'Non-Technical Event Queries', name: 'Arjun', phone: '9087654321' },
-      { role: 'Technical Event Queries', name: 'Pranaav', phone: '9361131042' },
-      { role: 'General Enquiries', name: 'Lekeetha Sri', phone: '9361131042' },
-      { role: 'Event Management', name: 'Aravind', phone: '9361131042' },
-      { role: 'Website & Digital Support', name: 'Sriram S', phone: '9361131042' },
+      { role: 'Non-Technical Events', name: 'Arjun', phone: '9087654321' },
+      { role: 'Technical Events', name: 'Pranaav', phone: '9361131042' },
+      { role: 'Website Admin', name: 'Sriram S', phone: '9361131042' },
+      { role: 'General Issues', name: 'Sanjay Kumar KS', phone: '9361131042' },
+      { role: 'Registration Issues', name: 'Sanjay Kumar M', phone: '9361131042' },
       { role: 'Staff Coordinator', name: 'Padma Priya', phone: 'Ast Prof CSE' }
     ];
 
@@ -5194,13 +4784,8 @@
       animStats(); tick(); setInterval(tick, 1000);
       initTraffic();
       initHeroVideo();
-      // Dummy function or minor effect to avoid ReferenceError
-      if (typeof initHeroParticles !== 'function') {
-        window.initHeroParticles = function() { console.log("Hero particles initialized (placeholder)"); };
-      }
       initHeroParticles();
-      const hasRegs = JSON.parse(localStorage.getItem('u26r') || '[]').length > 0;
-      document.getElementById('pass-nav-btn').style.display = hasRegs ? 'inline-flex' : 'none';
+      document.getElementById('pass-nav-btn').style.display = 'block';
       // Dock active state on scroll
       window.addEventListener('scroll', updateDockActive, { passive: true });
       updateDockActive();
@@ -5393,11 +4978,11 @@
       <div class="ev-tile-body">
         <div class="ev-tile-name">${e.name}</div>
         <div class="ev-tile-sub">${e.label}</div>
-        ${e.isSimultaneous ? `<div class="ev-caution-tag" style="background:rgba(255,255,255,0.05);color:var(--muted2);border-color:rgba(255,255,255,0.1)">Same Time Event</div>` : ''}
-        <div class="ev-tile-time ${e.isSimultaneous ? 'ev-time-red-glow' : ''}">${e.date === 'TBA' ? 'Date TBA' : e.date.replace(', 2026', '')} | ${startTime}</div>
+        <div class="ev-tile-time">${e.date === 'TBA' ? 'Date TBA' : e.date.replace(', 2026', '')} | ${startTime}</div>
         <div class="ev-tile-tags" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">
           <span class="etp etp-or">${e.type}</span>
-          <span class="etp etp-nt">${e.type === 'Solo' ? 'Individual' : (e.minTeam === e.maxTeam ? `${e.minTeam} Members` : `${e.minTeam} to ${e.maxTeam} Members`)}</span>
+          <span class="etp etp-nt">${e.type === 'Solo' ? 'Individual' : `${e.minTeam} to ${e.maxTeam} Members`}</span>
+          ${e.timeSlot ? `<span class="etp" style="background:rgba(255,255,255,0.05);color:var(--muted2);border:1px solid rgba(255,255,255,0.1)">Slot ${e.timeSlot}</span>` : ''}
         </div>
         <div class="ev-tile-link" onclick="event.stopPropagation();openReg('${e.id}')">
           Register Now
@@ -5433,83 +5018,62 @@
 
     /* ════════ CONTACTS ════════ */
     const COMMITTEE = [
-      /* ── TOP LEADERSHIP (Special 2+1 Layout) ── */
-      { isHead: true, name: 'Pranaav', role: 'Head Coordinator', dept: 'Hackverse', img: 'https://ui-avatars.com/api/?name=Pranaav&background=2ecc71&color=fff&size=128', phone: '+919361131042', linkedin: '#' },
-      { isHead: true, name: 'Aravind', role: 'Head Coordinator', dept: 'Symposium Lead', img: 'https://ui-avatars.com/api/?name=Aravind&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: true, name: 'Lekeetha Sri', role: 'Head Coordinator', dept: 'Design Decode', img: 'https://ui-avatars.com/api/?name=Lekeetha+Sri&background=2ecc71&color=fff&size=128', phone: '+919361131042', linkedin: '#' },
-
-      /* ── HEAD COORDINATORS (4th Years) ── */
-      { isHead: true, name: 'Syedali Fathima', role: 'Head Coordinator', dept: 'Brand to Billion', img: 'https://ui-avatars.com/api/?name=Syedali+Fathima&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: true, name: 'Arikara Sudhan', role: 'Head Coordinator', dept: 'Uno Reverse', img: 'https://ui-avatars.com/api/?name=Arikara+Sudhan&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: true, name: 'Hariharan', role: 'Head Coordinator', dept: 'TechnoTrace', img: 'https://ui-avatars.com/api/?name=Hariharan&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: true, name: 'Kalaiselvi', role: 'Head Coordinator', dept: 'Checkmate Coders', img: 'https://ui-avatars.com/api/?name=Kalaiselvi&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: true, name: 'Reshmaa', role: 'Head Coordinator', dept: 'Zero Code Zone', img: 'https://ui-avatars.com/api/?name=Reshmaa&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: true, name: 'Sriram Adithya', role: 'Head Coordinator', dept: 'Franchise Fiesta', img: 'https://ui-avatars.com/api/?name=Sriram+Adithya&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: true, name: 'Priyanka M', role: 'Head Coordinator', dept: 'Algorithmic Platter', img: 'https://ui-avatars.com/api/?name=Priyanka+M&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: true, name: 'Jai Sri', role: 'Head Coordinator', dept: 'Clash of Minds', img: 'https://ui-avatars.com/api/?name=Jai+Sri&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-
-      /* ── JOINT COUNCIL (3rd Years) ── */
-      { isHead: false, name: 'Arjhun O', role: 'Joint President', dept: '', img: 'https://ui-avatars.com/api/?name=Arjhun+O&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Naga Nandhini', role: 'Joint Secretary', dept: '', img: 'https://ui-avatars.com/api/?name=Naga+Nandhini&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Hirthick', role: 'Joint Treasurer', dept: '', img: 'https://ui-avatars.com/api/?name=Hirthick&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Sriram S', role: 'Web Admin & Joint Coordinator', dept: '', img: 'assets/committee/sriram.jpg', phone: '+919361123688', linkedin: '#' },
-      
-      /* ── JOINT COORDINATORS (3rd Years) ── */
-      { isHead: false, name: 'Arriram', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Arriram&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Abinayaa', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Abinayaa&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Adharsini', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Adharsini&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Abirami', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Abirami&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Devadharshini', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Devadharshini&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Dharshan', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Dharshan&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Dhanusiya', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Dhanusiya&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Deva Priyan', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Deva+Priyan&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Mathivadhana', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Mathivadhana&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Jeevesh', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Jeevesh&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Meeran', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Meeran&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Narene', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Narene&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Nitheesh', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Nitheesh&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Naresh Balaji', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Naresh+Balaji&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Srinidhi', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Srinidhi&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Sankari', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Sankari&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Sudharsan', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Sudharsan&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Vijay Kasthuri', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Vijay+Kasthuri&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Vinuvarsan', role: 'Joint Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Vinuvarsan&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      
-      /* ── MULTIMEDIA TEAM ── */
-      { isHead: false, name: 'Naveen Sakthi', role: 'Multimedia Team', dept: '', img: 'assets/committee/naveen.jpg', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Nithish Priyan', role: 'Multimedia Team', dept: '', img: 'https://ui-avatars.com/api/?name=Nithish+Priyan&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Paxton', role: 'Multimedia Team', dept: '', img: 'https://ui-avatars.com/api/?name=Paxton&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Jai Sankar', role: 'Multimedia Team', dept: '', img: 'https://ui-avatars.com/api/?name=Jai+Sankar&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Kalimuthu', role: 'Multimedia Team', dept: '', img: 'https://ui-avatars.com/api/?name=Kalimuthu&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Sanjay ks', role: 'Multimedia Team', dept: '', img: 'assets/committee/sanjay_ks.jpg', phone: '+910000000000', linkedin: '#' },
-      { isHead: false, name: 'Sanjay kumar', role: 'Multimedia Team', dept: '', img: 'assets/committee/sanjay_m.jpg', phone: '+910000000000', linkedin: '#' }
-    ];
+  { isHead: true, name: 'Syedali Fathima', role: 'Head Coordinator', dept: 'Brand to Billion', img: 'https://ui-avatars.com/api/?name=Syedali+Fathima&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: true, name: 'Arikara Sudhan', role: 'Head Coordinator', dept: 'Uno Reverse', img: 'https://ui-avatars.com/api/?name=Arikara+Sudhan&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: true, name: 'Hariharan', role: 'Head Coordinator', dept: 'TechnoTrace', img: 'https://ui-avatars.com/api/?name=Hariharan&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: true, name: 'Lekeetha Sri', role: 'Head Coordinator', dept: 'Design Decode', img: 'https://ui-avatars.com/api/?name=Lekeetha+Sri&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: true, name: 'Kalaiselvi', role: 'Head Coordinator', dept: 'Checkmate Coders', img: 'https://ui-avatars.com/api/?name=Kalaiselvi&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: true, name: 'Reshmaa', role: 'Head Coordinator', dept: 'Zero Code Zone', img: 'https://ui-avatars.com/api/?name=Reshmaa&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: true, name: 'Sriram Adithya', role: 'Head Coordinator', dept: 'Franchise Fiesta', img: 'https://ui-avatars.com/api/?name=Sriram+Adithya&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: true, name: 'Priyanka M', role: 'Head Coordinator', dept: 'Algorithmic Platter', img: 'https://ui-avatars.com/api/?name=Priyanka+M&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: true, name: 'Jai Sri', role: 'Head Coordinator', dept: 'Clash of Minds', img: 'https://ui-avatars.com/api/?name=Jai+Sri&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: true, name: 'Pranaav', role: 'Head Coordinator', dept: 'Hackverse', img: 'https://ui-avatars.com/api/?name=Pranaav&background=2ecc71&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Arjhun O', role: 'Joint President', dept: '', img: 'https://ui-avatars.com/api/?name=Arjhun+O&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Arriram', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Arriram&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Abinayaa', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Abinayaa&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Abirami', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Abirami&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Devadharshini', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Devadharshini&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Dharshan', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Dharshan&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Deva Priyan', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Deva+Priyan&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Hirthick', role: 'Treasurer', dept: '', img: 'https://ui-avatars.com/api/?name=Hirthick&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Mathivadhana', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Mathivadhana&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Jeevesh', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Jeevesh&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Naga Nandhini', role: 'Secretary', dept: '', img: 'https://ui-avatars.com/api/?name=Naga+Nandhini&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Naren', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Naren&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Nitheesh', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Nitheesh&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Sriram S', role: 'Website Admin', dept: '', img: 'https://ui-avatars.com/api/?name=Sriram+S&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Srinidhi', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Srinidhi&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' },
+  { isHead: false, name: 'Sankari', role: 'Sub Coordinator', dept: '', img: 'https://ui-avatars.com/api/?name=Sankari&background=e8541a&color=fff&size=128', phone: '+910000000000', linkedin: '#' }
+];
 
 function getInitials(name) {
   return name.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
 }
 
 function renderComm() {
-  document.getElementById('comm-list').innerHTML = COMMITTEE.map(c => {
+  document.getElementById('comm-list').innerHTML = '<div class="comm-grid">' + COMMITTEE.map(c => {
     const initials = getInitials(c.name);
     const hasRealPhoto = c.img && !c.img.includes('ui-avatars.com');
     return `
     <div class="comm-card">
-      ${hasRealPhoto ? `<img src="${c.img}" class="comm-img" alt="${c.name}" onerror="this.parentElement.innerHTML='<div class=&quot;comm-initials&quot;>${initials}</div>'">` : `<div class="comm-initials">${initials}</div>`}
+      ${hasRealPhoto ? `<img src="${c.img}" class="comm-img" alt="${c.name}" onerror="this.style.display='none'">` : `<div class="comm-initials">${initials}</div>`}
       <div class="comm-overlay">
         <div class="comm-dtl">
           <div class="comm-role-p">${c.role}</div>
           <div class="comm-name-p" title="${c.name}">${c.name}</div>
-          <div class="comm-bio">${c.dept || ''}</div>
+          <div class="comm-bio">${c.bio || c.dept || ''}</div>
           <div class="comm-footer">
-            <a href="tel:${c.phone || ''}" class="comm-btn" title="Call ${c.name}">
+            <div class="comm-stats">
+              <a href="${c.linkedin || '#'}" target="_blank" class="cstat" style="text-decoration:none;color:inherit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</a>
+            </div>
+            <a href="tel:${c.phone || ''}" class="comm-btn" aria-label="Call ${c.name}">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
             </a>
           </div>
         </div>
       </div>
     </div>`;
-  }).join('');
+  }).join('') + '</div>';
 }
 
     function renderContacts() {
@@ -5534,7 +5098,7 @@ function renderComm() {
       const obs = new IntersectionObserver(entries => {
         if (entries[0].isIntersecting) {
           count(document.getElementById('sev'), 10, '', 700);
-          count(document.getElementById('spr'), 33, 'K+', 900);
+          count(document.getElementById('spr'), 40, 'K+', 900);
           obs.disconnect();
         }
       }, { threshold: .4 });
@@ -5566,20 +5130,10 @@ function renderComm() {
       ${[['📅 Date', e.date], ['⏰ Time', e.time], ['📍 Venue', e.venue], ['👥 Team', e.type === 'Solo' ? 'Individual' : `Team ${e.minTeam}–${e.maxTeam}`]].map(([l, t]) => `
         <div style="padding:16px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;transition:border-color .3s" onmouseover="this.style.borderColor='${catColor}'" onmouseout="this.style.borderColor='var(--border)'">
           <div style="font-size:11px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px; opacity:0.9">${l}</div>
-          <div style="font-size:15px;font-weight:700;color:#fff;letter-spacing:0.5px" class="${(l === '⏰ Time' && e.isSimultaneous) ? 'ev-time-red-glow' : ''}">${t}</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;letter-spacing:0.5px">${t}</div>
         </div>
       `).join('')}
     </div>
-
-    ${e.isSimultaneous ? `
-    <!-- Simultaneous Notice -->
-    <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:16px 20px;margin-bottom:32px;display:flex;gap:16px;align-items:flex-start;text-align:left">
-      <span style="font-size:24px;margin-top:2px">ℹ️</span>
-      <div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:var(--orange);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Scheduling Note</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5">This event is scheduled at the same time as another event. Please choose only one to participate in for this time slot.</div>
-      </div>
-    </div>` : ''}
 
     <!-- About Section -->
     <div style="margin-bottom:32px; text-align:center">
@@ -5607,10 +5161,10 @@ function renderComm() {
     <!-- Team Section (Coordinators) -->
     <div style="margin-bottom:100px; text-align:center"> <!-- Extra margin for bottom action bar -->
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
-        <span style="width:24px;height:1px;background:${catColor}"></span> COORDINATORS <span style="width:24px;height:1px;background:${catColor}"></span>
+        <span style="width:24px;height:1px;background:${catColor}"></span> COORDINATORS & JUDGES <span style="width:24px;height:1px;background:${catColor}"></span>
       </div>
       <div class="ev-coord-grid">
-        <!-- Event Head -->
+        <!-- Event Head (Pranav/Arjun) -->
         <a href="tel:${e.ep}" style="text-decoration:none;padding:20px;background:${isTech ? 'rgba(46,204,113,0.05)' : 'rgba(232,84,26,0.05)'};border:1px solid ${isTech ? 'rgba(46,204,113,0.1)' : 'rgba(232,84,26,0.1)'};border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
           <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.ec)}&background=${isTech ? '2ecc71' : 'e8541a'}&color=fff&size=128" style="width:60px;height:60px;border-radius:50%;border:2px solid ${catColor};margin-bottom:12px">
           <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">EVENT HEAD</div>
@@ -5625,13 +5179,6 @@ function renderComm() {
           <div style="font-size:12px;color:var(--muted2);font-weight:700">${e.sp}</div>
         </a>
       </div>
-      ${e.jcs && e.jcs.length > 0 ? `
-      <div style="margin-top:20px;padding:16px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px">
-        <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px">JOINT COORDINATORS</div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
-          ${e.jcs.map(jc => `<span style="padding:6px 14px;background:rgba(${isTech ? '46,204,113' : '232,84,26'},0.08);border:1px solid rgba(${isTech ? '46,204,113' : '232,84,26'},0.2);border-radius:20px;font-size:13px;font-weight:700;color:#fff">${jc}</span>`).join('')}
-        </div>
-      </div>` : ''}
     </div>
 
     <!-- Fixed Bottom Action Section -->
@@ -5653,9 +5200,8 @@ function renderComm() {
     <div class="esc-accent"></div>
     <div class="esc-icon">${e.icon}</div>
     <div>
-      <div class="esc-name">${e.name} ${e.isSimultaneous ? '<span style="color:var(--orange);font-size:9px;margin-left:5px">● SAME TIME</span>' : ''}</div>
-      <div class="esc-meta">${e.label} · ${e.type === 'Solo' ? 'Individual' : (e.minTeam === e.maxTeam ? `${e.minTeam} Members` : `${e.minTeam} to ${e.maxTeam} Members`)} · ${e.date}</div>
-      ${e.isSimultaneous ? `<div style="font-size:9px;color:var(--muted);font-weight:700;margin-top:4px;text-transform:uppercase;letter-spacing:0.5px">Shares a time slot with another event</div>` : ''}
+      <div class="esc-name">${e.name}</div>
+      <div class="esc-meta">${e.label} · ${e.type === 'Solo' ? 'Individual' : `Team ${e.minTeam}–${e.maxTeam}`} · ${e.date}</div>
     </div>
     <button class="esc-change" onclick="clearEvent()">Change</button>
   </div>`;
@@ -5670,8 +5216,6 @@ function renderComm() {
 
     function openReg(evId) {
       hideDock();
-      // Reset any leftover submission state from previous attempts
-      resetRegState();
       currentEv = evId ? EVS.find(e => e.id === evId) : null;
       currentStep = 0;
       teamMembers = [];
@@ -5686,28 +5230,21 @@ function renderComm() {
         // Show event selector grouped by category
         const techEvs = EVS.filter(e => e.category === 'Technical');
         const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
-
+        const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
 
         function evRow(e) {
           return `
-        <div onclick="regEventDetail('${e.id}')" class="ev-sel-row">
+        <div onclick="selectEventInForm('${e.id}')" class="ev-sel-row">
           <div class="ev-sel-icon">${e.icon}</div>
           <div>
-            <div class="ev-sel-name">${e.name} ${e.isSimultaneous ? '<span style="color:var(--muted2);font-size:9px;margin-left:5px">● SAME TIME</span>' : ''}</div>
-            <div class="ev-sel-meta">
-              <span class="ev-sel-pill">${e.type === 'Solo' ? 'Individual' : (e.minTeam === e.maxTeam ? `${e.minTeam} Members` : `${e.minTeam} to ${e.maxTeam} Members`)}</span>
-              <span>${e.label}</span>
-            </div>
-          </div>
-          <div style="margin-left:auto;display:flex;align-items:center;padding-left:8px;flex-shrink:0">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            <div class="ev-sel-name">${e.name}</div>
+            <div class="ev-sel-meta"><span class="ev-sel-pill">${e.type === 'Solo' ? 'Individual' : `${e.minTeam}–${e.maxTeam} Members`}</span><span>${e.label}</span></div>
           </div>
         </div>`;
         }
 
         s1.innerHTML = `
       <div class="fc-t">Choose Event</div>
-      <div style="font-size:12px;color:var(--muted2);margin-bottom:16px;line-height:1.5;text-align:center">Tap an event to view details, rules & register</div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#2ecc71;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(46,204,113,.4);font-size:18px">&lt;/&gt;</span> Technical</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
         ${techEvs.map(e => evRow(e)).join('')}
@@ -5740,15 +5277,6 @@ function renderComm() {
 
       updateStepUI();
       document.getElementById('reg-ov').classList.add('open');
-    }
-
-    /* Route register event click through the detail modal */
-    function regEventDetail(id) {
-      // Close registration overlay
-      document.getElementById('reg-ov').classList.remove('open');
-      showDock();
-      // Open event detail modal (has About, Rules, Secure Your Spot)
-      setTimeout(() => openEvMod(id), 250);
     }
 
     function selectEventInForm(id) {
@@ -5938,7 +5466,42 @@ function renderComm() {
       }
     }
 
+    // Quick Test Fill — real names, real-looking reg numbers, team members = other testers
+    const TESTERS = [
+      { name: 'Sriram S', regno: '2303921310421227', phone: '9361123688', email: 'sriram@psnacet.edu.in', team: 'Team Blaze' },
+      { name: 'Visva V', regno: '2303921310421229', phone: '9876501234', email: 'visva@psnacet.edu.in', team: 'Team Inferno' },
+      { name: 'Srinivas K', regno: '2303921310421246', phone: '9445678901', email: 'srinivas@psnacet.edu.in', team: 'Team Storm' },
+      { name: 'Sanjay M', regno: '2303921310421218', phone: '9087654321', email: 'sanjay@psnacet.edu.in', team: 'Team Vortex' }
+    ];
 
+    function fillTester(n) {
+      const me = TESTERS[n - 1];
+      const others = TESTERS.filter((_, i) => i !== n - 1);
+
+      document.getElementById('f-name').value = me.name;
+      document.getElementById('f-regno').value = me.regno;
+      document.getElementById('f-gender').value = 'Male';
+      document.getElementById('f-year').value = '3';
+      document.getElementById('f-section').value = 'A';
+      document.getElementById('f-phone').value = me.phone;
+      document.getElementById('f-email').value = me.email;
+
+      const tn = document.getElementById('f-teamname');
+      if (tn && currentEv && currentEv.type !== 'Solo') tn.value = me.team;
+
+      if (currentEv && currentEv.type !== 'Solo') {
+        document.querySelectorAll('.tm-card').forEach((card, idx) => {
+          if (idx >= others.length) return;
+          const m = others[idx];
+          card.querySelector('.tm-name').value = m.name;
+          card.querySelector('.tm-regno').value = m.regno;
+          card.querySelector('.tm-gender').value = 'Male';
+          card.querySelector('.tm-year').value = '3';
+          card.querySelector('.tm-section').value = 'A';
+          card.querySelector('.tm-phone').value = m.phone;
+        });
+      }
+    }
 
     function buildReview() {
       const name = document.getElementById('f-name').value.trim();
@@ -6013,14 +5576,6 @@ function renderComm() {
       const protectOn = () => window.onbeforeunload = () => "Registration is in progress. Closing this page might result in lost data. Are you sure?";
       const protectOff = () => window.onbeforeunload = null;
 
-      // Define resetUI FIRST (before any code path calls it)
-      const resetUI = () => {
-        protectOff();
-        isSubmitting = false;
-        if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-        if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
-      };
-
       if (btn) { btn.disabled = true; btn.textContent = 'Confirming...'; btn.style.opacity = '0.7'; }
       if (backBtn) { backBtn.style.pointerEvents = 'none'; backBtn.style.opacity = '0.5'; }
       protectOn();
@@ -6042,11 +5597,11 @@ function renderComm() {
       let localDupeReg = null;
 
       for (const storedReg of saved) {
-        // 1. Exact Duplicate Check — same person in same event
+        // Fix: Use both eventName and eventId for robust duplicate checking locally
         if (storedReg.eventId === currentEv.id || storedReg.eventName === currentEv.name) {
           const match = currentRegNos.find(c => c.regno === storedReg.regno);
           if (match) { localDupeName = match.name; localDupeReg = match.regno; break; }
-          if (storedReg.teamMembers && Array.isArray(storedReg.teamMembers)) {
+          if (storedReg.teamMembers) {
             for (const tm of storedReg.teamMembers) {
               const tmMatch = currentRegNos.find(c => c.regno === tm.regno);
               if (tmMatch) { localDupeName = tmMatch.name; localDupeReg = tmMatch.regno; break; }
@@ -6054,26 +5609,14 @@ function renderComm() {
           }
           if (localDupeName) break;
         }
-        // 2. Local Time Slot Conflict Check — ONLY for the 4 truly simultaneous events
-        //    (CC+HV on April 15 slot A, BTB+COM on April 18 slot B)
-        if (currentEv.timeSlot && currentEv.isSimultaneous && storedReg.timeSlot === currentEv.timeSlot
-            && storedReg.eventId !== currentEv.id && storedReg.eventName !== currentEv.name) {
-          // Verify the STORED event is also a simultaneous event (protects against old localStorage data)
-          const storedEvData = EVS.find(ev => ev.id === storedReg.eventId);
-          if (storedEvData && storedEvData.isSimultaneous) {
-            // Check if any current registrant is already in a conflicting slot event
-            const allStoredRegnos = [storedReg.regno];
-            if (storedReg.teamMembers && Array.isArray(storedReg.teamMembers)) {
-              storedReg.teamMembers.forEach(tm => { if (tm.regno) allStoredRegnos.push(tm.regno); });
-            }
-            const conflictMember = currentRegNos.find(c => allStoredRegnos.includes(c.regno));
-            if (conflictMember) {
-              showError('Time Slot Conflict', 'Same Time Slot', `${conflictMember.name} (${conflictMember.regno}) is already registered for "${storedReg.eventName}" which runs at the same time as ${currentEv.name}.`);
-              resetUI(); return;
-            }
-          }
-        }
       }
+
+      const resetUI = () => {
+        protectOff();
+        isSubmitting = false;
+        if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
+        if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
+      };
 
       if (localDupeName) {
         showError('Duplicate Blocked', 'Already registered', `${localDupeName} (${localDupeReg}) is already registered for ${currentEv.name} on this device.`);
@@ -6100,8 +5643,8 @@ function renderComm() {
             resetUI(); return;
           }
           if (data.timeSlotConflicts && data.timeSlotConflicts.length > 0) {
-            hideAdminLoader(); const conflictNames = data.timeSlotConflictDetails.map(d => `${d.name} (${d.regno}) in [${d.conflictingEvent || d.eventName}]`).join(' \n ');
-            showError('Time Slot Conflict!', 'Concurrent Event', `Some members are already in another event at this same time (${currentEv.timeSlot}): \n\n${conflictNames}`);
+            hideAdminLoader(); const conflictNames = data.timeSlotConflictDetails.map(d => `${d.name} (${d.regno}) in [${d.conflictingEvent}]`).join(' \n ');
+            showError('Time Slot Conflict!', 'Concurrent Event', `The following members are already in another event at this time (${currentEv.timeSlot}): \n\n${conflictNames}`);
             resetUI(); return;
           }
         } catch (e) { console.error("Verify failed:", e); }
@@ -6116,7 +5659,6 @@ function renderComm() {
       const reg = {
         regId, name, regno, gender, year, section, phone, email,
         eventId: currentEv.id, eventName: currentEv.name,
-        timeSlot: currentEv.timeSlot || '',
         teamName: tname,
         teamMembers: teamMembers.slice(),
         ts
@@ -6390,7 +5932,7 @@ function renderComm() {
           }
         });
         localStorage.setItem('u26r', JSON.stringify(saved));
-        document.getElementById('pass-nav-btn').style.display = 'inline-flex';
+        document.getElementById('pass-nav-btn').style.display = 'block';
         statusEl.textContent = '✓ Found ' + data.registrations.length + ' registration(s)!';
         statusEl.className = 'fetch-status success';
         // Re-render passes after short delay
@@ -6404,20 +5946,8 @@ function renderComm() {
     }
 
     /* ── CLOSE REG ── */
-    function resetRegState() {
-      // Always reset submission locks when overlay closes
-      isSubmitting = false;
-      isCooldown = false;
-      if (cooldownTimer) { clearInterval(cooldownTimer); cooldownTimer = null; }
-      window.onbeforeunload = null;
-      // Reset confirm button to pristine state
-      const btn = document.querySelector('#step-2 .reg-next-btn');
-      const backBtn = document.querySelector('#step-2 .reg-back-btn');
-      if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-      if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
-    }
-    function closeRegOv(ev) { if (ev && ev.target === document.getElementById('reg-ov')) { resetRegState(); document.getElementById('reg-ov').classList.remove('open'); showDock(); } }
-    function forceCloseReg() { resetRegState(); document.getElementById('reg-ov').classList.remove('open'); showDock(); }
+    function closeRegOv(ev) { if (ev && ev.target === document.getElementById('reg-ov')) { document.getElementById('reg-ov').classList.remove('open'); showDock(); } }
+    function forceCloseReg() { document.getElementById('reg-ov').classList.remove('open'); showDock(); }
 
     /* ════════ ADMIN PANEL ════════ */
     let allAdminRegs = [];
@@ -6513,13 +6043,10 @@ function renderComm() {
         <span>Full Details</span>
         <button onclick="deleteSingleReg('${r.regId}'); event.stopPropagation();" style="background:rgba(231,76,60,.1);color:#e74c3c;border:1px solid rgba(231,76,60,.2);padding:4px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Delete Profile</button>
       </div>
-      <div>
-        <div class="arc-member"><strong>Event:</strong> ${r.eventName} ${r.timeSlot ? `[Slot ${r.timeSlot}]` : ''}</div>
-        ${dateStr !== 'Unknown Date' ? `<div class="arc-member"><strong>Date of Registration:</strong> ${dateStr}</div>` : ''}
-        <div class="arc-member" style="margin-top:4px"><strong>Email:</strong> ${r.email || 'N/A'}</div>
-        <div class="arc-member"><strong>Phone:</strong> ${r.phone || 'N/A'}</div>
-        <div class="arc-member"><strong>Gender:</strong> ${r.gender || 'N/A'}</div>
-      </div>
+      ${dateStr !== 'Unknown Date' ? `<div class="arc-member"><strong>Date of Registration:</strong> ${dateStr}</div>` : ''}
+      <div class="arc-member" style="margin-top:4px"><strong>Email:</strong> ${r.email || 'N/A'}</div>
+      <div class="arc-member"><strong>Phone:</strong> ${r.phone || 'N/A'}</div>
+      <div class="arc-member"><strong>Gender:</strong> ${r.gender || 'N/A'}</div>
     `;
 
         if (isTeam && parsedMembers.length > 0) {
@@ -6606,7 +6133,7 @@ function renderComm() {
       <li>Go to <strong style="color:#fff">Extensions → Apps Script</strong></li>
       <li><strong style="color:#fff">Delete ALL existing code</strong> and paste this entire code:
       <div style="padding:10px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1);border-radius:6px;margin:8px 0;max-height:200px;overflow-y:auto;font-family:monospace;font-size:10px;color:#aaa;line-height:1.4;white-space:pre">
-var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "Email", "Event", "TeamName", "TeamMembers", "Timestamp", "Gender", "TimeSlot"];
+var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "Email", "Event", "TeamName", "TeamMembers", "Timestamp", "Gender"];
 
 function enforceHeaders(sh) {
   sh.getRange(1, 1, 1, OFFICIAL_HEADERS.length).setValues([OFFICIAL_HEADERS]);
@@ -6655,34 +6182,15 @@ function doGet(e) {
     var checkRegNos = checkRegNosStr ? checkRegNosStr.split(",").map(function(r){return r.trim().toLowerCase();}) : [];
     var data = sh.getDataRange().getValues();
     var headers = OFFICIAL_HEADERS;
-    var results = [], duplicates = [], duplicateDetails = [], timeSlotConflicts = [];
-    var checkTimeSlot = (e.parameter.timeSlot || "").trim();
-
+    var results = [], duplicates = [], duplicateDetails = [];
     for (var i = 1; i < data.length; i++) {
       var row = data[i], rowEmail = String(row[headers.indexOf("Email")]||"").toLowerCase().trim();
       var rowEventName = String(row[headers.indexOf("Event")]||"").trim();
-      var rowTimeSlot = String(row[headers.indexOf("TimeSlot")]||"").trim();
       var teamMembersRaw = row[headers.indexOf("TeamMembers")]||"[]", teamMembers = [];
       try { teamMembers = JSON.parse(teamMembersRaw); } catch(ex){}
-
       if (email && rowEmail === email) {
         results.push({ regId: String(row[headers.indexOf("RegID")]||""), name: String(row[headers.indexOf("Name")]||""), regno: String(row[headers.indexOf("RegNo")]||""), gender: String(row[headers.indexOf("Gender")]||""), year: String(row[headers.indexOf("Year")]||""), section: String(row[headers.indexOf("Section")]||""), phone: String(row[headers.indexOf("Phone")]||""), email: rowEmail, eventName: rowEventName, teamName: String(row[headers.indexOf("TeamName")]||""), teamMembers: teamMembers, ts: String(row[headers.indexOf("Timestamp")]||"") });
       }
-
-      // Time Slot Conflict Check
-      if (checkTimeSlot && rowTimeSlot === checkTimeSlot) {
-        var rowLeaderRegNo = String(row[headers.indexOf("RegNo")]||"").trim().toLowerCase();
-        if (checkRegNos.indexOf(rowLeaderRegNo) !== -1) {
-           timeSlotConflicts.push({ name: String(row[headers.indexOf("Name")]||""), regno: rowLeaderRegNo, eventName: rowEventName });
-        }
-        for (var j = 0; j < teamMembers.length; j++) {
-          var tmRegNo = String(teamMembers[j].regno||"").trim().toLowerCase();
-          if (tmRegNo && checkRegNos.indexOf(tmRegNo) !== -1) {
-             timeSlotConflicts.push({ name: teamMembers[j].name||"Member", regno: tmRegNo, eventName: rowEventName });
-          }
-        }
-      }
-
       if (checkEventName && rowEventName.toLowerCase() === checkEventName.toLowerCase() && checkRegNos.length > 0) {
         var rowLeaderRegNo = String(row[headers.indexOf("RegNo")]||"").trim().toLowerCase();
         if (checkRegNos.indexOf(rowLeaderRegNo) !== -1) {
@@ -6696,10 +6204,7 @@ function doGet(e) {
         }
       }
     }
-    return ContentService.createTextOutput(JSON.stringify({found: results.length > 0, registrations: results, duplicates: duplicates, duplicateDetails: duplicateDetails, timeSlotConflictDetails: timeSlotConflicts.map(function(c) { 
-          return { name: c.name, regno: c.regno, eventName: c.eventName }; 
-        })
-      })).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({found: results.length > 0, registrations: results, duplicates: duplicates, duplicateDetails: duplicateDetails})).setMimeType(ContentService.MimeType.JSON);
   }
   return ContentService.createTextOutput(JSON.stringify({found:false, registrations:[]})).setMimeType(ContentService.MimeType.JSON);
 }
@@ -6716,7 +6221,7 @@ function doPost(e) {
       d.data.forEach(function(r) {
         var tName = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
         var tMem = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
-        sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, tName, tMem, r.ts, r.gender||"", r.timeSlot||""]);
+        sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, tName, tMem, r.ts, r.gender||""]);
       });
       SpreadsheetApp.flush();
       return ContentService.createTextOutput(JSON.stringify({success:true})).setMimeType(ContentService.MimeType.JSON);
@@ -6725,7 +6230,7 @@ function doPost(e) {
       var tName = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
       var tMem = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
       var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-      sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, tName, tMem, finalTs, r.gender||"", r.timeSlot||""]);
+      sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, tName, tMem, finalTs, r.gender||""]);
       SpreadsheetApp.flush();
       return ContentService.createTextOutput(JSON.stringify({success:true, regId:r.regId})).setMimeType(ContentService.MimeType.JSON);
     } else if (d.action === "deleteReg") {
@@ -6905,7 +6410,7 @@ function doPost(e) {
 
     /* ════════ COUNTDOWN ════════ */
     function tick() {
-      const d = new Date('2026-04-13T09:00:00') - new Date();
+      const d = new Date('2026-04-18T09:00:00') - new Date();
       if (d <= 0) return;
       document.getElementById('cd-d').textContent = String(Math.floor(d / 86400000)).padStart(2, '0');
       document.getElementById('cd-h').textContent = String(Math.floor(d % 86400000 / 3600000)).padStart(2, '0');
@@ -7053,10 +6558,8 @@ function doPost(e) {
       }
     }
 
-    async function closeScanner() {
-      if (html5QrCode) {
-        try { await html5QrCode.stop(); } catch(e) { console.error("Scanner stop failed:", e); }
-      }
+    function closeScanner() {
+      if (html5QrCode) html5QrCode.stop();
       document.getElementById('scanner-ov').classList.remove('open');
       showDock();
     }
@@ -7144,87 +6647,62 @@ function doPost(e) {
         currentScanData = reg;
         const members = getParsedMembers(reg);
         
-        // If loading, we show a special centered overlay for "Flash" verification feel
-        let content = `
-          <div class="scanner-result-card">
-            ${state.loading ? `
-              <div class="verifying-screen">
-                <div class="al-spinner" style="width:60px;height:60px;border-width:4px"></div>
-                <div style="margin-top:20px;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;animation:res-pulse 1.5s infinite">Verifying Entrance...</div>
-                <div style="margin-top:8px;font-size:12px;color:var(--muted2);letter-spacing:1px">Checking database for duplicates</div>
-              </div>
-            ` : ''}
-
-            <div style="text-align:center;margin-bottom:25px">
-              <div class="res-badge ${state.loading ? 'res-badge-loading' : (state.isAlreadyScanned ? 'res-badge-warn' : 'res-badge-new')}" style="padding:12px 24px;font-size:14px;border-radius:50px;display:inline-flex;align-items:center;gap:8px">
-                ${state.loading ? '⏳ VERIFYING RECORD...' : (state.isAlreadyScanned ? '⚠️ DUPLICATE ENTRY DETECTED' : '✅ VALID ENTRANCE PASS')}
-              </div>
+        const content = `
+          <div style="text-align:center;margin-bottom:25px">
+            <div class="res-badge ${state.loading ? 'res-badge-loading' : (state.isAlreadyScanned ? 'res-badge-warn' : 'res-badge-new')}" style="padding:12px 24px;font-size:14px">
+              ${state.loading ? '⏳ VERIFYING RECORD...' : (state.isAlreadyScanned ? '⚠️ DUPLICATE ENTRY DETECTED' : '✅ VALID ENTRANCE PASS')}
             </div>
-
-            <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden">
-              <div style="font-size:10px;color:var(--orange);font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Participant Profile</div>
-              <div style="font-size:32px;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.5px">${reg.name}</div>
-              <div style="font-size:14px;color:var(--muted);margin-top:6px;font-weight:500">${reg.regno} · Year ${reg.year} · ${reg.section}</div>
-              
-              <div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px">
-                <span style="background:rgba(232,84,26,0.1);color:var(--orange);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:800;text-transform:uppercase;border:1px solid rgba(232,84,26,0.2)">${reg.eventName}</span>
-                <span style="color:var(--muted2);font-size:12px;font-family:monospace;background:rgba(255,255,255,0.03);padding:4px 8px;border-radius:4px">ID: ${reg.regId}</span>
-              </div>
-            </div>
-            
-            <div class="res-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
-              <div class="res-item" style="background:rgba(255,255,255,0.02);padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)">
-                <div class="res-l" style="margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted2)">Phone Number</div>
-                <div class="res-v" style="font-size:16px;font-weight:700;color:#fff">${reg.phone}</div>
-              </div>
-              <div class="res-item" style="background:rgba(255,255,255,0.02);padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)">
-                <div class="res-l" style="margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted2)">Team Name</div>
-                <div class="res-v" style="font-size:16px;font-weight:700;color:#fff">${reg.teamName || 'Solo'}</div>
-              </div>
-            </div>
-
-            ${state.isAlreadyScanned ? `
-              <div style="background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:14px;padding:20px;margin-bottom:20px;text-align:center">
-                <div style="font-size:11px;font-weight:900;color:#e74c3c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px">Last Scanned At</div>
-                <div style="font-size:15px;color:#fff;font-weight:700">${state.scanInfo ? state.scanInfo.timestamp : 'Previously recorded'}</div>
-                <div style="font-size:11px;color:var(--muted2);margin-top:4px">Scanner: ${state.scanInfo ? state.scanInfo.scannerId : 'Unknown'}</div>
-              </div>
-            ` : ''}
-
-            ${members.length > 0 ? `
-              <div style="margin-top:20px;background:rgba(255,255,255,0.02);padding:20px;border-radius:16px;border:1px solid rgba(255,255,255,0.03)">
-                <div style="font-size:11px;font-weight:900;color:var(--orange);letter-spacing:1.5px;margin-bottom:15px;text-transform:uppercase;display:flex;justify-content:space-between">
-                  <span>Team Members</span> 
-                  <span style="opacity:0.6">${members.length + 1} Total</span>
-                </div>
-                <div style="display:grid;gap:12px">
-                  <div style="display:flex;align-items:center;gap:12px;padding:8px;background:rgba(232,84,26,0.05);border-radius:8px">
-                    <div style="width:8px;height:8px;background:var(--orange);border-radius:50%"></div>
-                    <div style="font-size:14px;font-weight:700;color:#fff">${reg.name} <span style="font-size:10px;color:var(--orange);margin-left:6px;font-weight:900;text-transform:uppercase">(Leader)</span></div>
-                  </div>
-                  ${members.map(m => `
-                    <div style="display:flex;align-items:center;gap:12px;padding:8px;background:rgba(255,255,255,0.02);border-radius:8px">
-                      <div style="width:8px;height:8px;background:var(--border2);border-radius:50%"></div>
-                      <div style="font-size:14px;font-weight:600;color:var(--muted)">${m.name} <span style="font-size:10px;color:var(--muted2);margin-left:6px">${m.regno}</span></div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            ` : ''}
           </div>
+
+          <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px">
+            <div style="font-size:10px;color:var(--orange);font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Participant Profile</div>
+            <div style="font-size:32px;font-weight:900;color:#fff;line-height:1.1">${reg.name}</div>
+            <div style="font-size:14px;color:var(--muted);margin-top:4px">${reg.regno} · Year ${reg.year} · ${reg.section}</div>
+            <div style="margin-top:15px;display:flex;align-items:center;gap:10px">
+              <span style="background:rgba(232,84,26,0.1);color:var(--orange);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase">${reg.eventName}</span>
+              <span style="color:var(--muted2);font-size:12px">ID: ${reg.regId}</span>
+            </div>
+          </div>
+          
+          <div class="res-grid" style="grid-template-columns:1fr 1fr;gap:12px">
+            <div class="res-item" style="background:rgba(255,255,255,0.02);padding:15px;border-radius:12px;display:block">
+              <div class="res-l" style="margin-bottom:4px">Phone Number</div>
+              <div class="res-v" style="font-size:16px">${reg.phone}</div>
+            </div>
+            <div class="res-item" style="background:rgba(255,255,255,0.02);padding:15px;border-radius:12px;display:block">
+              <div class="res-l" style="margin-bottom:4px">Team Name</div>
+              <div class="res-v" style="font-size:16px">${reg.teamName || 'Solo'}</div>
+            </div>
+          </div>
+
+          ${members.length > 0 ? `
+            <div style="margin-top:20px;background:rgba(255,255,255,0.02);padding:20px;border-radius:12px">
+              <div style="font-size:11px;font-weight:900;color:var(--orange);letter-spacing:1px;margin-bottom:15px;text-transform:uppercase">Team Members (${members.length + 1})</div>
+              <div style="display:grid;gap:10px">
+                <div style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">
+                  <span style="color:#fff">1. ${reg.name} (Lead)</span>
+                  <span style="color:var(--muted2)">${reg.regno}</span>
+                </div>
+                ${members.map((m, i) => `
+                <div style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">
+                  <span style="color:#fff">${i + 2}. ${m.name || 'N/A'}</span>
+                  <span style="color:var(--muted2)">${m.regno || ''}</span>
+                </div>`).join('')}
+              </div>
+            </div>` : ''}
+
+          ${state.isAlreadyScanned ? `
+            <div style="background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:12px;padding:20px;margin:25px 0;text-align:center">
+              <div style="color:#e74c3c;font-weight:900;font-size:13px;letter-spacing:1px;margin-bottom:6px">PREVIOUS SCAN RECORDED</div>
+              <div style="color:#fff;font-size:18px;font-weight:900">${state.scanInfo.timestamp}</div>
+              <div style="color:var(--muted);font-size:11px;margin-top:6px">Scanner: ${state.scanInfo.scannerId}</div>
+            </div>` : ''}
         `;
         
         document.getElementById('res-content').innerHTML = content;
-        
-        const markBtn = document.getElementById('mark-scanned-btn');
-        if (state.loading || state.isAlreadyScanned) {
-          markBtn.style.display = 'none';
-        } else {
-          markBtn.style.display = 'block';
-          markBtn.disabled = false;
-          markBtn.innerHTML = '✅ MARK AS ENTRANCE SCAN';
-          markBtn.style.background = 'var(--orange)';
-        }
+        // Keep the button VISIBLE even during verification so user can tap right away!
+        // Only hide if we are CERTAIN it's a duplicate.
+        document.getElementById('mark-scanned-btn').style.display = (state.isAlreadyScanned) ? 'none' : 'block';
     }
 
     async function markEntryScanned() {
@@ -7389,11 +6867,12 @@ function doPost(e) {
     init();
     startPortalTrigger();
 
-    /* ════════ CINEMATIC INTRO (BURNING TREE) ════════ */
+    /* ════════ CINEMATIC INTRO ════════ */
     (function initIntro() {
       const screen = document.getElementById('intro-screen');
       if (!screen) return;
 
+      // Show only once per session
       if (sessionStorage.getItem('introShown')) {
         screen.remove();
         return;
@@ -7403,11 +6882,7 @@ function doPost(e) {
       const ctx = canvas.getContext('2d');
       let W, H;
       const particles = [];
-      const lightnings = [];
-      
-      let treeBranches = [];
-      const fireParticles = [];
-      let treeIsBurning = false;
+      const sparks = [];
       let animId;
 
       function resize() {
@@ -7417,119 +6892,57 @@ function doPost(e) {
       resize();
       window.addEventListener('resize', resize);
 
-      // Ambient Glowing Embers
-      for (let i = 0; i < 50; i++) {
+      // Floating particles (ambient)
+      for (let i = 0; i < 40; i++) {
         particles.push({
           x: Math.random() * W,
           y: Math.random() * H,
           r: Math.random() * 2 + 0.5,
-          vx: (Math.random() - 0.5) * 1.5,
-          vy: -Math.random() * 2.0 - 0.5,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: -Math.random() * 0.8 - 0.2,
           alpha: Math.random() * 0.5 + 0.2,
-          color: Math.random() > 0.5 ? '#ff4500' : '#ff8c00'
+          color: Math.random() > 0.5 ? '#e8541a' : '#ff6830'
         });
       }
 
-      // --- Procedural Fractal Tree ---
-      function buildTreeBranch(startX, startY, len, angle, branchWidth, depth) {
-        if (depth === 0) return;
-        
-        const endX = startX + len * Math.sin(angle);
-        const endY = startY - len * Math.cos(angle);
-        
-        treeBranches.push({
-          x1: startX, y1: startY, x2: endX, y2: endY,
-          w: branchWidth,
-          alpha: 1
-        });
-        
-        // Split into 2 branches
-        const subLen = len * (0.65 + Math.random() * 0.15);
-        const subW = branchWidth * 0.7;
-        const angleA = angle - 0.25 - Math.random() * 0.2;
-        const angleB = angle + 0.25 + Math.random() * 0.2;
-        
-        buildTreeBranch(endX, endY, subLen, angleA, subW, depth - 1);
-        buildTreeBranch(endX, endY, subLen, angleB, subW, depth - 1);
-      }
-
-      function initTree() {
-        treeBranches = [];
-        const initialLength = Math.min(H * 0.18, 120); // Scale depending on screen height
-        // Depth is 8 (mobile performant enough since drawn as static segments)
-        buildTreeBranch(W / 2, H, initialLength, 0, 7, 8); 
-      }
-      initTree();
-
-      function shatterTree() {
-        treeIsBurning = true;
-        // Convert all solid tree branches into expanding fire embers
-        for (let b of treeBranches) {
-          const mx = (b.x1 + b.x2) / 2;
-          const my = (b.y1 + b.y2) / 2;
-          for(let k=0; k<2; k++) {
-            fireParticles.push({
-              x: mx + (Math.random()-0.5)*10,
-              y: my + (Math.random()-0.5)*10,
-              vx: (Math.random() - 0.5) * 8, // Violent explosion outward
-              vy: -Math.random() * 10 - 2,    // And upward
-              r: b.w * 1.5 + Math.random(),
-              alpha: 1,
-              decay: 0.015 + Math.random() * 0.01,
-              color: Math.random() > 0.4 ? '#ff5200' : '#ffae00'
-            });
-          }
+      // Firecracker burst function
+      function burst(x, y) {
+        const count = 20 + Math.floor(Math.random() * 15);
+        for (let i = 0; i < count; i++) {
+          const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
+          const speed = 1.5 + Math.random() * 3;
+          const colors = ['#e8541a', '#ff6830', '#ffaa44', '#fff4e0', '#ff4500'];
+          sparks.push({
+            x, y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            r: Math.random() * 2.5 + 0.5,
+            alpha: 1,
+            decay: 0.015 + Math.random() * 0.01,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            trail: []
+          });
         }
-        treeBranches = []; // The tree is structurally gone!
       }
 
-      // --- Lightning Generator ---
-      function createLightning(startX, startY, endX, endY) {
-        const segments = [];
-        let currX = startX;
-        let currY = startY;
-        const numSteps = 15;
-        const stepY = (endY - startY) / numSteps;
-        
-        for(let i=0; i<numSteps; i++) {
-          const nextX = currX + (Math.random() - 0.5) * 80;
-          const nextY = currY + stepY;
-          segments.push({ x1: currX, y1: currY, x2: nextX, y2: nextY });
-          
-          if (Math.random() > 0.75) {
-            const bEndX = nextX + (Math.random() - 0.5) * 100;
-            const bEndY = nextY + 80;
-            lightnings.push({ segments: [{x1: nextX, y1: nextY, x2: bEndX, y2: bEndY}], alpha: 1 });
-          }
-          currX = nextX;
-          currY = nextY;
-        }
-        segments.push({ x1: currX, y1: currY, x2: endX, y2: endY });
-        lightnings.push({ segments, alpha: 1.5 });
-      }
-
-      function flashScreen() {
-        screen.classList.add('white-flash');
-        setTimeout(() => screen.classList.remove('white-flash'), 60);
-      }
+      // Schedule bursts
+      setTimeout(() => burst(W * 0.3, H * 0.35), 300);
+      setTimeout(() => burst(W * 0.7, H * 0.3), 600);
+      setTimeout(() => burst(W * 0.5, H * 0.25), 1000);
+      setTimeout(() => burst(W * 0.2, H * 0.5), 1400);
+      setTimeout(() => burst(W * 0.8, H * 0.45), 1800);
+      setTimeout(() => burst(W * 0.4, H * 0.6), 2200);
 
       function animate() {
         ctx.clearRect(0, 0, W, H);
 
-        // 1. Ambient Embers
+        // Draw ambient particles
         for (const p of particles) {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
           ctx.fillStyle = p.color;
           ctx.globalAlpha = p.alpha;
           ctx.fill();
-          
-          // Ember glow
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = p.color;
-          ctx.fill();
-          ctx.shadowBlur = 0;
-
           p.x += p.vx;
           p.y += p.vy;
           if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
@@ -7537,68 +6950,43 @@ function doPost(e) {
           if (p.x > W + 10) p.x = -10;
         }
 
-        // 2. Dead Silhouette Tree
-        if (!treeIsBurning) {
-          ctx.lineCap = 'round';
-          for (const b of treeBranches) {
+        // Draw sparks with trails
+        for (let i = sparks.length - 1; i >= 0; i--) {
+          const s = sparks[i];
+          // Draw trail
+          for (let t = 0; t < s.trail.length; t++) {
+            const tp = s.trail[t];
             ctx.beginPath();
-            ctx.moveTo(b.x1, b.y1);
-            ctx.lineTo(b.x2, b.y2);
-            ctx.strokeStyle = `rgba(10, 5, 0, ${b.alpha})`; // Very dark wood
-            ctx.lineWidth = b.w;
-            // Backlight glow
-            ctx.shadowColor = 'rgba(255, 100, 0, 0.4)';
-            ctx.shadowBlur = 4;
-            ctx.stroke();
-          }
-        }
-
-        // 3. Tree Fire/Explosion Particles
-        if (treeIsBurning) {
-          for (let i = fireParticles.length - 1; i >= 0; i--) {
-            const f = fireParticles[i];
-            ctx.beginPath();
-            ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-            ctx.fillStyle = f.color;
-            ctx.globalAlpha = f.alpha;
-            
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = f.color;
+            ctx.arc(tp.x, tp.y, s.r * 0.5, 0, Math.PI * 2);
+            ctx.fillStyle = s.color;
+            ctx.globalAlpha = tp.alpha * 0.3;
             ctx.fill();
-            ctx.shadowBlur = 0;
-
-            f.x += f.vx;
-            f.y += f.vy;
-            f.alpha -= f.decay;
-            // Slow down horizontal velocity (air resistance)
-            f.vx *= 0.95; 
-            
-            if (f.alpha <= 0) fireParticles.splice(i, 1);
+            tp.alpha -= 0.03;
           }
-        }
+          s.trail = s.trail.filter(t => t.alpha > 0);
 
-        // 4. Lightning Bolts
-        ctx.lineCap = 'round';
-        for (let i = lightnings.length - 1; i >= 0; i--) {
-          const l = lightnings[i];
+          // Draw spark
           ctx.beginPath();
-          for (const seg of l.segments) {
-            ctx.moveTo(seg.x1, seg.y1);
-            ctx.lineTo(seg.x2, seg.y2);
-          }
-          
-          ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(l.alpha, 1)})`;
-          ctx.shadowColor = '#60a5fc'; 
-          ctx.shadowBlur = 25;
-          ctx.lineWidth = 4;
-          ctx.stroke();
-          
-          ctx.shadowBlur = 0;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-          
-          l.alpha -= 0.15;
-          if (l.alpha <= 0) lightnings.splice(i, 1);
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = s.alpha;
+          ctx.fill();
+
+          // Glow effect
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = s.alpha * 0.1;
+          ctx.fill();
+
+          s.trail.push({ x: s.x, y: s.y, alpha: s.alpha });
+          s.x += s.vx;
+          s.y += s.vy;
+          s.vy += 0.03; // gravity
+          s.alpha -= s.decay;
+          s.vx *= 0.99;
+
+          if (s.alpha <= 0) sparks.splice(i, 1);
         }
 
         ctx.globalAlpha = 1;
@@ -7606,43 +6994,15 @@ function doPost(e) {
       }
       animate();
 
-      // --- TIMELINE SEQUENCE ---
-      
-      // Reveal Text Line 1
+      // Fade out after 3 seconds
       setTimeout(() => {
-        flashScreen();
-        createLightning(W * 0.2 + Math.random() * W * 0.6, 0, W / 2, Math.max(H * 0.3, 100));
-        document.getElementById('t-line-1')?.classList.add('revealed');
-      }, 2000);
-
-      // Reveal Text Line 2 and Subtitle
-      setTimeout(() => {
-        flashScreen();
-        createLightning(W * 0.2 + Math.random() * W * 0.6, 0, W / 2, Math.max(H * 0.4, 150));
-        document.getElementById('t-line-2')?.classList.add('revealed');
-        document.getElementById('t-line-3')?.classList.add('revealed');
-      }, 2800);
-
-      // FINAL CLIMAX: Lightning Hits the Tree directly!
-      setTimeout(() => {
-        screen.classList.add('fade-out'); // Trigger global white flash CSS
-        
-        // Massive bolt hitting dead center bottom (the tree)
-        createLightning(W * 0.5, 0, W * 0.5, H * 0.8); 
-        createLightning(W * 0.3, 0, W * 0.4, H * 0.8);
-        createLightning(W * 0.7, 0, W * 0.6, H * 0.8);
-        
-        // The tree absorbs it and violently splinters into fire particles
-        shatterTree();
-        
-        // Wait for CSS fadeout transition to comfortably complete
+        screen.classList.add('fade-out');
         setTimeout(() => {
           screen.remove();
           cancelAnimationFrame(animId);
           sessionStorage.setItem('introShown', '1');
-        }, 1600);
-      }, 4200);
-
+        }, 900);
+      }, 3000);
     })();
 
     /* ════════════════════════════════
