@@ -133,23 +133,69 @@
       color: #fff
     }
 
-    .btn-fi {
-      padding: 8px 18px;
-      background: var(--orange);
-      border: 1.5px solid var(--orange);
-      color: #fff;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      border-radius: 4px;
-      transition: opacity .2s;
-      display: none
+    .nav-btn {
+      height: 32px !important;
+      padding: 0 14px !important;
+      font-size: 11px !important;
+      line-height: 1 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      letter-spacing: 1.5px !important;
+      box-sizing: border-box !important;
+      border-radius: 4px !important;
+      white-space: nowrap !important;
     }
 
-    .btn-fi:active {
-      opacity: .85
+    /* Distinct My Pass styling — Cyber scan grid */
+    .btn-qr {
+      position: relative;
+      background: #0f0702 !important;
+      border: 1px dashed rgba(232,84,26,0.6) !important;
+      color: var(--orange) !important;
+      overflow: hidden;
+      font-family: 'Barlow Condensed', sans-serif;
+      text-transform: uppercase;
+      font-weight: 700;
+      cursor: pointer;
+      display: none; /* JS will toggle to inline-flex */
+      transition: all 0.2s;
+    }
+    .btn-qr:hover {
+      border-style: solid !important;
+      box-shadow: 0 0 10px rgba(232,84,26,0.3);
+    }
+    .btn-qr::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(232,84,26,0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,84,26,0.15) 1px, transparent 1px);
+      background-size: 6px 6px;
+      z-index: 0;
+      opacity: 0.6;
+    }
+    .btn-qr::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 30%;
+      background: linear-gradient(to bottom, transparent, rgba(255,120,40,0.8), transparent);
+      animation: qr-scan 2.5s ease-in-out infinite;
+      z-index: 1;
+    }
+    .btn-qr span {
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes qr-scan {
+      0%   { top: -40%; opacity: 0; }
+      20%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { top: 120%; opacity: 0; }
     }
 
     .btn-ev-glow {
@@ -4319,9 +4365,9 @@
   <!-- NAV -->
   <nav class="nav">
     <div style="display:flex;align-items:center;gap:8px">
-      <button class="btn-fi btn-fire" id="pass-nav-btn" onclick="openPass()" style="padding:8px 10px;font-size:10px"><span>My Pass</span></button>
-      <button class="btn-ol btn-fire" onclick="openReg(null)" style="padding:8px 10px;font-size:10px"><span>Register</span></button>
-      <button class="btn-ev-glow btn-fire" onclick="openAllEvents()"><span>Event Details</span></button>
+      <button class="nav-btn btn-qr" id="pass-nav-btn" onclick="openPass()"><span>My Pass</span></button>
+      <button class="nav-btn btn-ol btn-fire" onclick="openReg(null)"><span>Register</span></button>
+      <button class="nav-btn btn-ev-glow" onclick="openAllEvents()"><span>Event Details</span></button>
     </div>
     <div class="nl" id="logo-trigger">CSE<span>UTSAV</span></div>
   </nav>
@@ -5052,7 +5098,7 @@
       }
       initHeroParticles();
       const hasRegs = JSON.parse(localStorage.getItem('u26r') || '[]').length > 0;
-      document.getElementById('pass-nav-btn').style.display = hasRegs ? 'block' : 'none';
+      document.getElementById('pass-nav-btn').style.display = hasRegs ? 'inline-flex' : 'none';
       // Dock active state on scroll
       window.addEventListener('scroll', updateDockActive, { passive: true });
       updateDockActive();
@@ -6242,7 +6288,7 @@ function renderComm() {
           }
         });
         localStorage.setItem('u26r', JSON.stringify(saved));
-        document.getElementById('pass-nav-btn').style.display = 'block';
+        document.getElementById('pass-nav-btn').style.display = 'inline-flex';
         statusEl.textContent = '✓ Found ' + data.registrations.length + ' registration(s)!';
         statusEl.className = 'fetch-status success';
         // Re-render passes after short delay
