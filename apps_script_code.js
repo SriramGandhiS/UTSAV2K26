@@ -147,15 +147,9 @@ function doGet(e) {
         // We need a map of which events are in which time slots to know if rowEventName belongs to checkTimeSlot
         var EVENT_SLOTS = {
           "hackverse": "A",
-          "design decode": "B",
-          "checkmate coders": "A",
-          "uno reverse": "B",
-          "brand to billion": "C",
-          "zero code zone": "C",
-          "technotrace": "D",
-          "clash of minds": "A",
-          "franchise fiesta": "B",
-          "the algorithmic platter": "C"
+          "zero code zone": "A",
+          "brand to billion": "B",
+          "clash of minds": "B"
         };
         var rowSlot = EVENT_SLOTS[rowEventName.toLowerCase()];
 
