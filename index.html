@@ -6307,7 +6307,7 @@ function renderComm() {
         regs.forEach(r => {
           const el = document.getElementById('qr-' + r.regId.replace(/[^a-zA-Z0-9]/g, '_'));
           if (el && !el.hasChildNodes()) {
-            const verifyUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'verify.html';
+            const verifyUrl = window.location.origin + window.location.pathname.replace('index.html', '');
             const members = getParsedMembers(r);
             // Optimized payload for maximum scannability: ID, Name, Event, and minimal Team info
             const tmQR = members.map(m => ({ n: m.name || '', r: (m.regno || '').slice(-4) })); 
@@ -7716,6 +7716,156 @@ function doPost(e) {
        Then Deploy → New Deployment → Web App → Anyone.
        Paste the URL as SHEETS_URL at the top of this file.
     ════════════════════════════════ */
+
+    /* ════════ QR LANDING HANDLER ════════
+       When a student scans their QR with Google Lens / Phone Camera / WhatsApp etc.,
+       they land on this page with ?d=<base64> in the URL.
+       We detect that and show a "Registration Confirmed" screen.
+       The official UTSAV web scanner reads the raw QR text via Html5Qrcode
+       and NEVER navigates to this URL — so it is completely unaffected. */
+    (function handleQRLanding() {
+      const params = new URLSearchParams(window.location.search);
+      const d = params.get('d');
+      if (!d) return; // Normal page load — do nothing
+
+      // Clean the URL so sharing/reloading doesn't re-trigger
+      history.replaceState(null, '', window.location.pathname);
+
+      // Decode the embedded QR data
+      let reg = null;
+      try {
+        reg = JSON.parse(decodeURIComponent(escape(atob(d))));
+      } catch (e) {
+        // Malformed QR — silently ignore and let the normal site load
+        return;
+      }
+
+      if (!reg || !reg.id) return;
+
+      // Build the overlay
+      const ov = document.createElement('div');
+      ov.id = 'qr-landing-ov';
+      ov.style.cssText = `
+        position:fixed;inset:0;z-index:9999;
+        background:linear-gradient(160deg,#0a0a0a 0%,#120700 50%,#0a0a0a 100%);
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        padding:24px;overflow-y:auto;
+        animation:qrl-in 0.5s cubic-bezier(.22,1,.36,1) both;
+      `;
+
+      // Inject keyframes
+      if (!document.getElementById('qrl-style')) {
+        const st = document.createElement('style');
+        st.id = 'qrl-style';
+        st.textContent = `
+          @keyframes qrl-in { from { opacity:0; transform:scale(1.04); } to { opacity:1; transform:scale(1); } }
+          @keyframes qrl-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(46,204,113,.4);} 70%{box-shadow:0 0 0 14px rgba(46,204,113,0);} }
+          @keyframes qrl-badge { from{transform:scale(0) rotate(-10deg);opacity:0;} to{transform:scale(1) rotate(0deg);opacity:1;} }
+          @keyframes qrl-rise { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+        `;
+        document.head.appendChild(st);
+      }
+
+      const name = reg.n || 'Participant';
+      const eventName = reg.e || 'CSEUTSAV 2K26';
+      const regId = reg.id || '';
+      const regno = reg.rn ? '···' + reg.rn : '';
+
+      ov.innerHTML = `
+        <div style="max-width:400px;width:100%;text-align:center;">
+
+          <!-- Big Check Badge -->
+          <div style="
+            width:90px;height:90px;border-radius:50%;
+            background:linear-gradient(135deg,#1a5c35,#27ae60);
+            display:flex;align-items:center;justify-content:center;
+            font-size:42px;margin:0 auto 24px;
+            animation:qrl-badge .6s cubic-bezier(.22,1,.36,1) .1s both, qrl-pulse 2s ease-out 1s infinite;
+            border:3px solid rgba(46,204,113,.3);
+          ">✅</div>
+
+          <!-- Title -->
+          <div style="
+            font-family:'Barlow Condensed',sans-serif;
+            font-size:clamp(36px,10vw,52px);font-weight:900;
+            color:#fff;text-transform:uppercase;letter-spacing:2px;
+            line-height:1;margin-bottom:8px;
+            animation:qrl-rise .5s ease .2s both;
+          ">Registration<br>Confirmed!</div>
+
+          <div style="
+            font-size:13px;color:rgba(255,255,255,.5);letter-spacing:2px;
+            text-transform:uppercase;margin-bottom:32px;
+            animation:qrl-rise .5s ease .3s both;
+          ">CSEUTSAV 2K26 · PSNA College</div>
+
+          <!-- Card -->
+          <div style="
+            background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+            border-radius:20px;padding:28px 24px;margin-bottom:24px;
+            animation:qrl-rise .5s ease .4s both;
+            position:relative;overflow:hidden;
+          ">
+            <div style="
+              position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+              background:radial-gradient(circle,rgba(232,84,26,.18),transparent 70%);
+              pointer-events:none;
+            "></div>
+
+            <div style="font-size:11px;color:var(--orange);font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px">Participant</div>
+            <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-0.5px;margin-bottom:4px">${name}</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px">${regno ? regno + ' · ' : ''}${eventName}</div>
+
+            <div style="background:rgba(232,84,26,.08);border:1px solid rgba(232,84,26,.2);border-radius:10px;padding:12px;margin-bottom:12px">
+              <div style="font-size:10px;color:var(--orange);font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">Registration ID</div>
+              <div style="font-size:16px;font-weight:800;color:#fff;letter-spacing:1px;font-family:monospace">${regId}</div>
+            </div>
+
+            <div style="background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.2);border-radius:10px;padding:14px">
+              <div style="font-size:13px;color:#2ecc71;font-weight:700;line-height:1.5">
+                🎯 <strong>Show this screen at the event desk</strong><br>
+                <span style="font-size:12px;color:rgba(255,255,255,.5);font-weight:400">Your entry will be verified by our team.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Official scanner note -->
+          <div style="
+            background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);
+            border-radius:14px;padding:18px;margin-bottom:28px;
+            animation:qrl-rise .5s ease .5s both;
+          ">
+            <div style="font-size:12px;color:rgba(255,255,255,.4);line-height:1.7;text-align:left">
+              <span style="font-size:16px">🔐</span>&nbsp;
+              <strong style="color:rgba(255,255,255,.7)">Attendance is marked only by official UTSAV scanners.</strong><br>
+              <span style="font-size:11px">If you have any issue, contact the event coordinator or show your Registration ID at the event desk.</span>
+            </div>
+          </div>
+
+          <!-- Open Site Button -->
+          <button onclick="document.getElementById('qr-landing-ov').style.display='none';document.body.style.overflow=''" 
+            style="
+              width:100%;padding:16px;
+              background:var(--orange);border:none;border-radius:12px;
+              font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;
+              color:#fff;letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+              animation:qrl-rise .5s ease .6s both;
+              transition:opacity .2s;
+            "
+            onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'"
+          >Open CSEUTSAV Website →</button>
+
+          <div style="font-size:11px;color:rgba(255,255,255,.2);margin-top:14px;animation:qrl-rise .5s ease .7s both">
+            For support, contact the organizer at the event venue.
+          </div>
+        </div>
+      `;
+
+      document.body.style.overflow = 'hidden';
+      document.body.appendChild(ov);
+    })();
+
+    /* ════════════════════════════════ */
   </script>
 </body>
 
