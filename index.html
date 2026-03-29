@@ -7452,10 +7452,10 @@ function doPost(e) {
       const fireParticles = [];
       let treeIsBurning = false;
       let animId;
-      let userInteracted = false;
 
       // Listen for background interaction to quietly unlock the vibration API
-      const unlockInteraction = () => { userInteracted = true; };
+      sessionStorage.removeItem('vibrationUnlocked'); // Reset on reload to require interaction again
+      const unlockInteraction = () => { sessionStorage.setItem('vibrationUnlocked', 'true'); };
       window.addEventListener('touchstart', unlockInteraction, { passive: true, once: true });
       window.addEventListener('click', unlockInteraction, { passive: true, once: true });
 
@@ -7674,9 +7674,9 @@ function doPost(e) {
 
       // FINAL CLIMAX: Lightning Hits the Tree directly!
       setTimeout(() => {
-        // Trigger haptic vibration only if user has interacted (hidden unlock)
+        // Trigger haptic vibration only if user has interacted (hidden unlock via sessionStorage)
         // Wrapped in setTimeout(.., 0) to ensure asynchronous execution without blocking UI/animation
-        if (userInteracted && navigator.vibrate) {
+        if (sessionStorage.getItem('vibrationUnlocked') === 'true' && navigator.vibrate) {
           setTimeout(() => {
             try { navigator.vibrate([50, 100, 200]); } catch (e) {}
           }, 0);
