@@ -5414,7 +5414,7 @@
       document.getElementById('obs').innerHTML = d.map(x => `<span class="obi">${x}</span>`).join('');
     }
     function buildTicker() {
-      const items = ['CSEUTSAV 2K26', 'EVENTS', 'HACKVERSE', 'DESIGN DECODE', 'CHECKMATE CODERS', 'UNO REVERSE', 'BRAND TO BILLION', 'ZERO CODE ZONE', 'TECHNOTRACE', 'CLASH OF MINDS', 'FRANCHISE FIESTA', 'THE ALGORITHMIC PLATTER', 'FREE ENTRY', 'PSNA CSE', '18–20 APRIL 2026'];
+      const items = ['CSEUTSAV 2K26', 'EVENTS', 'HACKVERSE', 'DESIGN DECODE', 'CHECKMATE CODERS', 'UNO REVERSE', 'BRAND TO BILLION', 'ZERO CODE ZONE', 'TECHNOTRACE', 'CLASH OF MINDS', 'FRANCHISE FIESTA', 'THE ALGORITHMIC PLATTER', 'FREE ENTRY', 'PSNA CSE', '18 APRIL 2026'];
       const d = [...items, ...items];
       document.getElementById('ticker').innerHTML = d.map(t => `<div class="ti">${t}<div class="td"></div></div>`).join('');
     }
@@ -6259,6 +6259,9 @@ function renderComm() {
     function renderPassCards(regs) {
       return regs.map(r => {
         const members = getParsedMembers(r);
+        const matchEv = EVS.find(e => e.name === r.eventName);
+        const exactDate = matchEv ? matchEv.date : '18 April';
+        const exactVenue = matchEv ? matchEv.venue : 'PSNA';
         return `
     <div class="pass-card">
       <div class="pass-top">
@@ -6277,7 +6280,7 @@ function renderComm() {
           <div><div class="pfl">Department</div><div class="pfv">${r.department || 'CSE'}</div></div>
           <div><div class="pfl">Year & Section</div><div class="pfv">${r.year ? 'Year ' + r.year + ' · Sec ' + (r.section || '—') : '—'}</div></div>
           <div><div class="pfl">Register Phone</div><div class="pfv">${r.phone || '—'}</div></div>
-          <div><div class="pfl">Date & Venue</div><div class="pfv">18–20 Apr · PSNA</div></div>
+          <div><div class="pfl">Date & Venue</div><div class="pfv">${exactDate} · ${exactVenue}</div></div>
         </div>
         ${(r.teamName && r.teamName.trim() !== 'Solo' && !r.teamName.includes('[{"name"')) || members.length > 0 ? `
         <div class="team-pass-section">
