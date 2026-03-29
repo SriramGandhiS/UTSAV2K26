@@ -5999,7 +5999,7 @@ function renderComm() {
             resetUI(); return;
           }
           if (data.timeSlotConflicts && data.timeSlotConflicts.length > 0) {
-            hideAdminLoader(); const conflictNames = data.timeSlotConflictDetails.map(d => `${d.name} (${d.regno}) in [${d.eventName}]`).join(' \n ');
+            hideAdminLoader(); const conflictNames = data.timeSlotConflictDetails.map(d => `${d.name} (${d.regno}) in [${d.conflictingEvent || d.eventName}]`).join(' \n ');
             showError('Time Slot Conflict!', 'Concurrent Event', `Some members are already in another event at this same time (${currentEv.timeSlot}): \n\n${conflictNames}`);
             resetUI(); return;
           }
