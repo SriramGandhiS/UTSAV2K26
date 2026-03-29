@@ -7668,6 +7668,14 @@ function doPost(e) {
 
       // FINAL CLIMAX: Lightning Hits the Tree directly!
       setTimeout(() => {
+        // Trigger haptic vibration synced perfectly with the final lightning strike
+        // Wrapped in setTimeout(.., 0) to ensure asynchronous execution without blocking UI/animation
+        if (navigator.vibrate) {
+          setTimeout(() => {
+            try { navigator.vibrate([50, 100, 200]); } catch (e) {}
+          }, 0);
+        }
+
         screen.classList.add('fade-out'); // Trigger global white flash CSS
         
         // Massive bolt hitting dead center bottom (the tree)
