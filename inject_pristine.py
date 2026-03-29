@@ -10,7 +10,7 @@ new_evs = """const EVS = [
         date: 'April 15', time: '09:00 AM to 11:00 AM', venue: 'CSE Lab 1', deadline: 'Mar 30',
         p1: 'Rs.5,000', p2: 'Rs.3,000', p3: 'Rs.2,000',
         rules: ['Team of 2 to 4', 'Theme given on spot', 'Working prototype required', 'Any tech stack allowed', 'Judge decision final'],
-        ec: 'Pranaav', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
+        ec: 'Pranaav', ep: '9092339133', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
       },
       {
         id: 'dd', name: 'DESIGN DECODE', label: 'Graphic Design', category: 'Technical', type: 'Solo', minTeam: 1, maxTeam: 1, tag: 'Design', timeSlot: 'B',
@@ -19,7 +19,7 @@ new_evs = """const EVS = [
         date: 'April 13', time: '09:00 AM to 10:35 AM', venue: 'IT Lab 2', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Individual', 'Design tools provided', 'Time-bound rounds', 'Theme given on spot', 'Originality is key'],
-        ec: 'Lekeetha Sri', ep: '9361131042', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
+        ec: 'Lekeetha Sri', ep: '8838422893', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
       },
       {
         id: 'cc', name: 'CHECKMATE CODERS', label: 'Bug Gambit & Arena', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Coding', timeSlot: 'A',
@@ -28,7 +28,7 @@ new_evs = """const EVS = [
         date: 'April 13', time: '02:00 PM to 04:30 PM', venue: 'CSE Lab 3', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Team of 2', 'Languages: C, C++, Java, Python', 'Multiple rounds', 'No internet', 'Judge decision final'],
-        ec: 'Kalaiselvi', ep: '9361131042', sc: 'Ms. Anitha L.', sp: '+91 93450 67890'
+        ec: 'Kalaiselvi', ep: '7094257586', sc: 'Ms. Anitha L.', sp: '+91 93450 67890'
       },
       {
         id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Coding', timeSlot: 'A',
@@ -37,7 +37,7 @@ new_evs = """const EVS = [
         date: 'April 16', time: '09:00 AM to 12:00 PM', venue: 'CSE Lab 2', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Team of 2', 'Exclusive to 1st and 2nd years', 'Output provided, find the code', 'Reverse logic rounds', 'Time-limited rounds'],
-        ec: 'Arikara Sudhan', ep: '9361131042', sc: 'Dr. Senthil P.', sp: '+91 91230 45678'
+        ec: 'Arikara Sudhan', ep: '6374156308', sc: 'Dr. Senthil P.', sp: '+91 91230 45678'
       },
       {
         id: 'btb', name: 'BRAND TO BILLION', label: 'Tech Startup Pitch', category: 'Technical', type: 'Team', minTeam: 1, maxTeam: 3, tag: 'Strategy', timeSlot: 'C',
@@ -46,7 +46,7 @@ new_evs = """const EVS = [
         date: 'April 18', time: '11:30 AM to 12:30 PM', venue: 'Seminar Hall', deadline: 'Mar 30',
         p1: 'Rs.4,000', p2: 'Rs.2,500', p3: 'Rs.1,500',
         rules: ['Open to all', 'Max of 3 in a team', 'Round 1 - Sell the Silliest', 'Round 2 - Start-up Investment Pitch', 'Judges decision final'],
-        ec: 'Syedali Fathima', ep: '9361131042', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
+        ec: 'Syedali Fathima', ep: '9894845055', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
       },
       {
         id: 'zcz', name: 'ZERO CODE ZONE', label: 'Non Coding Tech', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Logic', timeSlot: 'C',
@@ -55,7 +55,7 @@ new_evs = """const EVS = [
         date: 'April 15', time: '09:00 AM to 11:00 AM', venue: 'IT Lab 1', deadline: 'Mar 30',
         p1: 'Rs.2,000', p2: 'Rs.1,500', p3: 'Rs.1,000',
         rules: ['Team of 2 to 4', 'No coding required', 'Logic and aptitude based', 'Multiple rounds', 'No electronic devices'],
-        ec: 'Reshmaa', ep: '9361131042', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
+        ec: 'Reshmaa', ep: '9944042400', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
       },
       {
         id: 'tt', name: 'TECHNOTRACE', label: 'Tech Treasure Hunt', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Fun', timeSlot: 'D',
@@ -64,7 +64,7 @@ new_evs = """const EVS = [
         date: 'April 15', time: '02:00 PM to 04:30 PM', venue: 'Campus Wide', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Team of 2 to 3', 'Multiple rounds', 'Phone required for clues', 'No external help', 'Fastest team wins'],
-        ec: 'Hariharan', ep: '9361131042', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
+        ec: 'Hariharan', ep: '9159191239', sc: 'Dr. Priya M.', sp: '+91 97890 12345'
       },
       {
         id: 'com', name: 'CLASH OF MINDS', label: 'Quiz & Debate Showdown', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Quiz', timeSlot: 'A',
@@ -73,7 +73,7 @@ new_evs = """const EVS = [
         date: 'April 18', time: '02:00 PM to 04:00 PM', venue: 'Auditorium', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Team of 2 to 3', 'Multiple rounds', 'No electronic devices', 'Quizmaster decision final', 'Time-limited answers'],
-        ec: 'Jai Sri', ep: '9087654321', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
+        ec: 'Jai Sri', ep: '8870495552', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456'
       },
       {
         id: 'ff', name: 'FRANCHISE FIESTA', label: 'Business Simulation Game', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Management', timeSlot: 'B',
@@ -82,7 +82,7 @@ new_evs = """const EVS = [
         date: 'April 13', time: '11:30 AM to 01:00 PM', venue: 'MBA Block', deadline: 'Mar 30',
         p1: 'Rs.4,000', p2: 'Rs.2,500', p3: 'Rs.1,500',
         rules: ['Team of 2 to 4', 'Business strategy game', 'Presentation required', 'All materials provided', 'Judges decision final'],
-        ec: 'Sriram Adithya', ep: '9087654321', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
+        ec: 'Sriram Adithya', ep: '9361123688', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456'
       },
       {
         id: 'tap', name: 'THE ALGORITHMIC PLATTER', label: 'Fun Algorithmic Puzzles', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Puzzle', timeSlot: 'C',
@@ -91,7 +91,7 @@ new_evs = """const EVS = [
         date: 'April 16', time: '01:30 PM to 03:30 PM', venue: 'MCA Lab', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Team of 2 to 3', 'Puzzle-based challenges', 'Pen & paper rounds included', 'No electronic devices in prelims', 'Time-bound'],
-        ec: 'Priyanka M', ep: '9087654321', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
+        ec: 'Priyanka M', ep: '9943696367', sc: 'Dr. Murugan A.', sp: '+91 87890 01234'
       }
     ];"""
 
