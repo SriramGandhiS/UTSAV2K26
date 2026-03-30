@@ -345,26 +345,37 @@ function doPost(e) {
       var scanLock = LockService.getScriptLock();
       if (!scanLock.tryLock(8000)) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "System busy. Please scan again." })).setMimeType(ContentService.MimeType.JSON);
       try {
+        var r = d.data;
+        var regId = String(r.regId);
+        
+        // --- TURBO CACHE CHECK ---
+        var cache = CacheService.getScriptCache();
+        if (cache.get("scan_" + regId)) {
+          return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Pass Already Scanned!" })).setMimeType(ContentService.MimeType.JSON);
+        }
+
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
         if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
-
-        var r = d.data;
-        var lastRow = scansSh.getLastRow();
-
-        // Fast duplicate check
-        if (lastRow > 1) {
-          var scanIds = scansSh.getRange(2, 1, lastRow - 1, 1).getValues();
-          for (var idx = 0; idx < scanIds.length; idx++) {
-            if (String(scanIds[idx][0]) === String(r.regId)) {
-              return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Pass Already Scanned!" })).setMimeType(ContentService.MimeType.JSON);
-            }
-          }
+        
+        // Safety Fallback: Check sheet if cache is empty but sheet isn't
+        if (scansSh.getLastRow() > 1) {
+           var scanIds = scansSh.getRange(2, 1, Math.min(scansSh.getLastRow() - 1, 1000), 1).getValues();
+           for (var idx = 0; idx < scanIds.length; idx++) {
+             if (String(scanIds[idx][0]) === regId) {
+               cache.put("scan_" + regId, "1", 21600); // Backfill cache
+               return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Pass Already Scanned!" })).setMimeType(ContentService.MimeType.JSON);
+             }
+           }
         }
 
         var scannerId = r.scannerId || "unknown";
         var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-        scansSh.appendRow([String(r.regId), String(r.name || ""), String(r.regno || ""), String(r.eventName || ""), String(r.teamName || "Solo"), finalTs, String(scannerId)]);
-        // Kept SpreadsheeApp.flush() removed to save 1s-2s lookup time. AppendRow is safe.
+        scansSh.appendRow([regId, String(r.name || ""), String(r.regno || ""), String(r.eventName || ""), String(r.teamName || "Solo"), finalTs, String(scannerId)]);
+        
+        // Mark as scanned in Cache for 6 hours
+        cache.put("scan_" + regId, "1", 21600);
+        
+        SpreadsheetApp.flush(); 
         return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
       } finally {
         scanLock.releaseLock();
@@ -376,51 +387,39 @@ function doPost(e) {
       var scanLock2 = LockService.getScriptLock();
       if (!scanLock2.tryLock(8000)) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "System busy. Please scan again." })).setMimeType(ContentService.MimeType.JSON);
       try {
-        var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
-        if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
         var r = d.data;
         var baseRegId = r.regId;
         var members = r.members;
         var scannerId = r.scannerId || "unknown";
+        var cache = CacheService.getScriptCache();
 
-        // Validate regId exists in Registrations
-        var regSh = ss.getSheetByName("Registrations");
-        if (regSh) {
-          var regIdCol = regSh.getRange(1, 1, regSh.getLastRow(), 1).getValues();
-          var found = false;
-          for (var i = 0; i < regIdCol.length; i++) {
-            if (String(regIdCol[i][0]) === baseRegId) { found = true; break; }
-          }
-          if (!found) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Registration ID not found in database." })).setMimeType(ContentService.MimeType.JSON);
+        // Check if the entire team pass was already scanned
+        if (cache.get("scan_" + baseRegId)) {
+           var allRes = [];
+           for (var i = 0; i < members.length; i++) allRes.push({ index: members[i].index, status: "already_entered" });
+           return ContentService.createTextOutput(JSON.stringify({ success: true, results: allRes })).setMimeType(ContentService.MimeType.JSON);
         }
 
-        var lastRow = scansSh.getLastRow();
-        var existingIds = {};
-        if (lastRow > 1) {
-          var scanIds = scansSh.getRange(2, 1, lastRow - 1, 1).getValues();
-          for (var i = 0; i < scanIds.length; i++) existingIds[String(scanIds[i][0])] = true;
-        }
-
-        if (existingIds[baseRegId]) {
-          var allRes = [];
-          for (var i = 0; i < members.length; i++) allRes.push({ index: members[i].index, status: "already_entered" });
-          return ContentService.createTextOutput(JSON.stringify({ success: true, results: allRes })).setMimeType(ContentService.MimeType.JSON);
-        }
-
+        var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
+        if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
+        
         var results = [];
         var ts = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
+        
         for (var i = 0; i < members.length; i++) {
           var m = members[i];
           var scanId = baseRegId + "_M" + m.index;
-          if (existingIds[scanId]) {
+          
+          if (cache.get("scan_" + scanId)) {
             results.push({ index: m.index, status: "already_entered" });
           } else {
             scansSh.appendRow([scanId, String(m.name || ""), String(m.regno || ""), String(r.eventName || ""), String(r.teamName || "Solo"), ts, String(scannerId)]);
-            existingIds[scanId] = true;
+            cache.put("scan_" + scanId, "1", 21600);
             results.push({ index: m.index, status: "marked" });
           }
         }
-        SpreadsheetApp.flush(); // Ensure writes are committed before next lookup
+        
+        SpreadsheetApp.flush(); 
         return ContentService.createTextOutput(JSON.stringify({ success: true, results: results })).setMimeType(ContentService.MimeType.JSON);
       } finally {
         scanLock2.releaseLock();
