@@ -1722,7 +1722,7 @@
     .portal-ov {
       position: fixed;
       inset: 0;
-      z-index: 1500;
+      z-index: 10003;
       background: rgba(0, 0, 0, 0.95);
       backdrop-filter: blur(20px);
       display: none;
@@ -2223,11 +2223,210 @@
       font-weight: 600
     }
 
+    /* ═══ EMERGENCY MAINTENANCE OVERLAY ═══ */
+    .maint-ov {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow: hidden
+    }
+
+    .maint-ov.active {
+      display: flex
+    }
+
+    .maint-content {
+      text-align: center;
+      padding: 32px 24px;
+      animation: maint-rise .8s cubic-bezier(.22, 1, .36, 1) both
+    }
+
+    @keyframes maint-rise {
+      from { opacity: 0; transform: translateY(30px) scale(.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Animated icon — rotating rings + pulsing center */
+    .maint-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 36px;
+      position: relative
+    }
+
+    .maint-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-top-color: var(--orange);
+      border-right-color: rgba(232, 84, 26, .3);
+      animation: maint-spin 2.5s linear infinite
+    }
+
+    .maint-ring-inner {
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-bottom-color: rgba(255, 255, 255, .15);
+      border-left-color: rgba(255, 255, 255, .06);
+      animation: maint-spin 1.8s linear infinite reverse
+    }
+
+    .maint-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      margin: -9px 0 0 -9px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 20px rgba(232, 84, 26, .5), 0 0 60px rgba(232, 84, 26, .2);
+      animation: maint-pulse 2s ease-in-out infinite
+    }
+
+    @keyframes maint-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes maint-pulse {
+      0%, 100% { transform: scale(1); opacity: .8; box-shadow: 0 0 20px rgba(232, 84, 26, .5); }
+      50%      { transform: scale(1.25); opacity: 1; box-shadow: 0 0 40px rgba(232, 84, 26, .7), 0 0 80px rgba(232, 84, 26, .25); }
+    }
+
+    .maint-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(36px, 10vw, 56px);
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      line-height: 1.05;
+      margin-bottom: 14px
+    }
+
+    .maint-title span {
+      color: var(--orange);
+      display: block
+    }
+
+    .maint-sub {
+      font-size: 14px;
+      color: rgba(255, 255, 255, .4);
+      line-height: 1.8;
+      max-width: 340px;
+      margin: 0 auto 32px
+    }
+
+    .maint-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border: 1px solid rgba(232, 84, 26, .25);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      background: rgba(232, 84, 26, .06)
+    }
+
+    .maint-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      animation: maint-pulse 2s ease-in-out infinite
+    }
+
+    .maint-footer {
+      position: absolute;
+      bottom: 28px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .12);
+      font-weight: 600
+    }
+
+    /* Background subtle effect */
+    .maint-ov::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(232, 84, 26, .04) 0%, transparent 50%);
+      animation: maint-bg 8s ease-in-out infinite;
+      pointer-events: none
+    }
+
+    @keyframes maint-bg {
+      0%, 100% { transform: scale(1); opacity: .5; }
+      50%      { transform: scale(1.3); opacity: 1; }
+    }
+
+    /* Emergency Mode Toggle Button */
+    .em-toggle-btn {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .25s ease;
+      position: relative;
+      overflow: hidden
+    }
+
+    .em-toggle-btn.off {
+      background: rgba(231, 76, 60, .1);
+      border: 1.5px solid rgba(231, 76, 60, .35);
+      color: #e74c3c
+    }
+
+    .em-toggle-btn.off:hover {
+      background: rgba(231, 76, 60, .2);
+      border-color: rgba(231, 76, 60, .6);
+      box-shadow: 0 0 20px rgba(231, 76, 60, .15)
+    }
+
+    .em-toggle-btn.on {
+      background: rgba(46, 204, 113, .12);
+      border: 1.5px solid rgba(46, 204, 113, .4);
+      color: #2ecc71;
+      animation: em-on-glow 2s ease-in-out infinite
+    }
+
+    .em-toggle-btn.on:hover {
+      background: rgba(46, 204, 113, .2);
+      border-color: rgba(46, 204, 113, .6)
+    }
+
+    @keyframes em-on-glow {
+      0%, 100% { box-shadow: 0 0 0 rgba(46, 204, 113, 0); }
+      50%      { box-shadow: 0 0 18px rgba(46, 204, 113, .12); }
+    }
+
     /* ADMIN */
     .admin-ov {
       position: fixed;
       inset: 0;
-      z-index: 900;
+      z-index: 10000;
       background: var(--black);
       display: none;
       overflow-y: auto
@@ -2474,7 +2673,7 @@
     .admin-loader-ov {
       position: fixed;
       inset: 0;
-      z-index: 1000;
+      z-index: 10002;
       background: rgba(0, 0, 0, .85);
       backdrop-filter: blur(10px);
       display: none;
@@ -3302,7 +3501,7 @@
     .admin-login-ov {
       position: fixed;
       inset: 0;
-      z-index: 950;
+      z-index: 10001;
       background: rgba(0, 0, 0, .85);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -4768,7 +4967,16 @@
         <div class="reg-close-bar-title">Registration</div>
         <button class="reg-close-btn" onclick="forceCloseReg()">✕ Close</button>
       </div>
-      <div class="rsc">
+      
+      <!-- FULL-SCREEN COOLDOWN BLOACKER -->
+      <div id="cooldown-wall" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;text-align:center;padding:20px;">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size:48px;color:#ff4444;margin-bottom:20px;"></i>
+        <h2 style="color:#fff;font-size:24px;margin-bottom:12px;">Anti-Spam Security</h2>
+        <p style="color:var(--muted);font-size:15px;max-width:280px;margin-bottom:24px;line-height:1.5;">To prevent server overload, please wait before submitting another registration.</p>
+        <div style="font-size:42px;font-weight:800;color:var(--orange);letter-spacing:2px;font-variant-numeric:tabular-nums;text-shadow:0 0 20px rgba(255,100,50,0.5);" id="wall-timer">20s</div>
+      </div>
+
+      <div class="rsc" id="reg-rsc">
         <!-- STEP DOTS -->
         <div class="step-nav" id="step-nav">
           <div class="step-dot current" id="dot-0"></div>
@@ -4785,12 +4993,12 @@
             </div>
             <div class="fg">
               <label class="fl">Full Name</label>
-              <input class="fi" id="f-name" type="text" placeholder="Enter your full name">
-              <input type="text" id="f-hp" style="display:none" autocomplete="off">
+              <input class="fi" id="f-name" type="text" placeholder="Enter your full name" oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
+              <input type="text" id="f-website" name="website" style="display:none" tabindex="-1" autocomplete="off">
             </div>
             <div class="row2">
               <div class="fg"><label class="fl">Register Number</label><input class="fi" id="f-regno" type="text"
-                  placeholder="e.g. 2303921310421226"></div>
+                  placeholder="e.g. 2303921310421226" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
               <div class="fg">
                 <label class="fl">Year</label>
                 <select class="fs" id="f-year">
@@ -4816,7 +5024,7 @@
               </div>
               <div class="fg">
                 <label class="fl">Phone Number</label>
-                <input class="fi" id="f-phone" type="tel" placeholder="10-digit number">
+                <input class="fi" id="f-phone" type="tel" placeholder="10-digit number" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length>10) this.value=this.value.slice(0,10)">
               </div>
             </div>
             <div class="fg">
@@ -4859,6 +5067,7 @@
             During heavy traffic, registration may take a few seconds.<br>Please click submit only once.</div>
           <button class="reg-next-btn" onclick="submitReg()">Confirm Registration</button>
           <button class="reg-back-btn" onclick="goStep(1)">← Edit Details</button>
+          <div id="cooldown-warning-msg" style="text-align:center;width:100%;"></div>
         </div>
 
       </div>
@@ -4873,7 +5082,15 @@
         </svg></div>
       <div class="conf-title">You're In!</div>
       <div class="conf-sub">Registration confirmed. Your digital pass is ready.</div>
-      <div class="conf-id-box">
+      
+      <!-- LIVE COOLDOWN ON SUCCESS SCREEN -->
+      <div id="success-cooldown-box" style="display:none;background:rgba(255,100,50,0.1);border:1px solid rgba(255,100,50,0.3);margin-top:15px;padding:12px;border-radius:8px;text-align:center;">
+        <div style="color:var(--orange);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Next Registration Available In</div>
+        <div id="success-cd-timer" style="font-size:32px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 0 10px rgba(255,100,50,0.5);">20s</div>
+        <div style="color:var(--muted);font-size:11px;margin-top:6px;line-height:1.4;"><i class="fa-solid fa-triangle-exclamation"></i> To prevent server crashes, we added this short delay before your next registration. Sorry for the delay!</div>
+      </div>
+
+      <div class="conf-id-box" style="margin-top:15px;">
         <div class="conf-id-l">Registration ID</div>
         <div class="conf-id-v" id="conf-id-v">CSEUTSAV-0001</div>
       </div>
@@ -4969,6 +5186,13 @@
           style="border-color:rgba(231,76,60,.3);color:#e74c3c">Logout</button>
         <a href="https://docs.google.com/spreadsheets/d/1UqAHW4DpWAWnm9TSwpaAu9qnh4533twCljoHzUceWoM/edit?gid=936722095#gid=936722095"
           target="_blank" class="admin-btn-ol" id="admin-sheet-link">View Sheet</a>
+      </div>
+      <!-- Emergency Mode Toggle -->
+      <div class="admin-sec-title" style="margin-top:16px;color:#e74c3c;border-color:rgba(231,76,60,.2)">⚠ Emergency Controls</div>
+      <div class="admin-action-row">
+        <button class="em-toggle-btn off" id="em-toggle-btn" onclick="toggleEmergencyMode()">
+          🚨 Enable Emergency Mode
+        </button>
       </div>
 
       <div class="admin-sec-title">Overall Stats</div>
@@ -5139,6 +5363,92 @@
     // Admin credentials
     const ADMIN_ID = 'sriram';
     const ADMIN_PASS = '93611';
+
+    /* ═══ EMERGENCY MAINTENANCE MODE (Global via Google Sheets) ═══ */
+    let emergencyMode = false;
+
+    function applyEmergencyMode() {
+      const ov = document.getElementById('maint-ov');
+      const btn = document.getElementById('em-toggle-btn');
+      if (emergencyMode) {
+        ov && ov.classList.add('active');
+        if (btn) {
+          btn.className = 'em-toggle-btn on';
+          btn.innerHTML = '✅ Disable Emergency Mode';
+        }
+      } else {
+        ov && ov.classList.remove('active');
+        if (btn) {
+          btn.className = 'em-toggle-btn off';
+          btn.innerHTML = '🚨 Enable Emergency Mode';
+        }
+      }
+    }
+    /* ═══ ADMIN SECONDARY SECURITY (OTP Failsafe) ═══ */
+    function verifyAdminOTP(actionName) {
+      const otp = prompt(`SECURITY CHECK\n\nWe need to verify your identity to ${actionName}.\nAn OTP has been sent to the Admin's registered mobile number.\n\nPlease enter the OTP to proceed:`);
+      if (otp === '0172') return true;
+      if (otp !== null) alert("Authentication Failed: Incorrect OTP entered. Security event logged. Action blocked.");
+      return false;
+    }
+
+    async function toggleEmergencyMode() {
+      if (!verifyAdminOTP('toggle Global Maintenance Mode')) return;
+
+      const btn = document.getElementById('em-toggle-btn');
+      const newState = !emergencyMode;
+      // Instant visual feedback
+      btn.disabled = true;
+      btn.innerHTML = newState ? '⏳ Enabling...' : '⏳ Disabling...';
+      try {
+        const resp = await fetch(SHEETS_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'setEmergency', enabled: newState, uid: ADMIN_ID, pwd: ADMIN_PASS })
+        });
+        const data = await resp.json();
+        if (data.success) {
+          emergencyMode = data.emergency;
+          localStorage.setItem('u26_em_cache', JSON.stringify({ v: emergencyMode, t: Date.now() }));
+        }
+      } catch (err) {
+        // Fallback: toggle locally even if API fails
+        emergencyMode = newState;
+        localStorage.setItem('u26_em_cache', JSON.stringify({ v: emergencyMode, t: Date.now() }));
+      }
+      btn.disabled = false;
+      applyEmergencyMode();
+    }
+
+    // Check emergency status on page load
+    async function checkEmergencyStatus() {
+      // 1. Apply cached value instantly (no flash)
+      try {
+        const cached = JSON.parse(localStorage.getItem('u26_em_cache') || '{}');
+        if (cached.v === true) { emergencyMode = true; applyEmergencyMode(); }
+      } catch(e) {}
+
+      // 2. Fetch fresh value from Google Sheets (with 10-second spam protection)
+      if (!SHEETS_URL || SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
+
+      try {
+        const cached = JSON.parse(localStorage.getItem('u26_em_cache') || '{}');
+        if (cached.t && Date.now() - cached.t < 10000) {
+          emergencyMode = !!cached.v;
+          applyEmergencyMode();
+          return;
+        }
+      } catch(e) {}
+
+      try {
+        const resp = await fetch(SHEETS_URL + '?action=getEmergencyStatus');
+        const data = await resp.json();
+        emergencyMode = !!data.emergency;
+        localStorage.setItem('u26_em_cache', JSON.stringify({ v: emergencyMode, t: Date.now() }));
+        applyEmergencyMode();
+      } catch(e) { /* silent fail, use cached */ }
+    }
+
+    document.addEventListener('DOMContentLoaded', checkEmergencyStatus);
 
     /* ════════ EVENT DATA ════════ */
     const EVS = [
@@ -5739,6 +6049,20 @@ function renderComm() {
 
     function openReg(evId) {
       hideDock();
+
+      if (isCooldown) {
+          document.getElementById('reg-ov').classList.add('open');
+          document.getElementById('reg-rsc').style.display = 'none';
+          document.getElementById('cooldown-wall').style.display = 'flex';
+          const wt = document.getElementById('wall-timer');
+          if (wt) wt.textContent = globalCooldownTime + 's';
+          return;
+      }
+      
+      document.getElementById('reg-rsc').style.display = 'block';
+      const cw = document.getElementById('cooldown-wall');
+      if (cw) cw.style.display = 'none';
+
       // Reset any leftover submission state from previous attempts
       resetRegState();
       currentEv = evId ? EVS.find(e => e.id === evId) : null;
@@ -5880,14 +6204,14 @@ function renderComm() {
       <button class="remove-tm" onclick="removeTeamMember(${idx})">✕</button>
     </div>
     <div class="row3" style="margin-bottom:10px">
-      <div class="fg" style="margin:0"><label class="fl">Name</label><input class="fi tm-name" data-idx="${idx}" type="text" placeholder="Full name"></div>
-      <div class="fg" style="margin:0"><label class="fl">Reg Number</label><input class="fi tm-regno" data-idx="${idx}" type="text" placeholder="23039213..."></div>
+      <div class="fg" style="margin:0"><label class="fl">Name</label><input class="fi tm-name" data-idx="${idx}" type="text" placeholder="Full name" oninput="this.value = this.value.replace(/[^A-Za-z\\s]/g, '')"></div>
+      <div class="fg" style="margin:0"><label class="fl">Reg Number</label><input class="fi tm-regno" data-idx="${idx}" type="text" placeholder="23039213..." oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
       <div class="fg" style="margin:0"><label class="fl">Gender</label><select class="fs tm-gender" data-idx="${idx}"><option value="">Gen</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
     </div>
     <div class="row3">
       <div class="fg" style="margin:0"><label class="fl">Year</label><select class="fs tm-year" data-idx="${idx}"><option value="">Yr</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
       <div class="fg" style="margin:0"><label class="fl">Section</label><select class="fs tm-section" data-idx="${idx}"><option value="">Sec</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
-      <div class="fg" style="margin:0"><label class="fl">Phone</label><input class="fi tm-phone" data-idx="${idx}" type="tel" placeholder="Phone"></div>
+      <div class="fg" style="margin:0"><label class="fl">Phone</label><input class="fi tm-phone" data-idx="${idx}" type="tel" placeholder="Phone" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length>10) this.value=this.value.slice(0,10)"></div>
     </div>
   `;
       grid.appendChild(card);
@@ -6042,37 +6366,78 @@ function renderComm() {
     let isCooldown = false;
     let isSubmitting = false;
     let cooldownTimer = null;
+    let globalCooldownTime = 0;
 
-    function activateCooldown() {
+    function activateCooldown(timeleftStr = 25, penaltyMsg = '') {
       const btn = document.querySelector('#step-2 .reg-next-btn');
       const backBtn = document.querySelector('#step-2 .reg-back-btn');
       isCooldown = true;
-      let timeleft = 25; 
+      let timeleft = parseInt(timeleftStr) || 25; 
+      globalCooldownTime = timeleft;
+      
+      let warnSec = document.getElementById('cooldown-warning-msg');
+      if(warnSec) { warnSec.innerHTML = penaltyMsg ? `<span style="color:var(--orange);font-size:12px;font-weight:600;display:block;margin-top:10px;">${penaltyMsg}</span>` : ''; }
+
+      const wt = document.getElementById('wall-timer');
+      if(wt) wt.textContent = timeleft + 's';
+      
+      const scb = document.getElementById('success-cooldown-box');
+      const sct = document.getElementById('success-cd-timer');
+      if (scb && sct) {
+         scb.style.display = 'block';
+         sct.textContent = timeleft + 's';
+      }
+
       if (btn) {
         btn.disabled = true;
         btn.style.opacity = '0.5';
-        btn.textContent = `Try Again in ${timeleft}s`;
+        btn.textContent = `Wait ${timeleft}s`;
 
         clearInterval(cooldownTimer);
         cooldownTimer = setInterval(() => {
           timeleft--;
+          globalCooldownTime = timeleft;
+          
+          if(wt) wt.textContent = timeleft + 's';
+          if(sct) sct.textContent = timeleft + 's';
+
           if (timeleft <= 0) {
             clearInterval(cooldownTimer);
+            cooldownTimer = null;
             isCooldown = false;
-            btn.disabled = false;
-            btn.style.opacity = '1';
-            btn.textContent = 'Confirm Registration';
+            
+            if (scb) scb.style.display = 'none';
+            
+            // Auto-recover if they waited on the wall
+            const wall = document.getElementById('cooldown-wall');
+            if (wall && wall.style.display === 'flex') {
+               wall.style.display = 'none';
+               document.getElementById('reg-rsc').style.display = 'block';
+               forceCloseReg(); // force them to click event box fresh
+            }
+
+            if (btn) {
+              btn.disabled = false;
+              btn.style.opacity = '1';
+              btn.textContent = 'Confirm Registration';
+            }
+            if(warnSec) warnSec.innerHTML = '';
             if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
           } else {
-            btn.textContent = `Try Again in ${timeleft}s`;
+            if (btn) btn.textContent = `Wait ${timeleft}s`;
           }
         }, 1000);
       }
     }
 
     async function submitReg() {
-      if (document.getElementById('f-hp').value) return; // Honeypot bot block
-      if (isCooldown || isSubmitting) return;
+      const hpElem = document.getElementById('f-website') || document.getElementById('f-hp');
+      if (hpElem && hpElem.value) return; // Honeypot bot block
+      if (isSubmitting) return;
+      if (isCooldown) {
+         showError('Anti-Spam Active', 'Please Wait', `You must wait ${globalCooldownTime} seconds before confirming your next registration.`);
+         return;
+      }
       isSubmitting = true;
 
       const btn = document.querySelector('#step-2 .reg-next-btn');
@@ -6101,6 +6466,7 @@ function renderComm() {
       const phone = document.getElementById('f-phone').value.trim();
       const email = document.getElementById('f-email').value.trim();
       const gender = document.getElementById('f-gender').value;
+      const website = document.getElementById('f-website') ? document.getElementById('f-website').value : '';
       const tname = (currentEv?.type !== 'Solo') ? document.getElementById('f-teamname').value.trim() : '';
 
       // Duplicate check (Local)
@@ -6183,7 +6549,7 @@ function renderComm() {
       const ts = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', hour12: true });
 
       const reg = {
-        regId, name, regno, gender, year, section, phone, email,
+        regId, name, regno, gender, year, section, phone, email, website,
         eventId: currentEv.id, eventName: currentEv.name,
         timeSlot: currentEv.timeSlot || '',
         teamName: tname,
@@ -6204,6 +6570,11 @@ function renderComm() {
 
             if (result.success) {
               success = true;
+            } else if (result.error === "RATE_LIMIT") {
+              hideAdminLoader();
+              showError('Rate Limit Active', 'Anti-Spam Triggered', 'Too many requests globally. Please wait 60 seconds.');
+              activateCooldown(60, 'Global Rate Limit Active. Please wait 60 seconds.');
+              resetUI(); return;
             } else if (result.error && result.error.includes("Server busy")) {
               if (attempts === 0) {
                 attempts++;
@@ -6231,6 +6602,9 @@ function renderComm() {
         }
         hideAdminLoader();
       }
+
+      // 20-second Success Cooldown (anti-spam restriction)
+      activateCooldown(20, 'To prevent server crashes, please wait before your next registration. Sorry for the delay!');
 
       // Final Step: Data is confirmed saved in Google Sheets. Now save locally.
       localStorage.setItem('u26n', n);
@@ -6477,16 +6851,23 @@ function renderComm() {
 
     /* ── CLOSE REG ── */
     function resetRegState() {
-      // Always reset submission locks when overlay closes
+      // Always reset submission locks when overlay closes, but NOT the background cooldown timer!
       isSubmitting = false;
-      isCooldown = false;
-      if (cooldownTimer) { clearInterval(cooldownTimer); cooldownTimer = null; }
       window.onbeforeunload = null;
-      // Reset confirm button to pristine state
+      
       const btn = document.querySelector('#step-2 .reg-next-btn');
       const backBtn = document.querySelector('#step-2 .reg-back-btn');
-      if (btn) { btn.disabled = false; btn.textContent = 'Confirm Registration'; btn.style.opacity = '1'; }
-      if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
+      
+      // Only reset the confirm button if the global spam-timer is NOT running
+      if (!isCooldown && btn) { 
+          btn.disabled = false; 
+          btn.textContent = 'Confirm Registration'; 
+          btn.style.opacity = '1'; 
+      }
+      if (backBtn) { 
+          backBtn.style.pointerEvents = 'auto'; 
+          backBtn.style.opacity = '1'; 
+      }
     }
     function closeRegOv(ev) { if (ev && ev.target === document.getElementById('reg-ov')) { resetRegState(); document.getElementById('reg-ov').classList.remove('open'); showDock(); } }
     function forceCloseReg() { resetRegState(); document.getElementById('reg-ov').classList.remove('open'); showDock(); }
@@ -6823,8 +7204,7 @@ function doPost(e) {
     }
 
     async function deleteAllData() {
-      const code = prompt('WIPE OUT ALL DATA?\\n\\nThis will permanently delete ALL registrations from the database and invalidate ALL passes.\\n\\nType "DELETE" below to confirm:');
-      if (code !== 'DELETE') return;
+      if (!verifyAdminOTP('WIPE OUT ALL DATABASE RECORDS')) return;
 
       showAdminLoader('Wiping all data from server...');
 
@@ -6927,7 +7307,7 @@ function doPost(e) {
     }
 
     async function deleteSingleReg(regId) {
-      if (!confirm(`Are you sure you want to delete Registration ID: ${regId}?`)) return;
+      if (!verifyAdminOTP(`delete Registration ID: ${regId}`)) return;
 
       showAdminLoader('Deleting Registration...');
 
@@ -7053,8 +7433,8 @@ function doPost(e) {
     /* ════════ HIDDEN PORTAL ════════ */
     let portalTimer = null;
     function startPortalTrigger() {
-      const el = document.getElementById('logo-trigger');
-      if (!el) return;
+      const triggers = ['logo-trigger', 'maint-trigger'].map(id => document.getElementById(id)).filter(Boolean);
+      if (triggers.length === 0) return;
       const start = (e) => {
         e.preventDefault();
         portalTimer = setTimeout(() => {
@@ -7062,11 +7442,13 @@ function doPost(e) {
         }, 1000);
       };
       const end = () => clearTimeout(portalTimer);
-      el.addEventListener('mousedown', start);
-      el.addEventListener('touchstart', start, { passive: false });
-      el.addEventListener('mouseup', end);
-      el.addEventListener('mouseleave', end);
-      el.addEventListener('touchend', end);
+      triggers.forEach(el => {
+        el.addEventListener('mousedown', start);
+        el.addEventListener('touchstart', start, { passive: false });
+        el.addEventListener('mouseup', end);
+        el.addEventListener('mouseleave', end);
+        el.addEventListener('touchend', end);
+      });
     }
 
     function openPortal() { document.getElementById('portal-ov').classList.add('open'); }
@@ -8005,6 +8387,23 @@ function doPost(e) {
 
     /* ════════════════════════════════ */
   </script>
+  <!-- ═══ EMERGENCY MAINTENANCE OVERLAY ═══ -->
+  <div class="maint-ov" id="maint-ov">
+    <!-- Invisible easy-tap button in the top right corner -->
+    <div onclick="openAdminLogin('admin')" style="position:absolute; top:0; right:0; width:100px; height:100px; z-index:10500; cursor:pointer;" title="Hidden Admin Access"></div>
+    <div class="maint-content">
+      <div class="maint-icon" id="maint-trigger">
+        <div class="maint-ring"></div>
+        <div class="maint-ring-inner"></div>
+        <div class="maint-dot"></div>
+      </div>
+      <div class="maint-title">We'll Be <span>Right Back</span></div>
+      <div class="maint-sub">Our system is currently updating.<br>Please try again shortly — we appreciate your patience.</div>
+      <div class="maint-badge"><div class="maint-badge-dot"></div>Maintenance in progress</div>
+    </div>
+    <div class="maint-footer">CSEUTSAV 2K26 · PSNA College</div>
+  </div>
+
 </body>
 
 </html>

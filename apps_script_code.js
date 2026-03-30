@@ -43,6 +43,17 @@ function doGet(e) {
     }
   }
 
+  // ── Emergency Mode Status Check (public, lightweight) ──
+  if (action === "getEmergencyStatus") {
+    var configSh = ss.getSheetByName("Config");
+    var emergency = false;
+    if (configSh) {
+      var val = String(configSh.getRange("B1").getValue()).toUpperCase().trim();
+      emergency = (val === "EMERGENCY_ON");
+    }
+    return ContentService.createTextOutput(JSON.stringify({ emergency: emergency })).setMimeType(ContentService.MimeType.JSON);
+  }
+
   if (action === "getRegs") {
     var data = sh.getDataRange().getValues();
     if (data.length <= 1) return ContentService.createTextOutput(JSON.stringify({ registrations: [] })).setMimeType(ContentService.MimeType.JSON);
@@ -318,6 +329,17 @@ function doPost(e) {
     var contents = e.postData.contents;
     var d = JSON.parse(contents);
 
+    // ── Emergency Mode Toggle (requires admin auth) ──
+    if (d.action === "setEmergency") {
+      if (d.uid !== "sriram" || d.pwd !== "93611") {
+        return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
+      }
+      var configSh = ss.getSheetByName("Config") || ss.insertSheet("Config");
+      configSh.getRange("B1").setValue(d.enabled ? "EMERGENCY_ON" : "");
+      SpreadsheetApp.flush();
+      return ContentService.createTextOutput(JSON.stringify({ success: true, emergency: !!d.enabled })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // Optimized Scan Handle (Fast execution, localized lock, duplicate prevention)
     if (d.action === "handleScan") {
       var scanLock = LockService.getScriptLock();
@@ -325,10 +347,10 @@ function doPost(e) {
       try {
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
         if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
-        
+
         var r = d.data;
         var lastRow = scansSh.getLastRow();
-        
+
         // Fast duplicate check
         if (lastRow > 1) {
           var scanIds = scansSh.getRange(2, 1, lastRow - 1, 1).getValues();
@@ -338,7 +360,7 @@ function doPost(e) {
             }
           }
         }
-        
+
         var scannerId = r.scannerId || "unknown";
         var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
         scansSh.appendRow([String(r.regId), String(r.name || ""), String(r.regno || ""), String(r.eventName || ""), String(r.teamName || "Solo"), finalTs, String(scannerId)]);
@@ -417,119 +439,176 @@ function doPost(e) {
       var headers = OFFICIAL_HEADERS;
 
       if (d.action === "syncAll") {
-      d.data.forEach(function (r) {
-        // Matured Logic: Handle Solo events clearly in the sheet
-        var teamNameValue = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
-        var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
+        d.data.forEach(function (r) {
+          // Matured Logic: Handle Solo events clearly in the sheet
+          var teamNameValue = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
+          var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
 
-        var finalTs = r.ts && r.ts.indexOf("T") === -1 ? "'" + r.ts : "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || ""];
-        sh.appendRow(rowToAppend);
-      });
-      SpreadsheetApp.flush(); // Ensure instantly saved
-      return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
+          var finalTs = r.ts && r.ts.indexOf("T") === -1 ? "'" + r.ts : "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
+          var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || ""];
+          sh.appendRow(rowToAppend);
+        });
+        SpreadsheetApp.flush(); // Ensure instantly saved
+        return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
 
-    } else if (d.action === "addReg") {
-      var r = d.data;
-      var emailLC = (r.email || "").toLowerCase().trim();
-      var eventNameLC = String(r.eventName || "").toLowerCase().trim();
+      } else if (d.action === "addReg") {
+        var cache = CacheService.getScriptCache();
+        var tsStr = cache.get("reg_timestamps") || "[]";
+        var tsArr = [];
+        try { tsArr = JSON.parse(tsStr); } catch(e){}
+        var now = new Date().getTime();
+        var filtered = [];
+        for (var i = 0; i < tsArr.length; i++) {
+           if (now - tsArr[i] < 60000) filtered.push(tsArr[i]);
+        }
+        if (filtered.length >= 20) {
+          return ContentService.createTextOutput(JSON.stringify({ success: false, error: "RATE_LIMIT" })).setMimeType(ContentService.MimeType.JSON);
+        }
+        filtered.push(now);
+        cache.put("reg_timestamps", JSON.stringify(filtered), 65);
 
-      var incomingRegNos = [String(r.regno || "").toLowerCase().trim()];
-      var tMembers = r.teamMembers || [];
-      for (var k = 0; k < tMembers.length; k++) {
-        var tmReg = String(tMembers[k].regno || "").toLowerCase().trim();
-        if (tmReg) incomingRegNos.push(tmReg);
-      }
+        var r = d.data;
 
-      var data = sh.getDataRange().getValues();
-      var isDuplicate = false;
-      var duplicateMsg = "You are already registered for this event.";
-
-      for (var i = 1; i < data.length; i++) {
-        var row = data[i];
-        if (String(row[headers.indexOf("RegID")] || "") === r.regId) {
-          isDuplicate = true; break;
+        // 1. Honeypot Anti-Bot Trap
+        if (r.website && r.website.trim() !== "") {
+          return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Bot detected. Request denied." })).setMimeType(ContentService.MimeType.JSON);
+        }
+        
+        // 2. Strict Empty Field Verification
+        if (!r.name || !r.name.trim() || !r.regno || !r.phone || !r.email || !r.email.trim()) {
+           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Missing required personal details. All fields are mandatory." })).setMimeType(ContentService.MimeType.JSON);
+        }
+        
+        // 3. Email Domain Enforcer
+        var emailLC = (r.email || "").toLowerCase().trim();
+        if (!emailLC.endsWith("@psnacet.edu.in")) {
+           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized email domain. Only @psnacet.edu.in allowed." })).setMimeType(ContentService.MimeType.JSON);
         }
 
-        var rowEventName = String(row[headers.indexOf("Event")] || "").toLowerCase().trim();
+        // 4. Phone Length Enforcer (strictly 10 digits)
+        var purePhone = (r.phone || "").replace(/\D/g, "");
+        if (purePhone.length !== 10) {
+           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Phone number must be exactly 10 digits." })).setMimeType(ContentService.MimeType.JSON);
+        }
 
-        if (rowEventName === eventNameLC) {
-          var rowEmail = String(row[headers.indexOf("Email")] || "").toLowerCase().trim();
-          if (rowEmail && rowEmail === emailLC) {
+        // 5. Name / Regno format Enforcer
+        var pureName = (r.name || "").replace(/[^A-Za-z\s]/g, "").trim();
+        var pureRegNo = (r.regno || "").replace(/[^0-9]/g, "");
+        if (pureName.length < 2 || pureRegNo.length < 7) {
+           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Invalid format for Name or Register Number." })).setMimeType(ContentService.MimeType.JSON);
+        }
+        // Force replace with cleaned values
+        r.name = pureName;
+        r.regno = pureRegNo;
+        
+        var eventNameLC = String(r.eventName || "").toLowerCase().trim();
+
+        var incomingRegNos = [String(r.regno || "").toLowerCase().trim()];
+        var tMembers = r.teamMembers || [];
+        // Max Team size hard check
+        if (tMembers.length > 15) {
+           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Exceeded maximum team size limits." })).setMimeType(ContentService.MimeType.JSON);
+        }
+        for (var k = 0; k < tMembers.length; k++) {
+          var tmReg = String(tMembers[k].regno || "").replace(/[^0-9]/g, "").toLowerCase().trim();
+          var tmName = String(tMembers[k].name || "").replace(/[^A-Za-z\s]/g, "").trim();
+          if (!tmReg || !tmName) {
+             return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Incomplete team member details." })).setMimeType(ContentService.MimeType.JSON);
+          }
+          tMembers[k].regno = tmReg;
+          tMembers[k].name = tmName;
+          if (tmReg) incomingRegNos.push(tmReg);
+        }
+
+        var data = sh.getDataRange().getValues();
+        var isDuplicate = false;
+        var duplicateMsg = "You are already registered for this event.";
+
+        for (var i = 1; i < data.length; i++) {
+          var row = data[i];
+          if (String(row[headers.indexOf("RegID")] || "") === r.regId) {
             isDuplicate = true; break;
           }
 
-          var rowLeaderRegNo = String(row[headers.indexOf("RegNo")] || "").toLowerCase().trim();
-          if (incomingRegNos.indexOf(rowLeaderRegNo) !== -1) {
-            isDuplicate = true;
-            duplicateMsg = "Duplicate error: Register number " + rowLeaderRegNo + " is already registered for this event.";
-            break;
-          }
+          var rowEventName = String(row[headers.indexOf("Event")] || "").toLowerCase().trim();
 
-          var teamMembersRaw = String(row[headers.indexOf("TeamMembers")] || "[]");
-          var existTeam = [];
-          try { existTeam = JSON.parse(teamMembersRaw); } catch (ex) { }
+          if (rowEventName === eventNameLC) {
+            var rowEmail = String(row[headers.indexOf("Email")] || "").toLowerCase().trim();
+            if (rowEmail && rowEmail === emailLC) {
+              isDuplicate = true; break;
+            }
 
-          for (var j = 0; j < existTeam.length; j++) {
-            var existTmReg = String(existTeam[j].regno || "").toLowerCase().trim();
-            if (existTmReg && incomingRegNos.indexOf(existTmReg) !== -1) {
+            var rowLeaderRegNo = String(row[headers.indexOf("RegNo")] || "").toLowerCase().trim();
+            if (incomingRegNos.indexOf(rowLeaderRegNo) !== -1) {
               isDuplicate = true;
-              duplicateMsg = "Duplicate error: Register number " + existTmReg + " is already in another team for this event.";
+              duplicateMsg = "Duplicate error: Register number " + rowLeaderRegNo + " is already registered for this event.";
               break;
             }
+
+            var teamMembersRaw = String(row[headers.indexOf("TeamMembers")] || "[]");
+            var existTeam = [];
+            try { existTeam = JSON.parse(teamMembersRaw); } catch (ex) { }
+
+            for (var j = 0; j < existTeam.length; j++) {
+              var existTmReg = String(existTeam[j].regno || "").toLowerCase().trim();
+              if (existTmReg && incomingRegNos.indexOf(existTmReg) !== -1) {
+                isDuplicate = true;
+                duplicateMsg = "Duplicate error: Register number " + existTmReg + " is already in another team for this event.";
+                break;
+              }
+            }
+            if (isDuplicate) break;
           }
-          if (isDuplicate) break;
         }
-      }
 
-      if (isDuplicate) {
-        return ContentService.createTextOutput(JSON.stringify({ success: false, error: duplicateMsg })).setMimeType(ContentService.MimeType.JSON);
-      }
-
-      // Forcefully overwrite the frontend's timestamp with the server's exact Indian Standard Time
-      // Prepending an apostrophe (') forces Google Sheets to treat it as plain text instead of trying to autoconvert to an ISO Date
-      // Matured Logic: Explicitly label Solo registrations in the sheet for clarity
-      var teamNameValue = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
-      var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
-
-      var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-
-      var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || ""];
-      sh.appendRow(rowToAppend);
-      SpreadsheetApp.flush(); // Forces the sheet to save and sync instantly, preventing the "blank screen" effect
-
-      return ContentService.createTextOutput(JSON.stringify({ success: true, regId: r.regId })).setMimeType(ContentService.MimeType.JSON);
-
-    } else if (d.action === "deleteReg") {
-      var regIdToDelete = d.data.regId;
-      var data = sh.getDataRange().getValues();
-      var deleted = false;
-      for (var i = data.length - 1; i >= 1; i--) {
-        if (String(data[i][0]) === String(regIdToDelete)) {
-          sh.deleteRow(i + 1);
-          deleted = true;
-          break;
+        if (isDuplicate) {
+          return ContentService.createTextOutput(JSON.stringify({ success: false, error: duplicateMsg })).setMimeType(ContentService.MimeType.JSON);
         }
-      }
-      if (deleted) SpreadsheetApp.flush();
-      return ContentService.createTextOutput(JSON.stringify({ success: deleted, error: deleted ? null : "Registration not found" })).setMimeType(ContentService.MimeType.JSON);
 
-    } else if (d.action === "deleteAll") {
-      var lastRow = sh.getLastRow();
-      if (lastRow > 1) {
-        // Delete all rows from row 2 downward
-        sh.deleteRows(2, lastRow - 1);
-        SpreadsheetApp.flush(); // Ensure instantly saved
-      }
-      var scanSh = ss.getSheetByName("Scans");
-      if (scanSh && scanSh.getLastRow() > 1) {
-        scanSh.deleteRows(2, scanSh.getLastRow() - 1);
-        SpreadsheetApp.flush();
-      }
-      return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
-    }
+        // Forcefully overwrite the frontend's timestamp with the server's exact Indian Standard Time
+        // Prepending an apostrophe (') forces Google Sheets to treat it as plain text instead of trying to autoconvert to an ISO Date
+        // Matured Logic: Explicitly label Solo registrations in the sheet for clarity
+        var teamNameValue = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
+        var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
 
-    return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unknown action" })).setMimeType(ContentService.MimeType.JSON);
+        var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
+
+        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || ""];
+        sh.appendRow(rowToAppend);
+        SpreadsheetApp.flush(); // Forces the sheet to save and sync instantly, preventing the "blank screen" effect
+
+        return ContentService.createTextOutput(JSON.stringify({ success: true, regId: r.regId })).setMimeType(ContentService.MimeType.JSON);
+
+      } else if (d.action === "deleteReg") {
+        var regIdToDelete = d.data.regId;
+        var data = sh.getDataRange().getValues();
+        var deleted = false;
+        for (var i = data.length - 1; i >= 1; i--) {
+          if (String(data[i][0]) === String(regIdToDelete)) {
+            sh.deleteRow(i + 1);
+            deleted = true;
+            break;
+          }
+        }
+        if (deleted) SpreadsheetApp.flush();
+        return ContentService.createTextOutput(JSON.stringify({ success: deleted, error: deleted ? null : "Registration not found" })).setMimeType(ContentService.MimeType.JSON);
+
+      } else if (d.action === "deleteAll") {
+        var lastRow = sh.getLastRow();
+        if (lastRow > 1) {
+          // Delete all rows from row 2 downward
+          sh.deleteRows(2, lastRow - 1);
+          SpreadsheetApp.flush(); // Ensure instantly saved
+        }
+        var scanSh = ss.getSheetByName("Scans");
+        if (scanSh && scanSh.getLastRow() > 1) {
+          scanSh.deleteRows(2, scanSh.getLastRow() - 1);
+          SpreadsheetApp.flush();
+        }
+        return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
+      }
+
+      return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unknown action" })).setMimeType(ContentService.MimeType.JSON);
 
     } finally {
       lock.releaseLock(); // Release the default registration lock
