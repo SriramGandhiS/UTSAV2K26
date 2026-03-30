@@ -242,6 +242,61 @@ function doGet(e) {
     })).setMimeType(ContentService.MimeType.JSON);
   }
 
+  if (action === "lookupTeamStatus") {
+    var regId = (e.parameter.regId || "").trim();
+    if (!regId) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Missing regId" })).setMimeType(ContentService.MimeType.JSON);
+
+    var participant = null;
+    var regIds = sh.getRange(1, 1, sh.getLastRow(), 1).getValues();
+    var rowIndex = -1;
+    for (var i = 0; i < regIds.length; i++) {
+      if (String(regIds[i][0]) === regId) { rowIndex = i + 1; break; }
+    }
+    if (rowIndex === -1) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Registration not found" })).setMimeType(ContentService.MimeType.JSON);
+
+    var row = sh.getRange(rowIndex, 1, 1, sh.getLastColumn()).getValues()[0];
+    var headers = OFFICIAL_HEADERS;
+    var teamMembersRaw = row[headers.indexOf("TeamMembers")] || "[]";
+    var teamMembers = [];
+    try { if (teamMembersRaw !== "Solo") teamMembers = JSON.parse(teamMembersRaw); } catch (ex) { }
+
+    participant = {
+      regId: String(row[headers.indexOf("RegID")]),
+      name: String(row[headers.indexOf("Name")]),
+      regno: String(row[headers.indexOf("RegNo")]),
+      year: String(row[headers.indexOf("Year")]),
+      section: String(row[headers.indexOf("Section")]),
+      phone: String(row[headers.indexOf("Phone")]),
+      email: String(row[headers.indexOf("Email")]),
+      eventName: String(row[headers.indexOf("Event")]),
+      teamName: String(row[headers.indexOf("TeamName")]),
+      teamMembers: teamMembers
+    };
+
+    var enteredIndices = [];
+    var scansSh = ss.getSheetByName("Scans");
+    var totalMembers = 1 + teamMembers.length;
+    if (scansSh && scansSh.getLastRow() > 1) {
+      var scanIds = scansSh.getRange(2, 1, scansSh.getLastRow() - 1, 1).getValues();
+      for (var i = 0; i < scanIds.length; i++) {
+        var sid = String(scanIds[i][0]);
+        if (sid === regId) {
+          enteredIndices = [];
+          for (var j = 0; j < totalMembers; j++) enteredIndices.push(j);
+          break;
+        }
+        if (sid.indexOf(regId + "_M") === 0) {
+          var mIdx = parseInt(sid.substring((regId + "_M").length));
+          if (!isNaN(mIdx) && enteredIndices.indexOf(mIdx) === -1) enteredIndices.push(mIdx);
+        }
+      }
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({
+      success: true, participant: participant, enteredIndices: enteredIndices, totalMembers: totalMembers
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+
   return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [] })).setMimeType(ContentService.MimeType.JSON);
 }
 
@@ -291,6 +346,61 @@ function doPost(e) {
         return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
       } finally {
         scanLock.releaseLock();
+      }
+    }
+
+    // Team-based scan: marks individual members with composite IDs
+    if (d.action === "handleTeamScan") {
+      var scanLock2 = LockService.getScriptLock();
+      if (!scanLock2.tryLock(8000)) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "System busy. Please scan again." })).setMimeType(ContentService.MimeType.JSON);
+      try {
+        var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
+        if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
+        var r = d.data;
+        var baseRegId = r.regId;
+        var members = r.members;
+        var scannerId = r.scannerId || "unknown";
+
+        // Validate regId exists in Registrations
+        var regSh = ss.getSheetByName("Registrations");
+        if (regSh) {
+          var regIdCol = regSh.getRange(1, 1, regSh.getLastRow(), 1).getValues();
+          var found = false;
+          for (var i = 0; i < regIdCol.length; i++) {
+            if (String(regIdCol[i][0]) === baseRegId) { found = true; break; }
+          }
+          if (!found) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Registration ID not found in database." })).setMimeType(ContentService.MimeType.JSON);
+        }
+
+        var lastRow = scansSh.getLastRow();
+        var existingIds = {};
+        if (lastRow > 1) {
+          var scanIds = scansSh.getRange(2, 1, lastRow - 1, 1).getValues();
+          for (var i = 0; i < scanIds.length; i++) existingIds[String(scanIds[i][0])] = true;
+        }
+
+        if (existingIds[baseRegId]) {
+          var allRes = [];
+          for (var i = 0; i < members.length; i++) allRes.push({ index: members[i].index, status: "already_entered" });
+          return ContentService.createTextOutput(JSON.stringify({ success: true, results: allRes })).setMimeType(ContentService.MimeType.JSON);
+        }
+
+        var results = [];
+        var ts = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
+        for (var i = 0; i < members.length; i++) {
+          var m = members[i];
+          var scanId = baseRegId + "_M" + m.index;
+          if (existingIds[scanId]) {
+            results.push({ index: m.index, status: "already_entered" });
+          } else {
+            scansSh.appendRow([scanId, String(m.name || ""), String(m.regno || ""), String(r.eventName || ""), String(r.teamName || "Solo"), ts, String(scannerId)]);
+            existingIds[scanId] = true;
+            results.push({ index: m.index, status: "marked" });
+          }
+        }
+        return ContentService.createTextOutput(JSON.stringify({ success: true, results: results })).setMimeType(ContentService.MimeType.JSON);
+      } finally {
+        scanLock2.releaseLock();
       }
     }
 

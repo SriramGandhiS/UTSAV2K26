@@ -2672,6 +2672,29 @@
       backdrop-filter: blur(4px);
       border-radius: 20px;
     }
+
+    /* ─── TEAM ENTRY UI ─── */
+    .team-progress{display:flex;align-items:center;gap:12px;margin:16px 0;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:12px;border:1px solid rgba(255,255,255,.06)}
+    .team-progress-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+    .team-progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),#2ecc71);border-radius:3px;transition:width .5s ease}
+    .team-progress-text{font-size:13px;font-weight:800;color:var(--orange);white-space:nowrap}
+    .member-card{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all .2s ease;user-select:none;-webkit-user-select:none}
+    .member-card:active{transform:scale(.98)}
+    .member-card.selected{border-color:var(--orange);background:rgba(232,84,26,.08)}
+    .member-card.entered{border-color:rgba(46,204,113,.3);background:rgba(46,204,113,.05);cursor:default;opacity:.7}
+    .member-checkbox{width:24px;height:24px;border-radius:6px;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s ease}
+    .member-card.selected .member-checkbox{background:var(--orange);border-color:var(--orange)}
+    .member-card.entered .member-checkbox{background:#2ecc71;border-color:#2ecc71}
+    .member-info{flex:1;min-width:0}
+    .member-name{font-size:15px;font-weight:700;color:#fff}
+    .member-detail{font-size:11px;color:var(--muted);margin-top:2px}
+    .member-status{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:20px;white-space:nowrap}
+    .member-status.status-entered{background:rgba(46,204,113,.15);color:#2ecc71}
+    .member-status.status-new{background:rgba(255,255,255,.05);color:var(--muted2)}
+    .team-completed-banner{text-align:center;padding:20px;background:linear-gradient(135deg,rgba(46,204,113,.1),rgba(46,204,113,.05));border:1px solid rgba(46,204,113,.3);border-radius:16px;margin-bottom:20px;animation:res-pop .4s cubic-bezier(.175,.885,.32,1.275)}
+    .team-completed-banner .tc-icon{font-size:48px;margin-bottom:8px}
+    .team-completed-banner .tc-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#2ecc71;text-transform:uppercase;letter-spacing:2px}
+    .team-completed-banner .tc-sub{font-size:12px;color:var(--muted);margin-top:4px}
     .ev-listing-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -6310,8 +6333,8 @@ function renderComm() {
             const verifyUrl = window.location.origin + window.location.pathname.replace('index.html', '');
             const members = getParsedMembers(r);
             // Optimized payload for maximum scannability: ID, Name, Event, and minimal Team info
-            const tmQR = members.map(m => ({ n: m.name || '', r: (m.regno || '').slice(-4) })); 
-            const data = { id: r.regId, n: r.name, e: r.eventName, rn: (r.regno || '').slice(-4), ph: (r.phone || '').slice(-4), tm: tmQR }; 
+            const tmQR = members.map(m => ({ n: m.name || '', r: m.regno || '', y: m.year || '', s: m.section || '', p: m.phone || '' })); 
+            const data = { id: r.regId, n: r.name, e: r.eventName, rn: r.regno || '', ph: r.phone || '', yr: r.year || '', sec: r.section || '', t: r.teamName || '', tm: tmQR }; 
             const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
             try { new QRCode(el, { text: qrText, width: 140, height: 140, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); } catch (ex) { console.error("QR Code rendering blocked:", ex); }
           }
@@ -7107,13 +7130,15 @@ function doPost(e) {
       showDock();
     }
 
+    let selectedMembers = new Set();
+
     async function onScanSuccess(decodedText) {
       if (typeof navigator.vibrate === "function") navigator.vibrate(100);
       
       let regId = null;
       let instantDataRaw = null;
       
-      // 1. DECODE INSTANTLY (0 Seconds Delay)
+      // 1. DECODE INSTANTLY (existing QR decode — UNTOUCHED)
       if (decodedText.includes('?d=')) {
         try {
           const b64 = decodedText.split('?d=')[1];
@@ -7132,196 +7157,249 @@ function doPost(e) {
           try { await html5QrCode.stop(); } catch(e) {}
         }
         
-        // Unify the data format so 'markEntryScanned' always works
+        // Build local fallback from QR data (full data now)
         let localReg = scannerRegistry.find(r => r.regId === regId);
-        
         if (!localReg && instantDataRaw) {
           localReg = {
             regId: instantDataRaw.id,
             name: instantDataRaw.n,
-            regno: instantDataRaw.rn.includes('-') ? instantDataRaw.rn : '...'+instantDataRaw.rn,
+            regno: instantDataRaw.rn || '',
             eventName: instantDataRaw.e,
-            phone: instantDataRaw.ph ? '...'+instantDataRaw.ph : '—',
-            teamName: 'Solo', // Default if unknown
-            year: '',
-            section: '',
-            teamMembers: []
+            phone: instantDataRaw.ph || '',
+            teamName: instantDataRaw.t || 'Solo',
+            year: instantDataRaw.yr || '',
+            section: instantDataRaw.sec || '',
+            teamMembers: (instantDataRaw.tm || []).map(m => ({
+              name: m.n, regno: m.r, year: m.y, section: m.s, phone: m.p
+            }))
           };
         }
         
-        if (localReg) {
-          renderScannerResultUI(localReg, { isAlreadyScanned: false, loading: true });
-          document.getElementById('scanner-results').classList.add('open');
-        } else {
-          showAdminLoader('Checking Cloud...');
-        }
+        // Show loading while fetching team status
+        document.getElementById('res-content').innerHTML = `
+          <div class="scanner-result-card" style="text-align:center;padding:40px 20px">
+            <div class="al-spinner" style="width:60px;height:60px;border-width:4px;margin:0 auto"></div>
+            <div style="margin-top:20px;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;animation:res-pulse 1.5s infinite">Fetching Team Status</div>
+            <div style="margin-top:8px;font-size:12px;color:var(--muted2);letter-spacing:1px">${regId}</div>
+          </div>
+        `;
+        document.getElementById('mark-scanned-btn').style.display = 'none';
+        document.getElementById('scanner-results').classList.add('open');
         
-        // 3. BACKGROUND VERIFY (Duplicate Check)
+        // Backend verify
         verifyQR(regId, localReg);
       }
     }
 
     async function verifyQR(regId, localReg) {
       try {
-        const resp = await fetch(`${SHEETS_URL}?action=lookupScan&regId=${regId}`);
+        const resp = await fetch(`${SHEETS_URL}?action=lookupTeamStatus&regId=${regId}`);
         const result = await resp.json();
         
         if (!result.success || !result.participant) {
+          hideAdminLoader();
           if (!localReg) {
             alert('ID NOT FOUND: ' + regId);
             openScanner(); 
+          } else {
+            // Fallback: use QR data with no entry status
+            selectedMembers = new Set();
+            renderTeamScanUI(localReg, []);
+            document.getElementById('scanner-results').classList.add('open');
           }
           return;
         }
 
-        renderScannerResultUI(result.participant, { 
-          isAlreadyScanned: result.isAlreadyScanned, 
-          scanInfo: result.scanInfo,
-          loading: false 
-        });
+        hideAdminLoader();
+        selectedMembers = new Set();
+        renderTeamScanUI(result.participant, result.enteredIndices || []);
         document.getElementById('scanner-results').classList.add('open');
 
       } catch (e) {
         console.error(e);
+        hideAdminLoader();
+        if (localReg) {
+          selectedMembers = new Set();
+          renderTeamScanUI(localReg, []);
+          document.getElementById('scanner-results').classList.add('open');
+        }
       }
     }
 
-    function renderScannerResultUI(reg, state) {
+    function renderTeamScanUI(reg, enteredIndices) {
         currentScanData = reg;
         const members = getParsedMembers(reg);
+        const allMembers = [
+          { name: reg.name, regno: reg.regno, year: reg.year, section: reg.section, phone: reg.phone, isLeader: true },
+          ...members.map(m => ({ name: m.name, regno: m.regno, year: m.year || m.y || '', section: m.section || m.s || '', phone: m.phone || m.p || '', isLeader: false }))
+        ];
+        const totalMembers = allMembers.length;
+        const enteredCount = enteredIndices.length;
+        const allEntered = enteredCount >= totalMembers;
+        const progressPct = totalMembers > 0 ? Math.round((enteredCount / totalMembers) * 100) : 0;
+        const checkSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
         
-        // If loading, we show a special centered overlay for "Flash" verification feel
         let content = `
           <div class="scanner-result-card">
-            ${state.loading ? `
-              <div class="verifying-screen">
-                <div class="al-spinner" style="width:60px;height:60px;border-width:4px"></div>
-                <div style="margin-top:20px;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;animation:res-pulse 1.5s infinite">Verifying Entrance...</div>
-                <div style="margin-top:8px;font-size:12px;color:var(--muted2);letter-spacing:1px">Checking database for duplicates</div>
-              </div>
-            ` : ''}
-
-            <div style="text-align:center;margin-bottom:25px">
-              <div class="res-badge ${state.loading ? 'res-badge-loading' : (state.isAlreadyScanned ? 'res-badge-warn' : 'res-badge-new')}" style="padding:12px 24px;font-size:14px;border-radius:50px;display:inline-flex;align-items:center;gap:8px">
-                ${state.loading ? '⏳ VERIFYING RECORD...' : (state.isAlreadyScanned ? '⚠️ DUPLICATE ENTRY DETECTED' : '✅ VALID ENTRANCE PASS')}
+            <div style="text-align:center;margin-bottom:20px">
+              <div style="font-size:10px;font-weight:900;letter-spacing:3px;color:var(--muted2);text-transform:uppercase;margin-bottom:6px">Team Entry</div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;letter-spacing:.5px">${reg.teamName && reg.teamName !== 'Solo' ? reg.teamName : reg.name}</div>
+              <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
+                <span style="background:rgba(232,84,26,.1);color:var(--orange);padding:6px 14px;border-radius:8px;font-size:11px;font-weight:800;text-transform:uppercase;border:1px solid rgba(232,84,26,.2)">${reg.eventName}</span>
+                <span style="color:var(--muted2);font-size:11px;font-family:monospace;background:rgba(255,255,255,.03);padding:4px 8px;border-radius:4px">${reg.regId}</span>
               </div>
             </div>
 
-            <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden">
-              <div style="font-size:10px;color:var(--orange);font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Participant Profile</div>
-              <div style="font-size:32px;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.5px">${reg.name}</div>
-              <div style="font-size:14px;color:var(--muted);margin-top:6px;font-weight:500">${reg.regno} · Year ${reg.year} · ${reg.section}</div>
-              
-              <div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px">
-                <span style="background:rgba(232,84,26,0.1);color:var(--orange);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:800;text-transform:uppercase;border:1px solid rgba(232,84,26,0.2)">${reg.eventName}</span>
-                <span style="color:var(--muted2);font-size:12px;font-family:monospace;background:rgba(255,255,255,0.03);padding:4px 8px;border-radius:4px">ID: ${reg.regId}</span>
-              </div>
-            </div>
-            
-            <div class="res-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
-              <div class="res-item" style="background:rgba(255,255,255,0.02);padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)">
-                <div class="res-l" style="margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted2)">Phone Number</div>
-                <div class="res-v" style="font-size:16px;font-weight:700;color:#fff">${reg.phone}</div>
-              </div>
-              <div class="res-item" style="background:rgba(255,255,255,0.02);padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)">
-                <div class="res-l" style="margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted2)">Team Name</div>
-                <div class="res-v" style="font-size:16px;font-weight:700;color:#fff">${reg.teamName || 'Solo'}</div>
-              </div>
+            ${allEntered ? `
+              <div class="team-completed-banner">
+                <div class="tc-icon">✅</div>
+                <div class="tc-title">Team Completed</div>
+                <div class="tc-sub">All ${totalMembers} members have entered</div>
+              </div>` : ''}
+
+            <div class="team-progress">
+              <div class="team-progress-bar"><div class="team-progress-fill" style="width:${progressPct}%"></div></div>
+              <div class="team-progress-text">${enteredCount} / ${totalMembers} Entered</div>
             </div>
 
-            ${state.isAlreadyScanned ? `
-              <div style="background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:14px;padding:20px;margin-bottom:20px;text-align:center">
-                <div style="font-size:11px;font-weight:900;color:#e74c3c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px">Last Scanned At</div>
-                <div style="font-size:15px;color:#fff;font-weight:700">${state.scanInfo ? state.scanInfo.timestamp : 'Previously recorded'}</div>
-                <div style="font-size:11px;color:var(--muted2);margin-top:4px">Scanner: ${state.scanInfo ? state.scanInfo.scannerId : 'Unknown'}</div>
-              </div>
-            ` : ''}
-
-            ${members.length > 0 ? `
-              <div style="margin-top:20px;background:rgba(255,255,255,0.02);padding:20px;border-radius:16px;border:1px solid rgba(255,255,255,0.03)">
-                <div style="font-size:11px;font-weight:900;color:var(--orange);letter-spacing:1.5px;margin-bottom:15px;text-transform:uppercase;display:flex;justify-content:space-between">
-                  <span>Team Members</span> 
-                  <span style="opacity:0.6">${members.length + 1} Total</span>
-                </div>
-                <div style="display:grid;gap:12px">
-                  <div style="display:flex;align-items:center;gap:12px;padding:8px;background:rgba(232,84,26,0.05);border-radius:8px">
-                    <div style="width:8px;height:8px;background:var(--orange);border-radius:50%"></div>
-                    <div style="font-size:14px;font-weight:700;color:#fff">${reg.name} <span style="font-size:10px;color:var(--orange);margin-left:6px;font-weight:900;text-transform:uppercase">(Leader)</span></div>
+            <div style="font-size:10px;font-weight:900;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin:16px 0 10px">${allEntered ? 'All Members Entered' : 'Select Members to Mark Entry'}</div>
+            <div id="team-member-list">
+              ${allMembers.map((m, i) => {
+                const isEntered = enteredIndices.includes(i);
+                return `
+                <div class="member-card ${isEntered ? 'entered' : ''}" id="member-card-${i}" ${isEntered ? '' : `onclick="toggleMember(${i})"`} data-index="${i}">
+                  <div class="member-checkbox" id="member-cb-${i}">${isEntered ? checkSvg : ''}</div>
+                  <div class="member-info">
+                    <div class="member-name">${m.name || '—'} ${m.isLeader ? '<span style="font-size:9px;color:var(--orange);font-weight:900;margin-left:4px;text-transform:uppercase">(Leader)</span>' : ''}</div>
+                    <div class="member-detail">${m.regno || '—'} · Year ${m.year || '—'} · Sec ${m.section || '—'}</div>
                   </div>
-                  ${members.map(m => `
-                    <div style="display:flex;align-items:center;gap:12px;padding:8px;background:rgba(255,255,255,0.02);border-radius:8px">
-                      <div style="width:8px;height:8px;background:var(--border2);border-radius:50%"></div>
-                      <div style="font-size:14px;font-weight:600;color:var(--muted)">${m.name} <span style="font-size:10px;color:var(--muted2);margin-left:6px">${m.regno}</span></div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            ` : ''}
+                  <div class="member-status ${isEntered ? 'status-entered' : 'status-new'}">${isEntered ? '✓ Entered' : 'Not Entered'}</div>
+                </div>`;
+              }).join('')}
+            </div>
           </div>
         `;
         
         document.getElementById('res-content').innerHTML = content;
         
         const markBtn = document.getElementById('mark-scanned-btn');
-        if (state.loading || state.isAlreadyScanned) {
+        if (allEntered) {
           markBtn.style.display = 'none';
         } else {
           markBtn.style.display = 'block';
-          markBtn.disabled = false;
-          markBtn.innerHTML = '✅ MARK AS ENTRANCE SCAN';
-          markBtn.style.background = 'var(--orange)';
+          markBtn.disabled = true;
+          markBtn.innerHTML = '☑️ SELECT MEMBERS ABOVE';
+          markBtn.style.background = 'var(--border2)';
+          markBtn.style.color = 'var(--muted)';
+          markBtn.onclick = markTeamEntry;
         }
     }
 
-    async function markEntryScanned() {
-      if (!currentScanData) return;
-      
+    function toggleMember(index) {
+      const card = document.getElementById('member-card-' + index);
+      const cb = document.getElementById('member-cb-' + index);
+      const checkSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      if (typeof navigator.vibrate === "function") navigator.vibrate(15);
+      if (selectedMembers.has(index)) {
+        selectedMembers.delete(index);
+        card.classList.remove('selected');
+        cb.innerHTML = '';
+      } else {
+        selectedMembers.add(index);
+        card.classList.add('selected');
+        cb.innerHTML = checkSvg;
+      }
+      const markBtn = document.getElementById('mark-scanned-btn');
+      if (selectedMembers.size > 0) {
+        markBtn.disabled = false;
+        markBtn.innerHTML = `✅ MARK ${selectedMembers.size} MEMBER${selectedMembers.size > 1 ? 'S' : ''} AS ENTERED`;
+        markBtn.style.background = 'var(--orange)';
+        markBtn.style.color = '#fff';
+      } else {
+        markBtn.disabled = true;
+        markBtn.innerHTML = '☑️ SELECT MEMBERS ABOVE';
+        markBtn.style.background = 'var(--border2)';
+        markBtn.style.color = 'var(--muted)';
+      }
+    }
+
+    async function markTeamEntry() {
+      if (!currentScanData || selectedMembers.size === 0) return;
       const btn = document.getElementById('mark-scanned-btn');
       btn.disabled = true;
-      btn.innerHTML = '⌛ SAVING...';
+      btn.innerHTML = '⌛ VERIFYING & SAVING...';
+      btn.style.background = 'var(--orange)';
+      btn.style.color = '#fff';
+
+      const allMembersData = [
+        { name: currentScanData.name, regno: currentScanData.regno },
+        ...getParsedMembers(currentScanData).map(m => ({ name: m.name, regno: m.regno }))
+      ];
+      const membersToMark = [...selectedMembers].map(i => ({
+        index: i, name: allMembersData[i]?.name || '', regno: allMembersData[i]?.regno || ''
+      }));
 
       try {
         const payload = {
-          action: 'handleScan',
+          action: 'handleTeamScan',
           data: {
             regId: currentScanData.regId,
-            name: currentScanData.name,
-            regno: currentScanData.regno,
             eventName: currentScanData.eventName,
             teamName: currentScanData.teamName || 'Solo',
-            scannerId: 'utsavqr' 
+            members: membersToMark,
+            scannerId: 'utsavqr'
           }
         };
-
-        // 100% RELIABILITY FIX: Send as 'text/plain' to skip CORS PREFLIGHT (OPTIONS request).
-        // This ensures the browser sends the POST directly to Google without error.
-        await fetch(SHEETS_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify(payload)
-        });
-
-        // UI OPTIMISM: Assume success since 'no-cors' sent it.
-        btn.innerHTML = '✅ RECORDED';
-        btn.style.background = '#27ae60';
-        if (typeof navigator.vibrate === "function") navigator.vibrate([30, 30]);
-        
-        setTimeout(() => {
-          document.getElementById('scanner-results').classList.remove('open');
-          openScanner();
-        }, 1000);
-
+        const resp = await fetch(SHEETS_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await resp.json();
+        if (result.success) {
+          let markedCount = 0;
+          result.results.forEach(r => {
+            if (r.status === 'marked') markedCount++;
+            const card = document.getElementById('member-card-' + r.index);
+            const cb = document.getElementById('member-cb-' + r.index);
+            if (card) { card.classList.remove('selected'); card.classList.add('entered'); card.onclick = null; }
+            if (cb) cb.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            const statusEl = card?.querySelector('.member-status');
+            if (statusEl) { statusEl.className = 'member-status status-entered'; statusEl.textContent = r.status === 'marked' ? '✓ Entered' : '✓ Already In'; }
+          });
+          if (typeof navigator.vibrate === "function") navigator.vibrate([30, 30]);
+          selectedMembers.clear();
+          // Update progress
+          const enteredNow = document.querySelectorAll('.member-card.entered').length;
+          const totalNow = document.querySelectorAll('.member-card').length;
+          const bar = document.querySelector('.team-progress-fill');
+          const txt = document.querySelector('.team-progress-text');
+          if (bar) bar.style.width = Math.round((enteredNow / totalNow) * 100) + '%';
+          if (txt) txt.textContent = `${enteredNow} / ${totalNow} Entered`;
+          if (enteredNow >= totalNow) {
+            btn.innerHTML = '✅ TEAM COMPLETED';
+            btn.style.background = '#27ae60';
+            btn.disabled = true;
+            // Insert completed banner
+            const list = document.getElementById('team-member-list');
+            if (list) list.insertAdjacentHTML('beforebegin', '<div class="team-completed-banner"><div class="tc-icon">✅</div><div class="tc-title">Team Completed</div><div class="tc-sub">All members have entered</div></div>');
+          } else {
+            btn.innerHTML = `✅ ${markedCount} MARKED`;
+            btn.style.background = '#27ae60';
+            setTimeout(() => { btn.disabled = true; btn.innerHTML = '☑️ SELECT MEMBERS ABOVE'; btn.style.background = 'var(--border2)'; btn.style.color = 'var(--muted)'; }, 2000);
+          }
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = '⚠️ ' + (result.error || 'RETRY');
+          btn.style.background = '#e74c3c';
+        }
       } catch (e) {
         btn.disabled = false;
-        btn.innerHTML = '⚠️ RETRY';
-        alert('Network Error. Please try again.');
+        btn.innerHTML = '⚠️ NETWORK ERROR — RETRY';
+        btn.style.background = '#e74c3c';
       }
     }
 
     function closeScanResults() {
+      selectedMembers.clear();
       document.getElementById('scanner-results').classList.remove('open');
-      openScanner(); // resume camera
+      openScanner();
     }
 
     function promptManualEntry() {
