@@ -7085,7 +7085,7 @@ function doPost(e) {
       
       // OPTIMIZATION: Start background registry sync once
       if (scannerRegistry.length === 0) {
-        fetch(`${SHEETS_URL}?action=getRegs`)
+        fetch(`${SHEETS_URL}?action=getRegs&_t=${Date.now()}`)
           .then(r => r.json())
           .then(d => {
             if (d.registrations) {
@@ -7193,7 +7193,7 @@ function doPost(e) {
 
     async function verifyQR(regId, localReg) {
       try {
-        const resp = await fetch(`${SHEETS_URL}?action=lookupTeamStatus&regId=${regId}`);
+        const resp = await fetch(`${SHEETS_URL}?action=lookupTeamStatus&regId=${regId}&_t=${Date.now()}`);
         const result = await resp.json();
         
         if (!result.success || !result.participant) {

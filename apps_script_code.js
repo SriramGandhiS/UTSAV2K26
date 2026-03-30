@@ -398,6 +398,7 @@ function doPost(e) {
             results.push({ index: m.index, status: "marked" });
           }
         }
+        SpreadsheetApp.flush(); // Ensure writes are committed before next lookup
         return ContentService.createTextOutput(JSON.stringify({ success: true, results: results })).setMimeType(ContentService.MimeType.JSON);
       } finally {
         scanLock2.releaseLock();
