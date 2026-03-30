@@ -4535,7 +4535,8 @@
   <!-- NAV -->
   <nav class="nav">
     <div style="display:flex;align-items:center;gap:8px">
-      <button class="nav-btn btn-qr btn-saffron" id="pass-nav-btn" onclick="openPass()" style="display:none;"><span>My Pass</span></button>
+      <div id="flash-ov" style="position:fixed;inset:0;z-index:99999;opacity:0;pointer-events:none;transition:opacity 0.2s;background:transparent"></div>
+      <button class="nav-btn btn-qr btn-saffron" id="pass-nav-btn" onclick="openPass()" style="display:inline-flex;"><span>My Pass</span></button>
       <button class="nav-btn btn-qr btn-white" onclick="openReg(null)"><span>Register</span></button>
       <button class="nav-btn btn-qr btn-green" onclick="openAllEvents()"><span>Event Details</span></button>
     </div>
@@ -5033,7 +5034,10 @@
   <!-- QR SCANNER OVERLAY -->
   <div class="scanner-ov" id="scanner-ov">
     <div class="scanner-header">
-      <div class="sc-title">Symposium <span style="color:var(--orange)">Scanner</span></div>
+      <div style="display:flex;flex-direction:column">
+        <div class="sc-title">Symposium <span style="color:var(--orange)">Scanner</span></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:2px;font-family:monospace;letter-spacing:1px" id="scan-counter-display">SESSION SCANS: 0</div>
+      </div>
       <button class="reg-back-btn" style="width:auto;padding:8px 16px" onclick="closeScanner()">Close</button>
     </div>
     <div id="reader"></div>
@@ -5045,7 +5049,7 @@
     <div class="scanner-results" id="scanner-results">
       <div id="res-content"></div>
       <button class="res-btn" id="mark-scanned-btn" onclick="markEntryScanned()">Mark Entry</button>
-      <button class="reg-back-btn" style="margin-top:12px" onclick="closeScanResults()">Resume Scanning</button>
+      <button class="reg-back-btn" style="margin-top:12px;background:var(--border2);border:none;color:#fff" onclick="closeScanResults()">Next Scan (Clear)</button>
     </div>
   </div>
 
@@ -5267,7 +5271,6 @@
       }
       initHeroParticles();
       const hasRegs = JSON.parse(localStorage.getItem('u26r') || '[]').length > 0;
-      document.getElementById('pass-nav-btn').style.display = hasRegs ? 'inline-flex' : 'none';
       // Dock active state on scroll
       window.addEventListener('scroll', updateDockActive, { passive: true });
       updateDockActive();
@@ -6402,7 +6405,7 @@ function renderComm() {
 
         if (filtered.length !== currentLocal.length) {
           localStorage.setItem('u26r', JSON.stringify(filtered));
-          if (filtered.length === 0) document.getElementById('pass-nav-btn').style.display = 'none';
+          if (filtered.length === 0) document.getElementById('pass-nav-btn').style.display = 'inline-flex';
 
           // Quietly re-render if the user is still looking at the passes
           if (document.getElementById('pass-ov').classList.contains('open')) {
@@ -6828,7 +6831,7 @@ function doPost(e) {
       // 1. Clear local
       localStorage.removeItem('u26r');
       localStorage.removeItem('u26n');
-      document.getElementById('pass-nav-btn').style.display = 'none';
+      // pass-nav-btn always visible
 
       // 2. Clear remote (strict confirmation)
       if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
@@ -6934,7 +6937,7 @@ function doPost(e) {
       localStorage.setItem('u26r', JSON.stringify(localRegs));
 
       if (localRegs.length === 0) {
-        document.getElementById('pass-nav-btn').style.display = 'none';
+        // pass-nav-btn always visible
       }
 
       // 2. Remove from in-memory admin data & re-render UI immediately
@@ -7079,6 +7082,10 @@ function doPost(e) {
     let scannerRegistry = []; // Local cache for instant lookup
     
     async function openScanner() {
+      // Setup counter UI
+      updateScanCounter(0);
+      try { audioCtx.resume(); } catch(e){} // resume audio context legally on user interaction
+
       hideDock();
       document.getElementById('scanner-ov').classList.add('open');
       document.getElementById('scan-status-msg').textContent = 'Flash Mode Syncing...';
@@ -7131,6 +7138,52 @@ function doPost(e) {
     }
 
     let selectedMembers = new Set();
+    let sessionScans = parseInt(localStorage.getItem('utsav_scans') || 0);
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playScanAudio(type) {
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        if (type === 'success') {
+          osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.5, audioCtx.currentTime); 
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+          osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+          setTimeout(() => {
+            const osc2 = audioCtx.createOscillator(); const gain2 = audioCtx.createGain(); 
+            osc2.connect(gain2); gain2.connect(audioCtx.destination);
+            osc2.type = 'sine'; osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
+            gain2.gain.setValueAtTime(0.5, audioCtx.currentTime); 
+            gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc2.start(); osc2.stop(audioCtx.currentTime + 0.3);
+          }, 100);
+        } else {
+          osc.type = 'square'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.3, audioCtx.currentTime); 
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+          osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+        }
+      } catch(e) {}
+    }
+
+    function flashScreen(type) {
+      const ov = document.getElementById('flash-ov');
+      if (!ov) return;
+      ov.style.background = type === 'success' ? 'rgba(46, 204, 113, 0.4)' : 'rgba(231, 76, 60, 0.4)';
+      ov.style.opacity = '1';
+      setTimeout(() => { ov.style.opacity = '0'; }, 400);
+    }
+
+    function updateScanCounter(increment) {
+      if (increment) sessionScans += increment;
+      localStorage.setItem('utsav_scans', sessionScans);
+      const disp = document.getElementById('scan-counter-display');
+      if (disp) disp.innerHTML = `SESSION SCANS: <span style="font-weight:900;color:#fff">${sessionScans}</span>`;
+    }
 
     async function onScanSuccess(decodedText) {
       if (typeof navigator.vibrate === "function") navigator.vibrate(100);
@@ -7199,6 +7252,8 @@ function doPost(e) {
         if (!result.success || !result.participant) {
           hideAdminLoader();
           if (!localReg) {
+            playScanAudio('error');
+            flashScreen('error');
             alert('ID NOT FOUND: ' + regId);
             openScanner(); 
           } else {
@@ -7364,6 +7419,9 @@ function doPost(e) {
             if (statusEl) { statusEl.className = 'member-status status-entered'; statusEl.textContent = r.status === 'marked' ? '✓ Entered' : '✓ Already In'; }
           });
           if (typeof navigator.vibrate === "function") navigator.vibrate([30, 30]);
+          playScanAudio('success');
+          flashScreen('success');
+          updateScanCounter(markedCount);
           selectedMembers.clear();
           // Update progress
           const enteredNow = document.querySelectorAll('.member-card.entered').length;
@@ -7388,6 +7446,8 @@ function doPost(e) {
           btn.disabled = false;
           btn.innerHTML = '⚠️ ' + (result.error || 'RETRY');
           btn.style.background = '#e74c3c';
+          playScanAudio('error');
+          flashScreen('error');
         }
       } catch (e) {
         btn.disabled = false;
