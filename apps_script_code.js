@@ -467,6 +467,17 @@ function doPost(e) {
         cache.put("reg_timestamps", JSON.stringify(filtered), 65);
 
         var r = d.data;
+        var regId = String(r.regId || "");
+        
+        // --- 0. Idempotency Check (Strong Protection) ---
+        var data = sh.getDataRange().getValues();
+        var headers = OFFICIAL_HEADERS;
+        var regIdCol = headers.indexOf("RegID");
+        for (var i = 1; i < data.length; i++) {
+          if (String(data[i][regIdCol]) === regId) {
+            return ContentService.createTextOutput(JSON.stringify({ success: true, regId: regId, alreadyExisted: true })).setMimeType(ContentService.MimeType.JSON);
+          }
+        }
 
         // 1. Honeypot Anti-Bot Trap
         if (r.website && r.website.trim() !== "") {

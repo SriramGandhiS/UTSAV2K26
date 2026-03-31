@@ -6561,8 +6561,11 @@ function renderComm() {
         ts
       };
 
+      // --- Simple Local Backup (Safety) ---
+      localStorage.setItem('pendingReg', JSON.stringify(reg));
+
       if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-        showAdminLoader('Securing Final Pass...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Syncing with database. Please wait.</span>');
+        showAdminLoader('Checking Connections...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Please do not refresh this page.</span>');
         
         let attempts = 0;
         let success = false;
@@ -6574,23 +6577,24 @@ function renderComm() {
 
             if (result.success) {
               success = true;
+              localStorage.removeItem('pendingReg'); // Clear backup on success
             } else if (result.error === "RATE_LIMIT") {
               hideAdminLoader();
-              showError('Rate Limit Active', 'Anti-Spam Triggered', 'Too many requests globally. Please wait 60 seconds.');
+              showError('Rate Limit Active', 'Anti-Spam Triggered', 'Too many requests. Please wait 60 seconds.');
               activateCooldown(60, 'Global Rate Limit Active. Please wait 60 seconds.');
               resetUI(); return;
             } else if (result.error && result.error.includes("Server busy")) {
               if (attempts === 0) {
                 attempts++;
-                showAdminLoader('Database Busy. Retrying in 2s...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Connecting to secure server...</span>');
+                showAdminLoader('Server Busy. Retrying in 2s...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Re-attempting connection...</span>');
                 await new Promise(r => setTimeout(r, 2000));
                 continue;
               }
               hideAdminLoader();
-              showError('High Traffic', 'Server Busy', 'The server is currently handling many requests. Please wait 20s and try again.');
+              showError('High Traffic', 'Network Busy', 'Server is handling many requests. Please wait 20s and try again.');
               activateCooldown(); resetUI(); return;
             } else {
-              hideAdminLoader(); showError('Server Error', 'Failed to save', result.error);
+              hideAdminLoader(); showError('Registration Warning', 'Save Failed', result.error);
               resetUI(); return;
             }
           } catch (e) {
@@ -6600,17 +6604,19 @@ function renderComm() {
               await new Promise(r => setTimeout(r, 2000));
               continue;
             }
-            hideAdminLoader(); showError('Connection Error', 'Network Timeout', 'Unable to reach the database. Please check your internet and try again.');
+            hideAdminLoader(); showError('Connection Error', 'Timeout', 'Unable to reach the server. Please check your internet.');
             resetUI(); return;
           }
         }
         hideAdminLoader();
+      } else {
+        localStorage.removeItem('pendingReg'); // Local mode success
       }
 
-      // 20-second Success Cooldown (anti-spam restriction)
-      activateCooldown(20, 'To prevent server crashes, please wait before your next registration. Sorry for the delay!');
+      // 20-second Success Cooldown
+      activateCooldown(20, 'System cool-down active. Registration confirmed.');
 
-      // Final Step: Data is confirmed saved in Google Sheets. Now save locally.
+      // Final Step: Data is confirmed saved. Sync local database.
       localStorage.setItem('u26n', n);
       saved.push(reg);
       localStorage.setItem('u26r', JSON.stringify(saved));
