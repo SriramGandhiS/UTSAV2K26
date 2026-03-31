@@ -4271,56 +4271,15 @@
     }
 
     #intro-screen.fade-out {
+      background: #FFFFFF !important; /* Flashbang transition! */
+      opacity: 0;
       pointer-events: none;
+      transition: background 0.1s ease, opacity 1.5s ease 0.1s;
     }
     
     #intro-screen.white-flash {
       background: #FFFFFF !important;
       transition: background 0.05s ease;
-    }
-
-    /* ─── CRACK OVERLAY (POV Thunder Reveal) ─── */
-    #crack-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 100000;
-      pointer-events: none;
-    }
-
-    /* ─── SHOCKWAVE RING ─── */
-    .intro-shockwave {
-      position: fixed;
-      z-index: 100001;
-      border-radius: 50%;
-      pointer-events: none;
-      border: 3px solid rgba(180,200,255,0.9);
-      box-shadow: 0 0 60px rgba(100,150,255,0.6), inset 0 0 60px rgba(100,150,255,0.3);
-      opacity: 0;
-      transform: scale(0);
-    }
-
-    .intro-shockwave.fire {
-      transition: transform 0.7s cubic-bezier(0.22,1,0.36,1), opacity 0.7s ease;
-      opacity: 0;
-    }
-
-    /* ─── SCREEN SHAKE ─── */
-    @keyframes intro-shake {
-      0%  { transform: translate(0,0) rotate(0deg); }
-      10% { transform: translate(-12px,8px) rotate(-0.8deg); }
-      20% { transform: translate(10px,-6px) rotate(0.6deg); }
-      30% { transform: translate(-8px,12px) rotate(-0.4deg); }
-      40% { transform: translate(14px,-4px) rotate(0.7deg); }
-      50% { transform: translate(-6px,10px) rotate(-0.5deg); }
-      60% { transform: translate(8px,-8px) rotate(0.3deg); }
-      70% { transform: translate(-4px,6px) rotate(-0.2deg); }
-      80% { transform: translate(3px,-3px) rotate(0.1deg); }
-      90% { transform: translate(-2px,2px) rotate(-0.1deg); }
-      100%{ transform: translate(0,0) rotate(0deg); }
-    }
-
-    #intro-screen.shaking {
-      animation: intro-shake 0.5s ease-out;
     }
 
     #intro-canvas {
@@ -4764,7 +4723,6 @@
   <!-- CINEMATIC INTRO -->
   <div id="intro-screen">
     <canvas id="intro-canvas"></canvas>
-    <canvas id="crack-overlay"></canvas>
 
     <div class="intro-text">
       <h1 class="thunder-line" id="t-line-1" aria-label="CSEUTSAV 2K26">CSE<span>UTSAV</span></h1>
@@ -6773,7 +6731,7 @@ function renderComm() {
             // Optimized payload for maximum scannability: ID, Name, Event, and minimal Team info
             const tmQR = members.map(m => ({ n: m.name || '', r: m.regno || '', y: m.year || '', s: m.section || '', p: m.phone || '' })); 
             const data = { id: r.regId, n: r.name, e: r.eventName, rn: r.regno || '', ph: r.phone || '', yr: r.year || '', sec: r.section || '', t: r.teamName || '', tm: tmQR }; 
-            const qrText = verifyUrl + 'verify.html?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+            const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
             try { new QRCode(el, { text: qrText, width: 140, height: 140, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); } catch (ex) { console.error("QR Code rendering blocked:", ex); }
           }
         });
@@ -8256,250 +8214,36 @@ function doPost(e) {
         document.getElementById('t-line-3')?.classList.add('revealed');
       }, 2800);
 
-      // ═══════════════════════════════════════════════════
-      // FINAL CLIMAX: POV THUNDER STRIKE → CRACK SPLATTER → REVEAL
-      // ═══════════════════════════════════════════════════
+      // FINAL CLIMAX: Lightning Hits the Tree directly!
       setTimeout(() => {
-        // Trigger haptic vibration
+        // Trigger haptic vibration only if user has interacted (hidden unlock via sessionStorage)
+        // Wrapped in setTimeout(.., 0) to ensure asynchronous execution without blocking UI/animation
         if (sessionStorage.getItem('vibrationUnlocked') === 'true' && navigator.vibrate) {
-          setTimeout(() => { try { navigator.vibrate([80, 60, 200, 40, 100]); } catch(e){} }, 0);
+          setTimeout(() => {
+            try { navigator.vibrate([50, 100, 200]); } catch (e) {}
+          }, 0);
         }
 
+        screen.classList.add('fade-out'); // Trigger global white flash CSS
+        
+        // Clean up hidden listeners
         window.removeEventListener('touchstart', unlockInteraction);
         window.removeEventListener('click', unlockInteraction);
-
-        // Shatter the tree
-        createLightning(W * 0.5, 0, W * 0.5, H * 0.8);
+        
+        // Massive bolt hitting dead center bottom (the tree)
+        createLightning(W * 0.5, 0, W * 0.5, H * 0.8); 
         createLightning(W * 0.3, 0, W * 0.4, H * 0.8);
         createLightning(W * 0.7, 0, W * 0.6, H * 0.8);
+        
+        // The tree absorbs it and violently splinters into fire particles
         shatterTree();
-
-        // ── CRACK OVERLAY CANVAS ──
-        const crackCv = document.getElementById('crack-overlay');
-        if (!crackCv) { screen.remove(); sessionStorage.setItem('introShown','1'); return; }
-        const crk = crackCv.getContext('2d');
-        crackCv.width = W;
-        crackCv.height = H;
-
-        // Generate fractal cracks from center
-        const cx = W / 2, cy = H / 2;
-        const crackBranches = [];
-        const numBranches = 18;
-        for (let i = 0; i < numBranches; i++) {
-          const angle = (Math.PI * 2 / numBranches) * i + (Math.random() - 0.5) * 0.4;
-          const length = 120 + Math.random() * Math.max(W, H) * 0.4;
-          const pts = [];
-          let px = cx, py = cy;
-          const steps = 10 + Math.floor(Math.random() * 10);
-          for (let s = 0; s <= steps; s++) {
-            pts.push({ x: px, y: py });
-            const stepLen = length / steps;
-            px += Math.cos(angle + (Math.random() - 0.5) * 0.7) * stepLen;
-            py += Math.sin(angle + (Math.random() - 0.5) * 0.7) * stepLen;
-          }
-          // Sub-branches
-          const subs = [];
-          for (let s = 2; s < pts.length; s += 2) {
-            if (Math.random() > 0.35) {
-              const sa = angle + (Math.random() - 0.5) * 1.8;
-              const sl = 30 + Math.random() * 100;
-              const sp = [];
-              let sx = pts[s].x, sy = pts[s].y;
-              const ss = 3 + Math.floor(Math.random() * 4);
-              for (let j = 0; j <= ss; j++) {
-                sp.push({ x: sx, y: sy });
-                sx += Math.cos(sa + (Math.random()-0.5)) * (sl/ss);
-                sy += Math.sin(sa + (Math.random()-0.5)) * (sl/ss);
-              }
-              subs.push(sp);
-            }
-          }
-          crackBranches.push({ pts, subs, w: 1.5 + Math.random() * 3 });
-        }
-
-        // Sparks from impact
-        const impactSparks = [];
-        for (let i = 0; i < 70; i++) {
-          const a = Math.random() * Math.PI * 2;
-          const sp = 4 + Math.random() * 14;
-          impactSparks.push({
-            x: cx, y: cy,
-            vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - Math.random() * 5,
-            size: 1 + Math.random() * 3,
-            life: 1, decay: 0.015 + Math.random() * 0.025,
-            grav: 0.12 + Math.random() * 0.1,
-            col: Math.random() > 0.5 ? '180,200,255' : '255,255,255'
-          });
-        }
-
-        // POV bolt rushing at viewer (scaling up fast)
-        const povBolt = [];
-        { let bx = cx, by = H * 0.12;
-          const bSteps = 20;
-          const bStepY = (cy - by) / bSteps;
-          for (let i = 0; i <= bSteps; i++) {
-            povBolt.push({ x: bx, y: by });
-            bx += (Math.random() - 0.5) * 60;
-            by += bStepY;
-          }
-        }
-
-        // MEGA white flash
-        const flashOv = document.getElementById('flash-ov');
-        if (flashOv) {
-          flashOv.style.background = '#fff';
-          flashOv.style.transition = 'none';
-          flashOv.style.opacity = '1';
-          requestAnimationFrame(() => {
-            flashOv.style.transition = 'opacity 0.6s ease-out';
-            flashOv.style.opacity = '0';
-            setTimeout(() => { flashOv.style.background = 'transparent'; }, 700);
-          });
-        }
-
-        // Camera shake
-        screen.classList.add('shaking');
-
-        // Shockwave ring
-        const sw = document.createElement('div');
-        sw.className = 'intro-shockwave';
-        sw.style.cssText = `left:${cx-5}px;top:${cy-5}px;width:10px;height:10px;opacity:1;transform:scale(0);`;
-        document.body.appendChild(sw);
-        requestAnimationFrame(() => {
-          sw.classList.add('fire');
-          sw.style.transform = `scale(${Math.max(W,H)/3})`;
-          sw.style.opacity = '0';
-        });
-        setTimeout(() => sw.remove(), 900);
-
-        // ── ANIMATE CRACKS + SPARKS + POV BOLT ──
-        const crackStart = performance.now();
-        const crackDuration = 500; // 500ms fast crack animation
-        const fadeStart = crackStart + 300;
-        const totalReveal = 1400;
-        let crackDone = false;
-
-        function animateCracks(now) {
-          const elapsed = now - crackStart;
-          const progress = Math.min(elapsed / crackDuration, 1);
-          const fadeProgress = Math.max(0, (now - fadeStart) / (totalReveal - 300));
-          const alpha = Math.max(0, 1 - fadeProgress * 1.2);
-
-          crk.clearRect(0, 0, W, H);
-
-          // POV bolt (scales from 1 → 4 rushing at viewer)
-          if (progress < 0.6) {
-            const bp = progress / 0.6;
-            const scale = 1 + bp * 3;
-            crk.save();
-            crk.translate(cx, cy);
-            crk.scale(scale, scale);
-            crk.translate(-cx, -cy);
-            const visCount = Math.floor(povBolt.length * Math.min(bp * 2, 1));
-            if (visCount >= 2) {
-              // Outer glow
-              crk.strokeStyle = `rgba(100,150,255,${alpha * 0.4})`;
-              crk.lineWidth = 8 * scale;
-              crk.shadowColor = 'rgba(100,150,255,0.8)';
-              crk.shadowBlur = 40;
-              crk.lineCap = 'round';
-              crk.lineJoin = 'round';
-              crk.beginPath();
-              crk.moveTo(povBolt[0].x, povBolt[0].y);
-              for (let i = 1; i < visCount; i++) crk.lineTo(povBolt[i].x, povBolt[i].y);
-              crk.stroke();
-              // Core white
-              crk.strokeStyle = `rgba(255,255,255,${alpha})`;
-              crk.lineWidth = 3 * scale;
-              crk.shadowBlur = 15;
-              crk.beginPath();
-              crk.moveTo(povBolt[0].x, povBolt[0].y);
-              for (let i = 1; i < visCount; i++) crk.lineTo(povBolt[i].x, povBolt[i].y);
-              crk.stroke();
-            }
-            crk.restore();
-          }
-
-          // Draw cracks expanding from center
-          for (const br of crackBranches) {
-            const visN = Math.floor(br.pts.length * Math.min(progress * 1.8, 1));
-            if (visN < 2) continue;
-            // Outer glow
-            crk.save();
-            crk.strokeStyle = `rgba(140,180,255,${alpha * 0.6})`;
-            crk.lineWidth = br.w * alpha * 1.5;
-            crk.shadowColor = `rgba(100,150,255,${alpha * 0.5})`;
-            crk.shadowBlur = 12;
-            crk.lineCap = 'round';
-            crk.beginPath();
-            crk.moveTo(br.pts[0].x, br.pts[0].y);
-            for (let i = 1; i < visN; i++) crk.lineTo(br.pts[i].x, br.pts[i].y);
-            crk.stroke();
-            // Core
-            crk.strokeStyle = `rgba(255,255,255,${alpha})`;
-            crk.lineWidth = br.w * 0.4 * alpha;
-            crk.shadowBlur = 6;
-            crk.beginPath();
-            crk.moveTo(br.pts[0].x, br.pts[0].y);
-            for (let i = 1; i < visN; i++) crk.lineTo(br.pts[i].x, br.pts[i].y);
-            crk.stroke();
-            crk.restore();
-            // Sub-branches
-            if (progress > 0.35) {
-              const sp2 = (progress - 0.35) / 0.65;
-              for (const sub of br.subs) {
-                const sN = Math.floor(sub.length * Math.min(sp2 * 1.5, 1));
-                if (sN < 2) continue;
-                crk.save();
-                crk.strokeStyle = `rgba(120,160,255,${alpha * 0.4})`;
-                crk.lineWidth = 1.5 * alpha;
-                crk.shadowColor = `rgba(100,150,255,${alpha * 0.3})`;
-                crk.shadowBlur = 6;
-                crk.lineCap = 'round';
-                crk.beginPath();
-                crk.moveTo(sub[0].x, sub[0].y);
-                for (let i = 1; i < sN; i++) crk.lineTo(sub[i].x, sub[i].y);
-                crk.stroke();
-                crk.restore();
-              }
-            }
-          }
-
-          // Sparks
-          for (let i = impactSparks.length - 1; i >= 0; i--) {
-            const s = impactSparks[i];
-            s.x += s.vx; s.y += s.vy;
-            s.vy += s.grav; s.vx *= 0.97;
-            s.life -= s.decay;
-            if (s.life <= 0) { impactSparks.splice(i, 1); continue; }
-            crk.save();
-            crk.fillStyle = `rgba(${s.col},${s.life})`;
-            crk.shadowColor = `rgba(${s.col},${s.life * 0.5})`;
-            crk.shadowBlur = 8;
-            crk.beginPath();
-            crk.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
-            crk.fill();
-            crk.restore();
-          }
-
-          // Fade out intro screen as cracks dissipate
-          if (fadeProgress > 0) {
-            screen.style.opacity = Math.max(0, 1 - fadeProgress * 1.5);
-          }
-
-          if (elapsed < totalReveal) {
-            requestAnimationFrame(animateCracks);
-          } else if (!crackDone) {
-            crackDone = true;
-            crk.clearRect(0, 0, W, H);
-            crackCv.remove();
-            screen.remove();
-            cancelAnimationFrame(animId);
-            sessionStorage.setItem('introShown', '1');
-          }
-        }
-        requestAnimationFrame(animateCracks);
-
+        
+        // Wait for CSS fadeout transition to comfortably complete
+        setTimeout(() => {
+          screen.remove();
+          cancelAnimationFrame(animId);
+          sessionStorage.setItem('introShown', '1');
+        }, 1600);
       }, 4200);
 
     })();
