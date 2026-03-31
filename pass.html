@@ -242,6 +242,40 @@
       letter-spacing: 2px;
     }
 
+    /* ── NEW THUNDER & POV REVEAL ── */
+    .thunder-bolt {
+      position: absolute; top:0; left:50%; transform:translateX(-50%);
+      width: 150px; height: 100vh; z-index: 100;
+      pointer-events: none; opacity: 0;
+    }
+    .thunder-bolt polyline {
+      fill: none; stroke: #f1c40f; stroke-width: 6;
+      filter: drop-shadow(0 0 20px #f1c40f) drop-shadow(0 0 40px #f39c12);
+      stroke-dasharray: 2000; stroke-dashoffset: 2000;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .strike-active .thunder-bolt { opacity: 1; }
+    .strike-active .thunder-bolt polyline {
+      animation: thunder-grow 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+    .strike-flash {
+      position: fixed; inset:0; background: #fff; z-index: 2000;
+      opacity: 0; pointer-events: none;
+    }
+    .flash-active .strike-flash {
+      animation: final-white-flash 0.6s ease-out forwards;
+    }
+    @keyframes thunder-grow { 100% { stroke-dashoffset: 0; } }
+    @keyframes final-white-flash { 0%, 100% { opacity: 0; } 10%, 30% { opacity: 1; } }
+    @keyframes pass-pov-reveal {
+      0% { opacity: 0; transform: scale(5) perspective(1000px) rotateX(20deg); filter: brightness(2) blur(30px); }
+      100% { opacity: 1; transform: scale(1) perspective(1000px) rotateX(0deg); filter: brightness(1) blur(0); }
+    }
+    .pass-card.reveal-anim {
+      display: block !important;
+      animation: pass-pov-reveal 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+
     .loader-sub {
       font-family: 'Barlow', sans-serif;
       font-size: 14px;
@@ -489,12 +523,18 @@
         </div>
       </div>
     </div>
+    <svg class="thunder-bolt" viewBox="0 0 100 1000" preserveAspectRatio="none">
+      <polyline points="50,0 70,150 30,350 80,550 20,750 50,1000" />
+    </svg>
     <div class="loader-text">Locating Ticket</div>
     <div class="loader-sub">Scanning database for registration...</div>
   </div>
 
   <!-- Error View -->
   <div class="error-view" id="err-view"></div>
+
+  <!-- Strike Flash Layer -->
+  <div class="strike-flash" id="flash-layer"></div>
 
   <!-- Real Pass Card -->
   <div class="pass-card" id="pass-card">
@@ -608,56 +648,64 @@
     }
 
     function renderPass(r) {
-      document.getElementById('loader').style.opacity = '0';
+      // Start Thunder Sequence
+      document.getElementById('loader').classList.add('strike-active');
+      
       setTimeout(() => {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('pass-card').style.display = 'block';
+        // Flash Everything
+        document.body.classList.add('flash-active');
+        
+        setTimeout(() => {
+          document.getElementById('loader').style.display = 'none';
+          const card = document.getElementById('pass-card');
+          card.classList.add('reveal-anim');
 
-        document.getElementById('p-ev').textContent = r.eventName;
-        document.getElementById('p-id').textContent = r.regId;
-        document.getElementById('p-qr-lbl').textContent = r.regId;
-        document.getElementById('p-nm').textContent = r.name;
-        document.getElementById('p-rn').textContent = r.regno;
-        document.getElementById('p-ys').textContent = r.year ? 'Year ' + r.year + ' · Sec ' + (r.section || '—') : '—';
-        document.getElementById('p-ph').textContent = r.phone || '—';
+          document.getElementById('p-ev').textContent = r.eventName;
+          document.getElementById('p-id').textContent = r.regId;
+          document.getElementById('p-qr-lbl').textContent = r.regId;
+          document.getElementById('p-nm').textContent = r.name;
+          document.getElementById('p-rn').textContent = r.regno;
+          document.getElementById('p-ys').textContent = r.year ? 'Year ' + r.year + ' · Sec ' + (r.section || '—') : '—';
+          document.getElementById('p-ph').textContent = r.phone || '—';
 
-        const venue = VENUES[r.eventName] || 'PSNA CSE';
-        document.getElementById('p-dv').textContent = '18 April · ' + venue;
+          const venue = VENUES[r.eventName] || 'PSNA CSE';
+          document.getElementById('p-dv').textContent = '18 April · ' + venue;
 
-        // Team Rendering
-        const tmWrap = document.getElementById('p-team-wrapper');
-        let members = r.teamMembers || [];
-        if (typeof members === 'string' && members.trim()) {
-          try { members = JSON.parse(members); } catch (e) { members = []; }
-        }
+          // Team Rendering
+          const tmWrap = document.getElementById('p-team-wrapper');
+          let members = r.teamMembers || [];
+          if (typeof members === 'string' && members.trim()) {
+            try { members = JSON.parse(members); } catch (e) { members = []; }
+          }
 
-        if ((r.teamName && r.teamName.trim() !== 'Solo' && !r.teamName.includes('[{"name"')) || members.length > 0) {
-          const tName = (r.teamName && !r.teamName.includes('[{"name"')) ? r.teamName : 'Team';
-          let memHtml = `
+          if ((r.teamName && r.teamName.trim() !== 'Solo' && !r.teamName.includes('[{"name"')) || members.length > 0) {
+            const tName = (r.teamName && !r.teamName.includes('[{"name"')) ? r.teamName : 'Team';
+            let memHtml = `
             <div class="team-pass-section">
               <div class="team-pass-title">Team: ${tName}</div>
               <div class="team-member-row"><span>Member 1 (Leader)</span><strong>${r.name} · ${r.regno || ''}</strong></div>
           `;
-          members.forEach((m, i) => {
-            memHtml += `<div class="team-member-row"><span>Member ${i + 2}</span><strong>${m.name}${m.regno ? ' · ' + m.regno : ''}</strong></div>`;
+            members.forEach((m, i) => {
+              memHtml += `<div class="team-member-row"><span>Member ${i + 2}</span><strong>${m.name}${m.regno ? ' · ' + m.regno : ''}</strong></div>`;
+            });
+            memHtml += `</div>`;
+            tmWrap.innerHTML = memHtml;
+          }
+
+          // Generate the EXACT scanner-compatible QR Code string (base64 JSON matching the verify system)
+          const tmQR = members.map(m => ({ n: m.name || '', r: m.regno || '', y: m.year || '', s: m.section || '', p: m.phone || '' }));
+          const dataObj = { id: r.regId, n: r.name, e: r.eventName, rn: r.regno || '', ph: r.phone || '', yr: r.year || '', sec: r.section || '', t: r.teamName || '', tm: tmQR };
+          const verifyUrl = window.location.origin + window.location.pathname.replace('pass.html', '');
+          const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(dataObj))));
+
+          new QRCode(document.getElementById('qr-code-div'), {
+            text: qrText,
+            width: 140, height: 140,
+            colorDark: '#000', colorLight: '#fff',
+            correctLevel: QRCode.CorrectLevel.M
           });
-          memHtml += `</div>`;
-          tmWrap.innerHTML = memHtml;
-        }
-
-        // Generate the EXACT scanner-compatible QR Code string (base64 JSON matching the verify system)
-        const tmQR = members.map(m => ({ n: m.name || '', r: m.regno || '', y: m.year || '', s: m.section || '', p: m.phone || '' }));
-        const dataObj = { id: r.regId, n: r.name, e: r.eventName, rn: r.regno || '', ph: r.phone || '', yr: r.year || '', sec: r.section || '', t: r.teamName || '', tm: tmQR };
-        const verifyUrl = window.location.origin + window.location.pathname.replace('pass.html', '');
-        const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(dataObj))));
-
-        new QRCode(document.getElementById('qr-code-div'), {
-          text: qrText,
-          width: 140, height: 140,
-          colorDark: '#000', colorLight: '#fff',
-          correctLevel: QRCode.CorrectLevel.M
-        });
-      }, 500);
+        }, 150); // Small delay to let flash peak
+      }, 400); // Wait for bolt to peak
     }
 
     // Go
