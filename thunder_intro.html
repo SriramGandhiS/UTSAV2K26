@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CSEUTSAV 2K26 — Thunder Strike</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+
+  /* ═══════════════════════════════════════════
+     CANVAS LAYER — Lightning bolts & particles
+     ═══════════════════════════════════════════ */
+  #thunderCanvas {
+    position: fixed; inset: 0;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  /* ═══════════════════════════════════════════
+     FLASH OVERLAY — Full-screen white flash
+     ═══════════════════════════════════════════ */
+  #flashOverlay {
+    position: fixed; inset: 0;
+    z-index: 20;
+    background: #fff;
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  /* ═══════════════════════════════════════════
+     STORM SKY — Animated cloud / darkness
+     ═══════════════════════════════════════════ */
+  #stormLayer {
+    position: fixed; inset: 0;
+    z-index: 5;
+    background: radial-gradient(ellipse at 50% 20%, #0d0d1a 0%, #020208 60%, #000 100%);
+    transition: opacity 0.8s ease;
+  }
+
+  /* Vignette */
+  #stormLayer::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.85) 100%);
+  }
+
+  /* ═══════════════════════════════════════════
+     RAIN LAYER
+     ═══════════════════════════════════════════ */
+  #rainCanvas {
+    position: fixed; inset: 0;
+    z-index: 6;
+    pointer-events: none;
+  }
+
+  /* ═══════════════════════════════════════════
+     CURRENT / SPLATTER CRACKS OVERLAY
+     ═══════════════════════════════════════════ */
+  #crackCanvas {
+    position: fixed; inset: 0;
+    z-index: 15;
+    pointer-events: none;
+  }
+
+  /* ═══════════════════════════════════════════
+     SHOCKWAVE RING
+     ═══════════════════════════════════════════ */
+  .shockwave {
+    position: fixed;
+    z-index: 18;
+    border-radius: 50%;
+    border: 3px solid rgba(180,200,255,0.8);
+    box-shadow: 0 0 40px rgba(120,160,255,0.5), inset 0 0 40px rgba(120,160,255,0.3);
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  /* ═══════════════════════════════════════════
+     CAMERA SHAKE WRAPPER
+     ═══════════════════════════════════════════ */
+  #shakeWrapper {
+    position: fixed; inset: 0;
+    z-index: 1;
+  }
+
+  /* ═══════════════════════════════════════════
+     LANDING PAGE (revealed after thunder)
+     ═══════════════════════════════════════════ */
+  #landingPage {
+    position: fixed; inset: 0; z-index: 2;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: radial-gradient(ellipse at 50% 30%, #0f0500 0%, #0a0a0a 50%, #000 100%);
+    opacity: 0;
+    transform: scale(1.05);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    overflow: hidden;
+  }
+
+  #landingPage.revealed {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Ember particles floating up */
+  .ember {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: #e8541a;
+    border-radius: 50%;
+    opacity: 0;
+    animation: ember-rise 3s ease-out forwards;
+    box-shadow: 0 0 6px #e8541a, 0 0 12px rgba(232,84,26,0.4);
+  }
+
+  @keyframes ember-rise {
+    0% { opacity: 0; transform: translateY(0) scale(1); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-200px) scale(0); }
+  }
+
+  /* Landing content */
+  .landing-meta {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 0.3s;
+  }
+
+  .landing-title {
+    font-size: clamp(60px, 18vw, 140px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    line-height: 0.85;
+    text-align: center;
+    margin: 20px 0;
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    animation: titleReveal 1s ease forwards;
+    animation-delay: 0.5s;
+  }
+
+  .landing-title .w { color: #fff; }
+  .landing-title .o {
+    color: #e8541a;
+    text-shadow: 0 0 30px rgba(232,84,26,0.6), 0 0 60px rgba(232,84,26,0.3);
+  }
+
+  .landing-date {
+    display: inline-block;
+    padding: 8px 24px;
+    border: 1px solid rgba(232,84,26,0.5);
+    border-radius: 4px;
+    background: rgba(232,84,26,0.08);
+    color: #e8541a;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 0.9s;
+  }
+
+  .landing-tagline {
+    margin-top: 20px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+    font-weight: 600;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 1.2s;
+  }
+
+  .landing-cta {
+    margin-top: 36px;
+    padding: 14px 40px;
+    background: transparent;
+    border: 2px solid #e8541a;
+    color: #e8541a;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 1.5s;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .landing-cta:hover {
+    background: #e8541a;
+    color: #fff;
+    box-shadow: 0 0 30px rgba(232,84,26,0.5);
+  }
+
+  /* Floating ring behind title */
+  .hero-ring {
+    position: absolute;
+    width: 500px; height: 500px;
+    border: 1px solid rgba(232,84,26,0.1);
+    border-radius: 50%;
+    animation: ring-pulse 4s ease-in-out infinite;
+    opacity: 0;
+  }
+
+  .hero-ring:nth-child(2) { width: 600px; height: 600px; animation-delay: 1s; }
+  .hero-ring:nth-child(3) { width: 700px; height: 700px; animation-delay: 2s; }
+
+  #landingPage.revealed .hero-ring {
+    opacity: 1;
+    transition: opacity 2s ease;
+    transition-delay: 1s;
+  }
+
+  @keyframes ring-pulse {
+    0%, 100% { transform: scale(1); border-color: rgba(232,84,26,0.08); }
+    50% { transform: scale(1.05); border-color: rgba(232,84,26,0.2); }
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes titleReveal {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ═══════════════════════════════════════════
+     SOUND HINT
+     ═══════════════════════════════════════════ */
+  .sound-hint {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    z-index: 100;
+    color: rgba(255,255,255,0.3);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Barlow Condensed', sans-serif;
+    pointer-events: none;
+    opacity: 0;
+    animation: hintFade 3s ease forwards 0.5s;
+  }
+
+  @keyframes hintFade {
+    0% { opacity: 0; }
+    30% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Storm sky background -->
+<div id="stormLayer"></div>
+
+<!-- Rain -->
+<canvas id="rainCanvas"></canvas>
+
+<!-- Lightning bolts -->
+<canvas id="thunderCanvas"></canvas>
+
+<!-- Electric crack splatter -->
+<canvas id="crackCanvas"></canvas>
+
+<!-- White flash -->
+<div id="flashOverlay"></div>
+
+<!-- Camera shake wrapper for landing page -->
+<div id="shakeWrapper">
+  <div id="landingPage">
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+    <div class="landing-meta">PSNA College of Engineering</div>
+    <div class="landing-title">
+      <span class="w">CSE</span><span class="o">UTSAV</span>
+    </div>
+    <div class="landing-date">April 13 – 18, 2026</div>
+    <div class="landing-tagline">The Storm Has Arrived</div>
+    <a class="landing-cta" href="index.html">Enter the Arena ⚡</a>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  CONFIGURATION
+// ══════════════════════════════════════════════════════
+const CFG = {
+  // Timeline (ms)
+  RAIN_START: 0,
+  AMBIENT_FLICKER_START: 300,
+  FIRST_BOLT_AT: 800,
+  SECOND_BOLT_AT: 1600,
+  POV_DIVE_START: 2200,
+  POV_DIVE_DURATION: 1200,
+  MEGA_STRIKE_AT: 3400,       // The POV impact
+  CRACK_SPLATTER_AT: 3400,
+  SHOCKWAVE_AT: 3500,
+  REVEAL_AT: 3800,
+  TOTAL_DURATION: 5000,
+
+  // Visual
+  BOLT_COLOR: 'rgba(180,200,255,',
+  BOLT_GLOW: 'rgba(100,150,255,',
+  RAIN_COUNT: 300,
+  SPARK_COUNT: 60,
+};
+
+// ══════════════════════════════════════════════════════
+//  CANVAS SETUP
+// ══════════════════════════════════════════════════════
+const thunderCanvas = document.getElementById('thunderCanvas');
+const thunderCtx = thunderCanvas.getContext('2d');
+const rainCanvas = document.getElementById('rainCanvas');
+const rainCtx = rainCanvas.getContext('2d');
+const crackCanvas = document.getElementById('crackCanvas');
+const crackCtx = crackCanvas.getContext('2d');
+const flash = document.getElementById('flashOverlay');
+const stormLayer = document.getElementById('stormLayer');
+const landingPage = document.getElementById('landingPage');
+const shakeWrapper = document.getElementById('shakeWrapper');
+
+let W, H;
+function resize() {
+  W = window.innerWidth;
+  H = window.innerHeight;
+  thunderCanvas.width = rainCanvas.width = crackCanvas.width = W;
+  thunderCanvas.height = rainCanvas.height = crackCanvas.height = H;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ══════════════════════════════════════════════════════
+//  AUDIO — Web Audio API thunder rumble + crack
+// ══════════════════════════════════════════════════════
+let audioCtx;
+function initAudio() {
+  if (audioCtx) return;
+  try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+}
+
+function playThunderRumble(volume = 0.4, duration = 2) {
+  if (!audioCtx) return;
+  const bufSize = audioCtx.sampleRate * duration;
+  const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < bufSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufSize * 0.3));
+  }
+  const src = audioCtx.createBufferSource();
+  src.buffer = buf;
+  // Low-pass for deep rumble
+  const lp = audioCtx.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.frequency.value = 150;
+  const gain = audioCtx.createGain();
+  gain.gain.value = volume;
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  src.connect(lp).connect(gain).connect(audioCtx.destination);
+  src.start();
+}
+
+function playThunderCrack(volume = 0.7) {
+  if (!audioCtx) return;
+  const dur = 0.3;
+  const bufSize = audioCtx.sampleRate * dur;
+  const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < bufSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufSize * 0.05));
+  }
+  const src = audioCtx.createBufferSource();
+  src.buffer = buf;
+  const hp = audioCtx.createBiquadFilter();
+  hp.type = 'highpass';
+  hp.frequency.value = 800;
+  const gain = audioCtx.createGain();
+  gain.gain.value = volume;
+  src.connect(hp).connect(gain).connect(audioCtx.destination);
+  src.start();
+}
+
+function playMegaImpact() {
+  if (!audioCtx) return;
+  playThunderCrack(1.0);
+  setTimeout(() => playThunderRumble(0.8, 3), 50);
+}
+
+// ══════════════════════════════════════════════════════
+//  LIGHTNING BOLT GENERATION
+// ══════════════════════════════════════════════════════
+function generateBolt(x1, y1, x2, y2, detail = 6, spread = 0.3) {
+  const points = [{ x: x1, y: y1 }];
+  let segments = [{ x: x1, y: y1, ex: x2, ey: y2 }];
+
+  for (let d = 0; d < detail; d++) {
+    const next = [];
+    for (const seg of segments) {
+      const mx = (seg.x + seg.ex) / 2 + (Math.random() - 0.5) * Math.abs(seg.ex - seg.x) * spread;
+      const my = (seg.y + seg.ey) / 2 + (Math.random() - 0.5) * Math.abs(seg.ey - seg.y) * spread;
+      next.push({ x: seg.x, y: seg.y, ex: mx, ey: my });
+      next.push({ x: mx, y: my, ex: seg.ex, ey: seg.ey });
+    }
+    segments = next;
+  }
+
+  return segments.map(s => ({ x: s.x, y: s.y })).concat([{ x: x2, y: y2 }]);
+}
+
+function drawBolt(ctx, points, width = 3, alpha = 1) {
+  if (points.length < 2) return;
+
+  // Outer glow
+  ctx.save();
+  ctx.strokeStyle = CFG.BOLT_GLOW + (alpha * 0.3) + ')';
+  ctx.lineWidth = width * 6;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.shadowColor = 'rgba(100,150,255,0.8)';
+  ctx.shadowBlur = 40;
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+  ctx.stroke();
+  ctx.restore();
+
+  // Mid glow
+  ctx.save();
+  ctx.strokeStyle = CFG.BOLT_COLOR + (alpha * 0.6) + ')';
+  ctx.lineWidth = width * 2.5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.shadowColor = 'rgba(180,200,255,0.5)';
+  ctx.shadowBlur = 20;
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+  ctx.stroke();
+  ctx.restore();
+
+  // Core (white hot)
+  ctx.save();
+  ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+  ctx.lineWidth = width;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+  ctx.stroke();
+  ctx.restore();
+}
+
+// ══════════════════════════════════════════════════════
+//  ELECTRIC CRACK SPLATTER (impact fractures)
+// ══════════════════════════════════════════════════════
+let crackBranches = [];
+
+function generateCracks(cx, cy, numBranches = 12) {
+  crackBranches = [];
+  for (let i = 0; i < numBranches; i++) {
+    const angle = (Math.PI * 2 / numBranches) * i + (Math.random() - 0.5) * 0.5;
+    const length = 100 + Math.random() * 300;
+    const branch = [];
+    let x = cx, y = cy;
+    const steps = 8 + Math.floor(Math.random() * 12);
+    for (let s = 0; s <= steps; s++) {
+      branch.push({ x, y });
+      const progress = s / steps;
+      const stepLen = length / steps;
+      const jitter = (1 - progress) * 30;
+      x += Math.cos(angle + (Math.random() - 0.5) * 0.8) * stepLen;
+      y += Math.sin(angle + (Math.random() - 0.5) * 0.8) * stepLen;
+    }
+    // Sub-branches
+    const subBranches = [];
+    for (let s = 2; s < branch.length; s += 3) {
+      if (Math.random() > 0.4) {
+        const subAngle = angle + (Math.random() - 0.5) * 1.5;
+        const subLen = 30 + Math.random() * 80;
+        const sub = [];
+        let sx = branch[s].x, sy = branch[s].y;
+        const subSteps = 3 + Math.floor(Math.random() * 5);
+        for (let ss = 0; ss <= subSteps; ss++) {
+          sub.push({ x: sx, y: sy });
+          sx += Math.cos(subAngle + (Math.random() - 0.5)) * (subLen / subSteps);
+          sy += Math.sin(subAngle + (Math.random() - 0.5)) * (subLen / subSteps);
+        }
+        subBranches.push({ points: sub, width: 1 });
+      }
+    }
+    crackBranches.push({ points: branch, width: 2 + Math.random() * 2, subBranches });
+  }
+}
+
+function drawCracks(progress, alpha) {
+  crackCtx.clearRect(0, 0, W, H);
+  if (progress <= 0) return;
+
+  for (const branch of crackBranches) {
+    const pts = branch.points;
+    const visibleCount = Math.floor(pts.length * Math.min(progress * 1.5, 1));
+    if (visibleCount < 2) continue;
+
+    // Draw main branch
+    crackCtx.save();
+    crackCtx.strokeStyle = `rgba(180,200,255,${alpha * 0.8})`;
+    crackCtx.lineWidth = branch.width * alpha;
+    crackCtx.shadowColor = `rgba(100,150,255,${alpha * 0.6})`;
+    crackCtx.shadowBlur = 15;
+    crackCtx.lineCap = 'round';
+    crackCtx.beginPath();
+    crackCtx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < visibleCount; i++) crackCtx.lineTo(pts[i].x, pts[i].y);
+    crackCtx.stroke();
+
+    // Core white
+    crackCtx.strokeStyle = `rgba(255,255,255,${alpha})`;
+    crackCtx.lineWidth = branch.width * 0.4 * alpha;
+    crackCtx.shadowBlur = 8;
+    crackCtx.beginPath();
+    crackCtx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < visibleCount; i++) crackCtx.lineTo(pts[i].x, pts[i].y);
+    crackCtx.stroke();
+    crackCtx.restore();
+
+    // Sub-branches
+    if (progress > 0.3) {
+      for (const sub of branch.subBranches) {
+        const sp = sub.points;
+        const sCount = Math.floor(sp.length * Math.min((progress - 0.3) * 2, 1));
+        if (sCount < 2) continue;
+        crackCtx.save();
+        crackCtx.strokeStyle = `rgba(140,170,255,${alpha * 0.5})`;
+        crackCtx.lineWidth = sub.width * alpha;
+        crackCtx.shadowColor = `rgba(100,150,255,${alpha * 0.3})`;
+        crackCtx.shadowBlur = 8;
+        crackCtx.lineCap = 'round';
+        crackCtx.beginPath();
+        crackCtx.moveTo(sp[0].x, sp[0].y);
+        for (let i = 1; i < sCount; i++) crackCtx.lineTo(sp[i].x, sp[i].y);
+        crackCtx.stroke();
+        crackCtx.restore();
+      }
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  SPARKS / PARTICLES
+// ══════════════════════════════════════════════════════
+let sparks = [];
+
+function spawnSparks(cx, cy, count = 60) {
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 3 + Math.random() * 12;
+    const size = 1 + Math.random() * 3;
+    sparks.push({
+      x: cx, y: cy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - Math.random() * 4,
+      size,
+      life: 1,
+      decay: 0.01 + Math.random() * 0.03,
+      color: Math.random() > 0.5 ? '180,200,255' : '255,255,255',
+      gravity: 0.15 + Math.random() * 0.1
+    });
+  }
+}
+
+function updateSparks() {
+  for (let i = sparks.length - 1; i >= 0; i--) {
+    const s = sparks[i];
+    s.x += s.vx;
+    s.y += s.vy;
+    s.vy += s.gravity;
+    s.vx *= 0.98;
+    s.life -= s.decay;
+    if (s.life <= 0) sparks.splice(i, 1);
+  }
+}
+
+function drawSparks(ctx) {
+  for (const s of sparks) {
+    ctx.save();
+    ctx.fillStyle = `rgba(${s.color},${s.life})`;
+    ctx.shadowColor = `rgba(${s.color},${s.life * 0.5})`;
+    ctx.shadowBlur = 10;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  RAIN
+// ══════════════════════════════════════════════════════
+const raindrops = [];
+function initRain() {
+  for (let i = 0; i < CFG.RAIN_COUNT; i++) {
+    raindrops.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      len: 10 + Math.random() * 25,
+      speed: 12 + Math.random() * 15,
+      alpha: 0.1 + Math.random() * 0.25,
+      wind: 2 + Math.random() * 3
+    });
+  }
+}
+
+function drawRain(intensityMul = 1) {
+  rainCtx.clearRect(0, 0, W, H);
+  for (const r of raindrops) {
+    r.x += r.wind;
+    r.y += r.speed;
+    if (r.y > H) { r.y = -r.len; r.x = Math.random() * W; }
+    if (r.x > W) r.x = 0;
+
+    rainCtx.save();
+    rainCtx.strokeStyle = `rgba(180,200,240,${r.alpha * intensityMul})`;
+    rainCtx.lineWidth = 1;
+    rainCtx.beginPath();
+    rainCtx.moveTo(r.x, r.y);
+    rainCtx.lineTo(r.x - r.wind * 0.5, r.y - r.len);
+    rainCtx.stroke();
+    rainCtx.restore();
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  POV DIVE — Expanding bolt toward camera
+// ══════════════════════════════════════════════════════
+let povBoltSegments = [];
+
+function generatePovBolt() {
+  // Center bolt with many branches coming AT the viewer
+  const cx = W / 2;
+  const vanishY = H * 0.15;  // vanishing point (sky)
+  const impactY = H * 0.5;   // impact center
+
+  // Main trunk
+  const mainBolt = generateBolt(cx, vanishY, cx + (Math.random()-0.5)*100, impactY, 7, 0.25);
+
+  // Side branches that fan out (POV perspective)
+  const branches = [];
+  for (let i = 0; i < 8; i++) {
+    const t = 0.3 + Math.random() * 0.6;
+    const idx = Math.floor(t * mainBolt.length);
+    const origin = mainBolt[Math.min(idx, mainBolt.length - 1)];
+    const spreadX = (Math.random() - 0.5) * W * 0.8;
+    const spreadY = origin.y + Math.random() * H * 0.3;
+    const branch = generateBolt(origin.x, origin.y, origin.x + spreadX, spreadY, 5, 0.35);
+    branches.push(branch);
+  }
+
+  povBoltSegments = { main: mainBolt, branches };
+}
+
+function drawPovBolt(progress, scale) {
+  if (!povBoltSegments.main) return;
+
+  const { main, branches } = povBoltSegments;
+
+  // Scale from center to simulate rush toward camera
+  thunderCtx.save();
+  thunderCtx.translate(W/2, H/2);
+  thunderCtx.scale(scale, scale);
+  thunderCtx.translate(-W/2, -H/2);
+
+  // Draw main
+  const mainVisible = Math.floor(main.length * Math.min(progress * 2, 1));
+  if (mainVisible >= 2) {
+    drawBolt(thunderCtx, main.slice(0, mainVisible), 4 * scale, Math.min(1, progress * 3));
+  }
+
+  // Draw branches progressively
+  if (progress > 0.3) {
+    const branchProgress = (progress - 0.3) / 0.7;
+    for (let i = 0; i < branches.length; i++) {
+      const delay = i * 0.1;
+      const bp = Math.max(0, (branchProgress - delay) / (1 - delay));
+      const bVisible = Math.floor(branches[i].length * Math.min(bp, 1));
+      if (bVisible >= 2) {
+        drawBolt(thunderCtx, branches[i].slice(0, bVisible), 2 * scale, bp * 0.8);
+      }
+    }
+  }
+
+  thunderCtx.restore();
+}
+
+// ══════════════════════════════════════════════════════
+//  CAMERA SHAKE
+// ══════════════════════════════════════════════════════
+function applyShake(intensity) {
+  if (intensity <= 0) {
+    shakeWrapper.style.transform = '';
+    return;
+  }
+  const x = (Math.random() - 0.5) * intensity;
+  const y = (Math.random() - 0.5) * intensity;
+  const r = (Math.random() - 0.5) * intensity * 0.05;
+  shakeWrapper.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg)`;
+}
+
+// ══════════════════════════════════════════════════════
+//  FLASH
+// ══════════════════════════════════════════════════════
+function triggerFlash(intensity = 1, duration = 150) {
+  flash.style.transition = 'none';
+  flash.style.opacity = intensity;
+  requestAnimationFrame(() => {
+    flash.style.transition = `opacity ${duration}ms ease-out`;
+    flash.style.opacity = 0;
+  });
+}
+
+// ══════════════════════════════════════════════════════
+//  SHOCKWAVE
+// ══════════════════════════════════════════════════════
+function createShockwave(cx, cy) {
+  const el = document.createElement('div');
+  el.className = 'shockwave';
+  el.style.left = (cx - 5) + 'px';
+  el.style.top = (cy - 5) + 'px';
+  el.style.width = '10px';
+  el.style.height = '10px';
+  document.body.appendChild(el);
+
+  requestAnimationFrame(() => {
+    el.style.transition = 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
+    el.style.transform = `scale(${Math.max(W, H) / 5})`;
+    el.style.opacity = '0';
+  });
+
+  setTimeout(() => el.remove(), 1000);
+}
+
+// ══════════════════════════════════════════════════════
+//  EMBER PARTICLES ON LANDING
+// ══════════════════════════════════════════════════════
+function spawnEmbers() {
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      const ember = document.createElement('div');
+      ember.className = 'ember';
+      ember.style.left = (Math.random() * 100) + '%';
+      ember.style.bottom = '0';
+      ember.style.animationDuration = (2 + Math.random() * 3) + 's';
+      ember.style.width = ember.style.height = (2 + Math.random() * 4) + 'px';
+      landingPage.appendChild(ember);
+      setTimeout(() => ember.remove(), 5000);
+    }, i * 100);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  MAIN ANIMATION TIMELINE
+// ══════════════════════════════════════════════════════
+let startTime = null;
+let animationDone = false;
+let bolt1 = null, bolt2 = null;
+let cracksGenerated = false;
+let povGenerated = false;
+let impactDone = false;
+
+// Pre-generate bolts
+function pregenBolts() {
+  bolt1 = generateBolt(W * 0.3, 0, W * 0.35, H * 0.7, 6, 0.3);
+  bolt2 = generateBolt(W * 0.7, 0, W * 0.6, H * 0.6, 6, 0.3);
+  generatePovBolt();
+  povGenerated = true;
+}
+
+initRain();
+
+function animate(timestamp) {
+  if (!startTime) {
+    startTime = timestamp;
+    pregenBolts();
+  }
+
+  const elapsed = timestamp - startTime;
+
+  if (animationDone) {
+    // Keep rain fading out
+    const fadeRain = Math.max(0, 1 - (elapsed - CFG.REVEAL_AT) / 2000);
+    if (fadeRain > 0) {
+      drawRain(fadeRain);
+    } else {
+      rainCtx.clearRect(0, 0, W, H);
+    }
+    updateSparks();
+    thunderCtx.clearRect(0, 0, W, H);
+    drawSparks(thunderCtx);
+
+    // Fade out cracks
+    const crackFade = Math.max(0, 1 - (elapsed - CFG.REVEAL_AT) / 2000);
+    if (crackFade > 0 && cracksGenerated) {
+      drawCracks(1, crackFade);
+    } else {
+      crackCtx.clearRect(0, 0, W, H);
+    }
+
+    if (fadeRain <= 0 && sparks.length === 0 && crackFade <= 0) return; // stop
+    requestAnimationFrame(animate);
+    return;
+  }
+
+  // Clear
+  thunderCtx.clearRect(0, 0, W, H);
+
+  // ─── RAIN ──────────────────────────────────
+  if (elapsed >= CFG.RAIN_START) {
+    const rainIntensity = Math.min(1, (elapsed - CFG.RAIN_START) / 500);
+    drawRain(rainIntensity);
+  }
+
+  // ─── AMBIENT FLICKERS ────────────────────
+  if (elapsed >= CFG.AMBIENT_FLICKER_START && elapsed < CFG.FIRST_BOLT_AT) {
+    if (Math.random() > 0.92) {
+      triggerFlash(0.05 + Math.random() * 0.1, 80);
+    }
+  }
+
+  // ─── FIRST DISTANT BOLT ───────────────────
+  if (elapsed >= CFG.FIRST_BOLT_AT && elapsed < CFG.FIRST_BOLT_AT + 400) {
+    const t = (elapsed - CFG.FIRST_BOLT_AT) / 400;
+    const alpha = t < 0.3 ? t / 0.3 : Math.max(0, 1 - (t - 0.3) / 0.7);
+    drawBolt(thunderCtx, bolt1, 2, alpha * 0.7);
+    if (t < 0.05) {
+      triggerFlash(0.3, 200);
+      playThunderRumble(0.2, 1.5);
+    }
+    applyShake(alpha * 3);
+  }
+
+  // ─── SECOND BOLT (closer) ─────────────────
+  if (elapsed >= CFG.SECOND_BOLT_AT && elapsed < CFG.SECOND_BOLT_AT + 350) {
+    const t = (elapsed - CFG.SECOND_BOLT_AT) / 350;
+    const alpha = t < 0.2 ? t / 0.2 : Math.max(0, 1 - (t - 0.2) / 0.8);
+    drawBolt(thunderCtx, bolt2, 3, alpha * 0.85);
+    if (t < 0.05) {
+      triggerFlash(0.5, 180);
+      playThunderCrack(0.4);
+      setTimeout(() => playThunderRumble(0.3, 2), 100);
+    }
+    applyShake(alpha * 6);
+  }
+
+  // ─── POV DIVE — Lightning coming AT you ────
+  if (elapsed >= CFG.POV_DIVE_START && elapsed < CFG.MEGA_STRIKE_AT) {
+    const t = (elapsed - CFG.POV_DIVE_START) / CFG.POV_DIVE_DURATION;
+    // Scale rushes from 1 → 3 (zoom effect)
+    const scale = 1 + t * 2.5;
+    // Brightness builds
+    const brightness = 0.05 + t * 0.3;
+
+    drawPovBolt(t, scale);
+
+    // Increasing flicker
+    if (Math.random() > 0.7) {
+      triggerFlash(brightness, 50 + Math.random() * 80);
+    }
+
+    applyShake(5 + t * 20);
+
+    // Rumble builds
+    if (t < 0.05) {
+      playThunderRumble(0.3, 2);
+    }
+  }
+
+  // ─── MEGA IMPACT ────────────────────────────
+  if (elapsed >= CFG.MEGA_STRIKE_AT && !impactDone) {
+    impactDone = true;
+
+    // MASSIVE flash
+    triggerFlash(1.0, 600);
+
+    // Camera mega-shake
+    let shakeCount = 0;
+    const shakeInterval = setInterval(() => {
+      applyShake(30 - shakeCount * 1.5);
+      shakeCount++;
+      if (shakeCount > 20) {
+        clearInterval(shakeInterval);
+        applyShake(0);
+      }
+    }, 30);
+
+    // Spawn impact sparks
+    spawnSparks(W / 2, H / 2, 80);
+
+    // Generate cracks from center
+    generateCracks(W / 2, H / 2, 16);
+    cracksGenerated = true;
+
+    // Shockwave
+    setTimeout(() => createShockwave(W / 2, H / 2), 100);
+
+    // Audio
+    playMegaImpact();
+  }
+
+  // ─── CRACK SPLATTER ANIMATION ──────────────
+  if (elapsed >= CFG.CRACK_SPLATTER_AT && elapsed < CFG.REVEAL_AT) {
+    const t = (elapsed - CFG.CRACK_SPLATTER_AT) / (CFG.REVEAL_AT - CFG.CRACK_SPLATTER_AT);
+    drawCracks(t, 1);
+  }
+
+  // Sparks
+  updateSparks();
+  drawSparks(thunderCtx);
+
+  // ─── REVEAL LANDING PAGE ───────────────────
+  if (elapsed >= CFG.REVEAL_AT && !animationDone) {
+    animationDone = true;
+    stormLayer.style.opacity = '0';
+    landingPage.classList.add('revealed');
+    spawnEmbers();
+
+    // Second wave of embers
+    setTimeout(() => spawnEmbers(), 1000);
+  }
+
+  requestAnimationFrame(animate);
+}
+
+// ══════════════════════════════════════════════════════
+//  START
+// ══════════════════════════════════════════════════════
+document.addEventListener('click', initAudio, { once: true });
+document.addEventListener('touchstart', initAudio, { once: true });
+
+// Auto-start immediately — no delay
+initAudio();
+requestAnimationFrame(animate);
+</script>
+
+</body>
+</html>
