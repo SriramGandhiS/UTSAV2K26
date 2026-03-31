@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Digital Pass — UTSAV 2K26</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+    html { overscroll-behavior:none; }
+    :root { 
+      --black:#0a0a0a; --card:#161616; --border:#242424; 
+      --text:#f0f0f0; --muted:#888; --muted2:#555; 
+      --orange:#e8541a; --green:#2ecc71; 
+    }
+    body { 
+      background: var(--black); color: var(--text); font-family: 'Barlow', sans-serif;
+      display: flex; align-items: center; justify-content: center; min-height: 100svh; padding: 24px;
+    }
+    
+    /* ════ EPIC LOADING ANIMATION ════ */
+    .loader-wrapper {
+      position: fixed; inset: 0; background: #fff; z-index: 1000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow: hidden;
+      transition: opacity 0.5s ease;
+    }
+    .flash {
+      position: absolute; inset: 0; background: #fff; z-index: -1;
+      animation: bg-flash 3s linear infinite;
+    }
+    .anim-scene {
+      position: relative; width: 140px; height: 180px;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    }
+    .laser {
+      position: absolute; left: -20px; right: -20px; height: 4px;
+      background: #e74c3c;
+      box-shadow: 0 0 20px 6px rgba(231,76,60,0.6);
+      animation: scan-down 3s ease-in-out infinite;
+      opacity: 0; z-index: 10;
+    }
+    .char {
+      position: relative; width: 44px; height: 64px;
+      background: #2c3e50; border-radius: 12px;
+      animation: fear-cycle 3s infinite;
+    }
+    .eyes {
+      position: absolute; top: 14px; width: 100%;
+      display: flex; justify-content: center; gap: 8px;
+    }
+    .eye {
+      width: 8px; height: 8px; background: #fff; border-radius: 50%;
+      transition: height 0.1s;
+      animation: eye-cycle 3s infinite;
+    }
+    
+    @keyframes scan-down {
+      0%   { top: 0; opacity: 0; }
+      10%  { opacity: 1; }
+      45%  { top: 100%; opacity: 1; }
+      50%  { opacity: 0; top: 100%; }
+      100% { top: 0; opacity: 0; }
+    }
+    @keyframes bg-flash {
+      0%, 42%, 46%, 100% { background: #fff; }
+      43%, 45% { background: #fdf2e9; } /* Thunder/Laser clash */
+      44% { background: #fdebd0; }
+    }
+    @keyframes fear-cycle {
+      0%, 12% { transform: translate(0,0); background: #2c3e50; }
+      15%, 17%, 19%, 21%, 23%, 25%, 27%, 29%, 31%, 33%, 35%, 37%, 39% { transform: translate(2px,-2px); background: #34495e; }
+      16%, 18%, 20%, 22%, 24%, 26%, 28%, 30%, 32%, 34%, 36%, 38% { transform: translate(-2px,2px); background: #ebedef; } /* Shaking extremely fast & sweating white */
+      40%, 100% { transform: translate(0,0); background: #2c3e50; }
+    }
+    @keyframes eye-cycle {
+      0%, 12% { height: 8px; }
+      15%, 39% { height: 3px; transform: scaleY(0.4); } /* Squints in fear */
+      40%, 100% { height: 8px; }
+    }
+
+    .loader-text {
+      margin-top: 50px; text-align: center;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 900; color: #2c3e50;
+      text-transform: uppercase; letter-spacing: 2px;
+    }
+    .loader-sub { font-family: 'Barlow', sans-serif; font-size: 14px; color: #7f8c8d; margin-top: 8px; text-align: center; }
+
+    /* ════ PASS CARD ════ */
+    .pass-card { width: 100%; max-width: 420px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.6); display: none; }
+    .pass-top { background: linear-gradient(135deg,rgba(232,84,26,.15),transparent); padding: 24px; position:relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+    .pass-fest { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+    .pass-ev-name { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+    .pass-status { position: absolute; top: 24px; right: 24px; background: rgba(46,204,113,.1); color: var(--green); border: 1px solid rgba(46,204,113,.3); border-radius: 20px; padding: 4px 10px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .sdot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; box-shadow: 0 0 6px var(--green); }
+    .pass-body { padding: 24px; }
+    .pass-id-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; }
+    .pid-l { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--muted2); text-transform: uppercase; margin-bottom: 4px; }
+    .pid-v { font-family: monospace; font-size: 16px; font-weight: 800; color: #fff; letter-spacing: 1px; }
+    .pass-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .pass-grid > div { background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.05); border-radius: 8px; padding: 10px 12px; }
+    .pfl { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--muted2); text-transform: uppercase; margin-bottom: 4px; }
+    .pfv { font-size: 13px; font-weight: 600; color: #fff; }
+    .team-pass-section { margin-bottom: 16px; background: rgba(232,84,26,.05); border: 1px solid rgba(232,84,26,.15); border-radius: 8px; padding: 12px; }
+    .team-pass-title { font-size: 11px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+    .team-member-row { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+    .team-member-row:last-child { border-bottom: none; }
+    .team-member-row span { color: var(--muted); }
+    .team-member-row strong { color: #fff; }
+    .pass-sep { display: flex; align-items: center; margin: 24px 0; color: var(--muted2); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+    .pass-sep::before, .pass-sep::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .pass-sep span { padding: 0 12px; }
+    .qr-center { display: flex; justify-content: center; }
+    .qr-box { background: #fff; padding: 16px; border-radius: 12px; text-align: center; }
+    .qr-lbl { font-family: monospace; font-size: 12px; color: #000; font-weight: 700; margin-top: 8px; }
+    .shot-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 16px; }
+    
+    .error-view { text-align:center; display:none; flex-direction:column; align-items:center; gap:12px; background:var(--card); padding:40px; border-radius:16px; border:1px solid #e74c3c; box-shadow: 0 0 30px rgba(231,76,60,.2); }
+  </style>
+</head>
+<body>
+
+  <!-- Loading Animation -->
+  <div class="loader-wrapper" id="loader">
+    <div class="flash"></div>
+    <div class="anim-scene">
+      <div class="laser"></div>
+      <div class="char">
+        <div class="eyes"><div class="eye"></div><div class="eye"></div></div>
+      </div>
+    </div>
+    <div class="loader-text">Locating Ticket</div>
+    <div class="loader-sub">Scanning database for registration...</div>
+  </div>
+
+  <!-- Error View -->
+  <div class="error-view" id="err-view"></div>
+
+  <!-- Real Pass Card -->
+  <div class="pass-card" id="pass-card">
+    <div class="pass-top">
+      <div class="pass-fest">CSEUTSAV 2K26 · PSNA COLLEGE · DEPT OF CSE</div>
+      <div class="pass-ev-name" id="p-ev">...</div>
+      <div class="pass-status"><div class="sdot"></div>Confirmed</div>
+    </div>
+    <div class="pass-body">
+      <div class="pass-id-row">
+        <div><div class="pid-l">Registration ID</div><div class="pid-v" id="p-id">...</div></div>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(232,84,26,.3)" stroke-width="1.5"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/></svg>
+      </div>
+      <div class="pass-grid">
+        <div><div class="pfl">Name</div><div class="pfv" id="p-nm">...</div></div>
+        <div><div class="pfl">Reg Number</div><div class="pfv" id="p-rn">...</div></div>
+        <div><div class="pfl">Department</div><div class="pfv" id="p-dept">CSE</div></div>
+        <div><div class="pfl">Year & Section</div><div class="pfv" id="p-ys">...</div></div>
+        <div><div class="pfl">Register Phone</div><div class="pfv" id="p-ph">...</div></div>
+        <div><div class="pfl">Date & Venue</div><div class="pfv" id="p-dv">18 April · PSNA</div></div>
+      </div>
+      
+      <div id="p-team-wrapper"></div>
+
+      <div class="pass-sep"><span>Valid Digital Entry Pass</span></div>
+      <div class="qr-center">
+        <div class="qr-box">
+          <div id="qr-code-div"></div>
+          <div class="qr-lbl" id="p-qr-lbl">...</div>
+        </div>
+      </div>
+      <div class="shot-note">Screenshot this pass · Show at the entry desk</div>
+    </div>
+  </div>
+
+  <script>
+    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx_En8x8MhnhIV1qYboX9kAftQ23dHtjJAO8wGouGgwlaBP8GOgUHTS-7Va4nErc0MWKg/exec';
+    
+    // We can infer Event Venues from earlier EVS list (or default)
+    const VENUES = {
+      "Hackverse": "213", "Tech Trails": "CSE Lab 3", "Code Red": "CSE Lab 2",
+      "TechnoTrace": "CSE Lab 1", "Uno Reverse": "CSE Lab 4", "Checkmate Coders": "CSE Lab 5",
+      "Design Decode": "214", "Brand to Billion": "215", "Clash of Minds": "216", "Zero Code Zone": "217",
+      "Algorithmic Platter": "218", "Franchise Fiesta": "219", "Gaming": "CSE Game Lab", "Multimedia": "Seminar Hall"
+    };
+
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const regId = params.get('id');
+      
+      if (!regId) {
+        showErr("Invalid Link", "No Registration ID was provided in the link.");
+        return;
+      }
+
+      try {
+        const res = await fetch(SHEETS_URL + '?action=lookup&id=' + encodeURIComponent(regId));
+        const data = await res.json();
+        
+        if (data.registrations && data.registrations.length > 0) {
+          // Success! Show pass.
+          setTimeout(() => {
+            renderPass(data.registrations[0]);
+          }, 800); // Give the animation at least a second to be enjoyed!
+        } else {
+          showErr("Pass Not Found", `Registration ${regId} does not exist or was deleted.`);
+        }
+      } catch (e) {
+        showErr("Network Error", "Could not fetch pass data. Please check connection and refresh.");
+      }
+    }
+
+    function showErr(title, msg) {
+      document.getElementById('loader').style.opacity = '0';
+      setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        const ev = document.getElementById('err-view');
+        ev.style.display = 'flex';
+        ev.innerHTML = `<h2 style="color:#e74c3c;font-family:'Barlow Condensed',sans-serif;margin:0;font-size:32px;letter-spacing:1px;text-transform:uppercase">${title}</h2><p style="color:var(--muted);font-size:14px;margin:0">${msg}</p>`;
+      }, 500);
+    }
+
+    function renderPass(r) {
+      document.getElementById('loader').style.opacity = '0';
+      setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('pass-card').style.display = 'block';
+
+        document.getElementById('p-ev').textContent = r.eventName;
+        document.getElementById('p-id').textContent = r.regId;
+        document.getElementById('p-qr-lbl').textContent = r.regId;
+        document.getElementById('p-nm').textContent = r.name;
+        document.getElementById('p-rn').textContent = r.regno;
+        document.getElementById('p-ys').textContent = r.year ? 'Year ' + r.year + ' · Sec ' + (r.section || '—') : '—';
+        document.getElementById('p-ph').textContent = r.phone || '—';
+        
+        const venue = VENUES[r.eventName] || 'PSNA CSE';
+        document.getElementById('p-dv').textContent = '18 April · ' + venue;
+
+        // Team Rendering
+        const tmWrap = document.getElementById('p-team-wrapper');
+        let members = r.teamMembers || [];
+        if (typeof members === 'string' && members.trim()) {
+          try { members = JSON.parse(members); } catch(e){ members = []; }
+        }
+        
+        if ((r.teamName && r.teamName.trim() !== 'Solo' && !r.teamName.includes('[{"name"')) || members.length > 0) {
+          const tName = (r.teamName && !r.teamName.includes('[{"name"')) ? r.teamName : 'Team';
+          let memHtml = `
+            <div class="team-pass-section">
+              <div class="team-pass-title">Team: ${tName}</div>
+              <div class="team-member-row"><span>Member 1 (Leader)</span><strong>${r.name} · ${r.regno || ''}</strong></div>
+          `;
+          members.forEach((m, i) => {
+            memHtml += `<div class="team-member-row"><span>Member ${i + 2}</span><strong>${m.name}${m.regno ? ' · ' + m.regno : ''}</strong></div>`;
+          });
+          memHtml += `</div>`;
+          tmWrap.innerHTML = memHtml;
+        }
+
+        // Generate the EXACT scanner-compatible QR Code string (base64 JSON matching the verify system)
+        const tmQR = members.map(m => ({ n: m.name||'', r: m.regno||'', y: m.year||'', s: m.section||'', p: m.phone||'' }));
+        const dataObj = { id: r.regId, n: r.name, e: r.eventName, rn: r.regno||'', ph: r.phone||'', yr: r.year||'', sec: r.section||'', t: r.teamName||'', tm: tmQR };
+        const verifyUrl = window.location.origin + window.location.pathname.replace('pass.html', '');
+        const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(dataObj))));
+
+        new QRCode(document.getElementById('qr-code-div'), {
+          text: qrText,
+          width: 140, height: 140,
+          colorDark: '#000', colorLight: '#fff',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      }, 500);
+    }
+
+    // Go
+    init();
+  </script>
+</body>
+</html>

@@ -6672,8 +6672,8 @@ function renderComm() {
         const matchEv = EVS.find(e => e.name === r.eventName);
         const exactDate = matchEv ? matchEv.date : '18 April';
         const exactVenue = matchEv ? matchEv.venue : 'PSNA';
-        const verifyLink = window.location.origin + '/verify?id=' + r.regId;
-        const waText = encodeURIComponent(`🎟️ CSE UTSAV 2K26 Pass\nName: ${r.name}\nEvent: ${r.eventName}\nPass ID: ${r.regId}\n\nShow this QR at entry:\n${verifyLink}`);
+        const shareLink = window.location.origin + window.location.pathname.replace('index.html', '') + 'pass.html?id=' + r.regId;
+        const waText = encodeURIComponent(`🎟️ CSE UTSAV 2K26 Pass\nName: ${r.name}\nEvent: ${r.eventName}\nPass ID: ${r.regId}\n\nShow this pass at entry:\n${shareLink}`);
         return `
     <div class="pass-card">
       <div class="pass-top">

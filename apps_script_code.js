@@ -86,7 +86,8 @@ function doGet(e) {
 
   if (action === "lookup") {
     var email = (e.parameter.email || "").toLowerCase().trim();
-    if (!email) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [] })).setMimeType(ContentService.MimeType.JSON);
+    var lookupId = (e.parameter.id || "").trim();
+    if (!email && !lookupId) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [] })).setMimeType(ContentService.MimeType.JSON);
 
     var checkEventId = e.parameter.eventId || ""; // Using eventName fallback below
     var checkEventName = (e.parameter.eventName || "").trim();
@@ -105,13 +106,14 @@ function doGet(e) {
 
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
+      var rowRegId = String(row[headers.indexOf("RegID")] || ("GF-" + (i + 1)));
       var rowEmail = String(row[headers.indexOf("Email")] || "").toLowerCase().trim();
       var rowEventName = String(row[headers.indexOf("Event")] || "").trim();
       var teamMembersRaw = row[headers.indexOf("TeamMembers")] || "[]";
       var teamMembers = [];
       try { teamMembers = JSON.parse(teamMembersRaw); } catch (ex) { }
 
-      if (email && rowEmail === email) {
+      if ((email && rowEmail === email) || (lookupId && rowRegId === lookupId)) {
         results.push({
           regId: String(row[headers.indexOf("RegID")] || ("GF-" + (i + 1))),
           name: String(row[headers.indexOf("Name")] || ""),
