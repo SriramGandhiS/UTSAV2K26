@@ -4965,7 +4965,8 @@
 
   <!-- REGISTER OVERLAY (3-step smart flow) -->
   <div class="reg-ov" id="reg-ov" onclick="closeRegOv(event)">
-    <div class="reg-sheet" id="reg-sheet" onclick="event.stopPropagation()">
+    <canvas id="reg-particles" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+    <div class="reg-sheet" id="reg-sheet" onclick="event.stopPropagation()" style="position:relative;z-index:1;">
       <div class="reg-close-bar">
         <div class="reg-close-bar-title">Registration</div>
         <button class="reg-close-btn" onclick="forceCloseReg()">✕ Close</button>
@@ -5156,7 +5157,8 @@
 
   <!-- EVENT DETAILS MODAL (ALL EVENTS) -->
   <div class="comm-ov" id="allev-ov" onclick="if(event.target===this)closeAllEvents()">
-    <div class="comm-wrap">
+    <canvas id="allev-particles" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+    <div class="comm-wrap" style="position:relative;z-index:1;">
       <div class="comm-head">
         <div class="comm-title">Event <span style="color:var(--orange)">Details</span></div>
         <button class="comm-close" onclick="closeAllEvents()">Close ✕</button>
@@ -5583,6 +5585,9 @@
         window.initHeroParticles = function() { console.log("Hero particles initialized (placeholder)"); };
       }
       initHeroParticles();
+      initOverlayParticles('allev-particles', 'allev-ov');
+      initOverlayParticles('reg-particles', 'reg-ov');
+
       const hasRegs = JSON.parse(localStorage.getItem('u26r') || '[]').length > 0;
       // Dock active state on scroll
       window.addEventListener('scroll', updateDockActive, { passive: true });
@@ -5690,6 +5695,65 @@
           if (p.opacity > 0.75 || p.opacity < 0.08) p.opDir *= -1;
 
           // Recycle when off top or sides
+          if (p.y < -8 || p.x < -8 || p.x > W + 8) {
+            Object.assign(p, makeParticle(), { y: H + 5, x: Math.random() * W });
+          }
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    
+    function initOverlayParticles(canvasId, overlayId) {
+      const overlay = document.getElementById(overlayId);
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !overlay) return;
+      const ctx = canvas.getContext('2d');
+      const PARTICLE_COUNT = 30;
+      let particles = [];
+      let W, H;
+      function resize() {
+        if (!overlay.classList.contains('open')) return;
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+      function makeParticle() {
+        return {
+          x: Math.random() * (W || window.innerWidth),
+          y: Math.random() * (H || window.innerHeight),
+          r: 1.2 + Math.random() * 2.5,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: -(0.25 + Math.random() * 0.55),
+          opacity: 0.15 + Math.random() * 0.55,
+          opDir: Math.random() < 0.5 ? 1 : -1,
+          blur: 1 + Math.random() * 3
+        };
+      }
+      for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(makeParticle());
+      function draw() {
+        if (!overlay.classList.contains('open')) {
+          requestAnimationFrame(draw);
+          return;
+        }
+        if (!W || !H) resize();
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+          ctx.save();
+          ctx.globalAlpha = Math.max(0.05, Math.min(1, p.opacity));
+          ctx.shadowColor  = 'rgba(232, 84, 26, 0.9)';
+          ctx.shadowBlur   = p.blur * 8;
+          ctx.fillStyle    = `rgba(255, ${80 + Math.random() * 30 | 0}, 20, 1)`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+          p.x += p.vx;
+          p.y += p.vy;
+          p.opacity += 0.003 * p.opDir;
+          if (p.opacity > 0.75 || p.opacity < 0.08) p.opDir *= -1;
           if (p.y < -8 || p.x < -8 || p.x > W + 8) {
             Object.assign(p, makeParticle(), { y: H + 5, x: Math.random() * W });
           }
@@ -6053,7 +6117,9 @@ function renderComm() {
       document.getElementById('err-ov').classList.add('open');
     }
 
+
     function openReg(evId) {
+
       hideDock();
 
       if (isCooldown) {
@@ -7965,6 +8031,7 @@ function doPost(e) {
 
     /* ════════ ALL EVENTS MODAL ════════ */
     function openAllEvents() {
+
       hideDock();
       document.getElementById('allev-ov').classList.add('open');
     }
@@ -8446,6 +8513,8 @@ function doPost(e) {
     </div>
     <div class="maint-footer">CSEUTSAV 2K26 · PSNA College</div>
   </div>
+
+
 
 </body>
 
