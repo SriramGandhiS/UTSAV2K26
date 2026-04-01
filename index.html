@@ -867,18 +867,19 @@
 
     .ev-tile-tag {
       position: absolute;
-      top: 10px;
+      bottom: 10px;
       left: 10px;
       font-size: 9px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       padding: 4px 8px;
-      border-radius: 3px;
-      background: rgba(10, 10, 10, .85);
-      border: 1px solid var(--border2);
-      color: var(--muted);
-      backdrop-filter: blur(4px)
+      border-radius: 4px;
+      background: rgba(232, 84, 26, 0.15);
+      border: 1px solid rgba(232, 84, 26, 0.5);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(232, 84, 26, 0.4);
+      backdrop-filter: blur(4px);
     }
 
     .ev-tile-prize {
@@ -5516,7 +5517,7 @@
         id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Coding', poster: 'assets/posters/unoreverse.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ur" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-ur)" fill="url(#g-ur)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-ur)"/><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3" stroke="#e74c3c"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
         desc: 'Expect the unexpected. Teams are formed on the spot, roles are split, and just when you think you are settled, UNO cards flip the game. With surprise swaps and unpredictable twists, this event is all about adaptability, teamwork, and thinking on your feet.',
-        date: 'April 16', time: '09:00 AM to 12:00 PM', venue: 'CSE Lab 2', deadline: 'Mar 30',
+        date: 'April 16', time: '01:30 PM to 04:30 PM', venue: 'CSE Lab 2', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Exclusive to 1st and 2nd years', 'Junior senior random tag team selection on the spot', 'Junior will be coding, senior will be sitting beside', 'We will shuffle UNO cards and circulate cards', 'Surprise Rule: Swap teams'],
         ec: 'Arikara Sudhan', ep: '6374156308', sc: 'Dr. Senthil P.', sp: '+91 91230 45678',
@@ -5526,7 +5527,7 @@
         id: 'tap', name: 'THE ALGORITHMIC PLATTER', label: 'Fun Algorithmic Puzzles', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Puzzle', poster: 'assets/posters/algorithmicplatter.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tap" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-tap)" fill="url(#g-tap)" fill-opacity="0.2"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
         desc: 'Where cooking meets computation. Create a dish without fire, just like designing an efficient algorithm, optimize ingredients, maximize creativity, and present your idea as a masterpiece. It is innovation, but delicious.',
-        date: 'April 16', time: '01:30 PM to 04:30 PM', venue: 'MCA Lab', deadline: 'Mar 30',
+        date: 'April 16', time: '09:00 AM to 12:00 PM', venue: 'MCA Lab', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Team of 2 to 3', 'A Fireless Cooking Innovation Challenge - No fire or electricity allowed', 'Participants create an innovative dish optimizing ingredients, creativity, and presentation within given constraints', 'Round - Logic of Flavors: Teams prepare a dish based on a surprise theme or ingredient and present it as a unique product concept', 'Time-bound, Judges decision final'],
         ec: 'Priyanka M', ep: '9943696367', sc: 'Dr. Murugan A.', sp: '+91 87890 01234',
@@ -7652,17 +7653,22 @@ function doPost(e) {
         
         if (!result.success || !result.participant) {
           hideAdminLoader();
-          if (!localReg) {
-            playScanAudio('error');
-            flashScreen('error');
-            alert('ID NOT FOUND: ' + regId);
-            openScanner(); 
-          } else {
-            // Fallback: use QR data with no entry status
-            selectedMembers = new Set();
-            renderTeamScanUI(localReg, []);
-            document.getElementById('scanner-results').classList.add('open');
-          }
+          playScanAudio('error');
+          flashScreen('error');
+          // Instantly show the bold 🔴 INVALID PASS UI, bypassing alerts and fallback
+          document.getElementById('res-content').innerHTML = `
+            <div class="scanner-result-card" style="text-align:center;padding:50px 20px; border: 2px solid rgba(231,76,60,.4); background: rgba(231,76,60,.05);">
+              <div style="font-size:70px;line-height:1;margin-bottom:15px;text-shadow: 0 0 20px rgba(231,76,60,.5);">❌</div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;letter-spacing:2px;color:#e74c3c;text-transform:uppercase;">INVALID PASS</div>
+              <div style="margin-top:10px;font-size:13px;color:rgba(255,255,255,.6);letter-spacing:1px">${regId} is not in database.</div>
+              <div style="margin-top:8px;font-size:11px;color:#e74c3c;">Registry mismatch or deleted.</div>
+            </div>
+          `;
+          document.getElementById('mark-scanned-btn').style.display = 'none';
+          document.getElementById('scanner-results').classList.add('open');
+          
+          // Auto-resume scanner instantly after short visual delay
+          setTimeout(() => { closeScanResults(); }, 1800);
           return;
         }
 
@@ -7674,11 +7680,18 @@ function doPost(e) {
       } catch (e) {
         console.error(e);
         hideAdminLoader();
-        if (localReg) {
-          selectedMembers = new Set();
-          renderTeamScanUI(localReg, []);
-          document.getElementById('scanner-results').classList.add('open');
-        }
+        playScanAudio('error');
+        flashScreen('error');
+        document.getElementById('res-content').innerHTML = `
+          <div class="scanner-result-card" style="text-align:center;padding:50px 20px; border: 2px solid rgba(241,196,15,.4); background: rgba(241,196,15,.05);">
+            <div style="font-size:60px;line-height:1;margin-bottom:15px;text-shadow: 0 0 20px rgba(241,196,15,.5);">⚠️</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;letter-spacing:2px;color:#f1c40f;text-transform:uppercase;">NETWORK ERROR</div>
+            <div style="margin-top:10px;font-size:13px;color:rgba(255,255,255,.6);letter-spacing:1px">Check server connection.</div>
+          </div>
+        `;
+        document.getElementById('mark-scanned-btn').style.display = 'none';
+        document.getElementById('scanner-results').classList.add('open');
+        setTimeout(() => { closeScanResults(); }, 1800);
       }
     }
 
@@ -7695,9 +7708,19 @@ function doPost(e) {
         const progressPct = totalMembers > 0 ? Math.round((enteredCount / totalMembers) * 100) : 0;
         const checkSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
         
+        const badgeColor = allEntered ? '#f39c12' : '#2ecc71';
+        const badgeText = allEntered ? '⚠️ ALREADY SCANNED' : '✅ VERIFIED PASS';
+        const badgeBg = allEntered ? 'rgba(243,156,18,0.15)' : 'rgba(46,204,113,0.15)';
+        
         let content = `
-          <div class="scanner-result-card">
+          <div class="scanner-result-card" style="position:relative; padding-top:20px">
             <div style="text-align:center;margin-bottom:20px">
+              
+              <!-- DYNAMIC HARDENED STATUS BADGE -->
+              <div style="background:${badgeBg}; border: 2px solid ${badgeColor}; color: ${badgeColor}; padding: 8px 18px; border-radius: 50px; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; font-size: 14px; margin-bottom: 24px; box-shadow: 0 0 20px ${badgeBg};">
+                 ${badgeText}
+              </div>
+
               <div style="font-size:10px;font-weight:900;letter-spacing:3px;color:var(--muted2);text-transform:uppercase;margin-bottom:6px">Team Entry</div>
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;letter-spacing:.5px">${reg.teamName && reg.teamName !== 'Solo' ? reg.teamName : reg.name}</div>
               <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
@@ -7707,9 +7730,9 @@ function doPost(e) {
             </div>
 
             ${allEntered ? `
-              <div class="team-completed-banner">
-                <div class="tc-icon">✅</div>
-                <div class="tc-title">Team Completed</div>
+              <div class="team-completed-banner" style="border-color:#f39c12; background:rgba(243,156,18,0.1)">
+                <div class="tc-icon" style="color:#f39c12">⚠️</div>
+                <div class="tc-title" style="color:#f39c12">Team Completed</div>
                 <div class="tc-sub">All ${totalMembers} members have entered</div>
               </div>` : ''}
 
