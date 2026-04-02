@@ -12,7 +12,7 @@
 
 
   <!-- Open Graph -->
-  <meta property="og:title" content="CSEUTSAV'26 2K26">
+  <meta property="og:title" content="CSEUTSAV 2K26">
   <meta property="og:description" content="Official PSNA CSE Symposium Website">
   <meta property="og:type" content="website">
 
@@ -28,7 +28,7 @@
     {
       "@context": "https://schema.org",
       "@type": "Event",
-      "name": "CSEUTSAV'26 2K26",
+      "name": "CSEUTSAV 2K26",
       "startDate": "2026-04-13",
       "endDate": "2026-04-18",
       "eventStatus": "https://schema.org/EventScheduled",
@@ -68,41 +68,30 @@
     }
 
     :root {
-      --black: #050505;
-      --black2: #0a0a0a;
-      --card: #0f0f0f;
-      --border: #1a1a1a;
-      --border2: #262626;
-      --text: #ffffff;
-      --muted: #a0a0a0;
-      --muted2: #666666;
-      --gold: #d4af37;
-      --gold-glow: rgba(212, 175, 55, 0.4);
-      --neon-purple: #bc13fe;
-      --neon-red: #ff003c;
-      --poker-red: #d32f2f;
-      --poker-black: #212121;
-      --orange: #d4af37; /* Universal Gold for Casino */
-      --od: rgba(212, 175, 55, .12);
+      --black: #0a0a0a;
+      --black2: #111;
+      --card: #161616;
+      --border: #242424;
+      --border2: #2e2e2e;
+      --text: #f0f0f0;
+      --muted: #888;
+      --muted2: #555;
+      --orange: #e8541a;
+      --orange2: #ff6830;
+      --od: rgba(232, 84, 26, .12);
+    }
+
+    html {
+      scroll-behavior: smooth
     }
 
     body {
       background: var(--black);
-      background-image: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
       color: var(--text);
       font-family: 'Barlow', sans-serif;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      padding-bottom: 80px;
-      position: relative;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M30 0l5 10h10l-10 10v10l-10-10-10 10v-10l-10-10h10z'/%3E%3C/g%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: -1;
+      padding-bottom: 80px
     }
 
     ::-webkit-scrollbar {
@@ -125,190 +114,6 @@
     button {
       cursor: pointer;
       font-family: 'Barlow', sans-serif
-    }
-
-    /* ─── CASINO INTRO & BACKGROUND ─── */
-    /* ─── HI-END 3D POKER REVEAL ─── */
-    #casino-intro {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 10002;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      perspective: 2000px;
-    }
-
-    .intro-scene {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform-style: preserve-3d;
-    }
-
-    .poker-felt {
-      position: absolute;
-      inset: -100px;
-      background: radial-gradient(circle at 50% 40%, #1a4a2a 0%, #051a0d 40%, #000 100%);
-      filter: contrast(1.1) brightness(0.8);
-      transform: translateZ(-500px);
-    }
-
-    .card-fan {
-      position: relative;
-      width: 260px;
-      aspect-ratio: 2.5 / 3.5;
-      transform-style: preserve-3d;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* THE SOVEREIGN CARD (3D ORBIT) */
-    .sovereign-card {
-      position: absolute;
-      width: 280px;
-      aspect-ratio: 2.5 / 3.5;
-      transform-style: preserve-3d;
-      opacity: 0;
-      animation: orbital-flight 2.2s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-    }
-
-    @keyframes orbital-flight {
-      0% { transform: translate3d(-500px, -200px, -2000px) rotateX(720deg) rotateY(360deg) rotateZ(180deg); opacity: 0; }
-      30% { opacity: 1; }
-      100% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0); opacity: 1; }
-    }
-
-    .card-face {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      border-radius: 12px;
-      box-shadow: 0 10px 50px rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .card-front-sov {
-      background: linear-gradient(135deg, #000, #1a1a1a);
-      border: 3px solid var(--gold);
-    }
-    
-    .sov-brand {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 42px;
-      font-weight: 950;
-      color: #fff;
-      letter-spacing: 2px;
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    .sov-brand span { color: var(--gold); }
-
-    .brand-pop {
-      animation: brand-popup 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-
-    @keyframes brand-popup {
-      0% { opacity: 0; transform: scale(0.5); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    .card-back-sov {
-      background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
-      transform: rotateY(180deg);
-    }
-
-    /* PREMIUM DISSOLVE */
-    .sovereign-card.dissolving {
-      animation: sovereign-fade 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    @keyframes sovereign-fade {
-      0% { transform: translateZ(0) scale(1); opacity: 1; filter: blur(0px); }
-      100% { transform: translateZ(600px) scale(2.0); opacity: 0; filter: blur(20px); }
-    }
-
-    .shockwave-3d {
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      border: 4px solid var(--gold);
-      border-radius: 50%;
-      opacity: 0;
-      transform: translateZ(200px) scale(0.1);
-      pointer-events: none;
-      box-shadow: 0 0 50px var(--gold);
-    }
-
-    .shock-active {
-      animation: shock-ring 0.8s cubic-bezier(0.1, 0.8, 0.4, 1) forwards;
-    }
-
-    @keyframes shock-ring {
-      0% { opacity: 0; transform: translateZ(200px) scale(0.1); }
-      30% { opacity: 1; }
-      100% { opacity: 0; transform: translateZ(500px) scale(8.0); border-width: 0px; }
-    }
-
-    .intro-shatter {
-      position: fixed;
-      inset: 0;
-      z-index: 10004;
-      pointer-events: none;
-      background: #000;
-      opacity: 0;
-      display: none;
-    }
-
-    .shatter-active {
-      display: block;
-      animation: shatter-fade 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    @keyframes shatter-fade {
-      0% { opacity: 1; transform: scale(1); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-      100% { opacity: 0; transform: scale(1.1); clip-path: polygon(0 20%, 30% 0, 70% 0, 100% 20%, 100% 80%, 70% 100%, 30% 100%, 0 80%); }
-    }
-
-    .intro-flash {
-      position: fixed;
-      inset: 0;
-      background: #fff;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 10003;
-    }
-
-    .flash-active {
-      animation: cinematic-flash 1.2s ease-out forwards;
-    }
-
-    @keyframes cinematic-flash {
-      0% { opacity: 0; }
-      40% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-
-    /* CHIPS BACKDROP */
-    .poker-chip {
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 6px dashed rgba(255,255,255,0.2);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-      z-index: -1;
-      filter: blur(2px);
     }
 
 
@@ -371,9 +176,9 @@
     }
 
     .nav-btn {
-      min-width: 88px !important;
-      height: 36px !important;
-      padding: 0 12px !important;
+      width: 88px !important;
+      height: 32px !important;
+      padding: 0 !important;
       font-size: 11px !important;
       line-height: 1 !important;
       display: inline-flex !important;
@@ -400,59 +205,59 @@
       backdrop-filter: blur(4px);
     }
     
-    /* Elite Casino Nav Buttons */
-    .btn-qr.btn-gold {
-      background: rgba(212, 175, 55, 0.15) !important;
-      border-color: rgba(212, 175, 55, 0.5) !important;
+    /* Elite Glass Flag Colors */
+    .btn-qr.btn-saffron {
+      background: rgba(255, 103, 31, 0.18) !important;
+      border-color: rgba(255, 103, 31, 0.5) !important;
       color: #FFFFFF !important;
     }
-    .btn-qr.btn-gold:hover {
-      background: rgba(212, 175, 55, 0.3) !important;
-      border-color: rgba(212, 175, 55, 0.9) !important;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    .btn-qr.btn-saffron:hover {
+      background: rgba(255, 103, 31, 0.3) !important;
+      border-color: rgba(255, 103, 31, 0.9) !important;
+      box-shadow: 0 0 15px rgba(255, 103, 31, 0.4);
       transform: translateY(-2px);
     }
-    .btn-qr.btn-gold::before {
-      background-image: linear-gradient(rgba(212, 175, 55, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(212, 175, 55, 0.1) 1px, transparent 1px);
+    .btn-qr.btn-saffron::before {
+      background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
     }
-    .btn-qr.btn-gold::after {
-      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    .btn-qr.btn-saffron::after {
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.6), transparent);
     }
 
-    .btn-qr.btn-silver {
-      background: rgba(192, 192, 192, 0.1) !important;
-      border-color: rgba(192, 192, 192, 0.4) !important;
+    .btn-qr.btn-white {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(255, 255, 255, 0.4) !important;
       color: #FFFFFF !important;
     }
-    .btn-qr.btn-silver:hover {
-      background: rgba(192, 192, 192, 0.2) !important;
-      border-color: rgba(192, 192, 192, 0.8) !important;
-      box-shadow: 0 0 20px rgba(192, 192, 192, 0.2);
+    .btn-qr.btn-white:hover {
+      background: rgba(255, 255, 255, 0.15) !important;
+      border-color: rgba(255, 255, 255, 0.8) !important;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
       transform: translateY(-2px);
     }
-    .btn-qr.btn-silver::before {
+    .btn-qr.btn-white::before {
       background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
     }
-    .btn-qr.btn-silver::after {
-      background: linear-gradient(to bottom, transparent, #fff, transparent);
+    .btn-qr.btn-white::after {
+      background: linear-gradient(to bottom, transparent, rgba(6,3,141,0.5), transparent); /* Blue laser for chakra feel */
     }
 
-    .btn-qr.btn-black {
-      background: rgba(0, 0, 0, 0.4) !important;
-      border-color: rgba(212, 175, 55, 0.3) !important;
+    .btn-qr.btn-green {
+      background: rgba(4, 106, 56, 0.25) !important;
+      border-color: rgba(4, 106, 56, 0.5) !important;
       color: #FFFFFF !important;
     }
-    .btn-qr.btn-black:hover {
-      background: #000 !important;
-      border-color: var(--gold) !important;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    .btn-qr.btn-green:hover {
+      background: rgba(4, 106, 56, 0.4) !important;
+      border-color: rgba(4, 106, 56, 0.9) !important;
+      box-shadow: 0 0 15px rgba(4, 106, 56, 0.4);
       transform: translateY(-2px);
     }
-    .btn-qr.btn-black::before {
-      background-image: linear-gradient(rgba(212,175,55,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.05) 1px, transparent 1px);
+    .btn-qr.btn-green::before {
+      background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
     }
-    .btn-qr.btn-black::after {
-      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    .btn-qr.btn-green::after {
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.6), transparent);
     }
 
     .btn-qr::before {
@@ -470,18 +275,18 @@
       left: 0;
       width: 100%;
       height: 35%;
-      animation: qr-scan 4s linear infinite;
+      animation: qr-scan 6s ease-in-out infinite;
       z-index: 1;
     }
     .btn-qr span {
       position: relative;
       z-index: 2;
-      text-shadow: 0 0 8px rgba(0,0,0,0.5);
+      text-shadow: 0 0 8px rgba(255,255,255,0.3);
     }
     @keyframes qr-scan {
-      0%   { top: -40%; opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 1; }
+      0%, 80%   { top: -40%; opacity: 0; }
+      83%  { opacity: 1; }
+      97%  { opacity: 1; }
       100% { top: 120%; opacity: 0; }
     }
 
@@ -548,7 +353,7 @@
       padding-top: 64px;
       position: relative;
       background: var(--black);
-      overflow: hidden;
+      overflow: hidden
     }
 
     .hero::before {
@@ -559,68 +364,15 @@
       width: 60%;
       height: 100%;
       background: radial-gradient(ellipse at 80% 30%, rgba(232, 84, 26, .07) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 1;
+      pointer-events: none
     }
 
-    /* Falling Poker Coins (Atmosphere) */
-    .poker-coin {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: radial-gradient(circle, #d4af37 20%, #8a6d3b 100%);
-      border-radius: 50%;
-      border: 2px dashed rgba(0,0,0,0.3);
-      opacity: 0.12;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* Decorative Floating Cards (Atmosphere) */
-    .deco-card {
-      position: absolute;
-      width: 80px;
-      height: 120px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(212,175,55,0.2);
-      border-radius: 6px;
-      backdrop-filter: blur(4px);
-      opacity: 0.08;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    @keyframes coin-fall {
-      0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.12; }
-      90% { opacity: 0.12; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-    }
-
-    @keyframes card-drift {
-      0%, 100% { transform: translate(0,0) rotate(var(--rot)); }
-      50% { transform: translate(10px, 20px) rotate(calc(var(--rot) + 5deg)); }
-    }
-
-    @keyframes badge-pulse-slow {
-      0%, 100% { box-shadow: 0 0 8px rgba(201,164,76,0.08); border-color: rgba(201,164,76,0.2); }
-      50% { box-shadow: 0 0 12px rgba(201,164,76,0.18); border-color: rgba(201,164,76,0.4); }
-    }
-
-    @keyframes coin-shake {
-      0%, 100% { transform: translate(0, 0) rotate(var(--r, 0deg)); }
-      25% { transform: translate(1px, -2px) rotate(calc(var(--r, 0deg) + 2deg)); }
-      50% { transform: translate(-1px, 1px) rotate(calc(var(--r, 0deg) - 1deg)); }
-      75% { transform: translate(2px, -1px) rotate(calc(var(--r, 0deg) + 1deg)); }
-    }
-
+    /* mobile-first: hero stays single column */
     .hero-left {
       padding: 48px 24px 32px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      position: relative;
-      z-index: 10;
+      justify-content: center
     }
 
     .hero-meta {
@@ -630,7 +382,7 @@
       letter-spacing: 3px;
       color: var(--muted);
       text-transform: uppercase;
-      margin-bottom: 14px;
+      margin-bottom: 14px
     }
 
     .hero-h {
@@ -641,15 +393,15 @@
       text-transform: uppercase;
       letter-spacing: -1px;
       margin-top: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 20px
     }
 
     .hero-h .wh {
-      color: #fff;
+      color: #fff
     }
 
     .hero-h .or {
-      color: var(--orange);
+      color: var(--orange)
     }
 
     .hero-desc {
@@ -662,15 +414,10 @@
 
     .hero-btns {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
       width: 100%;
-      max-width: 380px;
-    }
-    .hero-btns .btn-casino-gold,
-    .hero-btns .btn-casino-outline {
-      flex: 1;
-      text-align: center;
+      max-width: 340px
     }
     .hero-btns .btn-or,
     .hero-btns .btn-fill {
@@ -734,516 +481,18 @@
       position: relative;
       z-index: 2
     }
-    /* ─── PREMIUM CASINO TEXT STYLES ─── */
-    .gold-text {
-      background: linear-gradient(to bottom, #f9f295 0%, #e0aa3e 25%, #b8860b 50%, #e0aa3e 75%, #f9f295 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
-    }
-
-    .neon-purple {
-      color: #fff;
-      text-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple), 0 0 40px var(--neon-purple);
-    }
-
-    .casino-badge {
-      display: inline-block;
-      padding: 6px 16px;
-      background: rgba(212, 175, 55, 0.1);
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      font-size: 11px;
-      letter-spacing: 3px;
-      border-radius: 50px;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-
-    /* CASINO BUTTONS */
-    /* ── CASINO HERO BUTTONS ── */
-    @keyframes shine-sweep {
-      0%   { transform: translateX(-120%) skewX(-20deg); }
-      100% { transform: translateX(220%) skewX(-20deg); }
-    }
-    @keyframes btn-press-pulse {
-      0%   { box-shadow: 0 0 0px rgba(212,175,55,0); }
-      50%  { box-shadow: 0 0 22px rgba(212,175,55,0.7); }
-      100% { box-shadow: 0 0 0px rgba(212,175,55,0); }
-    }
-
-    .btn-casino-gold {
-      position: relative;
-      overflow: hidden;
-      padding: 15px 34px;
-      background: linear-gradient(135deg, #d4af37 0%, #a8790a 55%, #d4af37 100%);
-      border: none;
-      outline: 3px solid rgba(212,175,55,0.25);
-      outline-offset: 3px;
-      border-radius: 10px;
-      color: #0a0800;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      box-shadow:
-        0 6px 20px rgba(0,0,0,0.5),
-        inset 0 1px 0 rgba(255,255,255,0.45),
-        inset 0 -2px 0 rgba(0,0,0,0.3);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, outline-color 0.2s ease;
-    }
-    .btn-casino-gold::before {
+    /* Shimmer sweep — hot metal sheen gliding across */
+    .btn-fire::before {
       content: '';
       position: absolute;
-      top: 0; left: 0;
-      width: 50%;
+      top: 0;
+      left: -100%;
+      width: 60%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-      transform: translateX(-120%) skewX(-20deg);
+      background: linear-gradient(105deg, transparent 20%, rgba(255,140,50,0.12) 40%, rgba(232,84,26,0.22) 50%, rgba(255,140,50,0.12) 60%, transparent 80%);
+      animation: fire-sweep 3s ease-in-out infinite;
       pointer-events: none;
-    }
-    .btn-casino-gold:hover::before {
-      animation: shine-sweep 0.55s ease forwards;
-    }
-    .btn-casino-gold:hover {
-      transform: translateY(-3px) scale(1.02);
-      outline-color: rgba(212,175,55,0.7);
-      box-shadow:
-        0 12px 28px rgba(0,0,0,0.5),
-        0 0 20px rgba(212,175,55,0.35),
-        inset 0 1px 0 rgba(255,255,255,0.45),
-        inset 0 -2px 0 rgba(0,0,0,0.3);
-    }
-    .btn-casino-gold:active {
-      transform: scale(0.97) translateY(0);
-      animation: btn-press-pulse 0.18s ease;
-    }
-
-    .btn-casino-outline {
-      position: relative;
-      overflow: hidden;
-      padding: 15px 34px;
-      background: linear-gradient(135deg, #d4af37 0%, #a8790a 55%, #d4af37 100%);
-      border: none;
-      outline: 3px solid rgba(212,175,55,0.25);
-      outline-offset: 3px;
-      border-radius: 10px;
-      color: #0a0800;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      box-shadow:
-        0 6px 20px rgba(0,0,0,0.5),
-        inset 0 1px 0 rgba(255,255,255,0.45),
-        inset 0 -2px 0 rgba(0,0,0,0.3);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, outline-color 0.2s ease;
-    }
-    .btn-casino-outline::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-      transform: translateX(-120%) skewX(-20deg);
-      pointer-events: none;
-    }
-    .btn-casino-outline:hover::before {
-      animation: shine-sweep 0.55s ease forwards;
-    }
-    .btn-casino-outline:hover {
-      transform: translateY(-3px) scale(1.02);
-      outline-color: rgba(212,175,55,0.7);
-      box-shadow:
-        0 12px 28px rgba(0,0,0,0.5),
-        0 0 20px rgba(212,175,55,0.35),
-        inset 0 1px 0 rgba(255,255,255,0.45),
-        inset 0 -2px 0 rgba(0,0,0,0.3);
-    }
-    .btn-casino-outline:active {
-      transform: scale(0.97) translateY(0);
-      animation: btn-press-pulse 0.18s ease;
-    }
-    .reg-sheet {
-      background: linear-gradient(180deg, #0f0f0f 0%, #000 100%) !important;
-      border-top: 4px solid var(--gold) !important;
-      box-shadow: 0 -20px 50px rgba(0,0,0,0.9), inset 0 2px 0 rgba(212,175,55,0.2) !important;
-    }
-
-    .fi, .fs {
-      background: rgba(255,255,255,0.03) !important;
-      border: 1px solid rgba(212, 175, 55, 0.2) !important;
-      border-radius: 8px !important;
-      color: #fff !important;
-      padding: 14px !important;
-      font-family: 'Barlow Condensed', sans-serif !important;
-      font-weight: 700 !important;
-      letter-spacing: 1px !important;
-    }
-
-    .fi:focus, .fs:focus {
-      border-color: var(--gold) !important;
-      background: rgba(212, 175, 55, 0.05) !important;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.2) !important;
-    }
-
-    .fl {
-      color: var(--gold) !important;
-      font-size: 11px !important;
-      letter-spacing: 2px !important;
-      text-transform: uppercase !important;
-      font-weight: 900 !important;
-      margin-bottom: 8px !important;
-    }
-
-    /* PREMIUM DOCK */
-    .dock-bar {
-      background: rgba(10, 10, 10, 0.9) !important;
-      border: 1px solid var(--gold) !important;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(212,175,55,0.1) !important;
-    }
-
-    .dock-item svg {
-      transition: all 0.3s !important;
-    }
-
-    .dock-item.active {
-      color: var(--gold) !important;
-    }
-
-    .dock-item.active svg {
-      stroke: var(--gold) !important;
-      filter: drop-shadow(0 0 5px var(--gold-glow)) !important;
-    }
-
-    /* COMMITTEE "VIP DECK" PORTRAITS */
-    .comm-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 15px;
-      padding: 0 10px;
-    }
-
-    .comm-card {
-      border-radius: 12px !important;
-      border: 1px solid rgba(212, 175, 55, 0.2) !important;
-      background: #000 !important;
-      overflow: hidden !important;
-      aspect-ratio: 3/4 !important;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-    }
-
-    .comm-card:hover {
-      border-color: var(--gold) !important;
-      transform: translateY(-10px) scale(1.05) !important;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 20px rgba(212,175,55,0.2) !important;
-      z-index: 10 !important;
-    }
-
-    .comm-img {
-      filter: sepia(0.2) contrast(1.1) !important;
-      transition: all 0.4s !important;
-    }
-
-    .comm-card:hover .comm-img {
-      filter: sepia(0) contrast(1) !important;
-    }
-
-    .comm-overlay {
-      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%) !important;
-    }
-
-    .comm-name-p {
-      color: var(--gold) !important;
-      font-family: 'Barlow Condensed', sans-serif !important;
-      font-weight: 900 !important;
-    }
-
-    /* ADMIN SCANNER - CASINO ROYALE STYLE */
-    .scanner-result-card {
-      background: #0a0a0a !important;
-      border: 1px solid var(--gold) !important;
-      border-radius: 20px !important;
-      box-shadow: 0 0 50px rgba(0,0,0,0.9), 0 0 20px rgba(212,175,55,0.1) !important;
-    }
-
-    .status-badge-verified {
-      background: rgba(46, 204, 113, 0.1) !important;
-      border: 1px solid #2ecc71 !important;
-      color: #2ecc71 !important;
-      text-shadow: 0 0 10px rgba(46, 204, 113, 0.5) !important;
-    }
-
-    .status-badge-invalid {
-      background: rgba(231, 76, 60, 0.1) !important;
-      border: 1px solid #e74c3c !important;
-      color: #e74c3c !important;
-      text-shadow: 0 0 10px rgba(231, 76, 60, 0.5) !important;
-    }
-
-    /* PLAYING CARDS (EVENT TILES) */
-    .ev-tile {
-      background: var(--card);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-      position: relative;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      min-height: 440px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .ev-tile::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(45deg, rgba(212,175,55,0.1), transparent);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .ev-tile:hover {
-      transform: translateY(-15px) rotateY(10deg);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(212, 175, 55, 0.2);
-    }
-
-    .ev-tile-bg {
-      height: 240px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ev-tile-body {
-      padding: 24px;
-      background: linear-gradient(180deg, #0f0f0f 0%, #050505 100%);
-      color: #fff;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      border-top: 1px solid var(--gold);
-    }
-
-    /* ─── LUXURY ABOUT & STATS ─── */
-    .sb {
-      background: rgba(255, 255, 255, 0.03) !important;
-      border: 1px solid rgba(212, 175, 55, 0.3) !important;
-      border-radius: 16px !important;
-      padding: 30px 20px !important;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s;
-    }
-
-    .sb:hover {
-      background: rgba(212, 175, 55, 0.05) !important;
-      border-color: var(--gold) !important;
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(212,175,55,0.1);
-    }
-
-    .sbn {
-      color: var(--gold) !important;
-      font-size: 48px !important;
-      text-shadow: 0 0 15px var(--gold-glow);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900;
-    }
-
-    .sbl {
-      color: var(--muted) !important;
-      letter-spacing: 3px !important;
-      font-weight: 800 !important;
-      text-transform: uppercase;
-    }
-
-    .stats-g {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-top: 40px;
-    }
-
-    /* SECTION ORNAMENTS */
-    .sec {
-      position: relative;
-    }
-    .sec::after {
-      content: '♠ ♥ ♦ ♣';
-      position: absolute;
-      top: 50px;
-      right: 40px;
-      font-size: 24px;
-      letter-spacing: 15px;
-      opacity: 0.1;
-      color: var(--gold);
-    }
-
-    .ev-tile-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 28px;
-      font-weight: 900;
-      color: #1a1a1a;
-      margin-bottom: 5px;
-      line-height: 1;
-    }
-
-    .ev-tile-sub {
-      color: #555;
-      font-weight: 700;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
-
-    .ev-tile-time {
-      background: #f0f0f0;
-      color: #333;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 15px;
-      display: inline-block;
-    }
-
-    .ev-tile-link {
-      margin-top: auto;
-      padding: 14px;
-      background: #000;
-      color: #fff;
-      text-align: center;
-      border-radius: 8px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: all 0.3s;
-    }
-
-    .ev-tile-link:hover {
-      background: var(--gold);
-      color: #000;
-    }
-
-    /* CARD SUITS */
-    .suit-bg {
-      position: absolute;
-      bottom: -20px;
-      right: -20px;
-      font-size: 120px;
-      opacity: 0.05;
-      color: #000;
-      pointer-events: none;
-      transform: rotate(-15deg);
-    }
-
-    /* REGISTRATION GLASSMORPHISM */
-    .reg-sheet {
-      background: rgba(10, 10, 10, 0.8) !important;
-      backdrop-filter: blur(25px) !important;
-      border: 1px solid rgba(212, 175, 55, 0.2) !important;
-      box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(212,175,55,0.05) !important;
-    }
-
-    .fi, .fs {
-      background: rgba(255,255,255,0.05) !important;
-      border: 1px solid rgba(255,255,255,0.1) !important;
-      color: #fff !important;
-    }
-
-    .fi:focus, .fs:focus {
-      border-color: var(--gold) !important;
-      background: rgba(212, 175, 55, 0.05) !important;
-    }
-
-    .casino-timer .cdn {
-      color: var(--gold);
-      text-shadow: 0 0 15px var(--gold-glow);
-    }
-
-    /* CHIP ANIMATION */
-    @keyframes chip-bounce {
-      0%, 100% { transform: translateY(0) rotate(var(--r)); }
-      50% { transform: translateY(-30px) rotate(calc(var(--r) + 20deg)); }
-    }
-
-    .hero-particles {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      perspective: 1500px;
-      overflow: hidden;
-    }
-
-    .flying-card-wrap {
-      position: absolute;
-      width: 70px;
-      aspect-ratio: 2.5 / 3.5;
-      transform-style: preserve-3d;
-      will-change: transform, opacity;
-    }
-
-    .flying-card {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      animation: spin-3d var(--dur, 8s) linear infinite;
-    }
-
-    .f-card-face {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      border-radius: 6px;
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'serif';
-      font-size: 32px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    }
-
-    .f-card-front {
-      background: #fff;
-      color: #000;
-      transform: rotateY(0deg);
-    }
-
-    .f-card-back {
-      background: linear-gradient(135deg, #8b0000, #4a0000);
-      transform: rotateY(180deg);
-    }
-
-    .f-card-back::after {
-      content: '♠';
-      font-size: 20px;
-      color: var(--gold);
-      opacity: 0.3;
-    }
-
-    @keyframes spin-3d {
-      from { transform: rotateX(0) rotateY(0) rotateZ(0); }
-      to { transform: rotateX(360deg) rotateY(720deg) rotateZ(180deg); }
-    }
-
-    @keyframes float-3d {
-      0% { transform: translate3d(var(--sx), -100px, var(--sz)) rotate(0); opacity: 0; }
-      10% { opacity: var(--op); }
-      90% { opacity: var(--op); }
-      100% { transform: translate3d(var(--ex), calc(100vh + 100px), var(--ez)) rotate(720deg); opacity: 0; }
+      z-index: 1
     }
     /* Warm glow pool at bottom — breathes gently */
     .btn-fire::after {
@@ -1327,50 +576,45 @@
       width: 100%;
       max-width: 400px;
       aspect-ratio: 4/3;
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
-      border: 1px solid rgba(180, 150, 80, 0.25);
+      border: 1px solid var(--border2);
       background: var(--card);
-      position: relative;
-      box-shadow:
-        0 30px 80px rgba(0,0,0,0.8),
-        0 0 1px rgba(180,150,80,0.3);
+      position: relative
     }
 
     .poster-inner {
       position: absolute;
       inset: 0;
-      background: linear-gradient(145deg, #111111 0%, #161413 50%, #111111 100%);
+      background: linear-gradient(135deg, #1a0a00, #0f0500, #1a0800);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      overflow: hidden;
+      gap: 12px;
+      overflow: hidden
     }
 
-    /* Subtle ambient warm light */
     .poster-inner::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 30% 25%, rgba(180,150,80,0.06), transparent 55%),
-        radial-gradient(ellipse at 70% 75%, rgba(140,110,60,0.04), transparent 55%);
+      top: -30%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(232, 84, 26, .22) 0%, transparent 65%);
       pointer-events: none;
     }
 
     .poster-ot {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(48px, 12vw, 88px);
-      font-weight: 950;
-      letter-spacing: 3px;
+      font-size: clamp(60px, 14vw, 96px);
+      font-weight: 900;
+      letter-spacing: 4px;
       text-transform: uppercase;
-      background: linear-gradient(180deg, #c9a44c 0%, #e8c96a 40%, #b8943e 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.7));
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--orange);
+      opacity: .65;
       position: relative;
       z-index: 2;
       line-height: 0.9;
@@ -1378,38 +622,36 @@
       display: flex;
       flex-direction: column;
     }
-
+    
     .poster-ot-sub {
-      font-size: clamp(28px, 7vw, 44px);
-      letter-spacing: 14px;
-      margin-top: 4px;
+      font-size: clamp(30px, 8vw, 50px);
+      letter-spacing: 12px;
     }
 
     .poster-dt {
       position: relative;
       z-index: 2;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 3px;
-      color: rgba(200,170,90,0.7);
+      color: var(--orange);
       text-transform: uppercase;
-      padding: 5px 16px;
-      border: 1px solid rgba(180,150,80,0.2);
-      border-radius: 50px;
-      background: rgba(20,20,18,0.9);
-      margin-top: 8px;
+      padding: 5px 14px;
+      border: 1px solid rgba(232, 84, 26, .4);
+      border-radius: 3px;
+      background: rgba(232, 84, 26, .08);
+      margin-top: 5px;
     }
 
     .poster-su {
       position: relative;
       z-index: 2;
-      font-size: 9px;
+      font-size: 10px;
       letter-spacing: 2px;
-      color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .25);
       text-transform: uppercase;
-      font-weight: 600;
-      margin-top: 2px;
+      font-weight: 600
     }
 
     /* Falling poker coins */
@@ -1418,15 +660,15 @@
       border-radius: 50%;
       pointer-events: none;
       z-index: 1;
-      animation: coin-fall linear infinite;
-      top: -30px;
+      animation: coin-fall 8s linear infinite;
+      top: -10%;
     }
 
     @keyframes coin-fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      8% { opacity: 0.12; }
-      85% { opacity: 0.12; }
-      100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+      0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.15; }
+      90% { opacity: 0.15; }
+      100% { transform: translateY(450px) rotate(360deg); opacity: 0; }
     }
 
     /* OUTLINE BAND */
@@ -1592,22 +834,6 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px
-    }
-
-    @media (max-width: 480px) {
-      .stats-g {
-        grid-template-columns: 1fr !important;
-        gap: 15px !important;
-      }
-      .ev-tiles {
-        grid-template-columns: 1fr !important;
-      }
-      .st {
-        font-size: 42px !important;
-      }
-      .hero-h {
-        font-size: clamp(40px, 15vw, 60px) !important;
-      }
     }
 
     /* mobile-first: keep 2 columns max */
@@ -5524,110 +4750,50 @@
 
 <body>
 
-  <div id="casino-intro">
-    <div class="poker-felt"></div>
-    <div class="intro-scene" id="intro-scene">
-      <!-- THE SOVEREIGN CARD -->
-      <div class="sovereign-card" id="sovereign-card">
-        <div class="card-face card-front-sov">
-          <div class="sov-brand" id="sov-brand">CSEUT<span>SAV</span></div>
-        </div>
-        <div class="card-face card-back-sov"></div>
-      </div>
-      <div class="shockwave-3d" id="shock-3d"></div>
+  <!-- CINEMATIC INTRO -->
+  <div id="intro-screen">
+    <canvas id="intro-canvas"></canvas>
+
+    <div class="intro-text">
+      <h1 class="thunder-line" id="t-line-1" aria-label="CSEUTSAV'26 2K26">CSE<span>UTSAV'26</span></h1>
+      <h1 class="thunder-line" id="t-line-2" style="font-size:36px; margin-top:-10px;">2K26 BEGINS</h1>
+      <div class="intro-sub thunder-line" id="t-line-3" style="margin-top:10px;">PSNA CSE Symposium · Dindigul</div>
     </div>
-    <div class="intro-flash" id="intro-flash"></div>
-    <div class="intro-shatter" id="intro-shatter"></div>
   </div>
-
-  <script>
-    (function() {
-      const intro = document.getElementById('casino-intro');
-      const card = document.getElementById('master-card');
-      const flash = document.getElementById('intro-flash');
-      const scene = document.getElementById('intro-scene');
-      
-      // Prevent scrolling during intro
-      document.body.style.overflow = 'hidden';
-
-      // Step 1: Create background depth with chips
-      for (let i = 0; i < 25; i++) {
-        const chip = document.createElement('div');
-        chip.className = 'poker-chip';
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        const s = 0.4 + Math.random() * 0.8;
-        const r = Math.random() * 360;
-        chip.style.left = x + '%';
-        chip.style.top = y + '%';
-        chip.style.transform = `scale(${s}) rotate(${r}deg) translateZ(-500px)`;
-        chip.style.opacity = 0.2 + Math.random() * 0.3;
-        scene.appendChild(chip);
-      }
-
-      // SOVEREIGN REVEAL SEQUENCE
-      setTimeout(() => {
-        const card = document.getElementById('sovereign-card');
-        const brand = document.getElementById('sov-brand');
-        const shock = document.getElementById('shock-3d');
-        const shatter = document.getElementById('intro-shatter');
-        
-        // A. Card settles & Brands Pops
-        setTimeout(() => {
-          if (brand) brand.classList.add('brand-pop');
-          if (shock) shock.classList.add('shock-active');
-          if (flash) flash.classList.add('flash-active');
-          
-          // B. High-End Dynamic Dissolve
-          setTimeout(() => {
-            if (card) card.classList.add('dissolving');
-            if (shatter) shatter.classList.add('shatter-active');
-            
-            intro.style.transition = 'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
-            intro.style.opacity = '0';
-            document.body.style.overflow = 'auto';
-            setTimeout(() => { intro.style.display = 'none'; }, 1200);
-          }, 1200); 
-
-        }, 2200); // Wait for orbital-flight (2.2s)
-
-      }, 100); 
-    })();
-  </script>
 
   <!-- NAV -->
   <nav class="nav">
     <div style="display:flex;align-items:center;gap:8px">
       <div id="flash-ov" style="position:fixed;inset:0;z-index:99999;opacity:0;pointer-events:none;transition:opacity 0.2s;background:transparent"></div>
-      <button class="nav-btn btn-qr btn-gold" id="pass-nav-btn" onclick="openPass()" style="display:inline-flex;"><span>VIP Pass</span></button>
-      <button class="nav-btn btn-qr btn-silver" onclick="openReg(null)"><span>Register</span></button>
-      <button class="nav-btn btn-qr btn-black" onclick="openAllEvents()"><span>Details</span></button>
+      <button class="nav-btn btn-qr btn-saffron" id="pass-nav-btn" onclick="openPass()" style="display:inline-flex;"><span>My Pass</span></button>
+      <button class="nav-btn btn-qr btn-white" onclick="openReg(null)"><span>Register</span></button>
+      <button class="nav-btn btn-qr btn-green" onclick="openAllEvents()"><span>Event Details</span></button>
     </div>
     <div class="nl" id="logo-trigger">CSE<span>UTSAV'26</span></div>
   </nav>
 
-  <!-- SUB-NAV / STATUS BAR -->
+  <!-- SUB-NAV / STATUS BAR (scrolls naturally with page) -->
   <div class="sub-nav-bar"
-    style="position:relative;margin-top:64px;height:42px;background:rgba(10,10,10,0.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:90">
-    <div style="font-size:10px;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase;opacity:0.8">♣ APRIL 13-18 · PSNA MAIN FLOOR</div>
+    style="position:relative;margin-top:64px;height:42px;background:rgba(10,10,10,0.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:90">
+    <div style="font-size:10px;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase;opacity:0.8">April 13 to April 18 - PSNA Campus</div>
     <div class="traffic-box" id="traffic-box"
       style="display:flex; align-items:center; gap:10px; opacity:0; transition:opacity 0.5s ease;">
       <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0px">
         <span id="t-status"
-          style="font-size:9px; font-weight:900; color:var(--gold); text-transform:uppercase; letter-spacing:1px">Table Stakes...</span>
-        <div style="width:100px; height:4px; background:rgba(212,175,55,0.1); border-radius:2px; overflow:hidden; border:1px solid rgba(212,175,55,0.2)">
-          <div id="t-bar" style="width:0%; height:100%; background:var(--gold); transition:width 1s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;"></div>
+          style="font-size:9px; font-weight:900; color:var(--muted); text-transform:uppercase; letter-spacing:1px">Calculating...</span>
+        <div style="width:100px; height:4px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; border:1px solid rgba(255,255,255,0.1)">
+          <div id="t-bar" style="width:0%; height:100%; background:var(--green); transition:width 1s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;"></div>
         </div>
       </div>
       <div style="display:flex; gap:3px; align-items:flex-end; height:18px">
         <div id="t-low"
-          style="width:4px; height:6px; background:var(--gold); border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
+          style="width:4px; height:6px; background:#2ecc71; border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
         </div>
         <div id="t-mid"
-          style="width:4px; height:6px; background:var(--gold); border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
+          style="width:4px; height:6px; background:#f1c40f; border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
         </div>
         <div id="t-high"
-          style="width:4px; height:12px; background:var(--neon-red); border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
+          style="width:4px; height:6px; background:#e74c3c; border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
         </div>
       </div>
     </div>
@@ -5656,48 +4822,38 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <div class="poker-coin" style="left:10%; animation: coin-fall 8s infinite linear;"></div>
-    <div class="poker-coin" style="left:30%; animation: coin-fall 10s infinite linear -2s;"></div>
-    <div class="poker-coin" style="left:55%; animation: coin-fall 7s infinite linear -5s;"></div>
-    <div class="poker-coin" style="left:75%; animation: coin-fall 9s infinite linear -1s;"></div>
-    <div class="poker-coin" style="left:90%; animation: coin-fall 11s infinite linear -4s;"></div>
-    <div class="deco-card" style="top:10%; left:5%; --rot:-15deg; animation: card-drift 12s infinite ease-in-out;"></div>
-    <div class="deco-card" style="bottom:10%; right:5%; --rot:10deg; animation: card-drift 15s infinite ease-in-out -3s;"></div>
-
     <!-- Watermark ghost names -->
     <div class="hero-left">
       <h1 class="hero-h">
         <span class="wh">THE</span><span class="or"> CSEUTSAV'26</span>
         <br><span class="wh">BEGINS</span>
       </h1>
-      <p class="hero-desc">Place your bets on innovation. The ultimate high-stakes technical floor is here. Compete with the best, take home the grand jackpot.</p>
+      <p class="hero-desc">The Annual Technical Symposium of the Department of Computer Science & Engineering. Compete.
+        Collaborate. Conquer.</p>
       <div class="hero-btns">
-        <button class="btn-casino-gold" onclick="openReg(null)"><span>Join The Table</span></button>
-        <button class="btn-casino-outline" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})"><span>View Stakes</span></button>
+        <button class="btn-or btn-fire" onclick="openReg(null)"><span>Register Free</span></button>
+        <button class="btn-fill btn-fire" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})"><span>Explore Events</span></button>
       </div>
-      <div class="cd-row casino-timer">
+      <div class="cd-row">
         <div class="cd-c"><span class="cdn" id="cd-d">00</span><span class="cdl">Days</span></div>
         <div class="cd-c"><span class="cdn" id="cd-h">00</span><span class="cdl">Hours</span></div>
         <div class="cd-c"><span class="cdn" id="cd-m">00</span><span class="cdl">Mins</span></div>
         <div class="cd-c"><span class="cdn" id="cd-s">00</span><span class="cdl">Secs</span></div>
       </div>
-    </div>
+      </div>
     </div>
     <div class="hero-right">
       <div class="poster">
         <div class="poster-inner">
-          <!-- Falling poker coins -->
-          <div class="poster-coin" style="width:22px; height:22px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:12%; animation-duration:6s; animation-delay:0s;"></div>
-          <div class="poster-coin" style="width:18px; height:18px; background:radial-gradient(circle at 35% 35%, #b8943e, #5a4a28); border:1px dashed rgba(0,0,0,0.3); left:55%; animation-duration:8s; animation-delay:2s;"></div>
-          <div class="poster-coin" style="width:15px; height:15px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:80%; animation-duration:7s; animation-delay:4s;"></div>
-          <div class="poster-coin" style="width:12px; height:12px; background:radial-gradient(circle at 35% 35%, #b8943e, #5a4a28); border:1px dashed rgba(0,0,0,0.3); left:35%; animation-duration:9s; animation-delay:1s;"></div>
-          <div class="poster-coin" style="width:20px; height:20px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:92%; animation-duration:7.5s; animation-delay:3s;"></div>
-
+          <div class="poster-coin" style="width:26px; height:26px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:15%; animation-delay: 0s;"></div>
+          <div class="poster-coin" style="width:20px; height:20px; background:radial-gradient(circle at 35% 35%, #b8943e, #5a4a28); border:1px dashed rgba(0,0,0,0.3); left:50%; animation-delay: 3s; animation-duration: 9s;"></div>
+          <div class="poster-coin" style="width:16px; height:16px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:80%; animation-delay: 1.5s; animation-duration: 7s;"></div>
           <div class="poster-ot">
-            <span>CSEUTSAV</span>
+            <span class="poster-ot-main">CSEUTSAV</span>
             <span class="poster-ot-sub">2K26</span>
           </div>
-          <div class="poster-dt">April 13 to April 18 · PSNA CSE · Dindigul</div>
+          <div class="poster-dt">April 13 to April 18</div>
+          <div class="poster-su">PSNA CSE · Dindigul</div>
         </div>
       </div>
     </div>
@@ -5741,7 +4897,7 @@
 
     <!-- INSTAGRAM PROMO CTA (Moved under video) -->
     <div class="insta-btn-wrap" style="margin-top: 40px; margin-bottom: 20px;">
-      <a href="https://www.instagram.com/CSEUTSAV'26_26?igsh=cDRhM2g3ZzBtdTdi" target="_blank" class="insta-glow-btn btn-fire">
+      <a href="https://www.instagram.com/cseutsav_26?igsh=cDRhM2g3ZzBtdTdi" target="_blank" class="insta-glow-btn btn-fire">
         <span style="display:flex;align-items:center;gap:10px;position:relative;z-index:2">
           <svg viewBox="0 0 24 24">
             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
@@ -5757,207 +4913,77 @@
   <!-- ABOUT -->
   <section class="sec" id="about">
 
-    <div class="sl">♠ THE CASINO</div>
-    <h2 class="st gold-text">A HIGH-STAKES ARENA</h2>
-    <p class="ss">Welcome to <b>CSEUTSAV'26</b>. Here, every line of code is a bet, and every innovation is a jackpot. Join as the sharpest minds gather for competition.</p>
+    <div class="sl">About</div>
+    <div class="st">A Legacy of<br>Excellence</div>
+    <p class="ss">PSNA CSE brings together the sharpest minds for a day of competition, innovation and celebration.</p>
     <div class="stats-g">
-      <div class="sb"><span class="sbn" id="sev">0</span><span class="sbl">Tables Open</span></div>
-      <div class="sb"><span class="sbn" id="spr">0K</span><span class="sbl">Total Pot</span></div>
-      <div class="sb"><span class="sbn">ON THE HOUSE</span><span class="sbl">Buy-In Fee</span></div>
+      <div class="sb"><span class="sbn" id="sev">0</span><span class="sbl">Events</span></div>
+      <div class="sb"><span class="sbn" id="spr">0K</span><span class="sbl">Prize Pool</span></div>
+      <div class="sb"><span class="sbn">FREE</span><span class="sbl">Entry Fee</span></div>
     </div>
     <div class="about-g">
       <div class="ab-card">
         <div class="ab-num">01</div>
-        <div class="ab-t">The High Hand</div>
-        <div class="ab-b">Six high-stakes tables across coding, design, and strategy. Over ₹33,000 in the pot.</div>
+        <div class="ab-t">Compete & Win</div>
+        <div class="ab-b">Six events across coding, design, research and innovation. Over ₹33,000 in prizes.</div>
       </div>
       <div class="ab-card">
         <div class="ab-num">02</div>
-        <div class="ab-t">House Credit</div>
-        <div class="ab-b">The entry is on the house. Register with zero buy-in. Just show up and play your best.</div>
+        <div class="ab-t">Zero Cost</div>
+        <div class="ab-b">Registration is completely free. No hidden fees. Just show up and give your best.</div>
       </div>
       <div class="ab-card">
         <div class="ab-num">03</div>
-        <div class="ab-t">VIP Table Access</div>
-        <div class="ab-b">Secure your digital pass instantly. Show your VIP credentials at the floor entrance desk.</div>
+        <div class="ab-t">Instant Digital Pass</div>
+        <div class="ab-b">Register and get a QR-verified pass instantly on your phone. Show it at the event desk.</div>
       </div>
     </div>
   </section>
 
   <!-- EVENTS -->
   <section class="sec" id="events" style="padding-top:0">
-    <div class="sl">♥ THE MAIN FLOOR</div>
-    <h2 class="st gold-text">CURRENT STAKES</h2>
-    <p class="ss">Choose your table. High-octane Technical plays and strategic Non-Technical games await.</p>
+    <div class="sl">2026 Edition</div>
+    <div class="st">Events</div>
+    <p class="ss">Tap any event to view details — clicking Register will pre-fill the event automatically.</p>
     <div class="ev-tiles" id="ev-tiles"></div>
   </section>
 
   <!-- REGISTRATION (CUSTOM) -->
   <section class="sec form-section" id="registration">
-    <div class="sl">♦ RESERVE YOUR SEAT</div>
-    <h2 class="st gold-text">JOIN THE TABLE</h2>
-    <p class="ss">Experience the most seamless registration. Secure your high-stakes pass instantly and prepare to win.</p>
-    <style>
-      .sp-hole {
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        background: radial-gradient(circle at 40% 40%, #151515, #000);
-        border-radius: 50%;
-        box-shadow: inset 0 10px 15px rgba(0,0,0,1), 0 0 0 4px rgba(139, 69, 19, 0.6), 0 0 10px 6px rgba(0,0,0,0.5);
-        z-index: 0;
-      }
-      .sp-tl { top: -20px; left: -20px; }
-      .sp-tr { top: -20px; right: -20px; }
-      .sp-bl { bottom: -20px; left: -20px; }
-      .sp-br { bottom: -20px; right: -20px; }
-      .sp-tc { top: -25px; left: 50%; transform: translateX(-50%); width: 70px; height: 50px; }
-      .sp-bc { bottom: -25px; left: 50%; transform: translateX(-50%); width: 70px; height: 50px; }
-
-      .snooker-ball {
-        position: absolute;
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        box-shadow: inset -4px -4px 6px rgba(0,0,0,0.6), inset 2px 2px 6px rgba(255,255,255,0.5), 3px 5px 6px rgba(0,0,0,0.6);
-        z-index: 0;
-        pointer-events: none;
-      }
-      .ball-red { background: radial-gradient(circle at 35% 35%, #ff4d4d, #990000); top: 18%; left: 15%; animation: drift1 10s ease-in-out infinite alternate; }
-      .ball-black { background: radial-gradient(circle at 35% 35%, #555, #050505); bottom: 20%; right: 20%; animation: drift2 12s ease-in-out infinite alternate; }
-      .ball-white { background: radial-gradient(circle at 35% 35%, #fff, #bbb); top: 35%; right: 12%; animation: drift3 14s ease-in-out infinite alternate; }
-
-      @keyframes drift1 { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(8px, 12px) rotate(30deg); } }
-      @keyframes drift2 { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(-12px, -8px) rotate(-20deg); } }
-      @keyframes drift3 { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(-15px, 5px) rotate(-40deg); } }
-
-      #snooker-cue {
-        position: absolute;
-        width: 250px;
-        height: 12px;
-        background: linear-gradient(to left, #29150c 0%, #a46d42 40%, #e0bc8f 95%, #111 95%, #111 98%, #fff 98%, #f4e8df 100%);
-        border-radius: 6px;
-        box-shadow: 0 15px 25px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2);
-        z-index: 10;
-        opacity: 0;
-        pointer-events: none;
-        transform-origin: left center;
-      }
-
-      @keyframes cue-hit {
-        0% { transform: translate(150px, 0); opacity: 0; }
-        20% { transform: translate(40px, 0); opacity: 1; }
-        50% { transform: translate(70px, 0); opacity: 1; }
-        65% { transform: translate(-10px, 0); opacity: 1; }
-        100% { transform: translate(30px, 0); opacity: 0; }
-      }
-
-      @keyframes btn-impact {
-        0% { transform: scale(1); filter: brightness(1); }
-        50% { transform: scale(0.96); filter: brightness(1.5); box-shadow: 0 0 35px rgba(212,175,55,0.8); }
-        100% { transform: scale(1); filter: brightness(1); }
-      }
-    </style>
-    <div class="form-container" style="
-      text-align: center;
-      padding: 70px 24px;
-      margin: 0 16px;
-      position: relative;
-      background-color: #0b4522; /* Premium Baize Green */
-      background-image: 
-        radial-gradient(ellipse at center, rgba(0,0,0,0) 20%, rgba(0,0,0,0.7) 100%),
-        url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%220.1%22 blend-mode=%22overlay%22/%3E%3C/svg%3E');
-      border: 12px solid #2b1810; /* Dark thick wooden trim */
-      border-radius: 16px;
-      box-shadow: 
-        inset 0 0 40px 10px rgba(0,0,0,0.9), /* Internal cushion drop shadow */
-        0 0 0 2px #4a2f1d, /* Outer lighter wood trim */
-        0 20px 40px rgba(0,0,0,0.8), /* Outer drop shadow */
-        0 0 30px rgba(212,175,55,0.15); /* Soft ambient gold glow */
-      overflow: hidden;
-    ">
-      <!-- Ambient Light -->
-      <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(212,175,55,0.06) 0%, transparent 60%); pointer-events: none; z-index: 0;"></div>
-
-      <!-- Felt Pockets -->
-      <div class="sp-hole sp-tl"></div>
-      <div class="sp-hole sp-tr"></div>
-      <div class="sp-hole sp-tc"></div>
-      <div class="sp-hole sp-bl"></div>
-      <div class="sp-hole sp-br"></div>
-      <div class="sp-hole sp-bc"></div>
-
-      <!-- Snooker Balls -->
-      <div class="snooker-ball ball-red"></div>
-      <div class="snooker-ball ball-black"></div>
-      <div class="snooker-ball ball-white"></div>
-
-      <!-- Snooker Cue stick for animation -->
-      <div id="snooker-cue"></div>
-
-      <div style="position: relative; z-index: 1;">
-        <div class="reg-hero-icon" style="color:var(--gold);border-color:var(--gold);background:rgba(0,0,0,0.3);box-shadow:0 5px 15px rgba(0,0,0,0.5)">
-          <svg viewBox="0 0 24 24">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-          </svg>
-        </div>
-        <h3
-          style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;text-shadow:0 3px 6px rgba(0,0,0,0.8)">
-          Ready to Ante Up?</h3>
-        <p
-          style="color:rgba(255,255,255,0.85);margin-bottom:36px;max-width:320px;margin-left:auto;margin-right:auto;font-size:15px;line-height:1.5;text-shadow:0 2px 4px rgba(0,0,0,0.7)">
-          Join 500+ participants from PSNA CSE in the ultimate technical celebration.</p>
-        
-        <button class="btn-fill" id="seat-btn" style="padding:16px 40px;font-size:18px;letter-spacing:3px;position:relative;background:var(--gold);color:#000;border:2px solid #fff;box-shadow:0 10px 20px rgba(0,0,0,0.5);transition:transform 0.1s"
-          onclick="playStrike(this)">RESERVE YOUR SEAT</button>
-        <div class="form-note" style="margin-top:28px;color:rgba(255,255,255,0.5);text-shadow:0 1px 2px rgba(0,0,0,0.8)">Processed securely via <span style="color:var(--gold)">Google Cloud</span> · Instant Digital Pass</div>
+    <div class="sl">Registration</div>
+    <div class="st">Secure Your<br>Spot Now</div>
+    <p class="ss">Experience the most seamless registration. No forms, no redirects. Just fill your details and get your
+      digital pass instantly.</p>
+    <div class="form-container" style="text-align:center;padding:60px 24px">
+      <div class="reg-hero-icon">
+        <svg viewBox="0 0 24 24">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
       </div>
+      <h3
+        style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">
+        Ready to Compete?</h3>
+      <p
+        style="color:var(--muted);margin-bottom:32px;max-width:320px;margin-left:auto;margin-right:auto;font-size:14px">
+        Join 500+ participants from PSNA CSE in the ultimate technical celebration.</p>
+      <button class="btn-fill" style="padding:16px 40px;font-size:18px;letter-spacing:3px"
+        onclick="openReg(null)">Register Free Now</button>
+      <div class="form-note" style="margin-top:24px">Processed securely via <span>Google Cloud</span> · Instant Digital
+        Pass</div>
     </div>
-    <script>
-      function playStrike(btn) {
-        if(btn.disabled) return;
-        btn.disabled = true;
-        const cue = document.getElementById('snooker-cue');
-        const cont = btn.closest('.form-container').getBoundingClientRect();
-        const rect = btn.getBoundingClientRect();
-        
-        cue.style.top = (rect.top - cont.top + (rect.height / 2) - 6) + 'px';
-        cue.style.left = (rect.left - cont.left + rect.width) + 'px';
-        
-        cue.style.animation = 'none';
-        btn.style.animation = 'none';
-        void cue.offsetWidth;
-        
-        cue.style.animation = 'cue-hit 0.6s ease-out forwards';
-        
-        setTimeout(() => {
-          btn.style.animation = 'btn-impact 0.3s ease-out';
-          try { navigator.vibrate([30]); } catch(e){}
-        }, 390);
-        
-        setTimeout(() => {
-          btn.disabled = false;
-          openReg(null);
-        }, 650);
-      }
-    </script>
   </section>
 
   <!-- CONTACT -->
   <section class="sec" id="contact" style="padding-top:0">
-    <div class="sl">♣ CASINO SUPPORT</div>
-    <h2 class="st gold-text">THE PIT BOSS</h2>
-    <p class="ss">Reach our dealers for any queries or high-priority support.</p>
+    <div class="sl">Get in Touch</div>
+    <div class="st">Contact</div>
+    <p class="ss">Reach coordinators for any event queries.</p>
     <div class="contact-grid" id="cg"></div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="footer" style="padding-top:40px; border-top:1px solid var(--gold); background:rgba(0,0,0,0.9); text-align:center">
-    <div class="nl" style="margin-bottom:15px; font-size:32px">CSE<span>UTSAV'26</span></div>
-    <div style="color:var(--gold); font-size:12px; letter-spacing:4px; font-weight:800; text-transform:uppercase; margin-bottom:10px">CSEUTSAV'26 · ELITE SYMPOSIUM</div>
-    <div style="margin-top:20px; color:var(--gold); font-size:22px; display:flex; justify-content:center; gap:20px">
-      <span>♠</span><span>♥</span><span>♦</span><span>♣</span>
-    </div>
+  <footer class="footer">
+    <div class="fl-logo">CSEUT<span>SAV'26</span></div>
   </footer>
 
   <!-- EVENT DETAIL MODAL -->
@@ -5972,10 +4998,10 @@
   <div class="reg-ov" id="reg-ov" onclick="closeRegOv(event)">
     <canvas id="reg-particles" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
     <div class="reg-sheet" id="reg-sheet" onclick="event.stopPropagation()" style="position:relative;z-index:1;">
-        <div class="reg-close-bar">
-          <div class="reg-close-bar-title">CSEUTSAV'26 Membership</div>
-          <button class="reg-close-btn" onclick="forceCloseReg()">✕ Exit</button>
-        </div>
+      <div class="reg-close-bar">
+        <div class="reg-close-bar-title">Registration</div>
+        <button class="reg-close-btn" onclick="forceCloseReg()">✕ Close</button>
+      </div>
       
       <!-- FULL-SCREEN COOLDOWN BLOACKER -->
       <div id="cooldown-wall" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;text-align:center;padding:20px;">
@@ -5998,7 +5024,7 @@
           <div id="ev-summary-here"></div>
           <div id="reg-fields-container" style="display:none">
             <div style="margin-bottom:12px;">
-              <div class="fc-t" style="margin-bottom:0">Player Profile</div>
+              <div class="fc-t" style="margin-bottom:0">Your Details</div>
             </div>
             <div class="fg">
               <label class="fl">Full Name</label>
@@ -6046,8 +5072,8 @@
             </div>
             <div class="fg"><label class="fl">College Email</label><input class="fi" id="f-email" type="email"
                 placeholder="yourname@psnacet.edu.in"></div>
-            <div class="free-note">Members Only · VIP Seat Reservation</div>
-            <button class="reg-next-btn" onclick="goStep(1)">Next — Assemble The Syndicate</button>
+            <div class="free-note">CSE Department Only · Free Registration</div>
+            <button class="reg-next-btn" onclick="goStep(1)">Next — Team Details</button>
           </div>
         </div>
 
@@ -6055,26 +5081,26 @@
         <div class="step" id="step-1">
           <div id="ev-summary-here2"></div>
           <div style="margin-bottom:12px;">
-            <div class="fc-t" style="margin-bottom:0">The Syndicate</div>
+            <div class="fc-t" style="margin-bottom:0">Team Details</div>
           </div>
           <div class="fg"><label class="fl">Team Name</label><input class="fi" id="f-teamname" type="text"
               placeholder="Enter your team name"></div>
           <div style="font-size:11px;color:var(--muted2);margin-bottom:14px;line-height:1.5" id="team-hint"></div>
           <div class="tm-grid" id="tm-grid"></div>
           <button class="add-tm-btn" id="add-tm-btn" onclick="addTeamMember()">+ Add Team Member</button>
-          <button class="reg-next-btn" style="margin-top:14px" onclick="goStep(2)">Next — Ante Up</button>
+          <button class="reg-next-btn" style="margin-top:14px" onclick="goStep(2)">Next — Review & Confirm</button>
           <button class="reg-back-btn" onclick="goStep(0)">← Back</button>
         </div>
 
         <!-- STEP 3: Review -->
         <div class="step" id="step-2">
-          <div class="fc-t">Final Call: Ante Up</div>
+          <div class="fc-t">Review & Confirm</div>
           <div id="review-content"></div>
           <div class="free-note">Registration is completely FREE</div>
           <div
             style="font-size:11px;color:rgba(232,84,26,0.9);text-align:center;margin-bottom:12px;padding:0 10px;font-weight:600">
             During heavy traffic, registration may take a few seconds.<br>Please click submit only once.</div>
-          <button class="reg-next-btn" onclick="submitReg()">Place Your Bet</button>
+          <button class="reg-next-btn" onclick="submitReg()">Confirm Registration</button>
           <button class="reg-back-btn" onclick="goStep(1)">← Edit Details</button>
           <div id="cooldown-warning-msg" style="text-align:center;width:100%;"></div>
         </div>
@@ -6086,11 +5112,11 @@
   <!-- CONFIRMATION -->
   <div class="conf-screen" id="conf-screen">
     <div class="conf-inner">
-      <div class="conf-check-ring" style="border-color:var(--gold); color:var(--gold)"><svg viewBox="0 0 24 24" fill="none">
-          <polyline points="20 6 9 17 4 12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      <div class="conf-check-ring"><svg viewBox="0 0 24 24" fill="none">
+          <polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round" />
         </svg></div>
-      <div class="conf-title gold-text">JACKPOT!</div>
-      <div class="conf-sub">Your seat at <b>CSEUTSAV'26</b> is secured. Your digital pass is now active.</div>
+      <div class="conf-title">You're In!</div>
+      <div class="conf-sub">Registration confirmed. Your digital pass is ready.</div>
       
       <!-- LIVE COOLDOWN ON SUCCESS SCREEN -->
       <div id="success-cooldown-box" style="display:none;background:rgba(255,100,50,0.1);border:1px solid rgba(255,100,50,0.3);margin-top:15px;padding:12px;border-radius:8px;text-align:center;">
@@ -6100,11 +5126,11 @@
       </div>
 
       <div class="conf-id-box" style="margin-top:15px;">
-        <div class="conf-id-l">VIP Table Code</div>
-        <div class="conf-id-v" id="conf-id-v">UTSAV26-0001</div>
+        <div class="conf-id-l">Registration ID</div>
+        <div class="conf-id-v" id="conf-id-v">CSEUTSAV'26-0001</div>
       </div>
       <div class="conf-policy">
-        <h4>House Rules</h4>
+        <h4>Registration Policy</h4>
         <ul>
           <li>Bring this pass to the event — shown at the desk</li>
           <li>Only PSNA CSE students may participate</li>
@@ -6126,8 +5152,8 @@
   <!-- MY PASS -->
   <div class="pass-ov" id="pass-ov">
     <div class="pass-wrap">
-      <div class="pass-head" style="border-bottom:1px solid var(--gold); background:rgba(20,20,20,0.9)">
-        <div class="pass-head-t gold-text">♠ CSEUTSAV'26 PASS ♠</div><button class="pass-close-btn" style="color:var(--gold)" onclick="closePass()">Close ✕</button>
+      <div class="pass-head">
+        <div class="pass-head-t">My Pass</div><button class="pass-close-btn" onclick="closePass()">Close ✕</button>
       </div>
       <div id="pass-out"></div>
       <!-- Fetch pass lookup (shown when no local passes) -->
@@ -6149,7 +5175,7 @@
   <div class="comm-ov" id="comm-ov">
     <div class="comm-wrap">
       <div class="comm-head">
-        <div class="comm-title">The Pit <span>Bosses</span></div>
+        <div class="comm-title">Symposium <span>Committee</span></div>
         <button class="comm-close" onclick="closeComm()">✕ Close</button>
       </div>
       <div class="comm-grid" id="comm-list">
@@ -6180,7 +5206,7 @@
   <div class="admin-ov" id="admin-ov">
     <div class="admin-wrap">
       <div class="admin-head">
-        <div class="admin-title">The Executive <span>Vault</span></div>
+        <div class="admin-title">Admin <span>Panel</span></div>
         <button class="admin-close" onclick="closeAdmin()">Close ✕</button>
       </div>
       <div class="sync-status" id="sync-status"></div>
@@ -6228,8 +5254,8 @@
   <!-- ADMIN LOGIN MODAL -->
   <div class="admin-login-ov" id="admin-login-ov" onclick="if(event.target===this)closeAdminLogin()">
     <div class="admin-login-box">
-      <div class="admin-login-title">Vault <span style="color:var(--orange)">Access</span></div>
-      <div class="admin-login-sub">Enter credentials to unlock the executive vault</div>
+      <div class="admin-login-title">Admin <span style="color:var(--orange)">Login</span></div>
+      <div class="admin-login-sub">Enter admin credentials to access the panel</div>
       <div class="admin-login-err" id="admin-login-err">Invalid credentials. Try again.</div>
       <div class="fg"><label class="fl">User ID</label><input class="fi" id="admin-uid" type="text"
           placeholder="Enter user ID"></div>
@@ -6249,16 +5275,16 @@
   <!-- HIDDEN PORTAL OVERLAY -->
   <div class="portal-ov" id="portal-ov" onclick="if(event.target===this)closePortal()">
     <div class="portal-box">
-      <div class="portal-title">The <span>Backroom</span></div>
-      <div class="portal-sub">Executive management area for Pit Bosses</div>
+      <div class="portal-title">Hidden <span style="color:var(--orange)">Portal</span></div>
+      <div class="portal-sub">Secret management area for organizers</div>
       <div class="portal-grid">
         <div class="portal-btn" onclick="portalToAdmin()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-          <span>The Vault</span>
+          <span>Admin Panel</span>
         </div>
         <div class="portal-btn" onclick="portalToScanner()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
-          <span>Validator</span>
+          <span>QR Scanner</span>
         </div>
       </div>
       <button class="reg-back-btn" style="margin-top:32px" onclick="closePortal()">Exit Portal</button>
@@ -6269,7 +5295,7 @@
   <div class="scanner-ov" id="scanner-ov">
     <div class="scanner-header">
       <div style="display:flex;flex-direction:column">
-        <div class="sc-title">CSEUTSAV'26 <span>Validator</span></div>
+        <div class="sc-title">Symposium <span style="color:var(--orange)">Scanner</span></div>
         <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:2px;font-family:monospace;letter-spacing:1px" id="scan-counter-display">SESSION SCANS: 0</div>
       </div>
       <button class="reg-back-btn" style="width:auto;padding:8px 16px" onclick="closeScanner()">Close</button>
@@ -6642,59 +5668,72 @@
       }
     }
 
-    /* ─── PREMIUM 3D CARD STORM ─── */
+    /* ════════ HERO PARTICLE CANVAS ════════ */
     function initHeroParticles() {
       const hero = document.querySelector('.hero');
       if (!hero) return;
 
-      const container = document.createElement('div');
-      container.className = 'hero-particles';
-      hero.insertBefore(container, hero.firstChild);
+      // Create and inject canvas
+      const canvas = document.createElement('canvas');
+      canvas.id = 'hero-particles';
+      hero.insertBefore(canvas, hero.firstChild);
+      const ctx = canvas.getContext('2d');
 
-      const CARD_COUNT = 18;
-      const suits = ['♠', '♥', '♦', '♣'];
-      const values = ['A', 'K', 'Q', 'J', '10'];
+      const PARTICLE_COUNT = 18;
+      let particles = [];
+      let W, H;
 
-      function spawnCard() {
-        const wrap = document.createElement('div');
-        wrap.className = 'flying-card-wrap';
-        
-        const sx = Math.random() * window.innerWidth;
-        const ex = sx + (Math.random() - 0.5) * 400;
-        const sz = -500 + Math.random() * 1000;
-        const ez = sz + (Math.random() - 0.5) * 500;
-        const dur = 10 + Math.random() * 15;
-        const op = 0.1 + Math.random() * 0.4;
-        
-        wrap.style.setProperty('--sx', `${sx}px`);
-        wrap.style.setProperty('--ex', `${ex}px`);
-        wrap.style.setProperty('--sz', `${sz}px`);
-        wrap.style.setProperty('--ez', `${ez}px`);
-        wrap.style.setProperty('--op', op);
-        
-        // Random drift speed
-        wrap.style.animation = `float-3d ${dur}s linear infinite`;
-        wrap.style.animationDelay = `-${Math.random() * dur}s`;
-
-        const suit = suits[Math.floor(Math.random() * suits.length)];
-        const val = values[Math.floor(Math.random() * values.length)];
-        const color = (suit === '♥' || suit === '♦') ? '#ff003c' : '#000';
-
-        wrap.innerHTML = `
-          <div class="flying-card" style="--dur: ${5 + Math.random() * 5}s">
-            <div class="f-card-face f-card-front" style="color:${color}">
-              <div style="position:absolute;top:5px;left:5px;font-size:10px;line-height:1;font-weight:900">${val}<br>${suit}</div>
-              <span>${suit}</span>
-              <div style="position:absolute;bottom:5px;right:5px;font-size:10px;line-height:1;font-weight:900;transform:rotate(180deg)">${val}<br>${suit}</div>
-            </div>
-            <div class="f-card-face f-card-back"></div>
-          </div>
-        `;
-
-        container.appendChild(wrap);
+      function resize() {
+        const rect = hero.getBoundingClientRect();
+        W = canvas.width  = rect.width;
+        H = canvas.height = rect.height || window.innerHeight;
       }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
 
-      for (let i = 0; i < CARD_COUNT; i++) spawnCard();
+      // Build particles
+      function makeParticle() {
+        return {
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: 1.2 + Math.random() * 2.5,          // radius 1.2–3.7px
+          vx: (Math.random() - 0.5) * 0.3,        // slow horizontal drift
+          vy: -(0.25 + Math.random() * 0.55),      // float upward
+          opacity: 0.15 + Math.random() * 0.55,
+          opDir: Math.random() < 0.5 ? 1 : -1,
+          blur: 1 + Math.random() * 3
+        };
+      }
+      for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(makeParticle());
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+          // Soft glow via shadow
+          ctx.save();
+          ctx.globalAlpha = Math.max(0.05, Math.min(1, p.opacity));
+          ctx.shadowColor  = 'rgba(232, 84, 26, 0.9)';
+          ctx.shadowBlur   = p.blur * 8;
+          ctx.fillStyle    = `rgba(255, ${80 + Math.random() * 30 | 0}, 20, 1)`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+
+          // Move
+          p.x += p.vx;
+          p.y += p.vy;
+          p.opacity += 0.003 * p.opDir;
+          if (p.opacity > 0.75 || p.opacity < 0.08) p.opDir *= -1;
+
+          // Recycle when off top or sides
+          if (p.y < -8 || p.x < -8 || p.x > W + 8) {
+            Object.assign(p, makeParticle(), { y: H + 5, x: Math.random() * W });
+          }
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
     }
 
     
@@ -6805,106 +5844,73 @@
 
     /* ════════ OUTLINE + TICKER ════════ */
     function buildObs() {
-      const w = ["CSEUTSAV'26", 'JACKPOT', 'ULTIMATE STAKES', 'THE FLOOR'];
+      const w = ['CSEUTSAV', '2K26', 'PSNA'];
       const d = [...w, ...w, ...w, ...w, ...w, ...w];
       document.getElementById('obs').innerHTML = d.map(x => `<span class="obi">${x}</span>`).join('');
     }
     function buildTicker() {
-      const items = ["CSEUTSAV'26 2K26", 'STAKES ARE HIGH', 'JACKPOT WAITING', 'PLACE YOUR BETS', 'VIP ACCESS ONLY', 'JOIN THE FLOOR'];
+      const items = ['CSEUTSAV 2K26', 'EVENTS', 'HACKVERSE', 'DESIGN DECODE', 'CHECKMATE CODERS', 'UNO REVERSE', 'BRAND TO BILLION', 'ZERO CODE ZONE', 'TECHNOTRACE', 'CLASH OF MINDS', 'FRANCHISE FIESTA', 'THE ALGORITHMIC PLATTER', 'FREE ENTRY', 'PSNA CSE', '18 APRIL 2026'];
       const d = [...items, ...items];
       document.getElementById('ticker').innerHTML = d.map(t => `<div class="ti">${t}<div class="td"></div></div>`).join('');
     }
 
     /* ════════ RENDER TILES ════════ */
-    /* ════════ RENDER TILES (CASINO STYLE) ════════ */
     function renderTile(e, isFeatured) {
       const startTime = e.time === 'TBA' ? 'TBA' : e.time.split(' to ')[0].trim();
-      const suits = ['♠', '♥', '♦', '♣'];
-      const suit = suits[Math.floor(Math.random() * suits.length)];
-      
-      // Highlight global timeline conflicts natively
-      const hasConflict = EVS.some(ev => ev.time !== 'TBA' && e.time !== 'TBA' && ev.time === e.time && ev.id !== e.id);
-      
-      let teamText = '';
-      if (e.type === 'Solo') {
-        teamText = 'SINGLE';
-      } else if (e.minTeam === e.maxTeam) {
-        teamText = `${e.minTeam} MEMBERS`;
-      } else {
-        teamText = `${e.minTeam}-${e.maxTeam} MEMBERS`;
-      }
-      
+      const featuredClass = isFeatured ? ' ev-tile-featured' : '';
       return `
-    <div class="ev-tile" onclick="openEvMod('${e.id}')">
-      <div class="ev-tile-top" style="height:250px">
-        <div class="ev-tile-bg">
-          <img src="${e.poster}" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0" alt="${e.name}">
-          <div style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);color:var(--gold);padding:4px 10px;border-radius:4px;font-weight:900;font-size:16px;z-index:2;border:1px solid var(--gold)">${suit}</div>
+    <div class="ev-tile${featuredClass}" onclick="openEvMod('${e.id}')">
+      <div class="ev-tile-top">
+        <div class="ev-tile-bg" style="background:${e.grad}">
+          ${e.poster ? `
+          <img src="${e.poster}" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;${e.posterScale ? `transform:scale(${e.posterScale});` : ''}" alt="${e.name}">
+          ` : `
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:${e.accent};opacity:.25;text-transform:uppercase;letter-spacing:2px;text-shadow:0 0 20px ${e.accent}, 0 0 40px ${e.accent}">${e.name.split(' ')[0]}</span>
+          </div>
+          `}
         </div>
+        <div class="ev-tile-overlay"></div>
+        <div class="ev-tile-tag">${e.tag}</div>
       </div>
-      <div class="ev-tile-body" style="padding: 16px; background: rgba(12,12,12,0.95); display: flex; flex-direction: column;">
-        
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <!-- Time block with dynamic conflict UI -->
-          <div style="background: ${hasConflict ? 'rgba(231,76,60,0.1)' : 'rgba(212,175,55,0.05)'}; 
-                      border: 1px solid ${hasConflict ? '#e74c3c' : 'rgba(212,175,55,0.3)'}; 
-                      border-radius: 4px; padding: 6px 10px; font-weight: 700; font-size: 13px; 
-                      color: ${hasConflict ? '#ff6b6b' : 'var(--gold)'}; 
-                      box-shadow: ${hasConflict ? '0 0 10px rgba(231,76,60,0.2)' : 'none'};
-                      letter-spacing: 0.5px;">
-            <span style="font-size:14px; margin-right:4px;">♦</span> ${startTime}
-          </div>
-          
-          <!-- Team size badge -->
-          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.15); 
-                      border-radius: 4px; padding: 6px 10px; font-weight: 700; font-size: 13px; color: #ccc;
-                      letter-spacing: 0.5px;">
-            <span style="font-size:14px; margin-right:4px; color:var(--gold);">♠</span> ${teamText}
-          </div>
+      <div class="ev-tile-body">
+        <div class="ev-tile-name">${e.name}</div>
+        <div class="ev-tile-sub">${e.label}</div>
+        ${e.isSimultaneous ? `<div class="ev-caution-tag" style="background:rgba(255,255,255,0.05);color:var(--muted2);border-color:rgba(255,255,255,0.1)">Same Time Event</div>` : ''}
+        <div class="ev-tile-time ${e.isSimultaneous ? 'ev-time-red-glow' : ''}">${e.date === 'TBA' ? 'Date TBA' : e.date.replace(', 2026', '')} | ${startTime}</div>
+        <div class="ev-tile-tags" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">
+          <span class="etp etp-or">${e.type}</span>
+          <span class="etp etp-nt">${e.type === 'Solo' ? 'Individual' : (e.minTeam === e.maxTeam ? `${e.minTeam} Members` : `${e.minTeam} to ${e.maxTeam} Members`)}</span>
         </div>
-
-        <div class="ev-tile-link" style="border: 1px solid var(--gold); background: transparent; color: var(--gold); font-weight: 700; letter-spacing: 2px; padding: 12px; border-radius: 6px; text-transform: uppercase; text-align: center; transition: all 0.2s;">
-          REGISTER NOW <span style="margin-left: 5px;">→</span>
+        <div class="ev-tile-link" onclick="event.stopPropagation();openReg('${e.id}')">
+          Register Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </div>
     </div>
   `;
     }
-
     function renderTiles() {
       const techEvs = EVS.filter(e => e.category === 'Technical');
       const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
-      
+      // Featured indices: 0, 3, 6 for alternating big/small pattern
+      const techFeatured = [0, 3, 6];
+      const nonTechFeatured = [0];
       document.getElementById('ev-tiles').innerHTML = `
-    <style>
-      /* scoped fix: remove 3D rotation and gradient overlay for this events section */
-      #ev-tiles .ev-tile::before { display: none !important; }
-      #ev-tiles .ev-tile {
-        border: 1px solid rgba(212,175,55,0.35) !important;
-        min-height: unset !important;
-        background: #0a0a0a !important;
-        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-      }
-      #ev-tiles .ev-tile:hover {
-        transform: scale(1.02) !important;
-        box-shadow: 0 0 18px rgba(212,175,55,0.25), 0 10px 25px rgba(0,0,0,0.8) !important;
-        border-color: rgba(212,175,55,0.8) !important;
-      }
-    </style>
-    <div style="grid-column:1/-1;margin-bottom:20px;text-align:center">
-      <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:10px;margin-bottom:10px">The High Stakes</h2>
-      <div style="width:100px;height:3px;background:var(--gold);margin:0 auto"></div>
+    <div style="grid-column:1/-1;margin-bottom:4px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#2ecc71;text-transform:uppercase;letter-spacing:3px;display:flex;align-items:center;gap:10px">
+        <span style="color:#2ecc71;text-shadow:0 0 8px rgba(46,204,113,.4);font-weight:900;font-size:24px">&lt;/&gt;</span>
+        <span>Technical Events</span>
+      </div>
     </div>
-    
-    <div style="grid-column:1/-1;margin-bottom:20px">
-      <div class="casino-badge">TECHNICAL PLAYS</div>
+    ${techEvs.map((e, i) => renderTile(e, techFeatured.includes(i))).join('')}
+    <div style="grid-column:1/-1;margin-top:28px;margin-bottom:4px;padding-top:20px;border-top:1px solid var(--border)">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--orange);text-transform:uppercase;letter-spacing:3px;display:flex;align-items:center;gap:10px">
+        <span style="color:var(--orange);text-shadow:0 0 8px rgba(232,84,26,.4);font-weight:900;font-size:24px">{ }</span>
+        <span>Non-Technical Events</span>
+      </div>
     </div>
-    ${techEvs.map(e => renderTile(e, false)).join('')}
-    
-    <div style="grid-column:1/-1;margin-top:50px;margin-bottom:20px">
-      <div class="casino-badge">NON-TECHNICAL GAMES</div>
-    </div>
-    ${nonTechEvs.map(e => renderTile(e, false)).join('')}
+    ${nonTechEvs.map((e, i) => renderTile(e, nonTechFeatured.includes(i))).join('')}
   `;
     }
 
@@ -7070,8 +6076,8 @@ function renderComm() {
 
     <!-- Rules Section -->
     <div style="margin-bottom:32px; text-align:center">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
-        <span style="width:24px;height:1px;background:var(--gold)"></span> ♠ THE RULES ♠ <span style="width:24px;height:1px;background:var(--gold)"></span>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
+        <span style="width:24px;height:1px;background:${catColor}"></span> RULES & GUIDELINES <span style="width:24px;height:1px;background:${catColor}"></span>
       </div>
       <div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:16px;overflow:hidden">
         ${e.rules.map((r, i) => `
@@ -7085,8 +6091,8 @@ function renderComm() {
 
     <!-- Team Section (Coordinators) -->
     <div style="margin-bottom:100px; text-align:center"> <!-- Extra margin for bottom action bar -->
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
-        <span style="width:24px;height:1px;background:var(--gold)"></span> ♦ THE DEALERS ♦ <span style="width:24px;height:1px;background:var(--gold)"></span>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
+        <span style="width:24px;height:1px;background:${catColor}"></span> COORDINATORS <span style="width:24px;height:1px;background:${catColor}"></span>
       </div>
       <div class="ev-coord-grid">
         <!-- Event Head -->
@@ -8700,7 +7706,7 @@ function doPost(e) {
       }
       
       if (!regId) {
-        const match = decodedText.match(/(CSEUTSAV'26|U26)-[A-Z0-9-]+/i);
+        const match = decodedText.match(/(CSEUTSAV|U26)-[A-Z0-9-]+/i);
         if (match) regId = match[0].toUpperCase();
       }
 
@@ -9427,7 +8433,7 @@ function doPost(e) {
       }
 
       const name = reg.n || 'Participant';
-      const eventName = reg.e || "CSEUTSAV'26 2K26";
+      const eventName = reg.e || 'CSEUTSAV\'26 2K26';
       const regId = reg.id || '';
       const regno = reg.rn ? '···' + reg.rn : '';
 
@@ -9541,7 +8547,7 @@ function doPost(e) {
       <div class="maint-sub">Our system is currently updating.<br>Please try again shortly — we appreciate your patience.</div>
       <div class="maint-badge"><div class="maint-badge-dot"></div>Maintenance in progress</div>
     </div>
-    <div class="maint-footer">CSEUTSAV'26 2K26 · PSNA College</div>
+    <div class="maint-footer">-CSEUTSAV'26</div>
   </div>
 
 
@@ -9549,5 +8555,3 @@ function doPost(e) {
 </body>
 
 </html>
-
-
