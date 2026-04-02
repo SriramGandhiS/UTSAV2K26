@@ -7025,25 +7025,41 @@ function renderComm() {
       const isTech = e.category === 'Technical';
       const catColor = isTech ? '#2ecc71' : 'var(--orange)';
       
+      const suits = ['♠', '♥', '♦', '♣'];
+      const randomSuit = suits[Math.floor(Math.random() * suits.length)];
+      let casinoIcon = randomSuit;
+      if (e.category === 'Technical') casinoIcon = '⚡';
+      if (e.name.toLowerCase().includes('pitch') || e.name.toLowerCase().includes('biz') || e.name.toLowerCase().includes('manage')) casinoIcon = '💰';
+      if (e.name.toLowerCase().includes('hack') || e.name.toLowerCase().includes('code') || e.name.toLowerCase().includes('hunt')) casinoIcon = '🎯';
+
       document.getElementById('esc').innerHTML = `
-    <div style="position:sticky;top:0;z-index:10;background:rgba(10,10,10,0.8);backdrop-filter:blur(12px);margin:-20px -20px 20px -20px;padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:center;align-items:center">
-      <button class="ev-modal-close-btn" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:8px 16px;border-radius:8px;color:#fff;font-size:12px;font-weight:700;cursor:pointer" onclick="closeEvMod(null,1)">✕ CLOSE WINDOW</button>
+    <!-- Floating Coins Background -->
+    <div style="position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; opacity:0.15;">
+      <div style="position:absolute; left:15%; top:-50px; font-size:24px; color:var(--gold); animation: coin-fall 12s linear infinite">♠</div>
+      <div style="position:absolute; left:85%; top:-50px; font-size:32px; color:var(--gold); animation: coin-fall 18s linear infinite 3s">♦</div>
+      <div style="position:absolute; left:50%; top:-50px; font-size:20px; color:var(--gold); animation: coin-fall 14s linear infinite 7s">♣</div>
+      <div style="position:absolute; left:25%; top:-50px; font-size:28px; color:var(--gold); animation: coin-fall 16s linear infinite 10s">♥</div>
+      <div style="position:absolute; left:70%; top:-50px; font-size:18px; color:var(--gold); animation: coin-fall 11s linear infinite 2s">♠</div>
+    </div>
+
+    <div style="position:sticky;top:0;z-index:10;background:rgba(10,10,10,0.8);backdrop-filter:blur(12px);margin:-20px -20px 20px -20px;padding:20px;border-bottom:1px solid rgba(212,175,55,0.2);display:flex;justify-content:center;align-items:center">
+      <button class="ev-modal-close-btn" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);padding:8px 16px;border-radius:8px;color:var(--gold);font-size:12px;font-weight:900;cursor:pointer;letter-spacing:1px;transition:all 0.2s" onmouseover="this.style.background='rgba(212,175,55,0.2)'" onmouseout="this.style.background='rgba(212,175,55,0.1)'" onclick="closeEvMod(null,1)">✕ CLOSE WINDOW</button>
     </div>
 
     <!-- Page Header -->
-    <div style="margin-bottom:32px; display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 10px">
-       <div style="width:85px;height:85px;border-radius:24px;background:${e.grad};border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,0.4); border-color:${catColor}; color:${catColor}">${e.icon}</div>
+    <div style="margin-bottom:32px; display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 10px; position:relative; z-index:2">
+       <div style="width:85px;height:85px;border-radius:24px;background:rgba(20,20,20,0.8);border:2px solid rgba(212,175,55,0.4);display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:20px;box-shadow:inset 0 0 20px rgba(212,175,55,0.1), 0 10px 40px rgba(0,0,0,0.6); color:var(--gold); text-shadow:0 0 15px rgba(212,175,55,0.4)">${casinoIcon}</div>
        <div style="width:100%">
-         <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px, 8vw, 48px);font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;line-height:1.1;margin:0 0 10px 0; word-break:break-word">${e.name}</h1>
-         <div style="font-family:'Outfit',sans-serif;font-size:15px;color:${catColor};font-weight:700;letter-spacing:1.5px;text-transform:uppercase">${e.label}</div>
+         <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px, 8vw, 48px);font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;line-height:1.1;margin:0 0 10px 0; word-break:break-word; text-shadow:0 4px 15px rgba(0,0,0,0.8)">${e.name}</h1>
+         <div style="font-family:'Outfit',sans-serif;font-size:15px;color:var(--gold);font-weight:700;letter-spacing:1.5px;text-transform:uppercase">${e.label}</div>
        </div>
     </div>
 
     <!-- Quick Stats Grid -->
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px">
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px;position:relative;z-index:2">
       ${[['📅 Date', e.date], ['⏰ Time', e.time], ['📍 Venue', e.venue], ['👥 Team', e.type === 'Solo' ? 'Individual' : `Team ${e.minTeam}–${e.maxTeam}`]].map(([l, t]) => `
-        <div style="padding:16px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;transition:border-color .3s" onmouseover="this.style.borderColor='${catColor}'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="font-size:11px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px; opacity:0.9">${l}</div>
+        <div style="padding:16px;background:rgba(15,15,15,0.6);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.15);border-radius:12px;transition:all .3s ease-out;box-shadow:inset 0 0 10px rgba(0,0,0,0.5)" onmouseover="this.style.borderColor='rgba(212,175,55,0.5)';this.style.transform='translateY(-2px)';this.style.boxShadow='inset 0 0 10px rgba(0,0,0,0.5), 0 5px 15px rgba(212,175,55,0.1)'" onmouseout="this.style.borderColor='rgba(212,175,55,0.15)';this.style.transform='translateY(0)';this.style.boxShadow='inset 0 0 10px rgba(0,0,0,0.5)'">
+          <div style="font-size:11px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px; opacity:0.8">${l}</div>
           <div style="font-size:15px;font-weight:700;color:#fff;letter-spacing:0.5px" class="${(l === '⏰ Time' && e.isSimultaneous) ? 'ev-time-red-glow' : ''}">${t}</div>
         </div>
       `).join('')}
@@ -7051,31 +7067,31 @@ function renderComm() {
 
     ${e.isSimultaneous ? `
     <!-- Simultaneous Notice -->
-    <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:16px 20px;margin-bottom:32px;display:flex;gap:16px;align-items:flex-start;text-align:left">
-      <span style="font-size:24px;margin-top:2px">ℹ️</span>
+    <div style="background:rgba(255,50,50,0.05);border:1px solid rgba(255,50,50,0.3);border-radius:16px;padding:16px 20px;margin-bottom:32px;display:flex;gap:16px;align-items:flex-start;text-align:left;position:relative;z-index:2;box-shadow:inset 0 0 20px rgba(255,0,0,0.05)">
+      <span style="font-size:24px;margin-top:2px">⚠️</span>
       <div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:var(--orange);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Scheduling Note</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5">This event is scheduled at the same time as another event. Please choose only one to participate in for this time slot.</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#ff4d4d;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Scheduling Note</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.5">This event is scheduled at the same time as another event. Please choose only one to participate in for this time slot.</div>
       </div>
     </div>` : ''}
 
     <!-- About Section -->
-    <div style="margin-bottom:32px; text-align:center">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
-        <span style="width:24px;height:1px;background:${catColor}"></span> ABOUT EVENT <span style="width:24px;height:1px;background:${catColor}"></span>
+    <div style="margin-bottom:32px; text-align:center;position:relative;z-index:2">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;background:linear-gradient(45deg, var(--gold), var(--orange));-webkit-background-clip:text;color:transparent;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px;text-shadow:0 0 15px rgba(212,175,55,0.2)">
+        <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span> EVENT DETAILS <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span>
       </div>
-      <p style="font-size:15px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0;max-width:600px;margin-left:auto;margin-right:auto">${e.desc}</p>
+      <p style="font-size:15px;color:rgba(255,255,255,0.75);line-height:1.8;margin:0;max-width:600px;margin-left:auto;margin-right:auto;text-shadow:0 2px 4px rgba(0,0,0,0.5)">${e.desc}</p>
     </div>
 
     <!-- Rules Section -->
-    <div style="margin-bottom:32px; text-align:center">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
-        <span style="width:24px;height:1px;background:var(--gold)"></span> ♠ THE RULES ♠ <span style="width:24px;height:1px;background:var(--gold)"></span>
+    <div style="margin-bottom:32px; text-align:center;position:relative;z-index:2">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;background:linear-gradient(45deg, var(--gold), var(--orange));-webkit-background-clip:text;color:transparent;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px;text-shadow:0 0 15px rgba(212,175,55,0.2)">
+        <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span> ♠ THE RULES ♠ <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span>
       </div>
-      <div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+      <div style="background:rgba(15,15,15,0.6);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.2);border-radius:16px;overflow:hidden;text-align:left;box-shadow:inset 0 0 20px rgba(0,0,0,0.6)">
         ${e.rules.map((r, i) => `
-          <div style="display:flex;gap:16px;padding:16px 20px;font-size:13px;color:rgba(255,255,255,0.8);border-bottom:1px solid rgba(255,255,255,.05);line-height:1.5">
-            <span style="color:${catColor};font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:16px;min-width:20px">${String(i+1).padStart(2,'0')}</span>
+          <div style="display:flex;gap:16px;padding:16px 20px;font-size:13px;color:rgba(255,255,255,0.85);border-bottom:1px solid rgba(212,175,55,0.1);line-height:1.6;transition:background 0.2s" onmouseover="this.style.backgroundColor='rgba(212,175,55,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
+            <span style="color:var(--gold);font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:16px;min-width:20px;text-shadow:0 0 8px rgba(212,175,55,0.3)">${String(i+1).padStart(2,'0')}</span>
             <span>${r}</span>
           </div>
         `).join('')}
@@ -7083,38 +7099,38 @@ function renderComm() {
     </div>
 
     <!-- Team Section (Coordinators) -->
-    <div style="margin-bottom:100px; text-align:center"> <!-- Extra margin for bottom action bar -->
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
-        <span style="width:24px;height:1px;background:var(--gold)"></span> ♦ THE DEALERS ♦ <span style="width:24px;height:1px;background:var(--gold)"></span>
+    <div style="margin-bottom:100px; text-align:center;position:relative;z-index:2">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;background:linear-gradient(45deg, var(--gold), var(--orange));-webkit-background-clip:text;color:transparent;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px;text-shadow:0 0 15px rgba(212,175,55,0.2)">
+        <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span> ♦ THE DEALERS ♦ <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span>
       </div>
-      <div class="ev-coord-grid">
+      <div class="ev-coord-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
         <!-- Event Head -->
-        <a href="tel:${e.ep}" style="text-decoration:none;padding:20px;background:${isTech ? 'rgba(46,204,113,0.05)' : 'rgba(232,84,26,0.05)'};border:1px solid ${isTech ? 'rgba(46,204,113,0.1)' : 'rgba(232,84,26,0.1)'};border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
-          <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.ec)}&background=${isTech ? '2ecc71' : 'e8541a'}&color=fff&size=128" style="width:60px;height:60px;border-radius:50%;border:2px solid ${catColor};margin-bottom:12px">
-          <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">EVENT HEAD</div>
+        <a href="tel:${e.ep}" style="text-decoration:none;padding:20px;background:rgba(15,15,15,0.6);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.2);border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:all 0.3s;box-shadow:inset 0 0 15px rgba(0,0,0,0.5)" onmouseover="this.style.borderColor='rgba(212,175,55,0.6)';this.style.transform='translateY(-3px)';this.style.boxShadow='inset 0 0 15px rgba(0,0,0,0.5), 0 8px 20px rgba(212,175,55,0.15)'" onmouseout="this.style.borderColor='rgba(212,175,55,0.2)';this.style.transform='translateY(0)';this.style.boxShadow='inset 0 0 15px rgba(0,0,0,0.5)'">
+          <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.ec)}&background=111&color=d4af37&size=128" style="width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);margin-bottom:12px;box-shadow:0 0 15px rgba(212,175,55,0.3)">
+          <div style="font-size:10px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;opacity:0.8">EVENT HEAD</div>
           <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;font-family:'Barlow Condensed'">${e.ec}</div>
-          <div style="font-size:12px;color:${catColor};font-weight:700">${e.ep}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:700">${e.ep}</div>
         </a>
         <!-- Staff Coordinator/Judge -->
-        <a href="tel:${e.sp}" style="text-decoration:none;padding:20px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
-          <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.sc)}&background=333&color=fff&size=128" style="width:60px;height:60px;border-radius:50%;border:2px solid var(--border);margin-bottom:12px">
-          <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">STAFF / JUDGE</div>
+        <a href="tel:${e.sp}" style="text-decoration:none;padding:20px;background:rgba(15,15,15,0.6);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.2);border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:all 0.3s;box-shadow:inset 0 0 15px rgba(0,0,0,0.5)" onmouseover="this.style.borderColor='rgba(212,175,55,0.6)';this.style.transform='translateY(-3px)';this.style.boxShadow='inset 0 0 15px rgba(0,0,0,0.5), 0 8px 20px rgba(212,175,55,0.15)'" onmouseout="this.style.borderColor='rgba(212,175,55,0.2)';this.style.transform='translateY(0)';this.style.boxShadow='inset 0 0 15px rgba(0,0,0,0.5)'">
+          <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.sc)}&background=111&color=d4af37&size=128" style="width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);margin-bottom:12px;box-shadow:0 0 15px rgba(212,175,55,0.2)">
+          <div style="font-size:10px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;opacity:0.8">STAFF / JUDGE</div>
           <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;font-family:'Barlow Condensed'">${e.sc}</div>
-          <div style="font-size:12px;color:var(--muted2);font-weight:700">${e.sp}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:700">${e.sp}</div>
         </a>
       </div>
       ${e.jcs && e.jcs.length > 0 ? `
-      <div style="margin-top:20px;padding:16px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px">
-        <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px">JOINT COORDINATORS</div>
+      <div style="margin-top:20px;padding:16px;background:rgba(15,15,15,0.6);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.15);border-radius:14px;box-shadow:inset 0 0 15px rgba(0,0,0,0.5)">
+        <div style="font-size:10px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;opacity:0.8">JOINT COORDINATORS</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
-          ${e.jcs.map(jc => `<span style="padding:6px 14px;background:rgba(${isTech ? '46,204,113' : '232,84,26'},0.08);border:1px solid rgba(${isTech ? '46,204,113' : '232,84,26'},0.2);border-radius:20px;font-size:13px;font-weight:700;color:#fff">${jc}</span>`).join('')}
+          ${e.jcs.map(jc => `<span style="padding:6px 14px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);border-radius:20px;font-size:13px;font-weight:700;color:#fff;box-shadow:0 0 10px rgba(212,175,55,0.05)">${jc}</span>`).join('')}
         </div>
       </div>` : ''}
     </div>
 
     <!-- Fixed Bottom Action Section -->
-    <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top, var(--black) 80%, transparent);border-top:1px solid var(--border);z-index:15">
-      <button class="reg-next-btn" style="width:100%;height:58px;margin-top:0;font-size:18px;font-weight:900;border-radius:12px;box-shadow:0 10px 40px rgba(232,84,26,0.4);display:flex;align-items:center;justify-content:center;gap:12px" onclick="closeEvMod(null,1); setTimeout(()=>openReg('${e.id}'),300);">
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top, rgba(5,5,5,1) 60%, transparent);border-top:1px solid rgba(212,175,55,0.3);z-index:15">
+      <button class="reg-next-btn" style="width:100%;height:58px;margin-top:0;font-size:18px;font-weight:900;border-radius:12px;box-shadow:0 10px 40px rgba(212,175,55,0.3);background:linear-gradient(45deg, var(--orange), var(--gold));border:none;display:flex;align-items:center;justify-content:center;gap:12px;transition:all 0.3s;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.5)" onmouseover="this.style.transform='scale(1.02)';this.style.boxShadow='0 15px 50px rgba(212,175,55,0.5)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 10px 40px rgba(212,175,55,0.3)'" onclick="closeEvMod(null,1); setTimeout(()=>openReg('${e.id}'),300);">
         <span>SECURE YOUR SPOT</span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
@@ -9073,16 +9089,22 @@ function doPost(e) {
       if (!container) return;
       
       const cards = EVS.map(e => {
-        return `<div class="ev-item-card" onclick="closeAllEvents();openEvMod('${e.id}')">
+        const suits = ['♠', '♥', '♦', '♣'];
+        let casinoIcon = suits[Math.floor(Math.random() * suits.length)];
+        if (e.category === 'Technical') casinoIcon = '⚡';
+        if (e.name.toLowerCase().includes('pitch') || e.name.toLowerCase().includes('biz') || e.name.toLowerCase().includes('manage')) casinoIcon = '💰';
+        if (e.name.toLowerCase().includes('hack') || e.name.toLowerCase().includes('code') || e.name.toLowerCase().includes('hunt')) casinoIcon = '🎯';
+
+        return `<div class="ev-item-card" style="background:rgba(15,15,15,0.8);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.2);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center;transition:all 0.3s;box-shadow:inset 0 0 20px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.3);cursor:pointer;" onmouseover="this.style.borderColor='rgba(212,175,55,0.6)';this.style.transform='translateY(-4px)';this.style.boxShadow='inset 0 0 20px rgba(0,0,0,0.8), 0 10px 25px rgba(212,175,55,0.2)'" onmouseout="this.style.borderColor='rgba(212,175,55,0.2)';this.style.transform='translateY(0)';this.style.boxShadow='inset 0 0 20px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.3)'" onclick="closeAllEvents();openEvMod('${e.id}')">
           <div style="display:flex; flex-direction:column; gap:14px; align-items:center; text-align:center; width:100%">
-            <div style="width:54px;height:54px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 4px 15px rgba(0,0,0,0.2)">${e.icon}</div>
+            <div style="width:60px;height:60px;border-radius:16px;background:rgba(20,20,20,0.9);border:2px solid rgba(212,175,55,0.4);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:inset 0 0 15px rgba(212,175,55,0.1), 0 5px 15px rgba(0,0,0,0.5);color:var(--gold);text-shadow:0 0 10px rgba(212,175,55,0.5)">${casinoIcon}</div>
             <div>
-              <div class="comm-name" style="font-size:18px;margin-bottom:4px">${e.name}</div>
-              <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--orange);text-transform:uppercase">${e.label}</div>
+              <div class="comm-name" style="font-size:18px;margin-bottom:4px;font-family:'Barlow Condensed',sans-serif;font-weight:900;text-transform:uppercase;color:#fff;letter-spacing:1px">${e.name}</div>
+              <div style="font-size:11px;font-weight:900;letter-spacing:2px;background:linear-gradient(45deg, var(--gold), var(--orange));-webkit-background-clip:text;color:transparent;text-transform:uppercase">${e.label}</div>
             </div>
           </div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;width:100%;justify-content:center">
-            ${[['📅', e.date], ['⏰', e.time]].map(([i, t]) => `<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:4px 8px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;display:flex;gap:6px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
+          <div style="display:flex;flex-wrap:wrap;gap:8px;width:100%;justify-content:center;margin-top:4px">
+            ${[['📅', e.date], ['⏰', e.time]].map(([i, t]) => `<div style="font-size:11px;font-weight:700;color:var(--gold);padding:6px 10px;background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.2);border-radius:6px;display:flex;gap:6px;align-items:center;opacity:0.9"><span>${i}</span>${t}</div>`).join('')}
           </div>
         </div>`;
       }).join('');
