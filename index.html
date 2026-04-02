@@ -383,7 +383,36 @@
       box-sizing: border-box !important;
       border-radius: 4px !important;
       white-space: nowrap !important;
+      position: relative;
     }
+
+    .nav-btn span {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .nav-btn span::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 120px; /* Wider for 45deg coverage */
+      height: 100%;
+      background: linear-gradient(135deg, transparent 35%, rgba(255,255,255,0.4) 50%, transparent 65%);
+      transform: translateX(-180%) skewX(-15deg);
+      pointer-events: none;
+      animation: shine-auto 8s infinite; /* Much slower base */
+      z-index: 3;
+    }
+
+    /* Staggered starts for nav buttons with longer intervals */
+    #pass-nav-btn span::before { animation-duration: 8s; animation-delay: 1s; }
+    .nav-btn.btn-silver span::before { animation-duration: 10s; animation-delay: 3s; }
+    .nav-btn.btn-black span::before { animation-duration: 12s; animation-delay: 5s; }
 
     /* Distinct My Pass styling — Cyber scan grid */
     .btn-qr {
@@ -415,9 +444,7 @@
     .btn-qr.btn-gold::before {
       background-image: linear-gradient(rgba(212, 175, 55, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(212, 175, 55, 0.1) 1px, transparent 1px);
     }
-    .btn-qr.btn-gold::after {
-      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-    }
+
 
     .btn-qr.btn-silver {
       background: rgba(192, 192, 192, 0.1) !important;
@@ -433,9 +460,7 @@
     .btn-qr.btn-silver::before {
       background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
     }
-    .btn-qr.btn-silver::after {
-      background: linear-gradient(to bottom, transparent, #fff, transparent);
-    }
+
 
     .btn-qr.btn-black {
       background: rgba(0, 0, 0, 0.4) !important;
@@ -451,9 +476,7 @@
     .btn-qr.btn-black::before {
       background-image: linear-gradient(rgba(212,175,55,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.05) 1px, transparent 1px);
     }
-    .btn-qr.btn-black::after {
-      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-    }
+
 
     .btn-qr::before {
       content: '';
@@ -463,27 +486,13 @@
       z-index: 0;
       opacity: 0.8;
     }
-    .btn-qr::after {
-      content: '';
-      position: absolute;
-      top: -100%;
-      left: 0;
-      width: 100%;
-      height: 35%;
-      animation: qr-scan 4s linear infinite;
-      z-index: 1;
-    }
+
     .btn-qr span {
       position: relative;
       z-index: 2;
       text-shadow: 0 0 8px rgba(0,0,0,0.5);
     }
-    @keyframes qr-scan {
-      0%   { top: -40%; opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 1; }
-      100% { top: 120%; opacity: 0; }
-    }
+
 
     .btn-ev-glow {
       position: relative;
@@ -769,6 +778,11 @@
       0%   { transform: translateX(-120%) skewX(-20deg); }
       100% { transform: translateX(220%) skewX(-20deg); }
     }
+    @keyframes shine-auto {
+      0%   { transform: translateX(-120%) skewX(-20deg); }
+      25%  { transform: translateX(220%) skewX(-20deg); }
+      100% { transform: translateX(220%) skewX(-20deg); }
+    }
     @keyframes btn-press-pulse {
       0%   { box-shadow: 0 0 0px rgba(212,175,55,0); }
       50%  { box-shadow: 0 0 22px rgba(212,175,55,0.7); }
@@ -801,14 +815,15 @@
       content: '';
       position: absolute;
       top: 0; left: 0;
-      width: 50%;
+      width: 150%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-      transform: translateX(-120%) skewX(-20deg);
+      background: linear-gradient(135deg, transparent 40%, rgba(255,255,180,0.6) 50%, transparent 60%);
+      transform: translateX(-120%) skewX(-15deg);
       pointer-events: none;
+      animation: shine-auto 6s infinite; /* Periodic shine every 6s */
     }
     .btn-casino-gold:hover::before {
-      animation: shine-sweep 0.55s ease forwards;
+      animation: shine-sweep 0.8s ease-out forwards; /* More deliberate sweep on hover */
     }
     .btn-casino-gold:hover {
       transform: translateY(-3px) scale(1.02);
@@ -850,14 +865,15 @@
       content: '';
       position: absolute;
       top: 0; left: 0;
-      width: 50%;
+      width: 150%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-      transform: translateX(-120%) skewX(-20deg);
+      background: linear-gradient(135deg, transparent 40%, rgba(255,255,180,0.6) 50%, transparent 60%);
+      transform: translateX(-120%) skewX(-15deg);
       pointer-events: none;
+      animation: shine-auto 7s infinite; /* Offset periodic shine 7s */
     }
     .btn-casino-outline:hover::before {
-      animation: shine-sweep 0.55s ease forwards;
+      animation: shine-sweep 0.8s ease-out forwards;
     }
     .btn-casino-outline:hover {
       transform: translateY(-3px) scale(1.02);
@@ -1090,6 +1106,76 @@
       color: var(--gold);
     }
 
+    /* 3D FLYING CARDS STORM CSS */
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      perspective: 1500px;
+      overflow: hidden;
+    }
+
+    .flying-card-wrap {
+      position: absolute;
+      width: 70px;
+      aspect-ratio: 2.5 / 3.5;
+      transform-style: preserve-3d;
+      will-change: transform, opacity;
+      animation: float-3d var(--dur, 10s) linear var(--delay, 0s) infinite;
+    }
+
+    .flying-card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      animation: spin-3d var(--dur, 8s) linear infinite;
+    }
+
+    .f-card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 6px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    .f-card-front {
+      background: #fff;
+      color: #000;
+      transform: rotateY(0deg);
+    }
+
+    .f-card-back {
+      background: linear-gradient(135deg, #8b0000, #4a0000);
+      transform: rotateY(180deg);
+    }
+
+    .f-card-back::after {
+      content: '♠';
+      font-size: 20px;
+      color: var(--gold);
+      opacity: 0.3;
+    }
+
+    @keyframes spin-3d {
+      from { transform: rotateX(0) rotateY(0) rotateZ(0); }
+      to { transform: rotateX(360deg) rotateY(720deg) rotateZ(180deg); }
+    }
+
+    @keyframes float-3d {
+      0% { transform: translate3d(var(--sx), -100px, var(--sz)) rotate(0); opacity: 0; }
+      10% { opacity: var(--op); }
+      90% { opacity: var(--op); }
+      100% { transform: translate3d(var(--ex), calc(100vh + 100px), var(--ez)) rotate(720deg); opacity: 0; }
+    }
+
     .ev-tile-name {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 28px;
@@ -1270,164 +1356,226 @@
       50%      { opacity: 0.8; transform: scaleX(1.1); }
     }
 
-    .cd-row {
-      margin-top: 32px;
-      display: flex;
-      gap: 0;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-      width: fit-content
-    }
 
-    .cd-c {
-      padding: 14px 20px;
-      text-align: center;
-      border-right: 1px solid var(--border)
-    }
-
-    .cd-c:last-child {
-      border-right: none
-    }
-
-    .cdn {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 30px;
-      font-weight: 900;
-      color: #fff;
-      display: block;
-      line-height: 1
-    }
-
-    .cdl {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--muted2);
-      text-transform: uppercase;
-      display: block;
-      margin-top: 3px
-    }
-
-    /* Hero right poster */
-    .hero-right {
-      padding: 64px 24px 32px 0;
+    /* ════════ 3D ROULETTE WHEEL ════════ */
+    .roulette-container {
+      width: 100%;
+      max-width: 450px;
+      margin: 0 auto;
+      perspective: 1500px;
+      position: relative;
       display: flex;
       align-items: center;
-      justify-content: center
+      justify-content: center;
+      padding: 40px 0;
     }
 
-    @media(max-width:767px) {
-      .hero-right {
-        padding: 0 24px 40px
-      }
-    }
-
-    .poster {
-      width: 100%;
-      max-width: 400px;
-      aspect-ratio: 4/3;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(180, 150, 80, 0.25);
-      background: var(--card);
+    .roulette-wrapper {
       position: relative;
-      box-shadow:
-        0 30px 80px rgba(0,0,0,0.8),
-        0 0 1px rgba(180,150,80,0.3);
+      width: 340px;
+      height: 340px;
+      transform: rotateX(45deg);
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease-out;
     }
 
-    .poster-inner {
+    .roulette-wheel {
       position: absolute;
       inset: 0;
-      background: linear-gradient(145deg, #111111 0%, #161413 50%, #111111 100%);
+      border-radius: 50%;
+      background: #0a0a0a;
+      box-shadow: 
+        0 0 0 12px #2a1b14, /* Outer wood rim */
+        0 0 30px 10px rgba(0,0,0,0.8),
+        inset 0 0 60px rgba(0,0,0,1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: wheel-spin 30s linear infinite;
+    }
+
+    /* Pocket segments */
+    .roulette-pockets {
+      position: absolute;
+      inset: 15px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,0,0,0.8); /* Subtle black divider */
+      background: conic-gradient(
+        #0b4522 0deg 9.73deg,     /* Zero (Green) */
+        #111 9.73deg 19.46deg,   /* 32 (Black) */
+        #cc0000 19.46deg 29.19deg, /* 15 (Red) */
+        #111 29.19deg 38.92deg,  /* 19 (Black) */
+        #cc0000 38.92deg 48.65deg, /* 4 (Red) */
+        #111 48.65deg 58.38deg,  /* 21 (Black) */
+        #cc0000 58.38deg 68.11deg, /* 2 (Red) */
+        #111 68.11deg 77.84deg,  /* 25 (Black) */
+        #cc0000 77.84deg 87.57deg, /* 17 (Red) */
+        #111 87.57deg 97.30deg,  /* 34 (Black) */
+        #cc0000 97.30deg 107.03deg, /* 6 (Red) */
+        #111 107.03deg 116.76deg, /* 27 (Black) */
+        #cc0000 116.76deg 126.49deg, /* 13 (Red) */
+        #111 126.49deg 136.22deg, /* 36 (Black) */
+        #cc0000 136.22deg 145.95deg, /* 11 (Red) */
+        #111 145.95deg 155.68deg, /* 30 (Black) */
+        #cc0000 155.68deg 165.41deg, /* 8 (Red) */
+        #111 165.41deg 175.14deg, /* 23 (Black) */
+        #cc0000 175.14deg 184.87deg, /* 10 (Red) */
+        #111 184.87deg 194.60deg, /* 5 (Black) */
+        #cc0000 194.60deg 204.33deg, /* 24 (Red) */
+        #111 204.33deg 214.06deg, /* 16 (Black) */
+        #cc0000 214.06deg 223.79deg, /* 33 (Red) */
+        #111 223.79deg 233.52deg, /* 1 (Black) */
+        #cc0000 233.52deg 243.25deg, /* 20 (Red) */
+        #111 243.25deg 252.98deg, /* 14 (Black) */
+        #cc0000 252.98deg 262.71deg, /* 31 (Red) */
+        #111 262.71deg 272.44deg, /* 9 (Black) */
+        #cc0000 272.44deg 282.17deg, /* 22 (Red) */
+        #111 282.17deg 291.90deg, /* 18 (Black) */
+        #cc0000 291.90deg 301.63deg, /* 29 (Red) */
+        #111 301.63deg 311.36deg, /* 7 (Black) */
+        #cc0000 311.36deg 321.09deg, /* 28 (Red) */
+        #111 321.09deg 330.82deg, /* 12 (Black) */
+        #cc0000 330.82deg 340.55deg, /* 35 (Red) */
+        #111 340.55deg 350.28deg,   /* 3 (Black) */
+        #cc0000 350.28deg 360.00deg  /* 26 (Red) */
+      );
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+    }
+
+    /* Inner ball track */
+    .roulette-track {
+      position: absolute;
+      inset: 55px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #1b1b1b, #000);
+      border: 2px solid #332115;
+      box-shadow: inset 0 10px 20px rgba(0,0,0,0.8);
+    }
+
+    /* High-fidelity Ball */
+    .roulette-ball-vessel {
+      position: absolute;
+      inset: 20px;
+      border-radius: 50%;
+      animation: ball-orbit 12s linear infinite reverse;
+      z-index: 5;
+    }
+
+    .roulette-ball {
+      position: absolute;
+      top: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      background: radial-gradient(circle at 35% 35%, #fff 0%, #ddd 50%, #999 100%);
+      border-radius: 50%;
+      box-shadow: 
+        0 4px 8px rgba(0,0,0,0.6),
+        0 0 10px rgba(255,255,255,0.4);
+    }
+
+    /* Central Hub */
+    .roulette-hub {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle at center, #1b1b1b, #050510);
+      border-radius: 50%;
+      z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05); /* Very subtle edge */
+      box-shadow: 
+        0 10px 40px rgba(0,0,0,1),
+        inset 0 0 30px rgba(0,0,0,1);
+      transform: translateZ(20px); /* Lift hub slightly */
+      animation: hub-float 4s ease-in-out infinite alternate;
     }
 
-    /* Subtle ambient warm light */
-    .poster-inner::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 30% 25%, rgba(180,150,80,0.06), transparent 55%),
-        radial-gradient(ellipse at 70% 75%, rgba(140,110,60,0.04), transparent 55%);
-      pointer-events: none;
-    }
-
-    .poster-ot {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(48px, 12vw, 88px);
-      font-weight: 950;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      background: linear-gradient(180deg, #c9a44c 0%, #e8c96a 40%, #b8943e 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.7));
-      position: relative;
-      z-index: 2;
-      line-height: 0.9;
-      text-align: center;
+    .rh-time {
       display: flex;
-      flex-direction: column;
+      gap: 6px;
+      transform: translateY(-5px);
     }
 
-    .poster-ot-sub {
-      font-size: clamp(28px, 7vw, 44px);
-      letter-spacing: 14px;
-      margin-top: 4px;
+    .rh-unit {
+      text-align: center;
     }
 
-    .poster-dt {
-      position: relative;
-      z-index: 2;
+    .rh-val {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: rgba(200,170,90,0.7);
-      text-transform: uppercase;
-      padding: 5px 16px;
-      border: 1px solid rgba(180,150,80,0.2);
-      border-radius: 50px;
-      background: rgba(20,20,18,0.9);
-      margin-top: 8px;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: 0 0 10px rgba(212,175,55,0.4);
+      display: block;
+      min-width: 32px;
+      transition: opacity 0.3s;
     }
 
-    .poster-su {
-      position: relative;
-      z-index: 2;
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: rgba(255, 255, 255, .2);
+    .rh-lbl {
+      font-size: 8px;
+      color: rgba(255,255,255,0.4);
       text-transform: uppercase;
-      font-weight: 600;
-      margin-top: 2px;
+      letter-spacing: 1px;
+      margin-top: -2px;
     }
 
-    /* Falling poker coins */
-    .poster-coin {
+    .rh-sep {
+      color: var(--gold);
+      font-size: 20px;
+      font-weight: 900;
+      opacity: 0.5;
+      padding-top: 5px;
+    }
+
+    .rh-brand {
       position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 1;
-      animation: coin-fall linear infinite;
-      top: -30px;
+      bottom: 25px;
+      font-size: 9px;
+      color: rgba(212,175,55,0.5);
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
     }
 
-    @keyframes coin-fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      8% { opacity: 0.12; }
-      85% { opacity: 0.12; }
-      100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+    @keyframes wheel-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
+
+    @keyframes ball-orbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes hub-float {
+      from { transform: translateZ(20px) translateY(0); }
+      to { transform: translateZ(25px) translateY(-4px); }
+    }
+
+    @media(max-width:767px) {
+      .roulette-container {
+        max-width: 320px;
+        padding: 20px 0;
+      }
+      .roulette-wrapper {
+        width: 280px;
+        height: 280px;
+      }
+      .roulette-hub {
+        width: 130px;
+        height: 130px;
+        border-width: 4px;
+      }
+      .rh-val { font-size: 22px; min-width: 26px; }
+      .rh-sep { font-size: 16px; }
+    }
+
+
 
     /* OUTLINE BAND */
     .ob {
@@ -1610,18 +1758,37 @@
     /* mobile-first: keep 2 columns max */
 
     .ev-tile {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      background: rgba(18, 18, 18, 0.45); /* Glassy dark base */
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle edge shine */
+      border-radius: 14px;
       overflow: hidden;
       cursor: pointer;
-      transition: border-color .25s, transform .2s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
+      box-shadow: 
+        0 4px 15px rgba(0,0,0,0.3),
+        inset 0 1px 1px rgba(255,255,255,0.05); /* Top inner glint */
     }
 
     .ev-tile:hover {
-      border-color: var(--orange);
-      transform: translateY(-3px)
+      border-color: rgba(212, 175, 55, 0.7);
+      transform: translateY(-5px) scale(1.02);
+      background: rgba(25, 25, 25, 0.55);
+      box-shadow: 
+        0 15px 35px rgba(0,0,0,0.4),
+        0 0 20px rgba(212, 175, 55, 0.15);
+    }
+
+    /* Cinematic Card Reveal */
+    @keyframes card-deal {
+      0% { opacity: 0; transform: translateY(60px) rotateX(-25deg); filter: blur(4px); }
+      100% { opacity: 1; transform: translateY(0) rotateX(0deg); filter: blur(0px); }
+    }
+
+    .card-reveal-stagger {
+      animation: card-deal 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
     }
 
     .ev-tile:active {
@@ -4691,29 +4858,25 @@
       content: '';
       position: absolute;
       inset: 0;
-      border-radius: 24px;
-      background: rgba(232, 84, 26, .1);
-      border: 1.5px solid rgba(232, 84, 26, .3);
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 68, 68, 0.4);
       transform: rotate(45deg);
-      transition: all .4s ease
+      box-shadow: 0 0 20px rgba(255, 68, 68, 0.2);
     }
 
     .form-container:hover .reg-hero-icon::before {
-      transform: rotate(90deg);
-      border-color: var(--orange)
+      border-color: #ff4444;
+      box-shadow: 0 0 30px rgba(255, 68, 68, 0.4);
     }
 
     .reg-hero-icon svg {
-      width: 36px;
-      height: 36px;
-      stroke: var(--orange);
-      stroke-width: 1.5;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 40px;
+      height: 40px;
+      fill: #ff4444;
+      filter: drop-shadow(0 0 12px rgba(255, 0, 0, 0.8));
       position: relative;
       z-index: 1;
-      filter: drop-shadow(0 0 8px rgba(232, 84, 26, .5))
     }
 
     @media(max-width:767px) {
@@ -5516,140 +5679,316 @@
       }
 
     }
+
+    /* ══════════════ SOVEREIGN ROUND TABLE: TOP-DOWN VIEW ══════════════ */
+    #dealer-hand { display: none !important; }
+
+    .poker-table-wrap {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 60px 20px;
+      background: #050d05;
+      overflow-y: auto; overflow-x: hidden;
+      z-index: 1;
+    }
+
+    /* THE LUXURY TABLE SURFACE (Original Home Style) */
+    .poker-table-surface {
+      position: fixed; inset: 15px;
+      border: 40px solid #0a0a0a;
+      border-radius: 50px;
+      box-shadow: inset 0 0 100px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,1);
+      z-index: 0;
+      background: radial-gradient(circle at 50% 50%, #1a3a1a 0%, #051005 100%);
+    }
+
+    /* ══════════════ ISOLATED REGISTRATION TABLE ══════════════ */
+    .reg-selection-env {
+      position: fixed; inset: 0;
+      width: 100vw; height: 100vh;
+      display: flex; flex-direction: column; align-items: flex-start;
+      padding: 0; 
+      background: #000;
+      overflow-y: auto; overflow-x: hidden;
+      z-index: 601;
+      scrollbar-width: none;
+      perspective: 2000px;
+    }
+    @media (min-width: 992px) {
+      .reg-selection-env { align-items: center; }
+      .master-card-prop { max-width: 220px !important; }
+      .master-event-icon { font-size: 32px !important; margin-bottom: 12px !important; }
+      .master-event-name { font-size: 14px !important; min-height: 40px !important; }
+      .master-event-cat { font-size: 8px !important; }
+      .master-footer { font-size: 10px !important; }
+      .fc-t { text-align: center !important; padding-left: 0 !important; align-self: center !important; justify-content: center !important; margin-bottom: 25px !important; }
+      
+      /* Event Details Modal Laptop Scaling */
+      .det-ov-content { max-width: 1000px !important; padding: 40px !important; }
+      .det-title { font-size: 56px !important; }
+      .det-metadata-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 20px !important; }
+      .det-desc { font-size: 16px !important; line-height: 1.8 !important; }
+      .det-rules-container { padding: 30px !important; font-size: 16px !important; }
+      .det-reserve-btn { font-size: 18px !important; padding: 20px !important; }
+      .cinematic-card-viewport { grid-template-columns: repeat(auto-fill, minmax(clamp(110px, 15vw, 220px), 1fr)) !important; gap: 20px !important; max-width: 1400px !important; }
+      .ev-listing-grid { grid-template-columns: repeat(auto-fill, minmax(clamp(110px, 20vw, 240px), 1fr)) !important; gap: 20px !important; max-width: 1400px !important; }
+    }
+    .reg-selection-env::-webkit-scrollbar { display: none; }
+
+    .reg-felt-surface {
+      position: fixed; 
+      inset: 0;
+      border: 30px solid #0a0a0a; /* Luxury Leather Armrest */
+      border-radius: 0; /* Full screen, no rounded corners for the frame */
+      box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
+      z-index: -1;
+      background: radial-gradient(circle at 50% 40%, #1a4a2a 0%, #051a0d 60%, #000 100%);
+      filter: contrast(1.2) brightness(0.9);
+    }
+
+    /* Metallic Cup Holders */
+    .cup-holder {
+      position: absolute; width: 45px; height: 45px;
+      background: linear-gradient(135deg, #999 0%, #fff 50%, #777 100%);
+      border-radius: 50%; border: 4px solid #222;
+      box-shadow: inset 0 3px 8px rgba(0,0,0,0.6);
+      z-index: 2;
+    }
+    .cu1 { top: -25px; left: 15%; } .cu2 { top: -25px; right: 15%; }
+    .cu3 { bottom: -25px; left: 15%; } .cu4 { bottom: -25px; right: 15%; }
+
+    /* Octagonal Table Lines (White Play Lines) */
+    .table-lines {
+      position: absolute; inset: 30px;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+      pointer-events: none; z-index: 1;
+    }
+    .nav {
+      position: fixed; top: 0; left: 0; width: 100%;
+      height: 64px; background: rgba(5,5,5,0.95);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 15px; z-index: 10005;
+      backdrop-filter: blur(12px);
+      transition: transform 0.3s ease;
+    }
+    .nav.hidden { transform: translateY(-100%); pointer-events: none; }
+
+    /* Atmospheric Props: Scattered Chips & Cards */
+    .poker-chip {
+      position: absolute; width: 32px; height: 32px;
+      border-radius: 50%; border: 3px dashed rgba(255,255,255,0.5);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.6); z-index: 1;
+      pointer-events: none;
+    }
+    .chip-red { background: #900; }
+    .chip-blue { background: #008; }
+    .chip-gold { background: var(--gold); }
+
+    .deco-card {
+      position: absolute; width: 65px; height: 95px;
+      background: #ddd; border-radius: 5px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 1000; font-family:serif; color: #111;
+      z-index: 1; opacity: 0.5; pointer-events: none;
+    }
+
+    /* CARD GRID ON FELT */
+    .cinematic-card-viewport {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      width: 100%; max-width: 850px;
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 20px; justify-items: center;
+      position: relative; z-index: 10;
+      margin-top: 20px;
+    }
+    @media (min-width: 768px) {
+      .cinematic-card-viewport { grid-template-columns: repeat(4, 1fr); gap: 25px; }
+    }
+
+    .master-card-prop {
+      position: relative; width: 100%; max-width: 120px;
+      aspect-ratio: 2 / 2.8;
+      cursor: pointer; opacity: 0;
+      will-change: transform, opacity;
+      animation: master-fast-slide 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    @keyframes master-fast-slide {
+      0% { opacity: 0; transform: translate3d(0, 30px, 0); }
+      100% { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+
+    .card-inner {
+      position: relative; width: 100%; height: 100%;
+      transition: transform 0.3s ease;
+    }
+
+    .card-face {
+      position: absolute; inset: 0;
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+      display: flex; flex-direction: column; padding: 8px;
+      background: #111; border: 3px solid #fff;
+      outline: 1px solid rgba(212, 175, 55, 0.4);
+    }
+    .face-master { background: linear-gradient(135deg, #0d0d0d 0%, #151515 100%); }
+    .card-face-back { transform: rotateY(180deg); background: #0a0a20; }
+    .master-tarot-pattern {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 50% 50%, #d4af37 0.5px, transparent 0.5px);
+      background-size: 30px 30px; opacity: 0.6;
+    }
+    .master-sun-core {
+      position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      width: 40px; height: 40px; border-radius: 50%;
+      background: radial-gradient(circle, #f0ca4d 0%, #d4af37 100%);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    }
+
+    .master-event-name { font-size: 0.9rem; font-weight: 1000; color: #fff; text-transform: uppercase; }
+    .master-event-cat { font-size: 8.5px; color: var(--gold); font-weight: 950; letter-spacing: 2px; }
+    .master-footer { margin-top: auto; font-size: 9px; font-weight: 800; color: #888; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
+
+    .skip-btn-master {
+      position: fixed; bottom: 30px; right: 30px;
+      background: #fff; color: #000;
+      border: none; padding: 12px 24px; border-radius: 4px;
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 950;
+      text-transform: uppercase; cursor: pointer; z-index: 3000;
+    }
+
+    /* ════════ LUXURY SNOOKER TABLE FRAME (MOBILE FIRST) ════════ */
+    .snooker-felt-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.95); 
+      backdrop-filter: blur(20px);
+      z-index: 10000;
+      display: none;
+      align-items: flex-start; justify-content: center;
+      padding: clamp(5px, 2vw, 40px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .snooker-felt-overlay.open { display: flex !important; animation: fo .4s ease; }
+
+    .snooker-table-canvas {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      min-height: 80vh;
+      background: #174d1a; /* Base Green */
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 80%),
+        url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.6%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%220.15%22/%3E%3C/svg%3E');
+      border: clamp(10px, 3vw, 25px) solid #2b1d1a; /* Wood Border */
+      outline: 2px solid #d4af37; /* Gold Trim */
+      border-radius: 20px;
+      box-shadow: inset 0 0 80px rgba(0,0,0,0.9), 0 20px 80px rgba(0,0,0,0.9);
+      margin: 20px auto;
+      padding: clamp(15px, 4vw, 50px);
+      display: flex; flex-direction: column;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .snooker-pocket {
+      position: absolute; width: clamp(40px, 8vw, 65px); height: clamp(40px, 8vw, 65px);
+      background: #050505; border-radius: 50%;
+      box-shadow: inset 0 5px 15px rgba(255,255,255,0.1);
+      z-index: 2;
+    }
+    .pk-tl { top: -10px; left: -10px; } .pk-tr { top: -10px; right: -10px; }
+    .pk-bl { bottom: -10px; left: -10px; } .pk-br { bottom: -10px; right: -10px; }
+    .pk-ml { top: 50%; left: -15px; transform: translateY(-50%); } 
+    .pk-mr { top: 50%; right: -15px; transform: translateY(-50%); }
+
+    .snooker-ball {
+      position: absolute; width: clamp(12px, 3vw, 20px); height: clamp(12px, 3vw, 20px);
+      border-radius: 50%; z-index: 3;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6), inset -2px -2px 4px rgba(0,0,0,0.4);
+      pointer-events: none;
+    }
+    .ball-red { background: radial-gradient(circle at 30% 30%, #ff5252, #b71c1c); animation: ballDrift 25s infinite ease-in-out; }
+    .ball-white { background: radial-gradient(circle at 30% 30%, #fff, #bbb); animation: ballDrift 18s infinite reverse ease-in-out; }
+    .ball-black { background: radial-gradient(circle at 30% 30%, #444, #000); animation: ballDrift 30s infinite ease-in-out alternate; }
+
+    @keyframes ballDrift {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(40px, 25px) rotate(90deg); }
+      50% { transform: translate(-30px, 45px) rotate(180deg); }
+      75% { transform: translate(25px, -25px) rotate(270deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
+
+    /* 3D CARD STATES */
+    .lying-flat-card {
+      transform: perspective(1000px) rotateX(0deg);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
+    }
+    @media (max-width: 600px) {
+      .lying-flat-card { transform: perspective(1000px) rotateX(0deg); min-height: 150px; backface-visibility: hidden; -webkit-transform: perspective(1000px) rotateX(0deg); }
+      .snooker-table-canvas { margin: 15px auto 80px; padding: 25px 10px; border-width: 4px; border-radius: 12px; } /* Start higher up since nav is hidden */
+      .ev-listing-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+      
+      .nav { height: 64px !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; padding: 0 10px !important; }
+      .nav .nl { order: 2; margin-left: auto !important; font-size: 14px !important; }
+      .nav > div:first-child { order: 1; display: flex !important; flex-wrap: nowrap !important; gap: 5px !important; width: auto !important; }
+      
+      #pass-nav-btn { order: 0 !important; width: auto !important; }
+      .nav-btn { padding: 6px 10px !important; font-size: 9px !important; font-weight: 800 !important; }
+    }
+
+    .lying-flat-card:hover {
+      transform: perspective(1000px) rotateX(0deg) translateY(-8px);
+      filter: drop-shadow(0 25px 40px rgba(0,0,0,0.8));
+    }
+
+    /* 3D TRANSITION ANIMATION */
+    @keyframes standAndSink {
+      0% { transform: perspective(1000px) rotateX(0deg); opacity: 1; -webkit-transform: perspective(1000px) rotateX(0deg); }
+      40% { transform: perspective(1000px) rotateX(-15deg) translate3d(0, -50px, 150px) scale(1.1); -webkit-transform: perspective(1000px) rotateX(-15deg) translate3d(0, -50px, 150px) scale(1.1); }
+      100% { transform: perspective(1000px) rotateX(-90deg) translate3d(0, 150px, -1500px) scale(0.3); opacity:0; -webkit-transform: perspective(1000px) rotateX(-90deg) translate3d(0, 150px, -1500px) scale(0.3); }
+    }
+    .card-selected-transition {
+      animation: standAndSink 0.9s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+      pointer-events: none !important;
+      z-index: 9999 !important;
+      position: fixed !important; /* Force fixed to ensure it moves relative to screen */
+    }
   </style>
 </head>
 
 <body>
 
-  <div id="casino-intro">
-    <div class="poker-felt"></div>
-    <div class="intro-scene" id="intro-scene">
-      <!-- THE SOVEREIGN CARD -->
-      <div class="sovereign-card" id="sovereign-card">
-        <div class="card-face card-front-sov">
-          <div class="sov-brand" id="sov-brand">CSEUT<span>SAV</span></div>
-        </div>
-        <div class="card-face card-back-sov"></div>
-      </div>
-      <div class="shockwave-3d" id="shock-3d"></div>
-    </div>
-    <div class="intro-flash" id="intro-flash"></div>
-    <div class="intro-shatter" id="intro-shatter"></div>
-  </div>
-
   <script>
-    (function() {
-      const intro = document.getElementById('casino-intro');
-      const card = document.getElementById('master-card');
-      const flash = document.getElementById('intro-flash');
-      const scene = document.getElementById('intro-scene');
-      
-      // Prevent scrolling during intro
-      document.body.style.overflow = 'hidden';
-
-      // Step 1: Create background depth with chips
-      for (let i = 0; i < 25; i++) {
-        const chip = document.createElement('div');
-        chip.className = 'poker-chip';
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        const s = 0.4 + Math.random() * 0.8;
-        const r = Math.random() * 360;
-        chip.style.left = x + '%';
-        chip.style.top = y + '%';
-        chip.style.transform = `scale(${s}) rotate(${r}deg) translateZ(-500px)`;
-        chip.style.opacity = 0.2 + Math.random() * 0.3;
-        scene.appendChild(chip);
-      }
-
-      // SOVEREIGN REVEAL SEQUENCE
-      setTimeout(() => {
-        const card = document.getElementById('sovereign-card');
-        const brand = document.getElementById('sov-brand');
-        const shock = document.getElementById('shock-3d');
-        const shatter = document.getElementById('intro-shatter');
-        
-        // A. Card settles & Brands Pops
-        setTimeout(() => {
-          if (brand) brand.classList.add('brand-pop');
-          if (shock) shock.classList.add('shock-active');
-          if (flash) flash.classList.add('flash-active');
-          
-          // B. High-End Dynamic Dissolve
-          setTimeout(() => {
-            if (card) card.classList.add('dissolving');
-            if (shatter) shatter.classList.add('shatter-active');
-            
-            intro.style.transition = 'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
-            intro.style.opacity = '0';
-            document.body.style.overflow = 'auto';
-            setTimeout(() => { intro.style.display = 'none'; }, 1200);
-          }, 1200); 
-
-        }, 2200); // Wait for orbital-flight (2.2s)
-
-      }, 100); 
-    })();
+    document.body.style.overflow = 'auto';
   </script>
 
   <!-- NAV -->
   <nav class="nav">
-    <div style="display:flex;align-items:center;gap:8px">
+    <div style="display:flex;align-items:center;gap:6px; flex-wrap:nowrap;">
       <div id="flash-ov" style="position:fixed;inset:0;z-index:99999;opacity:0;pointer-events:none;transition:opacity 0.2s;background:transparent"></div>
-      <button class="nav-btn btn-qr btn-gold" id="pass-nav-btn" onclick="openPass()" style="display:inline-flex;"><span>VIP Pass</span></button>
-      <button class="nav-btn btn-qr btn-silver" onclick="openReg(null)"><span>Register</span></button>
-      <button class="nav-btn btn-qr btn-black" onclick="openAllEvents()"><span>Details</span></button>
+      <button class="nav-btn btn-qr btn-gold" id="pass-nav-btn" onclick="playMechanicalSnap(); doHapticSnap(); openPass()" style="min-width:40px; display:none; justify-content:center;"><span>VIP Pass</span></button>
+      <button class="nav-btn btn-qr btn-silver" onclick="playMechanicalSnap(); doHapticSnap(); openReg(null)" style="min-width:65px; justify-content:center;"><span>Register</span></button>
+      <button class="nav-btn btn-qr btn-black" onclick="playMechanicalSnap(); doHapticSnap(); openAllEvents()" style="min-width:65px; justify-content:center;"><span>Details</span></button>
     </div>
-    <div class="nl" id="logo-trigger">CSE<span>UTSAV'26</span></div>
+    <div class="nl" id="logo-trigger" style="margin-left:auto; white-space:nowrap;">CSE<span>UTSAV'26</span></div>
   </nav>
+
 
   <!-- SUB-NAV / STATUS BAR -->
   <div class="sub-nav-bar"
-    style="position:relative;margin-top:64px;height:42px;background:rgba(10,10,10,0.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:90">
+    style="position:relative;margin-top:64px;height:42px;background:rgba(10,10,10,0.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:0 15px;z-index:90">
     <div style="font-size:10px;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase;opacity:0.8">♣ APRIL 13-18 · PSNA MAIN FLOOR</div>
-    <div class="traffic-box" id="traffic-box"
-      style="display:flex; align-items:center; gap:10px; opacity:0; transition:opacity 0.5s ease;">
-      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0px">
-        <span id="t-status"
-          style="font-size:9px; font-weight:900; color:var(--gold); text-transform:uppercase; letter-spacing:1px">Table Stakes...</span>
-        <div style="width:100px; height:4px; background:rgba(212,175,55,0.1); border-radius:2px; overflow:hidden; border:1px solid rgba(212,175,55,0.2)">
-          <div id="t-bar" style="width:0%; height:100%; background:var(--gold); transition:width 1s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;"></div>
-        </div>
-      </div>
-      <div style="display:flex; gap:3px; align-items:flex-end; height:18px">
-        <div id="t-low"
-          style="width:4px; height:6px; background:var(--gold); border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
-        </div>
-        <div id="t-mid"
-          style="width:4px; height:6px; background:var(--gold); border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
-        </div>
-        <div id="t-high"
-          style="width:4px; height:12px; background:var(--neon-red); border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
-        </div>
-      </div>
-    </div>
+
   </div>
-  <style>
-    @keyframes t-pulse {
-      0% {
-        filter: brightness(1);
-      }
 
-      50% {
-        filter: brightness(1.5);
-        box-shadow: 0 0 4px currentColor;
-      }
-
-      100% {
-        filter: brightness(1);
-      }
-    }
-
-    .t-active {
-      animation: t-pulse 2s infinite;
-      opacity: 1 !important;
-    }
-  </style>
 
   <!-- HERO -->
   <section class="hero" id="home">
@@ -5658,9 +5997,6 @@
     <div class="poker-coin" style="left:55%; animation: coin-fall 7s infinite linear -5s;"></div>
     <div class="poker-coin" style="left:75%; animation: coin-fall 9s infinite linear -1s;"></div>
     <div class="poker-coin" style="left:90%; animation: coin-fall 11s infinite linear -4s;"></div>
-    <div class="deco-card" style="top:10%; left:5%; --rot:-15deg; animation: card-drift 12s infinite ease-in-out;"></div>
-    <div class="deco-card" style="bottom:10%; right:5%; --rot:10deg; animation: card-drift 15s infinite ease-in-out -3s;"></div>
-
     <!-- Watermark ghost names -->
     <div class="hero-left">
       <h1 class="hero-h">
@@ -5668,37 +6004,36 @@
         <br><span class="wh">BEGINS</span>
       </h1>
       <p class="hero-desc">Place your bets on innovation. The ultimate high-stakes technical floor is here. Compete with the best, take home the grand jackpot.</p>
-      <div class="hero-btns">
+      <div class="hero-btns" style="justify-content: center; margin-bottom: 20px;">
         <button class="btn-casino-gold" onclick="openReg(null)"><span>Join The Table</span></button>
         <button class="btn-casino-outline" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})"><span>View Stakes</span></button>
       </div>
-      <div class="cd-row casino-timer">
-        <div class="cd-c"><span class="cdn" id="cd-d">00</span><span class="cdl">Days</span></div>
-        <div class="cd-c"><span class="cdn" id="cd-h">00</span><span class="cdl">Hours</span></div>
-        <div class="cd-c"><span class="cdn" id="cd-m">00</span><span class="cdl">Mins</span></div>
-        <div class="cd-c"><span class="cdn" id="cd-s">00</span><span class="cdl">Secs</span></div>
-      </div>
     </div>
-    </div>
-    <div class="hero-right">
-      <div class="poster">
-        <div class="poster-inner">
-          <!-- Falling poker coins -->
-          <div class="poster-coin" style="width:22px; height:22px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:12%; animation-duration:6s; animation-delay:0s;"></div>
-          <div class="poster-coin" style="width:18px; height:18px; background:radial-gradient(circle at 35% 35%, #b8943e, #5a4a28); border:1px dashed rgba(0,0,0,0.3); left:55%; animation-duration:8s; animation-delay:2s;"></div>
-          <div class="poster-coin" style="width:15px; height:15px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:80%; animation-duration:7s; animation-delay:4s;"></div>
-          <div class="poster-coin" style="width:12px; height:12px; background:radial-gradient(circle at 35% 35%, #b8943e, #5a4a28); border:1px dashed rgba(0,0,0,0.3); left:35%; animation-duration:9s; animation-delay:1s;"></div>
-          <div class="poster-coin" style="width:20px; height:20px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:92%; animation-duration:7.5s; animation-delay:3s;"></div>
 
-          <div class="poster-ot">
-            <span>CSEUTSAV</span>
-            <span class="poster-ot-sub">2K26</span>
+    <!-- 3D ROULETTE CENTERPIECE -->
+    <div class="roulette-container">
+      <div class="roulette-wrapper">
+        <div class="roulette-wheel">
+          <div class="roulette-pockets"></div>
+          <div class="roulette-track"></div>
+          <div class="roulette-ball-vessel">
+            <div class="roulette-ball"></div>
           </div>
-          <div class="poster-dt">April 13 to April 18 · PSNA CSE · Dindigul</div>
+          <div class="roulette-hub">
+             <div class="rh-time">
+                <div class="rh-unit"><span class="rh-val" id="rw-d">00</span><span class="rh-lbl">Days</span></div>
+                <div class="rh-sep">:</div>
+                <div class="rh-unit"><span class="rh-val" id="rw-h">00</span><span class="rh-lbl">Hrs</span></div>
+                <div class="rh-sep">:</div>
+                <div class="rh-unit"><span class="rh-val" id="rw-m">00</span><span class="rh-lbl">Min</span></div>
+                <div class="rh-sep">:</div>
+                <div class="rh-unit"><span class="rh-val" id="rw-s">00</span><span class="rh-lbl">Sec</span></div>
+             </div>
+             <div class="rh-brand">UTSAV '26</div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </div>  </section>
 
   <!-- OUTLINE BAND -->
   <div class="ob">
@@ -5830,23 +6165,23 @@
 
       #snooker-cue {
         position: absolute;
-        width: 250px;
-        height: 12px;
-        background: linear-gradient(to left, #29150c 0%, #a46d42 40%, #e0bc8f 95%, #111 95%, #111 98%, #fff 98%, #f4e8df 100%);
+        width: 12px;
+        height: 250px;
+        background: linear-gradient(to bottom, #29150c 0%, #a46d42 40%, #e0bc8f 95%, #111 95%, #111 98%, #fff 98%, #f4e8df 100%);
         border-radius: 6px;
-        box-shadow: 0 15px 25px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2);
+        box-shadow: 15px 0 25px rgba(0,0,0,0.6), inset 2px 0 2px rgba(255,255,255,0.2);
         z-index: 10;
         opacity: 0;
         pointer-events: none;
-        transform-origin: left center;
+        transform-origin: center bottom;
       }
 
       @keyframes cue-hit {
-        0% { transform: translate(150px, 0); opacity: 0; }
-        20% { transform: translate(40px, 0); opacity: 1; }
-        50% { transform: translate(70px, 0); opacity: 1; }
-        65% { transform: translate(-10px, 0); opacity: 1; }
-        100% { transform: translate(30px, 0); opacity: 0; }
+        0% { transform: translateY(-150px); opacity: 0; }
+        20% { transform: translateY(-40px); opacity: 1; }
+        50% { transform: translateY(-70px); opacity: 1; }
+        65% { transform: translateY(10px); opacity: 1; }
+        100% { transform: translateY(-30px); opacity: 0; }
       }
 
       @keyframes btn-impact {
@@ -5893,9 +6228,11 @@
       <div id="snooker-cue"></div>
 
       <div style="position: relative; z-index: 1;">
-        <div class="reg-hero-icon" style="color:var(--gold);border-color:var(--gold);background:rgba(0,0,0,0.3);box-shadow:0 5px 15px rgba(0,0,0,0.5)">
-          <svg viewBox="0 0 24 24">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        <div class="reg-hero-icon" style="color:#ff4444; border:none; background:transparent; box-shadow:none; display: flex; align-items: center; justify-content: center;">
+          <!-- GLOWING RED POKER ICON (SPADE) -->
+          <svg viewBox="0 0 24 24" style="width: 48px; height: 48px; fill: #ff4444; filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.9));">
+            <path d="M12 2l-7 7.5c-2 2.2-2 5.5 0 7.7 2 2.1 5.3 2.1 7.3 0C12.3 17.2 12 17.5 12 17.5s-0.3-0.3-0.3-0.3c2 2.1 5.3 2.1 7.3 0 2-2.2 2-5.5 0-7.7L12 2z" transform="rotate(180 12 12)"></path>
+            <path d="M12 17v4m-3 1h6" stroke="#ff4444" stroke-width="2" stroke-linecap="round"></path>
           </svg>
         </div>
         <h3
@@ -5918,8 +6255,8 @@
         const cont = btn.closest('.form-container').getBoundingClientRect();
         const rect = btn.getBoundingClientRect();
         
-        cue.style.top = (rect.top - cont.top + (rect.height / 2) - 6) + 'px';
-        cue.style.left = (rect.left - cont.left + rect.width) + 'px';
+        cue.style.left = (rect.left - cont.left + (rect.width / 2) - 6) + 'px';
+        cue.style.top = (rect.top - cont.top - 250) + 'px';
         
         cue.style.animation = 'none';
         btn.style.animation = 'none';
@@ -5929,7 +6266,7 @@
         
         setTimeout(() => {
           btn.style.animation = 'btn-impact 0.3s ease-out';
-          try { navigator.vibrate([30]); } catch(e){}
+          try { navigator.vibrate([40]); } catch(e){}
         }, 390);
         
         setTimeout(() => {
@@ -5965,14 +6302,15 @@
     </div>
   </div>
 
-  <!-- REGISTER OVERLAY (3-step smart flow) -->
+  <!-- REGISTER OVERLAY (Isolated Table Selection + Smart Form) -->
   <div class="reg-ov" id="reg-ov" onclick="closeRegOv(event)">
     <canvas id="reg-particles" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
-    <div class="reg-sheet" id="reg-sheet" onclick="event.stopPropagation()" style="position:relative;z-index:1;">
-        <div class="reg-close-bar">
-          <div class="reg-close-bar-title">CSEUTSAV'26 Membership</div>
-          <button class="reg-close-btn" onclick="forceCloseReg()">✕ Exit</button>
-        </div>
+    
+    <!-- FULL-SCREEN EVENT SELECTION (Table Mode) -->
+    <div id="reg-selection-area" style="display:none; position:relative; z-index:2;"></div>
+
+    <!-- REGISTRATION FORM (Form Mode) -->
+    <div class="reg-sheet" id="reg-sheet" onclick="event.stopPropagation()" style="position:relative;z-index:1; display:none;">
       
       <!-- FULL-SCREEN COOLDOWN BLOACKER -->
       <div id="cooldown-wall" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;text-align:center;padding:20px;">
@@ -6158,18 +6496,32 @@
 
 
   <!-- EVENT DETAILS MODAL (ALL EVENTS) -->
-  <div class="comm-ov" id="allev-ov" onclick="if(event.target===this)closeAllEvents()">
-    <canvas id="allev-particles" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
-    <div class="comm-wrap" style="position:relative;z-index:1;">
-      <div class="comm-head">
-        <div class="comm-title">Event <span style="color:var(--orange)">Details</span></div>
-        <button class="comm-close" onclick="closeAllEvents()">Close ✕</button>
+  <div class="snooker-felt-overlay" id="allev-ov">
+    <div class="snooker-table-canvas">
+      <!-- Pockets -->
+      <div class="snooker-pocket pk-tl"></div> <div class="snooker-pocket pk-tr"></div>
+      <div class="snooker-pocket pk-bl"></div> <div class="snooker-pocket pk-br"></div>
+      <div class="snooker-pocket pk-ml"></div> <div class="snooker-pocket pk-mr"></div>
+      
+      <!-- Animated Live Balls -->
+      <div class="snooker-ball ball-red" style="top:20%; left:15%;"></div>
+      <div class="snooker-ball ball-white" style="top:60%; right:10%;"></div>
+      <div class="snooker-ball ball-black" style="bottom:15%; left:35%;"></div>
+
+      <!-- Close Button (iOS Glassmorphic) -->
+      <div style="position:fixed; top:15px; right:15px; z-index:11000;">
+        <button class="ev-modal-close-btn" style="background:rgba(255,255,255,0.05); backdrop-filter:blur(15px) saturate(180%); -webkit-backdrop-filter:blur(15px) saturate(180%); border:1px solid rgba(255,255,255,0.15); padding:8px 18px; border-radius:14px; color:#fff; font-size:10px; font-weight:800; cursor:pointer; letter-spacing:1.5px; text-transform:uppercase; box-shadow:0 8px 32px rgba(0,0,0,0.3); font-family:'Barlow Condensed',sans-serif;" onclick="closeAllEvents()">✕ CLOSE</button>
       </div>
-      <div
-        style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;background:rgba(255,255,255,.03);padding:14px;border-radius:8px;border:1px solid var(--border);text-align:center">
-        Detailed schedule, venues, rules, and timings for all events at CSEUTSAV'26 2K26. Tap any card below to open its
-        full details.</div>
-      <div id="allev-list"></div>
+
+      <div class="comm-wrap" style="position:relative; z-index:5; width:100%;">
+        <div style="text-align:center; padding:5px 20px; margin-bottom: 10px;">
+          <h1 class="fc-t gold-text" style="font-size:clamp(22px, 8vw, 30px); margin:0; font-weight:950; letter-spacing:2px; text-shadow:0 0 30px rgba(212,175,55,1);">SNOOKER <span>LOUNGE</span></h1>
+          <div style="font-size:9px; color:rgba(212,175,55,0.6); font-weight:900; letter-spacing:3px; text-transform:uppercase; margin-top:5px; opacity:0.6;">UTSAV 2K26 EDITION · CLICK FOR DETAILS</div>
+        </div>
+        
+        <div id="allev-list" style="width:100%; padding:0 5px;"></div>
+        <div style="height:60px;"></div>
+      </div>
     </div>
   </div>
 
@@ -6581,7 +6933,6 @@
       buildObs(); buildTicker(); renderTiles();
       renderComm(); renderContacts(); renderAllEvents();
       animStats(); tick(); setInterval(tick, 1000);
-      initTraffic();
       initHeroVideo();
       // Dummy function or minor effect to avoid ReferenceError
       if (typeof initHeroParticles !== 'function') {
@@ -6596,6 +6947,7 @@
       window.addEventListener('scroll', updateDockActive, { passive: true });
       updateDockActive();
     }
+
 
     /* ════════ LAZY VIDEO LOADER ════════ */
     function initHeroVideo() {
@@ -6753,52 +7105,7 @@
       draw();
     }
 
-    function initTraffic() {
-      const box = document.getElementById('traffic-box');
-      const low = document.getElementById('t-low'), mid = document.getElementById('t-mid'), high = document.getElementById('t-high');
-      const status = document.getElementById('t-status');
-      if (!box) return;
 
-      const updateTraffic = (regs) => {
-        // Logic: Scale based on registrations (0-100: Low/Easy, 100-500: Moderate, 500+: High/Steady)
-        // We use local regs + a random baseline to simulate real server data
-        const baseline = 45; 
-        const totalRegs = baseline + regs;
-        
-        let val = 10; // Default
-        if (totalRegs < 100) {
-          val = 15 + Math.random() * 10;
-          status.textContent = 'LOW TRAFFIC'; status.style.color = '#2ecc71';
-          document.getElementById('t-bar').style.background = '#2ecc71';
-          low.classList.add('t-active'); low.style.height = '10px';
-        } else if (totalRegs < 500) {
-          val = 40 + Math.random() * 15;
-          status.textContent = 'STEADY TRAFFIC'; status.style.color = '#f1c40f';
-          document.getElementById('t-bar').style.background = '#f1c40f';
-          low.classList.add('t-active');
-          mid.classList.add('t-active'); mid.style.height = '14px';
-        } else {
-          val = 75 + Math.random() * 20;
-          status.textContent = 'HIGH DENSITY'; status.style.color = '#e74c3c';
-          document.getElementById('t-bar').style.background = '#e74c3c';
-          low.classList.add('t-active');
-          mid.classList.add('t-active');
-          high.classList.add('t-active'); high.style.height = '18px';
-        }
-        
-        document.getElementById('t-bar').style.width = Math.min(100, val) + '%';
-      };
-
-      const update = () => {
-        const regs = JSON.parse(localStorage.getItem('u26r') || '[]').length;
-        [low, mid, high].forEach(el => { el.classList.remove('t-active'); el.style.height = '6px'; });
-        updateTraffic(regs);
-        box.style.opacity = '1';
-      };
-
-      update();
-      setInterval(update, 15000 + Math.random() * 15000); // Less frequent updates
-    }
 
     /* ════════ OUTLINE + TICKER ════════ */
     function buildObs() {
@@ -6815,16 +7122,23 @@
     /* ════════ RENDER TILES ════════ */
     /* ════════ RENDER TILES (CASINO STYLE) ════════ */
     function renderTile(e, isFeatured) {
-      const startTime = e.time === 'TBA' ? 'TBA' : e.time.split(' to ')[0].trim();
-      const suits = ['♠', '♥', '♦', '♣'];
-      const suit = suits[Math.floor(Math.random() * suits.length)];
+      const suits = [
+        { s: '♠', c: 'var(--gold)' }, 
+        { s: '♥', c: '#ff4d4d' }, 
+        { s: '♦', c: '#ff4d4d' }, 
+        { s: '♣', c: '#ffffff' }
+      ];
+      // Use a consistent suit based on event name length or ID to avoid flickering on re-renders
+      const suitIdx = (e.name.length) % 4;
+      const suitObj = suits[suitIdx];
+      const iconColor = suitObj.c;
+      const casinoIcon = suitObj.s;
       
-      // Highlight global timeline conflicts natively according to manual event configuration
       const hasConflict = !!e.isSimultaneous;
       
       let teamText = '';
       if (e.type === 'Solo') {
-        teamText = 'SINGLE';
+        teamText = 'SINGLE ENTRY';
       } else if (e.minTeam === e.maxTeam) {
         teamText = `${e.minTeam} MEMBERS`;
       } else {
@@ -6832,38 +7146,46 @@
       }
       
       return `
-    <div class="ev-tile" onclick="openEvMod('${e.id}')">
-      <div class="ev-tile-top" style="aspect-ratio: 16/11; position: relative;">
-        <div class="ev-tile-bg" style="position: absolute; inset: 0; width: 100%; height: 100%;">
-          <img src="${e.poster}" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0" alt="${e.name}">
-          <div style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);color:var(--gold);padding:4px 8px;border-radius:4px;font-weight:900;font-size:14px;z-index:2;border:1px solid var(--gold)">${suit}</div>
+    <div class="ev-tile" onclick="triggerDetailsTransition('${e.id}', this)" 
+         style="display:flex; flex-direction:column; background:rgba(12,12,12,0.6); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(212,175,55,0.2); border-radius:18px; overflow:hidden; transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1); min-height:360px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+      
+      <div class="ev-tile-top" style="position: relative; aspect-ratio: 16/11; overflow:hidden;">
+        <img src="${e.poster}" style="width:100%; height:100%; object-fit:cover;" alt="${e.name}">
+        <!-- Gradient Overlay for Name -->
+        <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 40%);"></div>
+        
+        <!-- Suit Icon -->
+        <div style="position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.6); backdrop-filter:blur(5px); color:${iconColor}; padding:6px 12px; border-radius:8px; font-weight:900; font-size:16px; border:1px solid ${iconColor}66;">${casinoIcon}</div>
+        
+        <!-- Cinematic Name Overlay -->
+        <div style="position:absolute; bottom:12px; left:16px; right:16px; font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:950; color:#fff; text-transform:uppercase; letter-spacing:1px; line-height:1.1; text-shadow:0 2px 10px rgba(0,0,0,0.8);">
+          ${e.name}
         </div>
       </div>
-      <div class="ev-tile-body" style="padding: clamp(10px, 3vw, 16px); background: rgba(12,12,12,0.95); display: flex; flex-direction: column; flex: 1;">
+
+      <div class="ev-tile-body" style="padding: 22px; display: flex; flex-direction: column; flex: 1; gap: 16px;">
         
-        <div style="display: flex; gap: 8px; justify-content: space-between; align-items: stretch; margin-bottom: 12px; width: 100%;">
-          <!-- Time block with dynamic conflict UI -->
-          <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; background: ${hasConflict ? 'rgba(231,76,60,0.1)' : 'rgba(212,175,55,0.05)'}; 
-                      border: 1px solid ${hasConflict ? '#e74c3c' : 'rgba(212,175,55,0.3)'}; 
-                      border-radius: 6px; padding: 6px 4px; font-weight: 800; font-size: clamp(10px, 2.5vw, 12px); 
-                      color: ${hasConflict ? '#ff6b6b' : 'var(--gold)'}; 
-                      box-shadow: ${hasConflict ? '0 0 10px rgba(231,76,60,0.2)' : 'none'};
-                      letter-spacing: 0.5px; line-height: 1.3;">
-            <div style="font-size:12px; margin-bottom:2px; color:${hasConflict ? '#ff6b6b' : 'var(--gold)'}">♦</div>
-            <div>${startTime.replace(' PM', '').replace(' AM', '')}<br><span style="font-size:9px;">${startTime.slice(-2)}</span></div>
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- Full Time Range -->
+          <div style="display:flex; align-items:center; gap:14px; font-size:12px; font-weight:800; color:${hasConflict ? '#ff4d4d' : 'var(--gold)'}; letter-spacing:0.8px;">
+            <span style="font-size:16px; width:20px; text-align:center;">⏰</span> ${e.time}
           </div>
           
-          <!-- Team size badge -->
-          <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.15); 
-                      border-radius: 6px; padding: 6px 4px; font-weight: 800; font-size: clamp(10px, 2.5vw, 12px); color: #ccc;
-                      letter-spacing: 0.5px; line-height: 1.3;">
-            <div style="font-size:12px; margin-bottom:2px; color:var(--gold);">♠</div>
-            <div>${teamText.replace(' MEMBERS', '<br><span style="font-size:9px;">MEMBERS</span>').replace(' SINGLE', 'SINGLE<br><span style="font-size:9px;">ENTRY</span>')}</div>
+          <!-- Members -->
+          <div style="display:flex; align-items:center; gap:14px; font-size:12px; font-weight:700; color:#ddd;">
+            <span style="color:${iconColor}; font-size:16px; width:20px; text-align:center;">${casinoIcon}</span> ${teamText}
+          </div>
+
+          <!-- Date -->
+          <div style="display:flex; align-items:center; gap:14px; font-size:12px; font-weight:800; color:#fff;">
+            <span style="font-size:16px; width:20px; text-align:center;">📅</span> ${e.date}
           </div>
         </div>
 
-        <div class="ev-tile-link" style="border: 1px solid var(--gold); background: transparent; color: var(--gold); font-weight: 700; letter-spacing: 1.5px; padding: clamp(8px, 2vw, 12px); border-radius: 6px; text-transform: uppercase; text-align: center; transition: all 0.2s; width: 100%; font-size: clamp(10px, 2.5vw, 12px); margin-top: auto;">
-          REGISTER NOW <span style="margin-left: 3px;">→</span>
+        <div style="margin-top: auto;">
+          <div class="ev-tile-link" style="border: 1px solid var(--gold); background: rgba(212,175,55,0.05); color: var(--gold); font-weight: 800; letter-spacing: 2px; padding: 12px; border-radius: 10px; text-transform: uppercase; text-align: center; font-size: 11px; transition: all 0.3s ease;">
+            REGISTER NOW <span style="margin-left: 5px;">→</span>
+          </div>
         </div>
       </div>
     </div>
@@ -6992,15 +7314,15 @@ function renderComm() {
 
     function renderContacts() {
       document.getElementById('cg').innerHTML = CONTACTS.map(c => `
-    <a class="cc" href="tel:${c.phone}">
-      <div class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg></div>
-      <div class="cc-info">
-        <div class="cc-role">${c.role}</div>
-        <div class="cc-name">${c.name}</div>
-        <div class="cc-ph">${c.phone}</div>
-      </div>
-    </a>
-  `).join('');
+        <a class="cc" href="tel:${c.phone}">
+          <div class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg></div>
+          <div class="cc-info">
+            <div class="cc-role">${c.role}</div>
+            <div class="cc-name">${c.name}</div>
+            <div class="cc-ph">${c.phone}</div>
+          </div>
+        </a>
+      `).join('');
     }
 
     /* ════════ STATS ════════ */
@@ -7011,134 +7333,93 @@ function renderComm() {
       }
       const obs = new IntersectionObserver(entries => {
         if (entries[0].isIntersecting) {
-          count(document.getElementById('sev'), 10, '', 700);
-          count(document.getElementById('spr'), 33, 'K+', 900);
+          const sev = document.getElementById('sev');
+          const spr = document.getElementById('spr');
+          if (sev) count(sev, 10, '', 700);
+          if (spr) count(spr, 33, 'K+', 900);
           obs.disconnect();
         }
       }, { threshold: .4 });
-      obs.observe(document.getElementById('sev'));
+      const target = document.getElementById('sev');
+      if (target) obs.observe(target);
     }
 
     /* ════════ EVENT MODAL ════════ */
+    function triggerDetailsTransition(id, el) {
+      if (el) {
+        playMechanicalSnap();
+        doHapticSnap();
+      }
+      openEvMod(id);
+      if (el && el.closest('#allev-list')) {
+        document.getElementById('allev-ov').classList.remove('open');
+      }
+    }
+
     function openEvMod(id) {
       const e = EVS.find(ev => ev.id === id); if (!e) return;
-      const isTech = e.category === 'Technical';
-      const catColor = isTech ? '#2ecc71' : 'var(--orange)';
+      const casinoIcons = {
+        'Technical': '⚡',
+        'Management': '💰',
+        'Gaming': '🎮',
+        'Design': '🎨',
+        'Coding': '🎯'
+      };
+      let icon = casinoIcons[e.category] || '♣';
       
-      const suits = ['♠', '♥', '♦', '♣'];
-      const randomSuit = suits[Math.floor(Math.random() * suits.length)];
-      let casinoIcon = randomSuit;
-      if (e.category === 'Technical') casinoIcon = '⚡';
-      if (e.name.toLowerCase().includes('pitch') || e.name.toLowerCase().includes('biz') || e.name.toLowerCase().includes('manage')) casinoIcon = '💰';
-      if (e.name.toLowerCase().includes('hack') || e.name.toLowerCase().includes('code') || e.name.toLowerCase().includes('hunt')) casinoIcon = '🎯';
-
       document.getElementById('esc').innerHTML = `
-    <!-- Floating Coins Background -->
-    <div style="position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; opacity:0.15;">
-      <div style="position:absolute; left:15%; top:-50px; font-size:24px; color:var(--gold); animation: coin-fall 12s linear infinite">♠</div>
-      <div style="position:absolute; left:85%; top:-50px; font-size:32px; color:var(--gold); animation: coin-fall 18s linear infinite 3s">♦</div>
-      <div style="position:absolute; left:50%; top:-50px; font-size:20px; color:var(--gold); animation: coin-fall 14s linear infinite 7s">♣</div>
-      <div style="position:absolute; left:25%; top:-50px; font-size:28px; color:var(--gold); animation: coin-fall 16s linear infinite 10s">♥</div>
-      <div style="position:absolute; left:70%; top:-50px; font-size:18px; color:var(--gold); animation: coin-fall 11s linear infinite 2s">♠</div>
-    </div>
+        <div class="snooker-felt-overlay" id="individual-ev-ov" style="display:flex;">
+          <div class="snooker-table-canvas">
+            <div class="snooker-pocket pk-tl"></div> <div class="snooker-pocket pk-tr"></div>
+            <div class="snooker-pocket pk-bl"></div> <div class="snooker-pocket pk-br"></div>
+            <div class="snooker-pocket pk-ml"></div> <div class="snooker-pocket pk-mr"></div>
+            
+            <div class="snooker-ball ball-red" style="top:15%; left:10%;"></div>
+            <div class="snooker-ball ball-white" style="bottom:20%; right:15%;"></div>
+            <div class="snooker-ball ball-black" style="top:40%; right:8%;"></div>
 
-    <div style="position:sticky;top:0;z-index:10;background:rgba(10,10,10,0.8);backdrop-filter:blur(12px);margin:-20px -20px 20px -20px;padding:20px;border-bottom:1px solid rgba(212,175,55,0.2);display:flex;justify-content:center;align-items:center">
-      <button class="ev-modal-close-btn" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);padding:8px 16px;border-radius:8px;color:var(--gold);font-size:12px;font-weight:900;cursor:pointer;letter-spacing:1px;transition:all 0.2s" onmouseover="this.style.background='rgba(212,175,55,0.2)'" onmouseout="this.style.background='rgba(212,175,55,0.1)'" onclick="closeEvMod(null,1)">✕ CLOSE WINDOW</button>
-    </div>
+            <div style="position:fixed;top:15px;right:15px;z-index:2000;">
+              <button class="ev-modal-close-btn" style="background:rgba(255,255,255,0.05); backdrop-filter:blur(15px) saturate(180%); -webkit-backdrop-filter:blur(15px) saturate(180%); border:1px solid rgba(255,255,255,0.15); padding:8px 18px; border-radius:14px; color:#fff; font-size:10px; font-weight:800; cursor:pointer; letter-spacing:1.5px; text-transform:uppercase; box-shadow:0 8px 32px rgba(0,0,0,0.3); font-family:'Barlow Condensed',sans-serif;" onclick="closeEvMod(null,1)">✕ CLOSE</button>
+            </div>
 
-    <!-- Page Header -->
-    <div style="margin-bottom:32px; display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 10px; position:relative; z-index:2">
-       <div style="width:85px;height:85px;border-radius:24px;background:rgba(20,20,20,0.8);border:2px solid rgba(212,175,55,0.4);display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:20px;box-shadow:inset 0 0 20px rgba(212,175,55,0.1), 0 10px 40px rgba(0,0,0,0.6); color:var(--gold); text-shadow:0 0 15px rgba(212,175,55,0.4)">${casinoIcon}</div>
-       <div style="width:100%">
-         <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px, 8vw, 48px);font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;line-height:1.1;margin:0 0 10px 0; word-break:break-word; text-shadow:0 4px 15px rgba(0,0,0,0.8)">${e.name}</h1>
-         <div style="font-family:'Outfit',sans-serif;font-size:15px;color:var(--gold);font-weight:700;letter-spacing:1.5px;text-transform:uppercase">${e.label}</div>
-       </div>
-    </div>
+            <div style="width:100%; max-width:600px; position:relative; z-index:5; padding:10px; display:flex; flex-direction:column; align-items:center;">
+            <div style="text-align:center; margin-bottom:25px;">
+               <div style="width:70px;height:70px;border-radius:18px;background:rgba(10,10,10,0.9);border:2px solid rgba(212,175,55,0.5);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 12px;box-shadow:0 8px 25px rgba(0,0,0,0.5); color:var(--gold);">${icon}</div>
+               <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px, 6vw, 36px);font-weight:950;color:#fff;text-transform:uppercase;letter-spacing:1px;line-height:1;margin:0 0 5px 0;">${e.name}</h1>
+               <div style="font-family:'Outfit',sans-serif;font-size:13px;color:var(--gold);font-weight:800;letter-spacing:2px;text-transform:uppercase">${e.label}</div>
+            </div>
 
-    <!-- Quick Stats Grid -->
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px;position:relative;z-index:2">
-      ${[['📅 Date', e.date], ['⏰ Time', e.time], ['📍 Venue', e.venue], ['👥 Team', e.type === 'Solo' ? 'Individual' : `Team ${e.minTeam}–${e.maxTeam}`]].map(([l, t]) => `
-        <div style="padding:16px;background:rgba(15,15,15,0.6);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.15);border-radius:12px;transition:all .3s ease-out;box-shadow:inset 0 0 10px rgba(0,0,0,0.5)" onmouseover="this.style.borderColor='rgba(212,175,55,0.5)';this.style.transform='translateY(-2px)';this.style.boxShadow='inset 0 0 10px rgba(0,0,0,0.5), 0 5px 15px rgba(212,175,55,0.1)'" onmouseout="this.style.borderColor='rgba(212,175,55,0.15)';this.style.transform='translateY(0)';this.style.boxShadow='inset 0 0 10px rgba(0,0,0,0.5)'">
-          <div style="font-size:11px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px; opacity:0.8">${l}</div>
-          <div style="font-size:15px;font-weight:700;color:#fff;letter-spacing:0.5px" class="${(l === '⏰ Time' && e.isSimultaneous) ? 'ev-time-red-glow' : ''}">${t}</div>
-        </div>
-      `).join('')}
-    </div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;margin-bottom:20px;">
+              ${[['📅 Date', e.date], ['⏰ Time', e.time], ['📍 Venue', e.venue], ['👥 Team', e.type === 'Solo' ? 'Individual' : e.maxTeam]].map(([l, t]) => `
+                <div style="padding:12px;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
+                  <div style="font-size:9px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px; opacity:0.7">${l}</div>
+                  <div style="font-size:13px;font-weight:700;color:#fff;">${t}</div>
+                </div>
+              `).join('')}
+            </div>
 
-    ${e.isSimultaneous ? `
-    <!-- Simultaneous Notice -->
-    <div style="background:rgba(255,50,50,0.05);border:1px solid rgba(255,50,50,0.3);border-radius:16px;padding:16px 20px;margin-bottom:32px;display:flex;gap:16px;align-items:flex-start;text-align:left;position:relative;z-index:2;box-shadow:inset 0 0 20px rgba(255,0,0,0.05)">
-      <span style="font-size:24px;margin-top:2px">⚠️</span>
-      <div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#ff4d4d;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Scheduling Note</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.5">This event is scheduled at the same time as another event. Please choose only one to participate in for this time slot.</div>
-      </div>
-    </div>` : ''}
+            <p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.5;margin-bottom:25px;text-align:center;">${e.desc}</p>
 
-    <!-- About Section -->
-    <div style="margin-bottom:32px; text-align:center;position:relative;z-index:2">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;background:linear-gradient(45deg, var(--gold), var(--orange));-webkit-background-clip:text;color:transparent;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px;text-shadow:0 0 15px rgba(212,175,55,0.2)">
-        <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span> EVENT DETAILS <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span>
-      </div>
-      <p style="font-size:15px;color:rgba(255,255,255,0.75);line-height:1.8;margin:0;max-width:600px;margin-left:auto;margin-right:auto;text-shadow:0 2px 4px rgba(0,0,0,0.5)">${e.desc}</p>
-    </div>
+            <div style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:15px;margin-bottom:25px;">
+              <div style="font-size:11px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;text-align:center;border-bottom:1px solid rgba(212,175,55,0.2);padding-bottom:5px;">Table Rules</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.4;">
+                ${e.rules.slice(0, 3).map((r, i) => `<div style="margin-bottom:8px;display:flex;gap:10px;"><span style="color:var(--gold);font-weight:900;">0${i+1}</span><span>${r}</span></div>`).join('')}
+              </div>
+            </div>
 
-    <!-- Rules Section -->
-    <div style="margin-bottom:32px; text-align:center;position:relative;z-index:2">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;background:linear-gradient(45deg, var(--gold), var(--orange));-webkit-background-clip:text;color:transparent;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px;text-shadow:0 0 15px rgba(212,175,55,0.2)">
-        <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span> ♠ THE RULES ♠ <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span>
-      </div>
-      <div style="background:rgba(15,15,15,0.6);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.2);border-radius:16px;overflow:hidden;text-align:left;box-shadow:inset 0 0 20px rgba(0,0,0,0.6)">
-        ${e.rules.map((r, i) => `
-          <div style="display:flex;gap:16px;padding:16px 20px;font-size:13px;color:rgba(255,255,255,0.85);border-bottom:1px solid rgba(212,175,55,0.1);line-height:1.6;transition:background 0.2s" onmouseover="this.style.backgroundColor='rgba(212,175,55,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
-            <span style="color:var(--gold);font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:16px;min-width:20px;text-shadow:0 0 8px rgba(212,175,55,0.3)">${String(i+1).padStart(2,'0')}</span>
-            <span>${r}</span>
+            <button onclick="closeEvMod();openReg('${e.id}')" style="width:100%; padding:15px; border-radius:10px; background:var(--gold); color:#000; font-family:'Barlow Condensed',sans-serif; font-weight:950; text-transform:uppercase; letter-spacing:1px; border:none; cursor:pointer; font-size:16px;box-shadow:0 8px 20px rgba(212,175,55,0.3);">RESERVE YOUR SEAT</button>
+            <div style="text-align:center; margin-top:10px; font-size:9px; color:rgba(255,255,255,0.4); letter-spacing:1px; text-transform:uppercase;">Processed via Google Cloud</div>
           </div>
-        `).join('')}
-      </div>
-    </div>
-
-    <!-- Team Section (Coordinators) -->
-    <div style="margin-bottom:100px; text-align:center;position:relative;z-index:2">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;background:linear-gradient(45deg, var(--gold), var(--orange));-webkit-background-clip:text;color:transparent;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px;text-shadow:0 0 15px rgba(212,175,55,0.2)">
-        <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span> ♦ THE DEALERS ♦ <span style="width:30px;height:1px;background:var(--gold);opacity:0.5"></span>
-      </div>
-      <div class="ev-coord-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
-        <!-- Event Head -->
-        <a href="tel:${e.ep}" style="text-decoration:none;padding:20px;background:rgba(15,15,15,0.6);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.2);border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:all 0.3s;box-shadow:inset 0 0 15px rgba(0,0,0,0.5)" onmouseover="this.style.borderColor='rgba(212,175,55,0.6)';this.style.transform='translateY(-3px)';this.style.boxShadow='inset 0 0 15px rgba(0,0,0,0.5), 0 8px 20px rgba(212,175,55,0.15)'" onmouseout="this.style.borderColor='rgba(212,175,55,0.2)';this.style.transform='translateY(0)';this.style.boxShadow='inset 0 0 15px rgba(0,0,0,0.5)'">
-          <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.ec)}&background=111&color=d4af37&size=128" style="width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);margin-bottom:12px;box-shadow:0 0 15px rgba(212,175,55,0.3)">
-          <div style="font-size:10px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;opacity:0.8">EVENT HEAD</div>
-          <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;font-family:'Barlow Condensed'">${e.ec}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:700">${e.ep}</div>
-        </a>
-        <!-- Staff Coordinator/Judge -->
-        <a href="tel:${e.sp}" style="text-decoration:none;padding:20px;background:rgba(15,15,15,0.6);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.2);border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:all 0.3s;box-shadow:inset 0 0 15px rgba(0,0,0,0.5)" onmouseover="this.style.borderColor='rgba(212,175,55,0.6)';this.style.transform='translateY(-3px)';this.style.boxShadow='inset 0 0 15px rgba(0,0,0,0.5), 0 8px 20px rgba(212,175,55,0.15)'" onmouseout="this.style.borderColor='rgba(212,175,55,0.2)';this.style.transform='translateY(0)';this.style.boxShadow='inset 0 0 15px rgba(0,0,0,0.5)'">
-          <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(e.sc)}&background=111&color=d4af37&size=128" style="width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);margin-bottom:12px;box-shadow:0 0 15px rgba(212,175,55,0.2)">
-          <div style="font-size:10px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;opacity:0.8">STAFF / JUDGE</div>
-          <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;font-family:'Barlow Condensed'">${e.sc}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:700">${e.sp}</div>
-        </a>
-      </div>
-      ${e.jcs && e.jcs.length > 0 ? `
-      <div style="margin-top:20px;padding:16px;background:rgba(15,15,15,0.6);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.15);border-radius:14px;box-shadow:inset 0 0 15px rgba(0,0,0,0.5)">
-        <div style="font-size:10px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;opacity:0.8">JOINT COORDINATORS</div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
-          ${e.jcs.map(jc => `<span style="padding:6px 14px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);border-radius:20px;font-size:13px;font-weight:700;color:#fff;box-shadow:0 0 10px rgba(212,175,55,0.05)">${jc}</span>`).join('')}
-        </div>
-      </div>` : ''}
-    </div>
-
-    <!-- Fixed Bottom Action Section -->
-    <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top, rgba(5,5,5,1) 60%, transparent);border-top:1px solid rgba(212,175,55,0.3);z-index:15">
-      <button class="reg-next-btn" style="width:100%;height:58px;margin-top:0;font-size:18px;font-weight:900;border-radius:12px;box-shadow:0 10px 40px rgba(212,175,55,0.3);background:linear-gradient(45deg, var(--orange), var(--gold));border:none;display:flex;align-items:center;justify-content:center;gap:12px;transition:all 0.3s;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.5)" onmouseover="this.style.transform='scale(1.02)';this.style.boxShadow='0 15px 50px rgba(212,175,55,0.5)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 10px 40px rgba(212,175,55,0.3)'" onclick="closeEvMod(null,1); setTimeout(()=>openReg('${e.id}'),300);">
-        <span>SECURE YOUR SPOT</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </button>
-    </div>
-  `;
+        </div>`;
       document.getElementById('ev-modal').classList.add('open');
+      hideDock();
     }
-    function closeEvMod(ev, f) { if (f || (ev && ev.target === document.getElementById('ev-modal'))) document.getElementById('ev-modal').classList.remove('open'); }
+    function closeEvMod(ev, f) { 
+      if (f || (ev && ev.target === document.getElementById('ev-modal'))) {
+        document.getElementById('ev-modal').classList.remove('open');
+        showDock(); // RESTORE NAV AND LOGO
+      }
+    }
 
     /* ════════ REGISTER FLOW ════════ */
     function evSummaryCard(id) {
@@ -7163,79 +7444,137 @@ function renderComm() {
     }
 
 
+    let revealTimeouts = [];
+    function skipAllReveals() {
+      revealTimeouts.forEach(t => clearTimeout(t));
+      revealTimeouts = [];
+      document.querySelectorAll('.master-card-prop').forEach(card => {
+        card.style.animation = 'none'; card.style.opacity = '1';
+        card.style.transform = 'none';
+      });
+      const btn = document.getElementById('skip-reveal'); if (btn) btn.remove();
+    }
+
+    function doHapticSnap() {
+      if (window.navigator && window.navigator.vibrate) { 
+        window.navigator.vibrate(20); 
+      }
+    }
+
+    function playMechanicalSnap() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+        o.connect(g); g.connect(audioCtx.destination);
+        o.type = 'triangle'; o.frequency.setValueAtTime(600, now);
+        o.frequency.exponentialRampToValueAtTime(1400, now + 0.08);
+        g.gain.setValueAtTime(0.04, now); g.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+        o.start(); o.stop(now + 0.15);
+      } catch(e){}
+    }
+
     function openReg(evId) {
-
       hideDock();
-
+      revealTimeouts.forEach(t => clearTimeout(t)); revealTimeouts = [];
       if (isCooldown) {
           document.getElementById('reg-ov').classList.add('open');
           document.getElementById('reg-rsc').style.display = 'none';
           document.getElementById('cooldown-wall').style.display = 'flex';
-          const wt = document.getElementById('wall-timer');
-          if (wt) wt.textContent = globalCooldownTime + 's';
+          const wt = document.getElementById('wall-timer'); if (wt) wt.textContent = globalCooldownTime + 's';
           return;
       }
-      
       document.getElementById('reg-rsc').style.display = 'block';
-      const cw = document.getElementById('cooldown-wall');
-      if (cw) cw.style.display = 'none';
-
-      // Reset any leftover submission state from previous attempts
+      const cw = document.getElementById('cooldown-wall'); if (cw) cw.style.display = 'none';
       resetRegState();
       currentEv = evId ? EVS.find(e => e.id === evId) : null;
-      currentStep = 0;
+      currentStep = 0; 
       teamMembers = [];
-      // Render event summary if preselected
-      const s1 = document.getElementById('ev-summary-here');
-      const s2 = document.getElementById('ev-summary-here2');
-      if (currentEv) {
-        s1.innerHTML = evSummaryCard(currentEv.id);
-        s2.innerHTML = evSummaryCard(currentEv.id);
-        setupTeamStep();
-      } else {
-        // Show event selector grouped by category
+
+      const selectionArea = document.getElementById('reg-selection-area');
+      const regSheet = document.getElementById('reg-sheet');
+      const summary1 = document.getElementById('ev-summary-here');
+      const summary2 = document.getElementById('ev-summary-here2');
+
+      if (currentEv === null) {
+        selectionArea.style.display = 'block';
+        regSheet.style.display = 'none';
+
         const techEvs = EVS.filter(e => e.category === 'Technical');
         const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
 
+        function evRow(e, globalIdx) {
+          const players = e.type === 'Solo' ? 'Solo' : `${e.minTeam}–${e.maxTeam} Players`;
+          const delay = globalIdx * 350;
+          revealTimeouts.push(setTimeout(() => { 
+            if(document.getElementById('reg-ov').classList.contains('open')) {
+              playMechanicalSnap();
+              doHapticSnap();
+            }
+          }, delay));
 
-        function evRow(e) {
           return `
-        <div onclick="regEventDetail('${e.id}')" class="ev-sel-row">
-          <div class="ev-sel-icon">${e.icon}</div>
-          <div>
-            <div class="ev-sel-name">${e.name} ${e.isSimultaneous ? '<span style="color:var(--muted2);font-size:9px;margin-left:5px">● SAME TIME</span>' : ''}</div>
-            <div class="ev-sel-meta">
-              <span class="ev-sel-pill">${e.type === 'Solo' ? 'Individual' : (e.minTeam === e.maxTeam ? `${e.minTeam} Members` : `${e.minTeam} to ${e.maxTeam} Members`)}</span>
-              <span>${e.label}</span>
-            </div>
-          </div>
-          <div style="margin-left:auto;display:flex;align-items:center;padding-left:8px;flex-shrink:0">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-          </div>
-        </div>`;
+            <div onclick="selectEventInTable('${e.id}')" class="master-card-prop" style="animation-delay: ${delay}ms">
+              <div class="card-inner">
+                <div class="card-face card-face-back">
+                  <div class="master-tarot-pattern"></div>
+                  <div class="master-sun-core"></div>
+                </div>
+                <div class="card-face face-master" style="border: 2px solid #fff; outline: 1px solid var(--orange)">
+                  <div class="master-event-icon" style="font-size: 20px; margin-bottom: 5px;">${e.icon}</div>
+                  <div class="master-event-name" style="font-size: 11px; font-weight:950; min-height:30px; display:flex; align-items:center; justify-content:center;">${e.name}</div>
+                  <div class="master-event-cat" style="font-size: 7px; color: var(--orange); margin-top:-2px;">${e.label}</div>
+                  <div class="master-footer" style="padding-top: 3px; font-size: 8px; margin-top:auto;">
+                    <span>👥 ${players}</span>
+                  </div>
+                </div>
+              </div>
+            </div>`;
         }
 
-        s1.innerHTML = `
-      <div class="fc-t">Choose Event</div>
-      <div style="font-size:12px;color:var(--muted2);margin-bottom:16px;line-height:1.5;text-align:center">Tap an event to view details, rules & register</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#2ecc71;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(46,204,113,.4);font-size:18px">&lt;/&gt;</span> Technical</div>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
-        ${techEvs.map(e => evRow(e)).join('')}
-      </div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="text-shadow:0 0 6px rgba(232,84,26,.4);font-size:18px">{ }</span> Non-Technical</div>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
-        ${nonTechEvs.map(e => evRow(e)).join('')}
-      </div>`;
-        s2.innerHTML = '';
+        selectionArea.innerHTML = `
+          <div class="reg-selection-env">
+            <div class="reg-felt-surface">
+              <div class="cup-holder cu1"></div> <div class="cup-holder cu2"></div>
+              <div class="cup-holder cu3"></div> <div class="cup-holder cu4"></div>
+              <div class="table-lines"></div>
+              <div class="poker-chip chip-red" style="top:12%; left:8%; --r:-15deg"></div>
+              <div class="poker-chip chip-blue" style="top:18%; left:12%; --r:25deg"></div>
+              <div class="poker-chip chip-gold" style="bottom:15%; right:10%; --r:10deg"></div>
+            </div>
+
+            <button class="reg-close-btn" style="position:fixed; top:15px; right:15px; z-index:2100; background:rgba(255,255,255,0.05); backdrop-filter:blur(15px) saturate(180%); -webkit-backdrop-filter:blur(15px) saturate(180%); border:1px solid rgba(255,255,255,0.15); padding:8px 18px; border-radius:14px; color:#fff; font-size:10px; font-weight:800; cursor:pointer; letter-spacing:1.5px; text-transform:uppercase; box-shadow:0 8px 32px rgba(0,0,0,0.3); font-family:'Barlow Condensed',sans-serif; white-space:nowrap;" onclick="playMechanicalSnap(); doHapticSnap(); forceCloseReg()">✕ CLOSE</button>
+            <div class="fc-t gold-text" style="font-size:clamp(22px, 8vw, 30px); margin-top: 15px; margin-bottom:5px; font-weight:950; letter-spacing:2px; text-shadow:0 0 30px rgba(212,175,55,0.8); text-align:left !important; margin-left:0 !important; padding-left:10px !important; width:100% !important; align-self:flex-start !important; display:flex !important; justify-content:flex-start !important;">SNOOKER <span style="color:var(--gold)">LOUNGE ♠</span></div>
+            <div style="font-size:9px; color:rgba(255,255,255,0.4); margin-bottom:10px; text-align:left !important; margin-left:0 !important; padding-left:10px !important; font-weight:900; letter-spacing:2px; text-transform:uppercase; opacity:0.6; width:100% !important; align-self:flex-start !important; display:flex !important; justify-content:flex-start !important;">UTSAV 2K26 EDITION · CLICK TO RESERVE</div>
+            
+            <!-- UPDATED: REDUNDANT QUICK PASS REMOVED AS PER USER REQUEST -->
+
+            <div class="cinematic-card-viewport" style="padding: 0 5px; margin-bottom:60px; display:grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap:10px; width:100%; align-self:center;">
+              ${techEvs.map((e, i) => evRow(e, i)).join('')}
+              ${nonTechEvs.map((e, i) => evRow(e, i + techEvs.length)).join('')}
+            </div>
+            <div style="height: 120px; width: 100%;"></div>
+          </div>`;
+        
+        summary1.innerHTML = '';
+        summary2.innerHTML = '';
+
+      } else {
+        selectionArea.style.display = 'none';
+        regSheet.style.display = 'block';
+        regSheet.style.background = 'var(--black2)';
+        regSheet.style.borderTop = '2px solid var(--orange)';
+
+        summary1.innerHTML = evSummaryCard(currentEv.id);
+        summary2.innerHTML = evSummaryCard(currentEv.id);
+        setupTeamStep();
       }
 
-      // Toggle visibility of the registration fields based on whether an event is selected
       const fieldsContainer = document.getElementById('reg-fields-container');
       if (fieldsContainer) {
         fieldsContainer.style.display = currentEv ? 'block' : 'none';
       }
 
-      // Quick Auto-fill for returning users
       const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
       if (saved.length > 0 && !document.getElementById('f-name').value) {
         const last = saved[saved.length - 1];
@@ -7250,15 +7589,22 @@ function renderComm() {
 
       updateStepUI();
       document.getElementById('reg-ov').classList.add('open');
+      
     }
 
     /* Route register event click through the detail modal */
     function regEventDetail(id) {
-      // Close registration overlay
       document.getElementById('reg-ov').classList.remove('open');
       showDock();
       // Open event detail modal (has About, Rules, Secure Your Spot)
-      setTimeout(() => openEvMod(id), 250);
+      triggerDetailsTransition(id, null);
+    }
+
+    function selectEventInTable(id) {
+      playMechanicalSnap();
+      doHapticSnap();
+      // Instead of going straight to the form, route through the detail modal
+      regEventDetail(id);
     }
 
     function selectEventInForm(id) {
@@ -8001,8 +8347,18 @@ function renderComm() {
           backBtn.style.opacity = '1'; 
       }
     }
-    function closeRegOv(ev) { if (ev && ev.target === document.getElementById('reg-ov')) { resetRegState(); document.getElementById('reg-ov').classList.remove('open'); showDock(); } }
-    function forceCloseReg() { resetRegState(); document.getElementById('reg-ov').classList.remove('open'); showDock(); }
+    function closeRegOv(ev) { 
+      if (ev && ev.target === document.getElementById('reg-ov')) { 
+        resetRegState(); 
+        document.getElementById('reg-ov').classList.remove('open'); 
+        showDock(); 
+      } 
+    }
+    function forceCloseReg() { 
+      resetRegState(); 
+      document.getElementById('reg-ov').classList.remove('open'); 
+      showDock(); 
+    }
 
     /* ════════ ADMIN PANEL ════════ */
     let allAdminRegs = [];
@@ -8489,12 +8845,30 @@ function doPost(e) {
 
     /* ════════ COUNTDOWN ════════ */
     function tick() {
-      const d = new Date('2026-04-13T09:00:00') - new Date();
-      if (d <= 0) return;
-      document.getElementById('cd-d').textContent = String(Math.floor(d / 86400000)).padStart(2, '0');
-      document.getElementById('cd-h').textContent = String(Math.floor(d % 86400000 / 3600000)).padStart(2, '0');
-      document.getElementById('cd-m').textContent = String(Math.floor(d % 3600000 / 60000)).padStart(2, '0');
-      document.getElementById('cd-s').textContent = String(Math.floor(d % 60000 / 1000)).padStart(2, '0');
+      const target = new Date('2026-04-13T09:00:00');
+      const diff = target - new Date();
+      if (diff <= 0) return;
+      
+      const elements = {
+        'rw-d': Math.floor(diff / 86400000),
+        'rw-h': Math.floor(diff % 86400000 / 3600000),
+        'rw-m': Math.floor(diff % 3600000 / 60000),
+        'rw-s': Math.floor(diff % 60000 / 1000)
+      };
+
+      for (const [id, val] of Object.entries(elements)) {
+        const el = document.getElementById(id);
+        if (el) {
+          const strVal = String(val).padStart(2, '0');
+          if (el.textContent !== strVal) {
+            el.style.opacity = '0';
+            setTimeout(() => {
+              el.textContent = strVal;
+              el.style.opacity = '1';
+            }, 150);
+          }
+        }
+      }
     }
 
     /* ════════ NAV SCROLL ════════ */
@@ -9023,9 +9397,15 @@ function doPost(e) {
       }
     }
 
-    /* ════════ DOCK ════════ */
-    function hideDock() { document.getElementById('dock').classList.add('hidden'); }
-    function showDock() { document.getElementById('dock').classList.remove('hidden'); }
+    /* ════════ DOCK & NAV TOGGLE ════════ */
+    function hideDock() { 
+      document.getElementById('dock').classList.add('hidden'); 
+      document.querySelector('.nav').classList.add('hidden');
+    }
+    function showDock() { 
+      document.getElementById('dock').classList.remove('hidden'); 
+      document.querySelector('.nav').classList.remove('hidden');
+    }
 
     function dockNav(target) {
       if (target === 'pass') {
@@ -9076,8 +9456,8 @@ function doPost(e) {
 
     /* ════════ ALL EVENTS MODAL ════════ */
     function openAllEvents() {
-
       hideDock();
+      renderAllEvents();
       document.getElementById('allev-ov').classList.add('open');
     }
     function closeAllEvents() {
@@ -9088,29 +9468,43 @@ function doPost(e) {
       const container = document.getElementById('allev-list');
       if (!container) return;
       
-      const cards = EVS.map(e => {
-        const suits = ['♠', '♥', '♦', '♣'];
-        let casinoIcon = suits[Math.floor(Math.random() * suits.length)];
-        if (e.category === 'Technical') casinoIcon = '⚡';
-        if (e.name.toLowerCase().includes('pitch') || e.name.toLowerCase().includes('biz') || e.name.toLowerCase().includes('manage')) casinoIcon = '💰';
-        if (e.name.toLowerCase().includes('hack') || e.name.toLowerCase().includes('code') || e.name.toLowerCase().includes('hunt')) casinoIcon = '🎯';
-
-        return `<div class="ev-item-card" style="background:rgba(15,15,15,0.8);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,0.2);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center;transition:all 0.3s;box-shadow:inset 0 0 20px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.3);cursor:pointer;" onmouseover="this.style.borderColor='rgba(212,175,55,0.6)';this.style.transform='translateY(-4px)';this.style.boxShadow='inset 0 0 20px rgba(0,0,0,0.8), 0 10px 25px rgba(212,175,55,0.2)'" onmouseout="this.style.borderColor='rgba(212,175,55,0.2)';this.style.transform='translateY(0)';this.style.boxShadow='inset 0 0 20px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.3)'" onclick="closeAllEvents();openEvMod('${e.id}')">
-          <div style="display:flex; flex-direction:column; gap:14px; align-items:center; text-align:center; width:100%">
-            <div style="width:60px;height:60px;border-radius:16px;background:rgba(20,20,20,0.9);border:2px solid rgba(212,175,55,0.4);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:inset 0 0 15px rgba(212,175,55,0.1), 0 5px 15px rgba(0,0,0,0.5);color:var(--gold);text-shadow:0 0 10px rgba(212,175,55,0.5)">${casinoIcon}</div>
-            <div>
-              <div class="comm-name" style="font-size:18px;margin-bottom:4px;font-family:'Barlow Condensed',sans-serif;font-weight:900;text-transform:uppercase;color:#fff;letter-spacing:1px">${e.name}</div>
-              <div style="font-size:11px;font-weight:900;letter-spacing:2px;background:linear-gradient(45deg, var(--gold), var(--orange));-webkit-background-clip:text;color:transparent;text-transform:uppercase">${e.label}</div>
+      const cards = EVS.map((e, idx) => {
+        const suits = [
+          { s: '♠', c: 'var(--gold)' }, 
+          { s: '♥', c: '#ff4d4d' }, 
+          { s: '♦', c: '#ff4d4d' }, 
+          { s: '♣', c: '#ffffff' }
+        ];
+        const suitObj = suits[idx % 4];
+        let casinoIcon = suitObj.s;
+        let iconColor = suitObj.c;
+        
+        // Stagger calculated as 0.05s increments
+        const delay = (idx * 0.05).toFixed(2);
+        
+        return `
+          <div class="ev-item-card lying-flat-card card-reveal-stagger" 
+               style="background:rgba(18,18,18,0.45); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:15px; display:flex; flex-direction:column; gap:12px; align-items:center; text-align:center; cursor:pointer; box-shadow:0 8px 32px rgba(0,0,0,0.4); transition:all 0.3s ease; animation-delay:${delay}s; min-height:180px;" 
+               onclick="triggerDetailsTransition('${e.id}', this)">
+            
+            <div style="width:40px; height:40px; border-radius:10px; background:rgba(212,175,55,0.05); border:1.5px solid ${iconColor}88; display:flex; align-items:center; justify-content:center; font-size:20px; color:${iconColor}; box-shadow:0 5px 15px rgba(0,0,0,0.4); flex-shrink:0;">${casinoIcon}</div>
+            
+            <div style="flex-grow:1; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px; line-height:1.2;">${e.name}</div>
+              <div style="font-family:'Outfit',sans-serif; font-size:9px; font-weight:800; color:var(--gold); text-transform:uppercase; letter-spacing:2.5px; opacity:0.8;">${e.label}</div>
             </div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;width:100%;justify-content:center;margin-top:4px">
-            ${[['📅', e.date], ['⏰', e.time]].map(([i, t]) => `<div style="font-size:11px;font-weight:700;color:var(--gold);padding:6px 10px;background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.2);border-radius:6px;display:flex;gap:6px;align-items:center;opacity:0.9"><span>${i}</span>${t}</div>`).join('')}
-          </div>
-        </div>`;
+
+            <div style="margin-top:auto; padding-top:10px; width:100%; border-top:1px solid rgba(255,255,255,0.05);">
+               <div style="display:inline-block; font-size:9px; font-weight:800; color:#fff; padding:4px 10px; background:rgba(255,255,255,0.05); border-radius:100px; border:1px solid rgba(255,255,255,0.1);">📅 ${e.date}</div>
+            </div>
+          </div>`;
       }).join('');
       
-      container.innerHTML = cards;
-      container.className = 'ev-listing-grid';
+      container.innerHTML = `
+        <div id="allev-items-grid" class="ev-listing-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(110px, 1fr)); gap:10px; perspective:1500px; margin-top:5px; width:100%; padding:0 5px;">
+          ${cards}
+        </div>
+      `;
     }
 
     init();
