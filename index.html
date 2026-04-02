@@ -6819,8 +6819,8 @@
       const suits = ['♠', '♥', '♦', '♣'];
       const suit = suits[Math.floor(Math.random() * suits.length)];
       
-      // Highlight global timeline conflicts natively
-      const hasConflict = EVS.some(ev => ev.time !== 'TBA' && e.time !== 'TBA' && ev.time === e.time && ev.id !== e.id);
+      // Highlight global timeline conflicts natively according to manual event configuration
+      const hasConflict = !!e.isSimultaneous;
       
       let teamText = '';
       if (e.type === 'Solo') {
