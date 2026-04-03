@@ -6308,9 +6308,7 @@
     /* Slot click → expand form overlay */
     .pkt-slot-form-overlay {
       position: fixed; inset: 0;
-      background: rgba(5,0,20,0.88);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: rgba(5,0,20,0.97); /* Solid background to replace laggy blur */
       z-index: 20000;
       display: flex; align-items: flex-end; justify-content: center;
       animation: pkt-overlay-in 0.25s ease;
@@ -6352,7 +6350,7 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(180,80,255,0.35);
       border-radius: 8px; color: #fff;
-      font-family: 'Barlow', sans-serif; font-size: 13px;
+      font-family: 'Barlow', sans-serif; font-size: 16px; /* 16px minimum prevents iOS Safari from forcibly zooming in */
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
@@ -6685,9 +6683,7 @@
     .rlt-slip {
       position: relative; z-index: 5;
       width: calc(100% - 28px); max-width: 420px;
-      background: rgba(15,3,8,0.82);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(15,3,8,0.96); /* Solid background avoids GPU black box bug */
       border: 1px solid rgba(212,175,55,0.45);
       border-radius: 16px;
       padding: 18px 16px 16px;
@@ -6754,7 +6750,7 @@
       border-radius: 8px !important;
       color: #fff !important;
       font-family: 'Barlow', sans-serif !important;
-      font-size: 13px !important;
+      font-size: 16px !important; /* Prevents auto-zoom glitching */
       outline: none !important;
       transition: border-color 0.2s, box-shadow 0.2s !important;
       -webkit-appearance: none !important;
