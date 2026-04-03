@@ -10304,10 +10304,29 @@
     }
 
     function renderAdminRegs(regs) {
-      document.getElementById('admin-regs-list').innerHTML = regs.length ? regs.slice().reverse().map(r => {
+      const listEl = document.getElementById('admin-regs-list');
+      if (!listEl) return;
+
+      if (!regs || regs.length === 0) {
+        listEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--muted2)">No registrations yet.</div>';
+        return;
+      }
+
+      listEl.innerHTML = regs.slice().reverse().map(r => {
+        // Safe mapping
+        const rName = r.name || 'Unknown';
+        const rRegNo = r.regno || 'N/A';
+        const rId = r.regId || 'N/A';
+        const rEvName = r.eventName || 'Unnamed Event';
+        const rYear = r.year || '';
+        const rSection = r.section || '';
+        const rPhone = r.phone || '';
+        const rEmail = r.email || '';
+        const rGender = r.gender || '';
+        const rTimeSlot = r.timeSlot || '';
+
         // Advanced Date formatting
         let dateStr = 'Unknown Date';
-        const isJsonArrayString = (str) => typeof str === 'string' && str.trim().startsWith('[') && str.trim().endsWith(']');
         const isBracketOrEmpty = (str) => {
           if (!str) return true;
           const s = String(str).trim();
@@ -10316,52 +10335,29 @@
 
         if (r.ts && !isBracketOrEmpty(r.ts)) {
           let d = new Date(r.ts);
-          // Fallback parser for en-IN format (DD/MM/YYYY, h:mm:ss a) generated securely by the frontend
           if (isNaN(d.getTime()) && typeof r.ts === 'string') {
             const parts = r.ts.split(', ');
             if (parts.length === 2) {
-              // Fix: Handle both '-' and '/' to prevent browser from defaulting to US MM-DD-YY
-              // Strict fix: Use native browser parsing for MM-DD-YY to match your sheet's native output
               const cleanDate = parts[0].replace(/-/g, '/'); 
               d = new Date(`${cleanDate} ${parts[1] || ''}`);
-              
-              // Fallback for non-standard formats
-              if (isNaN(d.getTime())) {
-                const dp = parts[0].split(/[\/\-]/);
-                if (dp.length === 3) {
-                  const yy = dp[2].length === 2 ? '20' + dp[2] : dp[2];
-                  d = new Date(`${dp[0]}/${dp[1]}/${yy} ${parts[1] || ''}`);
-                }
-              }
             }
           }
-
           if (!isNaN(d.getTime())) {
-            const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
-            const dateOptions = { month: 'short', day: 'numeric' };
-
-            let tStr = d.toLocaleTimeString('en-US', timeOptions);
-            let dStr = d.toLocaleDateString('en-US', dateOptions);
-
-            dateStr = dStr + ' · ' + tStr;
+            dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' · ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
           } else {
-            // Display the raw string as fallback if it's not totally weird JSON
             dateStr = typeof r.ts === 'string' && r.ts.length < 30 ? r.ts : 'Unknown Date';
           }
         }
 
-        // Use centralized helper for parsing team members with fallbacks
-        let parsedMembers = getParsedMembers(r);
-
+        const parsedMembers = getParsedMembers(r);
         const isTeam = (r.teamName && r.teamName.trim() !== '' && r.teamName.trim() !== 'Solo') || (parsedMembers.length > 0);
-
-        // Fix: Sometimes old code stored the raw JSON array inside the `teamName` field.
+        
         let teamNameDisplay = 'Solo';
         if (isTeam) {
-          if (r.teamName && !isJsonArrayString(r.teamName)) {
+          if (r.teamName && !r.teamName.trim().startsWith('[')) {
             teamNameDisplay = r.teamName;
           } else {
-            teamNameDisplay = r.eventName + ' Team';
+            teamNameDisplay = rEvName + ' Team';
           }
         }
 
@@ -10370,14 +10366,14 @@
         let expandedHtml = `
       <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--orange);text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
         <span>Full Details</span>
-        <button onclick="deleteSingleReg('${r.regId}'); event.stopPropagation();" style="background:rgba(231,76,60,.1);color:#e74c3c;border:1px solid rgba(231,76,60,.2);padding:4px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Delete Profile</button>
+        <button onclick="deleteSingleReg('${rId}'); event.stopPropagation();" style="background:rgba(231,76,60,.1);color:#e74c3c;border:1px solid rgba(231,76,60,.2);padding:4px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Delete Profile</button>
       </div>
       <div>
-        <div class="arc-member"><strong>Event:</strong> ${r.eventName} ${r.timeSlot ? `[Slot ${r.timeSlot}]` : ''}</div>
-        ${dateStr !== 'Unknown Date' ? `<div class="arc-member"><strong>Date of Registration:</strong> ${dateStr}</div>` : ''}
-        <div class="arc-member" style="margin-top:4px"><strong>Email:</strong> ${r.email || 'N/A'}</div>
-        <div class="arc-member"><strong>Phone:</strong> ${r.phone || 'N/A'}</div>
-        <div class="arc-member"><strong>Gender:</strong> ${r.gender || 'N/A'}</div>
+        <div class="arc-member"><strong>Event:</strong> ${rEvName} ${rTimeSlot ? `[Slot ${rTimeSlot}]` : ''}</div>
+        ${dateStr !== 'Unknown Date' ? `<div class="arc-member"><strong>Date of Reg:</strong> ${dateStr}</div>` : ''}
+        <div class="arc-member" style="margin-top:4px"><strong>Email:</strong> ${rEmail || 'N/A'}</div>
+        <div class="arc-member"><strong>Phone:</strong> ${rPhone || 'N/A'}</div>
+        <div class="arc-member"><strong>Gender:</strong> ${rGender || 'N/A'}</div>
       </div>
     `;
 
@@ -10387,12 +10383,10 @@
             let det = [];
             if (m.regno) det.push(m.regno);
             if (m.gender) det.push(m.gender);
-            if (m.year) det.push('Year ' + m.year);
-            if (m.section) det.push('Sec ' + m.section);
-            if (m.phone) det.push(m.phone);
+            if (m.year) det.push('Y' + m.year);
             return `<div class="arc-member" style="margin-bottom:6px;padding-left:8px;border-left:2px solid var(--border2)">
-          <div style="font-weight:700;color:#fff;margin-bottom:2px">Member ${i + 2}: ${m.name || 'N/A'}</div>
-          <div style="color:var(--muted2);font-size:12px">${det.join(' · ')}</div>
+          <div style="font-weight:700;color:#fff;margin-bottom:2px">M${i + 2}: ${m.name || 'N/A'}</div>
+          <div style="color:var(--muted2);font-size:11px">${det.join(' · ')}</div>
         </div>`;
           }).join('');
         }
@@ -10400,18 +10394,18 @@
         return `
     <div class="admin-reg-card" onclick="this.querySelector('.arc-expanded').classList.toggle('show')">
       <div class="arc-top">
-        <div class="arc-name">${r.name || 'Unknown'} <span style="font-size:11px;color:var(--muted2);font-weight:400">· ${r.regno || 'N/A'}</span></div>
-        <div class="arc-id">${r.regId || 'N/A'}</div>
+        <div class="arc-name">${rName} <span style="font-size:11px;color:var(--muted2);font-weight:400">· ${rRegNo}</span></div>
+        <div class="arc-id">${rId}</div>
       </div>
       <div class="arc-meta">
-        ${r.year ? 'Year ' + r.year : ''} ${r.section ? '· Sec ' + r.section : ''} · ${r.phone || ''}<br>
+        ${rYear ? 'Year ' + rYear : ''} ${rSection ? '· Sec ' + rSection : ''} · ${rPhone}<br>
         ${isTeam ? `Team: ${teamNameDisplay} · ${numMembers} members` : 'Solo Registration'}
         ${dateStr !== 'Unknown Date' ? `· <span style="color:rgba(255,255,255,.4);font-size:10px">${dateStr}</span>` : ''}
       </div>
-      <div class="arc-events"><span class="arc-ev-pill">${r.eventName || 'Event'}</span></div>
+      <div class="arc-events"><span class="arc-ev-pill">${rEvName}</span></div>
       <div class="arc-expanded">${expandedHtml}</div>
     </div>`;
-      }).join('') : '<div style="text-align:center;padding:30px;color:var(--muted2)">No registrations yet.</div>';
+      }).join('');
     }
 
     function filterAdminRegs() {
@@ -10637,19 +10631,24 @@ function doPost(e) {
 
     /* ── Refresh admin stats/breakdown/list without re-fetching ── */
     function refreshAdminUI(regs) {
+      if (!regs) regs = [];
       const totalRegs = regs.length;
-      const totalMembers = regs.reduce((a, r) => a + 1 + getParsedMembers(r).length, 0);
+      const totalMembers = regs.reduce((a, r) => a + 1 + (getParsedMembers(r) || []).length, 0);
       const totalTeams = regs.filter(r => {
-        const ev = EVS.find(e => e.id === r.eventId || (r.eventName && e.name.toLowerCase() === r.eventName.trim().toLowerCase()));
-        // Matured Logic: Filter out "Solo" labeled registrations from team count
-        return ev ? ev.type !== 'Solo' : (r.teamName && r.teamName.trim() !== '' && r.teamName.trim() !== 'Solo' && !r.teamName.startsWith('['));
+        const evNameRaw = (r.eventName || "").trim().toLowerCase();
+        const ev = EVS.find(e => e.id === r.eventId || (evNameRaw !== "" && e.name.toLowerCase() === evNameRaw));
+        const isActuallySolo = (r.teamName || "").trim() === "Solo" || (r.teamName || "").startsWith("[");
+        return ev ? ev.type !== 'Solo' : (!isActuallySolo && (r.teamName || "").trim() !== "");
       }).length;
 
-      document.getElementById('admin-stats').innerHTML = `
-    <div class="admin-stat"><span class="as-n">${totalRegs}</span><span class="as-l">Registrations</span></div>
-    <div class="admin-stat"><span class="as-n">${totalMembers}</span><span class="as-l">Total Members</span></div>
-    <div class="admin-stat"><span class="as-n">${totalTeams}</span><span class="as-l">Teams</span></div>
-    <div class="admin-stat"><span class="as-n">${EVS.length}</span><span class="as-l">Events</span></div>`;
+      const statsEl = document.getElementById('admin-stats');
+      if (statsEl) {
+        statsEl.innerHTML = `
+      <div class="admin-stat"><span class="as-n">${totalRegs}</span><span class="as-l">Registrations</span></div>
+      <div class="admin-stat"><span class="as-n">${totalMembers}</span><span class="as-l">Total Members</span></div>
+      <div class="admin-stat"><span class="as-n">${totalTeams}</span><span class="as-l">Teams</span></div>
+      <div class="admin-stat"><span class="as-n">${EVS.length}</span><span class="as-l">Events</span></div>`;
+      }
 
       // Department summary (Year only)
       const yearCounts = {};
@@ -10674,7 +10673,7 @@ function doPost(e) {
       function adminEvRow(e, regsArr) {
         const evRegs = regsArr.filter(r =>
           r.eventId === e.id ||
-          (r.eventName && r.eventName.trim().toLowerCase() === e.name.toLowerCase())
+          ((r.eventName || "") + "").trim().toLowerCase() === e.name.toLowerCase()
         );
         const evMembers = evRegs.reduce((a, r) => a + 1 + getParsedMembers(r).length, 0);
         return `<div class="admin-ev-row">

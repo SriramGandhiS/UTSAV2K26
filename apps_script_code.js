@@ -12,7 +12,7 @@
 
 // The exact column structure you need, with Gender at the very end. 
 // The script will automatically fix your Sheet's header row to match this!
-var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "Email", "Event", "TeamName", "TeamMembers", "Timestamp", "Gender"];
+var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "Email", "Event", "TeamName", "TeamMembers", "Timestamp", "Gender", "TimeSlot"];
 var SCAN_HEADERS = ["RegID", "Name", "RegNo", "Event", "TeamName", "Timestamp", "ScannerID"];
 
 function enforceHeaders(sh) {
@@ -86,7 +86,8 @@ function doGet(e) {
         eventName: String(row[headers.indexOf("Event")] || ""),
         teamName: String(row[headers.indexOf("TeamName")] || ""),
         teamMembers: teamMembers,
-        ts: String(row[headers.indexOf("Timestamp")] || "")
+        ts: String(row[headers.indexOf("Timestamp")] || ""),
+        timeSlot: String(row[headers.indexOf("TimeSlot")] || "")
       });
     }
     return ContentService.createTextOutput(JSON.stringify({ registrations: results })).setMimeType(ContentService.MimeType.JSON);
@@ -135,7 +136,8 @@ function doGet(e) {
           eventName: rowEventName,
           teamName: String(row[headers.indexOf("TeamName")] || ""),
           teamMembers: teamMembers,
-          ts: String(row[headers.indexOf("Timestamp")] || "")
+          ts: String(row[headers.indexOf("Timestamp")] || ""),
+          timeSlot: String(row[headers.indexOf("TimeSlot")] || "")
         });
       }
 
@@ -602,8 +604,7 @@ function doPost(e) {
         var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
 
         var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-
-        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || ""];
+        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || "", r.timeSlot || ""];
         sh.appendRow(rowToAppend);
         SpreadsheetApp.flush(); // Forces the sheet to save and sync instantly, preventing the "blank screen" effect
 
@@ -615,9 +616,9 @@ function doPost(e) {
         }
         var regIdToDelete = d.data.regId;
         var data = sh.getDataRange().getValues();
-        var deleted = false;
+        var regCol = headers.indexOf("RegID");
         for (var i = data.length - 1; i >= 1; i--) {
-          if (String(data[i][0]) === String(regIdToDelete)) {
+          if (String(data[i][regCol === -1 ? 0 : regCol]) === String(regIdToDelete)) {
             sh.deleteRow(i + 1);
             deleted = true;
             break;
