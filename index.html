@@ -599,12 +599,19 @@
       z-index: 1;
     }
 
+    @keyframes hero-coin-fall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.12; }
+      90% { opacity: 0.12; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
     .falling-item {
       position: absolute;
       pointer-events: none;
       z-index: 0;
       will-change: transform, opacity;
-      opacity: 0.8;
+      opacity: 0.1; /* Reduced to 10% visibility */
     }
 
     .reg-item-coin {
@@ -6920,11 +6927,11 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <div class="poker-coin" style="left:10%; animation: coin-fall 8s infinite linear;"></div>
-    <div class="poker-coin" style="left:30%; animation: coin-fall 10s infinite linear -2s;"></div>
-    <div class="poker-coin" style="left:55%; animation: coin-fall 7s infinite linear -5s;"></div>
-    <div class="poker-coin" style="left:75%; animation: coin-fall 9s infinite linear -1s;"></div>
-    <div class="poker-coin" style="left:90%; animation: coin-fall 11s infinite linear -4s;"></div>
+    <div class="poker-coin" style="left:10%; animation: hero-coin-fall 8s infinite linear;"></div>
+    <div class="poker-coin" style="left:30%; animation: hero-coin-fall 10s infinite linear -2s;"></div>
+    <div class="poker-coin" style="left:55%; animation: hero-coin-fall 7s infinite linear -5s;"></div>
+    <div class="poker-coin" style="left:75%; animation: hero-coin-fall 9s infinite linear -1s;"></div>
+    <div class="poker-coin" style="left:90%; animation: hero-coin-fall 11s infinite linear -4s;"></div>
     <!-- Watermark ghost names -->
     <div class="hero-left">
       <h1 class="hero-h">
@@ -8527,7 +8534,10 @@
     
     function initOverlayParticles(canvasId, overlayId) {
       if (overlayId === 'reg-ov') {
-        initFallingRegItems(overlayId);
+        const overlay = document.getElementById(overlayId);
+        if (overlay && !overlay.querySelector('.falling-items-container')) {
+           initFallingRegItems(overlayId);
+        }
         return;
       }
 
@@ -8596,21 +8606,32 @@
       container.className = 'falling-items-container';
       overlay.insertBefore(container, overlay.firstChild);
 
-      const ITEM_COUNT = window.innerWidth < 460 ? 15 : 35;
+      const ITEM_COUNT = 10;
 
       for (let i = 0; i < ITEM_COUNT; i++) {
         const item = document.createElement('div');
         item.className = 'falling-item reg-item-coin';
         
-        const xPos = Math.random() * 95;
-        const yPos = Math.random() * 95;
+        let xPos, yPos;
+        // Logic to avoid the center area where the card sits
+        if (i < 4) { // 4 coins in the far corners
+          xPos = i % 2 === 0 ? Math.random() * 15 : 85 + Math.random() * 10;
+          yPos = i < 2 ? Math.random() * 15 : 85 + Math.random() * 10;
+        } else if (i < 8) { // 4 coins on the very far left/right edges
+          xPos = i % 2 === 0 ? Math.random() * 8 : 92 + Math.random() * 8;
+          yPos = 20 + Math.random() * 60;
+        } else { // 2 coins at the very top/bottom edges
+          xPos = 20 + Math.random() * 60;
+          yPos = i === 8 ? Math.random() * 8 : 92 + Math.random() * 8;
+        }
+        
         const rot = Math.random() * 360;
-        const scale = 0.8 + Math.random() * 0.4;
+        const scale = 0.9 + Math.random() * 0.3;
 
         item.style.left = `${xPos}%`;
         item.style.top = `${yPos}%`;
         item.style.transform = `rotate(${rot}deg) scale(${scale})`;
-        item.style.zIndex = Math.floor(Math.random() * 10); // Random stacking order
+        item.style.zIndex = Math.floor(Math.random() * 10);
 
         container.appendChild(item);
       }
