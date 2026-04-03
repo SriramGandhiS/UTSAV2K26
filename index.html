@@ -9970,12 +9970,6 @@ function renderComm() {
 
     /* ── CONFIRMATION ── */
     function viewPass() { document.getElementById('conf-screen').classList.remove('open'); openPass(); }
-    function closeConf() { 
-      document.getElementById('conf-screen').classList.remove('open'); 
-      dockNav('home'); 
-      window.scrollTo({top: 0, behavior: 'smooth'});
-      showDock(); 
-    }
 
     /* ── HELPERS ── */
     function getParsedMembers(r) {
