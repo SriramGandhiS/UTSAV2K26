@@ -9160,6 +9160,27 @@ function renderComm() {
       }
     }
 
+    function closeConf() { 
+      // 1. Close confirmation overlay
+      const conf = document.getElementById('conf-screen');
+      if (conf) conf.classList.remove('open'); 
+      
+      // 2. Clear registration state if any
+      forceCloseReg();
+      
+      // 3. Navigate home
+      if (typeof dockNav === 'function') {
+        dockNav('home'); 
+      }
+      
+      // 4. Smooth scroll to top as a fallback/reinforcement
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      
+      // 5. Ensure UI elements are visible
+      showDock(); 
+    }
+
+
 
     function setupTeamStep() {
       if (!currentEv) return;
