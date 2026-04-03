@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CSEUTSAV'26</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        html,body{width:100%;height:100vh;overflow:hidden;background:#060402}
+
+        #stage{
+            position:fixed;inset:0;
+            background:radial-gradient(ellipse 90% 70% at 50% 30%,#1a0e00 0%,#070402 60%,#000 100%);
+            display:flex;align-items:center;justify-content:center;
+            perspective:1200px;perspective-origin:50% 45%;
+        }
+
+        /* Bokeh */
+        .bokeh{position:absolute;border-radius:50%;filter:blur(50px);pointer-events:none;opacity:0}
+
+        /* Scene */
+        #scene{position:absolute;inset:0;transform-style:preserve-3d;display:flex;align-items:center;justify-content:center}
+
+        /* ── Card wrapper ── */
+        .pc{position:absolute;transform-style:preserve-3d;will-change:transform,opacity,filter}
+        .pc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d}
+
+        /* Card front — shows real image */
+        .pc-f{
+            position:absolute;inset:0;border-radius:8px;
+            background:#fff;border:1.5px solid #ccc;
+            box-shadow:0 12px 40px rgba(0,0,0,.95),0 2px 6px rgba(0,0,0,.6);
+            backface-visibility:hidden;overflow:hidden;
+        }
+        .pc-f img{width:100%;height:100%;object-fit:cover;display:block;border-radius:7px}
+
+        /* Card back */
+        .pc-bk{
+            position:absolute;inset:0;border-radius:8px;
+            background:linear-gradient(145deg,#730000,#180000);
+            border:2px solid rgba(255,215,0,.3);
+            box-shadow:0 12px 40px rgba(0,0,0,.95);
+            backface-visibility:hidden;transform:rotateY(180deg);overflow:hidden;
+        }
+        .pc-bk::before{
+            content:'';position:absolute;inset:6px;
+            border:1.5px solid rgba(255,215,0,.18);border-radius:4px;
+            background:repeating-linear-gradient(45deg,transparent,transparent 5px,rgba(0,0,0,.12) 5px,rgba(0,0,0,.12) 10px);
+        }
+        .pc-bk::after{
+            content:'♦';position:absolute;inset:0;
+            display:flex;align-items:center;justify-content:center;
+            font-size:clamp(26px,9vw,42px);color:rgba(255,215,0,.1);
+        }
+
+        /* Chip */
+        .chip{position:absolute;border-radius:50%;will-change:transform,opacity;box-shadow:0 5px 20px rgba(0,0,0,.9),inset 0 2px 4px rgba(255,255,255,.15)}
+
+        /* ── Loading overlay ── */
+        #loader{
+            position:fixed;inset:0;
+            display:flex;align-items:center;justify-content:center;
+            z-index:500;background:transparent;
+        }
+        .loader-dot{
+            width:8px;height:8px;border-radius:50%;background:#c9a020;
+            margin:0 4px;opacity:.3;
+            animation:ldot 1.2s ease-in-out infinite;
+        }
+        .loader-dot:nth-child(2){animation-delay:.2s}
+        .loader-dot:nth-child(3){animation-delay:.4s}
+        @keyframes ldot{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1.2)}}
+
+        /* ── Brand reveal card ── */
+        #brand-wrap{
+            position:absolute;inset:0;
+            display:flex;flex-direction:column;
+            align-items:center;justify-content:center;
+            opacity:0;z-index:200;pointer-events:none;padding:0 20px;
+        }
+        #brand-card{
+            position:relative;
+            width:min(70vw,285px);height:calc(min(70vw,285px)*1.42);
+            border-radius:14px;
+            background:linear-gradient(165deg,#0f0a00,#1c1400 45%,#0f0a00);
+            border:2.5px solid #c9a020;
+            box-shadow:0 0 0 1px rgba(201,160,32,.1),0 40px 100px rgba(0,0,0,1),0 0 80px rgba(255,200,0,.28),inset 0 0 60px rgba(255,175,0,.04);
+            display:flex;flex-direction:column;
+            align-items:center;justify-content:center;
+            overflow:hidden;padding:18px 14px 28px;
+        }
+        #brand-card::before{content:'';position:absolute;inset:9px;border:1px solid rgba(201,160,32,.25);border-radius:8px;pointer-events:none}
+        #brand-card::after{content:'♠  ♥  ♦  ♣';position:absolute;bottom:12px;font-size:clamp(7px,2vw,9px);letter-spacing:4px;color:rgba(201,160,32,.32);pointer-events:none}
+
+        .bc-c{position:absolute;font-family:Georgia,serif;font-weight:700;font-size:clamp(10px,2.8vw,14px);color:#c9a020;opacity:.6;line-height:1.15}
+        .bc-c.tl{top:12px;left:12px}
+        .bc-c.br{bottom:26px;right:12px;transform:rotate(180deg)}
+
+        .b-lbl{font-family:'Syncopate',sans-serif;font-size:clamp(6px,1.6vw,8px);letter-spacing:5px;color:rgba(201,160,32,.45);text-transform:uppercase;margin-bottom:10px;text-align:center}
+        .b-suits{display:flex;gap:7px;font-size:clamp(12px,3.8vw,17px);color:#c9a020;opacity:.35;margin-bottom:12px}
+        .b-cse{
+            font-family:'Syncopate',sans-serif;font-weight:700;
+            font-size:clamp(26px,8.5vw,50px);line-height:.92;text-align:center;letter-spacing:3px;
+            background:linear-gradient(180deg,#fff8e1 0%,#ffd700 42%,#c9a020 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+        }
+        .b-year{
+            font-family:'Cinzel Decorative',cursive;font-weight:900;
+            font-size:clamp(28px,10vw,56px);letter-spacing:3px;margin-top:2px;
+            background:linear-gradient(180deg,#ffd700 0%,#c9a020 55%,#7a5c00 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+        }
+        .b-tag{font-family:'Syncopate',sans-serif;font-size:clamp(5.5px,1.5vw,7.5px);letter-spacing:3px;color:rgba(201,160,32,.38);text-transform:uppercase;margin-top:10px;text-align:center}
+
+        @keyframes sw{0%{transform:skewX(-12deg) translateX(-200%)}100%{transform:skewX(-12deg) translateX(400%)}}
+        .sh{position:absolute;inset:0;overflow:hidden;border-radius:14px;pointer-events:none}
+        .sh::after{content:'';position:absolute;top:0;bottom:0;width:30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);animation:sw 2.4s ease-in-out infinite}
+
+        #enter-txt{font-family:'Syncopate',sans-serif;font-size:clamp(7px,1.9vw,11px);letter-spacing:3px;color:rgba(201,160,32,.45);text-transform:uppercase;margin-top:16px;opacity:0;text-align:center;padding:0 10px}
+
+        .gp{position:absolute;width:3px;height:3px;background:#ffd700;border-radius:50%;pointer-events:none;opacity:0}
+    </style>
+</head>
+<body>
+<div id="stage">
+    <div class="bokeh" id="bk1" style="width:clamp(140px,42vw,360px);height:clamp(140px,42vw,360px);background:rgba(255,185,35,.2);top:-8%;left:28%"></div>
+    <div class="bokeh" id="bk2" style="width:clamp(90px,28vw,200px);height:clamp(90px,28vw,200px);background:rgba(155,0,0,.13);bottom:8%;right:4%"></div>
+    <div class="bokeh" id="bk3" style="width:clamp(70px,18vw,140px);height:clamp(70px,18vw,140px);background:rgba(90,0,170,.1);top:55%;left:2%"></div>
+
+    <!-- Loader shown while images preload -->
+    <div id="loader">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+    </div>
+
+    <div id="scene"></div>
+
+    <div id="brand-wrap">
+        <div id="brand-card">
+            <div class="sh"></div>
+            <div class="bc-c tl">A<br>♠</div>
+            <div class="bc-c br">A<br>♠</div>
+            <p class="b-lbl">Technical Symposium</p>
+            <div class="b-suits">♠ ♥ ♦ ♣</div>
+            <div class="b-cse">CSE<br>UTSAV</div>
+            <div class="b-year">'26</div>
+            <p class="b-tag">A Technical Extravaganza</p>
+        </div>
+        <div id="enter-txt">EXPLORE &middot; INNOVATE &middot; COMPETE</div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+(function(){
+'use strict';
+
+const W = window.innerWidth, H = window.innerHeight;
+const M = W < 600;
+
+const CW = M ? Math.min(W*.23, 90) : Math.min(W*.12, 130);
+const CH = CW * 1.42;
+
+// Real card codes — K Q J A only (face cards look premium)
+const CODES = [
+    'KH','QD','JC','AS',
+    'KS','QH','JD','AH',
+    'KD','QC','JS','AD',
+    'KC','QS','JH','AC'
+];
+
+const CHIP_COLS = [
+    {bg:'#c00',sh:'#700',bd:'3px dashed #fff'},
+    {bg:'#ffd700',sh:'#8b6200',bd:'3px dashed #000'},
+    {bg:'#1565c0',sh:'#0a2d6e',bd:'3px dashed #fff'},
+    {bg:'#2e7d32',sh:'#0f3d15',bd:'3px dashed #fff'},
+];
+const NUM_CARDS = M ? 13 : CODES.length;
+const NUM_CHIPS = M ? 4 : 7;
+
+const BASE = 'https://deckofcardsapi.com/static/img/';
+const scene     = document.getElementById('scene');
+const stage     = document.getElementById('stage');
+const brandCard = document.getElementById('brand-card');
+const brandWrap = document.getElementById('brand-wrap');
+const loader    = document.getElementById('loader');
+
+/* ── Preload all card images ──────────────── */
+function preload(codes, done) {
+    let count = 0;
+    const total = codes.length;
+    // Hard timeout — start animation after 3.5s no matter what
+    const fallback = setTimeout(done, 3500);
+
+    codes.forEach(code => {
+        const img = new Image();
+        img.onload = img.onerror = () => {
+            count++;
+            if(count >= total) { clearTimeout(fallback); done(); }
+        };
+        img.src = BASE + code + '.png';
+    });
+}
+
+/* ── Build card element ───────────────────── */
+function makeCard(code) {
+    const el = document.createElement('div');
+    el.className = 'pc';
+    el.style.width  = CW + 'px';
+    el.style.height = CH + 'px';
+    el.innerHTML = `
+        <div class="pc-inner">
+            <div class="pc-f"><img src="${BASE+code}.png" alt="${code}" draggable="false"></div>
+            <div class="pc-bk"></div>
+        </div>`;
+    return el;
+}
+
+function makeChip(i) {
+    const col = CHIP_COLS[i % CHIP_COLS.length];
+    const sz  = M ? (30+Math.random()*18) : (44+Math.random()*26);
+    const el  = document.createElement('div');
+    el.className = 'chip';
+    el.style.cssText = `width:${sz}px;height:${sz}px;background:linear-gradient(135deg,${col.bg},${col.sh});border:${col.bd}`;
+    return el;
+}
+
+/* ── Gold burst ───────────────────────────── */
+function burst(){
+    for(let i=0;i<40;i++){
+        const p=document.createElement('div');
+        p.className='gp'; p.style.left='50%'; p.style.top='50%';
+        stage.appendChild(p);
+        const a=Math.random()*Math.PI*2, d=60+Math.random()*180;
+        gsap.fromTo(p,{x:0,y:0,opacity:1,scale:1+Math.random()*2},
+            {x:Math.cos(a)*d,y:Math.sin(a)*d,opacity:0,scale:0,
+             duration:.6+Math.random()*.6,delay:Math.random()*.3,
+             ease:'power2.out',onComplete(){p.remove()}});
+    }
+}
+
+/* ── Spawn + Animate ─────────────────────── */
+const allEls = [];
+
+function spawn() {
+    for(let i=0;i<NUM_CARDS;i++){
+        const el = makeCard(CODES[i % CODES.length]);
+        scene.appendChild(el);
+
+        const showBack = Math.random() > 0.5;
+        const baseRY   = showBack ? 180 : 0;
+
+        gsap.set(el,{
+            x:(Math.random()-.5)*W*(M?1.3:1.7),
+            y:-(H*.55 + Math.random()*H*.7),
+            z:(Math.random()-.5)*(M?350:600),
+            rotationX:Math.random()*360,
+            rotationY:baseRY+(Math.random()-.5)*120,
+            rotationZ:(Math.random()-.5)*180,
+            opacity:0, filter:'blur(4px)'
+        });
+
+        gsap.to(el,{
+            x:(Math.random()-.5)*W*(M?.95:1.1),
+            y:(Math.random()-.5)*H*(M?.65:.75),
+            z:(Math.random()-.5)*(M?300:500),
+            rotationX:(Math.random()-.5)*25,
+            rotationY:baseRY+(Math.random()-.5)*25,
+            rotationZ:(Math.random()-.5)*45,
+            opacity:1, filter:'blur(0px)',
+            duration:1.8+Math.random()*1.2,
+            delay:i*.07+Math.random()*.15,
+            ease:'power3.out',
+            onComplete(){
+                gsap.to(el,{
+                    y:`+=${5+Math.random()*7}`,
+                    rotationZ:`+=${3+Math.random()*4}`,
+                    duration:3+Math.random()*2,repeat:-1,yoyo:true,ease:'sine.inOut'
+                });
+            }
+        });
+        allEls.push(el);
+    }
+
+    for(let i=0;i<NUM_CHIPS;i++){
+        const el = makeChip(i);
+        scene.appendChild(el);
+        gsap.set(el,{
+            x:(Math.random()-.5)*W*1.2,
+            y:-(H*.4+Math.random()*H*.5),
+            z:(Math.random()-.5)*350,
+            rotationX:Math.random()*360,rotationZ:Math.random()*360,opacity:0
+        });
+        gsap.to(el,{
+            x:(Math.random()-.5)*W*.85,y:(Math.random()-.5)*H*.55,
+            z:(Math.random()-.5)*280,
+            rotationX:(Math.random()-.5)*30,rotationZ:(Math.random()-.5)*40,
+            opacity:.88,
+            duration:1.6+Math.random(),delay:i*.1+Math.random()*.2,
+            ease:'power3.out',
+            onComplete(){
+                gsap.to(el,{y:`+=${4+Math.random()*6}`,rotationZ:`+=${3+Math.random()*5}`,
+                    duration:2.5+Math.random()*2,repeat:-1,yoyo:true,ease:'sine.inOut'});
+            }
+        });
+        allEls.push(el);
+    }
+}
+
+/* ── MAIN ─────────────────────────────────── */
+function startIntro(){
+    // Hide loader
+    gsap.to(loader,{opacity:0,duration:.4,onComplete(){ loader.remove() }});
+
+    // Bokeh
+    gsap.to('#bk1',{opacity:1,duration:1.8});
+    gsap.to('#bk2',{opacity:1,duration:1.8,delay:.3});
+    gsap.to('#bk3',{opacity:1,duration:1.8,delay:.5});
+
+    spawn();
+
+    /* COLLAPSE at 3.0s */
+    setTimeout(()=>{
+        allEls.forEach((el,i)=>{
+            gsap.killTweensOf(el);
+            gsap.to(el,{x:(Math.random()-.5)*40,y:(Math.random()-.5)*40,
+                z:-1600,scale:.04,opacity:0,filter:'blur(16px)',
+                rotationX:'+=360',rotationY:'+=540',
+                duration:.85,delay:i*.02,ease:'power3.in'});
+        });
+        gsap.to(['#bk1','#bk2','#bk3'],{opacity:.05,duration:.5});
+    },3000);
+
+    /* REVEAL at 4.0s */
+    setTimeout(()=>{
+        const fl=document.createElement('div');
+        Object.assign(fl.style,{position:'fixed',inset:0,background:'#fff8e0',zIndex:300,opacity:0,pointerEvents:'none'});
+        stage.appendChild(fl);
+        gsap.to(fl,{opacity:.85,duration:.1,yoyo:true,repeat:1,onComplete(){fl.remove()}});
+
+        gsap.set(brandWrap,{opacity:1});
+        gsap.fromTo(brandCard,
+            {y:150,rotateX:55,rotateY:-8,scale:.32,opacity:0},
+            {y:0,rotateX:0,rotateY:0,scale:1,opacity:1,duration:1.2,ease:'back.out(1.5)',delay:.15}
+        );
+        burst();
+
+        gsap.to(brandCard,{
+            boxShadow:'0 0 0 1px rgba(201,160,32,.1),0 40px 100px rgba(0,0,0,1),0 0 130px rgba(255,210,0,.52),inset 0 0 60px rgba(255,175,0,.04)',
+            duration:.7,delay:.9,yoyo:true,repeat:-1,ease:'sine.inOut'
+        });
+        gsap.to('#enter-txt',{opacity:1,duration:.8,delay:1.5,ease:'power2.out'});
+    },4000);
+
+    /* FADE OUT at 7.0s */
+    setTimeout(()=>{
+        const out=document.createElement('div');
+        Object.assign(out.style,{position:'fixed',inset:0,background:'#000',zIndex:999,opacity:0,pointerEvents:'none'});
+        document.body.appendChild(out);
+        gsap.to(out,{opacity:1,duration:1.3,ease:'power2.inOut',
+            onComplete(){window.location.href='index.html'}});
+    },7000);
+}
+
+/* ── Kick off with preload ───────────────── */
+window.addEventListener('load',()=>{
+    preload(CODES, startIntro);
+});
+
+})();
+</script>
+</body>
+</html>
