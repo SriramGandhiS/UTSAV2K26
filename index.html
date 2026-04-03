@@ -4,7 +4,7 @@
 <head>
   <script>
     if (!sessionStorage.getItem('introShown')) {
-      window.location.href = 'intro.html';
+      window.location.replace('intro.html');
     }
   </script>
   <meta charset="UTF-8">
@@ -134,169 +134,7 @@
 
     /* ─── CASINO INTRO & BACKGROUND ─── */
     /* ─── HI-END 3D POKER REVEAL ─── */
-    #casino-intro {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 10002;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      perspective: 2000px;
-    }
-
-    .intro-scene {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform-style: preserve-3d;
-    }
-
-    .poker-felt {
-      position: absolute;
-      inset: -100px;
-      background: radial-gradient(circle at 50% 40%, #1a4a2a 0%, #051a0d 40%, #000 100%);
-      filter: contrast(1.1) brightness(0.8);
-      transform: translateZ(-500px);
-    }
-
-    .card-fan {
-      position: relative;
-      width: 260px;
-      aspect-ratio: 2.5 / 3.5;
-      transform-style: preserve-3d;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* THE SOVEREIGN CARD (3D ORBIT) */
-    .sovereign-card {
-      position: absolute;
-      width: 280px;
-      aspect-ratio: 2.5 / 3.5;
-      transform-style: preserve-3d;
-      opacity: 0;
-      animation: orbital-flight 2.2s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-    }
-
-    @keyframes orbital-flight {
-      0% { transform: translate3d(-500px, -200px, -2000px) rotateX(720deg) rotateY(360deg) rotateZ(180deg); opacity: 0; }
-      30% { opacity: 1; }
-      100% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0); opacity: 1; }
-    }
-
-    .card-face {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      border-radius: 12px;
-      box-shadow: 0 10px 50px rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .card-front-sov {
-      background: linear-gradient(135deg, #000, #1a1a1a);
-      border: 3px solid var(--gold);
-    }
-    
-    .sov-brand {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 42px;
-      font-weight: 950;
-      color: #fff;
-      letter-spacing: 2px;
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    .sov-brand span { color: var(--gold); }
-
-    .brand-pop {
-      animation: brand-popup 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-
-    @keyframes brand-popup {
-      0% { opacity: 0; transform: scale(0.5); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    .card-back-sov {
-      background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
-      transform: rotateY(180deg);
-    }
-
-    /* PREMIUM DISSOLVE */
-    .sovereign-card.dissolving {
-      animation: sovereign-fade 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    @keyframes sovereign-fade {
-      0% { transform: translateZ(0) scale(1); opacity: 1; filter: blur(0px); }
-      100% { transform: translateZ(600px) scale(2.0); opacity: 0; filter: blur(20px); }
-    }
-
-    .shockwave-3d {
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      border: 4px solid var(--gold);
-      border-radius: 50%;
-      opacity: 0;
-      transform: translateZ(200px) scale(0.1);
-      pointer-events: none;
-      box-shadow: 0 0 50px var(--gold);
-    }
-
-    .shock-active {
-      animation: shock-ring 0.8s cubic-bezier(0.1, 0.8, 0.4, 1) forwards;
-    }
-
-    @keyframes shock-ring {
-      0% { opacity: 0; transform: translateZ(200px) scale(0.1); }
-      30% { opacity: 1; }
-      100% { opacity: 0; transform: translateZ(500px) scale(8.0); border-width: 0px; }
-    }
-
-    .intro-shatter {
-      position: fixed;
-      inset: 0;
-      z-index: 10004;
-      pointer-events: none;
-      background: #000;
-      opacity: 0;
-      display: none;
-    }
-
-    .shatter-active {
-      display: block;
-      animation: shatter-fade 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    @keyframes shatter-fade {
-      0% { opacity: 1; transform: scale(1); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-      100% { opacity: 0; transform: scale(1.1); clip-path: polygon(0 20%, 30% 0, 70% 0, 100% 20%, 100% 80%, 70% 100%, 30% 100%, 0 80%); }
-    }
-
-    .intro-flash {
-      position: fixed;
-      inset: 0;
-      background: #fff;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 10003;
-    }
-
-    .flash-active {
-      animation: cinematic-flash 1.2s ease-out forwards;
-    }
+    /* ─── HI-END 3D POKER REVEAL (REMOVED - MOVED TO INTRO.HTML) ─── */
 
     @keyframes cinematic-flash {
       0% { opacity: 0; }
@@ -7239,6 +7077,9 @@
     <div class="ev-sheet" onclick="event.stopPropagation()">
       <div class="sh"></div>
       <div class="esc" id="esc"></div>
+      <!-- Dedicated CLOSE X for Event Details -->
+      <button onclick="closeEvMod(event)" 
+        style="position:absolute; top:12px; right:12px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:50%; width:32px; height:32px; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; z-index:100; backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);">✕</button>
     </div>
   </div>
 
@@ -7400,10 +7241,15 @@
           <!-- ✦ CINEMATIC POKER ROOM ✦ -->
           <div class="pkt-room" id="pkt-room">
           
-            <!-- BACK BUTTON (Top Left consistently) -->
-            <button class="casino-close-btn" onclick="playMechanicalSnap(); doHapticSnap(); goStep(0)">
-              &larr; BACK
-            </button>
+            <!-- ACTIONS (Top Left consistently) -->
+            <div style="position:absolute; top:12px; left:12px; display:flex; gap:8px; z-index:100;">
+              <button class="casino-close-btn" style="position:static; padding:8px 12px; font-size:10px;" onclick="playMechanicalSnap(); doHapticSnap(); goStep(0)">
+                &larr; BACK
+              </button>
+              <button class="casino-close-btn" style="position:static; padding:8px 12px; font-size:10px; background:rgba(255,0,0,0.1); border-color:rgba(255,0,0,0.2);" onclick="playMechanicalSnap(); doHapticSnap(); forceCloseReg()">
+                ✕ CLOSE
+              </button>
+            </div>
 
             <!-- Ambient Particles (injected by JS) -->
             <div id="pkt-particles-container" aria-hidden="true"></div>
@@ -7564,8 +7410,12 @@
         Pass</button>
       <div id="conf-wa-container" style="width:100%;max-width:320px;margin-top:10px"></div>
       <button
-        style="width:100%;max-width:320px;margin-top:10px;padding:13px;background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-family:'Barlow',sans-serif;font-size:13px;font-weight:600"
-        onclick="closeConf()">Back to Events</button>
+        style="width:100%;max-width:320px;margin-top:10px;padding:14px;background:var(--gold);border:none;border-radius:8px;color:#000;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;box-shadow:0 6px 20px rgba(0,0,0,0.4)"
+        onclick="closeConf()">Back to Home Screen</button>
+      
+      <!-- Corner Close X for Confirmation -->
+      <button onclick="closeConf()" 
+        style="position:absolute; top:15px; right:15px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:50%; width:36px; height:36px; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px;">✕</button>
     </div>
   </div>
 
@@ -9295,6 +9145,22 @@ function renderComm() {
       openReg(null);
     }
 
+    function forceCloseReg() {
+      const regOv = document.getElementById('reg-ov');
+      if (regOv) regOv.classList.remove('open');
+      showDock();
+      // Ensure detail modal stays closed too
+      const evMod = document.getElementById('ev-modal');
+      if (evMod) evMod.classList.remove('open');
+    }
+
+    function closeRegOv(e) {
+      if (e.target.id === 'reg-ov') {
+        forceCloseReg();
+      }
+    }
+
+
     function setupTeamStep() {
       if (!currentEv) return;
       const e = currentEv;
@@ -10083,7 +9949,12 @@ function renderComm() {
 
     /* ── CONFIRMATION ── */
     function viewPass() { document.getElementById('conf-screen').classList.remove('open'); openPass(); }
-    function closeConf() { document.getElementById('conf-screen').classList.remove('open'); showDock(); }
+    function closeConf() { 
+      document.getElementById('conf-screen').classList.remove('open'); 
+      dockNav('home'); 
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      showDock(); 
+    }
 
     /* ── HELPERS ── */
     function getParsedMembers(r) {
@@ -11500,279 +11371,7 @@ function doPost(e) {
     init();
     startPortalTrigger();
 
-    /* ════════ CINEMATIC INTRO (BURNING TREE) ════════ */
-    (function initIntro() {
-      const screen = document.getElementById('intro-screen');
-      if (!screen) return;
-
-      if (sessionStorage.getItem('introShown')) {
-        screen.remove();
-        return;
-      }
-
-      const canvas = document.getElementById('intro-canvas');
-      const ctx = canvas.getContext('2d');
-      let W, H;
-      const particles = [];
-      const lightnings = [];
-      
-      let treeBranches = [];
-      const fireParticles = [];
-      let treeIsBurning = false;
-      let animId;
-
-      // Listen for background interaction to quietly unlock the vibration API
-      sessionStorage.removeItem('vibrationUnlocked'); // Reset on reload to require interaction again
-      const unlockInteraction = () => { sessionStorage.setItem('vibrationUnlocked', 'true'); };
-      window.addEventListener('touchstart', unlockInteraction, { passive: true, once: true });
-      window.addEventListener('click', unlockInteraction, { passive: true, once: true });
-
-      function resize() {
-        W = canvas.width = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      // Ambient Glowing Embers
-      for (let i = 0; i < 50; i++) {
-        particles.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          r: Math.random() * 2 + 0.5,
-          vx: (Math.random() - 0.5) * 1.5,
-          vy: -Math.random() * 2.0 - 0.5,
-          alpha: Math.random() * 0.5 + 0.2,
-          color: Math.random() > 0.5 ? '#ff4500' : '#ff8c00'
-        });
-      }
-
-      // --- Procedural Fractal Tree ---
-      function buildTreeBranch(startX, startY, len, angle, branchWidth, depth) {
-        if (depth === 0) return;
-        
-        const endX = startX + len * Math.sin(angle);
-        const endY = startY - len * Math.cos(angle);
-        
-        treeBranches.push({
-          x1: startX, y1: startY, x2: endX, y2: endY,
-          w: branchWidth,
-          alpha: 1
-        });
-        
-        // Split into 2 branches
-        const subLen = len * (0.65 + Math.random() * 0.15);
-        const subW = branchWidth * 0.7;
-        const angleA = angle - 0.25 - Math.random() * 0.2;
-        const angleB = angle + 0.25 + Math.random() * 0.2;
-        
-        buildTreeBranch(endX, endY, subLen, angleA, subW, depth - 1);
-        buildTreeBranch(endX, endY, subLen, angleB, subW, depth - 1);
-      }
-
-      function initTree() {
-        treeBranches = [];
-        const initialLength = Math.min(H * 0.18, 120); // Scale depending on screen height
-        // Depth is 8 (mobile performant enough since drawn as static segments)
-        buildTreeBranch(W / 2, H, initialLength, 0, 7, 8); 
-      }
-      initTree();
-
-      function shatterTree() {
-        treeIsBurning = true;
-        // Convert all solid tree branches into expanding fire embers
-        for (let b of treeBranches) {
-          const mx = (b.x1 + b.x2) / 2;
-          const my = (b.y1 + b.y2) / 2;
-          for(let k=0; k<2; k++) {
-            fireParticles.push({
-              x: mx + (Math.random()-0.5)*10,
-              y: my + (Math.random()-0.5)*10,
-              vx: (Math.random() - 0.5) * 8, // Violent explosion outward
-              vy: -Math.random() * 10 - 2,    // And upward
-              r: b.w * 1.5 + Math.random(),
-              alpha: 1,
-              decay: 0.015 + Math.random() * 0.01,
-              color: Math.random() > 0.4 ? '#ff5200' : '#ffae00'
-            });
-          }
-        }
-        treeBranches = []; // The tree is structurally gone!
-      }
-
-      // --- Lightning Generator ---
-      function createLightning(startX, startY, endX, endY) {
-        const segments = [];
-        let currX = startX;
-        let currY = startY;
-        const numSteps = 15;
-        const stepY = (endY - startY) / numSteps;
-        
-        for(let i=0; i<numSteps; i++) {
-          const nextX = currX + (Math.random() - 0.5) * 80;
-          const nextY = currY + stepY;
-          segments.push({ x1: currX, y1: currY, x2: nextX, y2: nextY });
-          
-          if (Math.random() > 0.75) {
-            const bEndX = nextX + (Math.random() - 0.5) * 100;
-            const bEndY = nextY + 80;
-            lightnings.push({ segments: [{x1: nextX, y1: nextY, x2: bEndX, y2: bEndY}], alpha: 1 });
-          }
-          currX = nextX;
-          currY = nextY;
-        }
-        segments.push({ x1: currX, y1: currY, x2: endX, y2: endY });
-        lightnings.push({ segments, alpha: 1.5 });
-      }
-
-      function flashScreen() {
-        screen.classList.add('white-flash');
-        setTimeout(() => screen.classList.remove('white-flash'), 60);
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, W, H);
-
-        // 1. Ambient Embers
-        for (const p of particles) {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = p.color;
-          ctx.globalAlpha = p.alpha;
-          ctx.fill();
-          
-          // Ember glow
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = p.color;
-          ctx.fill();
-          ctx.shadowBlur = 0;
-
-          p.x += p.vx;
-          p.y += p.vy;
-          if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
-          if (p.x < -10) p.x = W + 10;
-          if (p.x > W + 10) p.x = -10;
-        }
-
-        // 2. Dead Silhouette Tree
-        if (!treeIsBurning) {
-          ctx.lineCap = 'round';
-          for (const b of treeBranches) {
-            ctx.beginPath();
-            ctx.moveTo(b.x1, b.y1);
-            ctx.lineTo(b.x2, b.y2);
-            ctx.strokeStyle = `rgba(10, 5, 0, ${b.alpha})`; // Very dark wood
-            ctx.lineWidth = b.w;
-            // Backlight glow
-            ctx.shadowColor = 'rgba(255, 100, 0, 0.4)';
-            ctx.shadowBlur = 4;
-            ctx.stroke();
-          }
-        }
-
-        // 3. Tree Fire/Explosion Particles
-        if (treeIsBurning) {
-          for (let i = fireParticles.length - 1; i >= 0; i--) {
-            const f = fireParticles[i];
-            ctx.beginPath();
-            ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-            ctx.fillStyle = f.color;
-            ctx.globalAlpha = f.alpha;
-            
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = f.color;
-            ctx.fill();
-            ctx.shadowBlur = 0;
-
-            f.x += f.vx;
-            f.y += f.vy;
-            f.alpha -= f.decay;
-            // Slow down horizontal velocity (air resistance)
-            f.vx *= 0.95; 
-            
-            if (f.alpha <= 0) fireParticles.splice(i, 1);
-          }
-        }
-
-        // 4. Lightning Bolts
-        ctx.lineCap = 'round';
-        for (let i = lightnings.length - 1; i >= 0; i--) {
-          const l = lightnings[i];
-          ctx.beginPath();
-          for (const seg of l.segments) {
-            ctx.moveTo(seg.x1, seg.y1);
-            ctx.lineTo(seg.x2, seg.y2);
-          }
-          
-          ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(l.alpha, 1)})`;
-          ctx.shadowColor = '#60a5fc'; 
-          ctx.shadowBlur = 25;
-          ctx.lineWidth = 4;
-          ctx.stroke();
-          
-          ctx.shadowBlur = 0;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-          
-          l.alpha -= 0.15;
-          if (l.alpha <= 0) lightnings.splice(i, 1);
-        }
-
-        ctx.globalAlpha = 1;
-        animId = requestAnimationFrame(animate);
-      }
-      animate();
-
-      // --- TIMELINE SEQUENCE ---
-      
-      // Reveal Text Line 1
-      setTimeout(() => {
-        flashScreen();
-        createLightning(W * 0.2 + Math.random() * W * 0.6, 0, W / 2, Math.max(H * 0.3, 100));
-        document.getElementById('t-line-1')?.classList.add('revealed');
-      }, 2000);
-
-      // Reveal Text Line 2 and Subtitle
-      setTimeout(() => {
-        flashScreen();
-        createLightning(W * 0.2 + Math.random() * W * 0.6, 0, W / 2, Math.max(H * 0.4, 150));
-        document.getElementById('t-line-2')?.classList.add('revealed');
-        document.getElementById('t-line-3')?.classList.add('revealed');
-      }, 2800);
-
-      // FINAL CLIMAX: Lightning Hits the Tree directly!
-      setTimeout(() => {
-        // Trigger haptic vibration only if user has interacted (hidden unlock via sessionStorage)
-        // Wrapped in setTimeout(.., 0) to ensure asynchronous execution without blocking UI/animation
-        if (sessionStorage.getItem('vibrationUnlocked') === 'true' && navigator.vibrate) {
-          setTimeout(() => {
-            try { navigator.vibrate([50, 100, 200]); } catch (e) {}
-          }, 0);
-        }
-
-        screen.classList.add('fade-out'); // Trigger global white flash CSS
-        
-        // Clean up hidden listeners
-        window.removeEventListener('touchstart', unlockInteraction);
-        window.removeEventListener('click', unlockInteraction);
-        
-        // Massive bolt hitting dead center bottom (the tree)
-        createLightning(W * 0.5, 0, W * 0.5, H * 0.8); 
-        createLightning(W * 0.3, 0, W * 0.4, H * 0.8);
-        createLightning(W * 0.7, 0, W * 0.6, H * 0.8);
-        
-        // The tree absorbs it and violently splinters into fire particles
-        shatterTree();
-        
-        // Wait for CSS fadeout transition to comfortably complete
-        setTimeout(() => {
-          screen.remove();
-          cancelAnimationFrame(animId);
-          sessionStorage.setItem('introShown', '1');
-        }, 1600);
-      }, 4200);
-
-    })();
+    /* ════════ CINEMATIC INTRO (REMOVED - MOVED TO INTRO.HTML) ════════ */
 
     /* ════════════════════════════════
        GOOGLE APPS SCRIPT CODE (v3)
@@ -11919,6 +11518,17 @@ function doPost(e) {
             "
             onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'"
           >Open CSEUTSAV'26 Website →</button>
+
+          <!-- Top Right Close -->
+          <button onclick="document.getElementById('qr-landing-ov').style.display='none';document.body.style.overflow=''" 
+            style="
+              position:fixed;top:20px;right:20px;
+              width:40px;height:40px;border-radius:50%;
+              background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+              color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;
+              cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+              z-index:10001;
+            ">✕</button>
 
           <div style="font-size:11px;color:rgba(255,255,255,.2);margin-top:14px;animation:qrl-rise .5s ease .7s both">
             For support, contact the organizer at the event venue.
