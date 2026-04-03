@@ -6373,7 +6373,7 @@
     .pkt-title  { font-size: clamp(16px, 4.5vw, 24px); }
 
     /* CTA area tighter on small screens */
-    .pkt-cta-area { padding: 8px 14px 2px; gap: 6px; }
+    .pkt-cta-area { padding: 8px 14px max(24px, env(safe-area-inset-bottom, 24px)); gap: 6px; }
     .pkt-confirm-btn { padding: clamp(11px,3vw,14px); font-size: clamp(13px,3.5vw,16px); letter-spacing: 2px; }
 
     /* Team name row */
@@ -7245,9 +7245,6 @@
             <div style="position:absolute; top:max(15px, env(safe-area-inset-top, 15px)); left:15px; display:flex; gap:10px; z-index:100;">
               <button class="casino-close-btn" style="position:static; padding:10px 16px; font-size:12px; font-weight:900; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:24px; color:#fff;" onclick="playMechanicalSnap(); doHapticSnap(); goStep(0)">
                 ← BACK
-              </button>
-              <button class="casino-close-btn" style="position:static; padding:10px 16px; font-size:12px; font-weight:900; background:rgba(220,0,0,0.15); border:1px solid rgba(220,0,0,0.3); border-radius:24px; color:#ffeded;" onclick="playMechanicalSnap(); doHapticSnap(); forceCloseReg()">
-                ✕ CLOSE
               </button>
             </div>
 
