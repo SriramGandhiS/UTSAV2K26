@@ -7346,23 +7346,19 @@
               </div>
             </div><!-- /arena -->
             <!-- REGISTRATION SUMMARY PLATE -->
-            <div id="pkt-summary-plate" style="margin:0 20px 20px; padding:12px 18px; background:rgba(0,0,0,0.6); border:1px solid rgba(212,175,55,0.4); border-radius:14px; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); display:flex; flex-direction:column; gap:10px; z-index:5; position:relative; box-shadow:0 8px 32px rgba(0,0,0,0.5);">
-               <div style="display:flex; justify-content:space-between; font-family:'Outfit', sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px;">
-                  <span style="color:var(--gold)">Event</span>
-                  <span id="summ-ev-name" style="color:#fff; text-align:right;">—</span>
-               </div>
-               <div style="display:flex; justify-content:space-between; font-family:'Outfit', sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px;">
+            <div id="pkt-summary-plate" style="margin:auto; padding:12px 18px; background:rgba(0,0,0,0.6); border:1px solid rgba(212,175,55,0.4); border-radius:14px; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); display:flex; flex-direction:column; gap:8px; z-index:5; position:relative; box-shadow:0 8px 32px rgba(0,0,0,0.5); width:calc(100% - 40px); max-width:380px;">
+               <div style="display:flex; justify-content:space-between; align-items:center; font-family:'Outfit', sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">
                   <span style="color:var(--gold)">Leader</span>
-                  <span id="summ-ldr-name" style="color:#fff; text-align:right; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">—</span>
+                  <span id="summ-ldr-name" style="color:#fff; text-align:right; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px;">—</span>
                </div>
-               <div style="display:flex; justify-content:space-between; font-family:'Outfit', sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">
-                  <span style="color:var(--gold)">Selection</span>
-                  <span id="summ-team-sel" style="color:#fff; text-align:right;">—</span>
+               <div style="display:flex; justify-content:space-between; align-items:center; font-family:'Outfit', sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">
+                  <span style="color:var(--gold)">Total Members</span>
+                  <span id="summ-team-sel" style="color:#fff; text-align:right; font-size:13px; display:flex; flex-direction:column; align-items:flex-end;">—</span>
                </div>
             </div>
 
             <!-- CTA Buttons -->
-            <div class="pkt-cta-area">
+            <div class="pkt-cta-area" style="margin-top: 0;">
               <button class="pkt-confirm-btn" onclick="playMechanicalSnap(); doHapticSnap(); pktConfirmTeam()">✦ Confirm Registration ✦</button>
             </div>
 
@@ -9236,6 +9232,8 @@ function renderComm() {
 
         teamMembers = [];
         pktSpawnParticles();
+        
+        updatePktSummaryPlate();
         return;
       }
 
@@ -9293,23 +9291,23 @@ function renderComm() {
       const p = document.getElementById('pkt-summary-plate');
       if (!p || !currentEv) return;
       
-      const evNameEl = document.getElementById('summ-ev-name');
       const ldrNameEl = document.getElementById('summ-ldr-name');
       const selNameEl = document.getElementById('summ-team-sel');
       
-      if (evNameEl) evNameEl.textContent = currentEv.name;
       const ldrName = (document.getElementById('f-name')?.value || 'You').trim();
       if (ldrNameEl) ldrNameEl.textContent = ldrName;
       
       if (currentEv.type === 'Solo') {
-        if (selNameEl) selNameEl.innerHTML = '1 <span style="color:rgba(255,255,255,0.4);font-size:9px;">(SOLO ENTRY)</span>';
+        if (selNameEl) selNameEl.innerHTML = '<span style="color:#fff;font-size:15px;">SOLO</span>';
       } else {
-        const requiredMembers = (selectedTeamSize || currentEv.maxTeam) - 1;
+        const requiredMembers = (selectedTeamSize || currentEv.maxTeam);
+        const labels = {2: 'DUO', 3: 'TRIPLETS', 4: 'SQUAD', 5: 'SUPER SQUAD'};
+        const label = labels[requiredMembers] || requiredMembers + ' PLAYERS';
         let count = 0;
-        for (let i = 0; i < requiredMembers; i++) {
+        for (let i = 0; i < requiredMembers - 1; i++) {
           if (teamMembers[i] && teamMembers[i].name) count++;
         }
-        if (selNameEl) selNameEl.innerHTML = `${count} / ${requiredMembers} <span style="color:rgba(255,255,255,0.4);font-size:9px;">ADDED</span>`;
+        if (selNameEl) selNameEl.innerHTML = `<span style="color:#fff;font-size:15px;">${label}</span> <span style="font-size:9px;color:rgba(255,255,255,0.4);display:block;">(${count + 1}/${requiredMembers} SELECTED)</span>`;
       }
     }
 
