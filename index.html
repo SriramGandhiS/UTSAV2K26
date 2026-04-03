@@ -6325,6 +6325,14 @@
       padding: 20px 20px 34px;
       animation: pkt-sheet-in 0.32s cubic-bezier(0.22, 0.68, 0, 1.1);
     }
+    @keyframes pkt-overlay-out {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+    @keyframes pkt-sheet-out {
+      from { transform: translateY(0); }
+      to   { transform: translateY(100%); }
+    }
     @keyframes pkt-sheet-in {
       from { transform: translateY(100%); }
       to   { transform: translateY(0); }
@@ -8994,8 +9002,15 @@ function renderComm() {
 
     function pktCloseOverlay() {
       const ov = document.getElementById('pkt-overlay');
-      if (ov) ov.remove();
-      pktCurrentEditSlot = -1;
+      if (!ov) return;
+      const sheet = ov.querySelector('.pkt-form-sheet');
+      if (sheet) sheet.style.animation = 'pkt-sheet-out 0.25s cubic-bezier(0.8, 0, 1, 1) forwards';
+      ov.style.animation = 'pkt-overlay-out 0.25s ease forwards';
+      
+      setTimeout(() => {
+        if (ov.parentNode) ov.remove();
+        pktCurrentEditSlot = -1;
+      }, 230);
     }
 
     function pktSaveSlot(slotIdx) {
