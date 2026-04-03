@@ -6587,7 +6587,8 @@
       border-right-color: rgba(212,175,55,0.2);
       border-bottom-color: rgba(180,0,40,0.35);
       border-left-color: rgba(212,175,55,0.2);
-      animation: rlt-spin-cw 16s linear infinite;
+      animation: rlt-tick-cw 3s infinite;
+      will-change: transform;
     }
     .rlt-ring-2 {
       inset: 18%;
@@ -6596,7 +6597,8 @@
       border-right-color: rgba(180,0,40,0.2);
       border-bottom-color: rgba(212,175,55,0.25);
       border-left-color: rgba(180,0,40,0.2);
-      animation: rlt-spin-ccw 22s linear infinite;
+      animation: rlt-tick-ccw 3s infinite alternate;
+      will-change: transform;
     }
     .rlt-ring-3 {
       inset: 30%;
@@ -6605,16 +6607,26 @@
       border-bottom-color: rgba(255,60,80,0.2);
       border-left-color: rgba(255,255,255,0.08);
       border-right-color: rgba(255,255,255,0.08);
-      animation: rlt-spin-cw 10s linear infinite;
+      animation: rlt-tick-cw 4s infinite;
+      will-change: transform;
     }
-    @keyframes rlt-spin-cw  { from { transform: rotate(0deg); }   to { transform: rotate(360deg); } }
-    @keyframes rlt-spin-ccw { from { transform: rotate(0deg); }   to { transform: rotate(-360deg); } }
+
+    /* Delayed mechanical tick for performance */
+    @keyframes rlt-tick-cw {
+      0%, 85% { transform: rotate(0deg); }
+      100%    { transform: rotate(15deg); }
+    }
+    @keyframes rlt-tick-ccw {
+      0%, 85% { transform: rotate(0deg); }
+      100%    { transform: rotate(-15deg); }
+    }
 
     /* Roulette number labels on outer ring */
     .rlt-nums {
       position: absolute; inset: 0;
       border-radius: 50%;
-      animation: rlt-spin-cw 28s linear infinite;
+      animation: rlt-tick-cw 5s infinite forwards;
+      will-change: transform;
     }
     .rlt-num-label {
       position: absolute;
@@ -7236,8 +7248,8 @@
 
             <!-- BACK BUTTON -->
             <button onclick="playMechanicalSnap(); doHapticSnap(); document.getElementById('reg-ov').classList.remove('open'); if(currentEv) openEvMod(currentEv.id);"
-              style="position:absolute; top:20px; left:20px; z-index:2100; background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:12px; color:#fff; font-size:11px; font-weight:800; cursor:pointer; letter-spacing:1px; text-transform:uppercase; font-family:'Barlow Condensed',sans-serif; transition:all 0.2s;">
-              &larr; BACK
+              style="position:absolute; top:max(50px, env(safe-area-inset-top)); left:20px; z-index:2100; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:12px; color:#fff; font-size:11px; font-weight:800; cursor:pointer; letter-spacing:1px; text-transform:uppercase; font-family:'Barlow Condensed',sans-serif; transition:opacity 0.2s;">
+              &larr; CLOSE
             </button>
 
             <!-- Header badge -->
