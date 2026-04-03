@@ -599,28 +599,32 @@
       z-index: 1;
     }
 
-    @keyframes coin-fall {
-      0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.12; }
-      90% { opacity: 0.12; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    .falling-item {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      will-change: transform, opacity;
+      opacity: 0.8;
     }
 
-    @keyframes card-drift {
-      0%, 100% { transform: translate(0,0) rotate(var(--rot)); }
-      50% { transform: translate(10px, 20px) rotate(calc(var(--rot) + 5deg)); }
+    .reg-item-coin {
+      width: 40px; height: 40px;
+      background: radial-gradient(circle, #ffd700 20%, #daa520 70%, #b8860b 100%);
+      border-radius: 50%;
+      border: 4px double rgba(255,255,255,0.7);
+      box-shadow: 
+        0 6px 12px rgba(0,0,0,0.6),
+        4px 4px 0 rgba(0,0,0,0.1); /* Subtle stacking shadow */
     }
 
-    @keyframes badge-pulse-slow {
-      0%, 100% { box-shadow: 0 0 8px rgba(201,164,76,0.08); border-color: rgba(201,164,76,0.2); }
-      50% { box-shadow: 0 0 12px rgba(201,164,76,0.18); border-color: rgba(201,164,76,0.4); }
-    }
-
-    @keyframes coin-shake {
-      0%, 100% { transform: translate(0, 0) rotate(var(--r, 0deg)); }
-      25% { transform: translate(1px, -2px) rotate(calc(var(--r, 0deg) + 2deg)); }
-      50% { transform: translate(-1px, 1px) rotate(calc(var(--r, 0deg) - 1deg)); }
-      75% { transform: translate(2px, -1px) rotate(calc(var(--r, 0deg) + 1deg)); }
+    .falling-items-container {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5; /* Between backdrop and card */
+      overflow: hidden;
     }
 
     .hero-left {
@@ -2068,8 +2072,13 @@
       position: fixed;
       inset: 0;
       z-index: 600;
-      background: rgba(0, 0, 0, .9);
-      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, 
+        rgba(180, 0, 40, 0.9) 0%, 
+        rgba(180, 0, 40, 0.45) 1.5%, 
+        transparent 2.5%
+      ); /* 2% Red registration strip */
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
       display: none;
       align-items: flex-end
     }
@@ -2151,19 +2160,22 @@
       }
     }
 
-    /* Event summary card (shows in form after click) */
+    /* HUD-Style Event Details (Simplified for Glass Registration) */
     .ev-summary-card {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      text-align: center;
-      gap: 14px;
-      padding: 20px 16px;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
       border-radius: 12px;
-      background: rgba(232, 84, 26, .08);
-      border: 1.5px solid rgba(232, 84, 26, .3);
-      margin-bottom: 22px;
+      background: rgba(255, 255, 255, 0.05); /* Pure Glass HU */
+      backdrop-filter: blur(15px) saturate(140%);
+      -webkit-backdrop-filter: blur(15px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 14px;
       position: relative;
+      overflow: hidden;
     }
 
     .esc-accent {
@@ -6716,16 +6728,16 @@
     /* ── Betting Slip Card ── */
     .rlt-slip {
       position: relative; z-index: 5;
-      width: calc(100% - 28px); max-width: 420px;
-      background: rgba(15,3,8,0.96); /* Solid background avoids GPU black box bug */
-      border: 1px solid rgba(212,175,55,0.45);
-      border-radius: 16px;
-      padding: 18px 16px 16px;
+      width: 94%; max-width: 420px;
+      background: rgba(255, 255, 255, 0.03); /* Pure Mobile Glass */
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border: 0.5px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 14px 14px 12px;
       box-shadow:
-        0 0 0 1px rgba(180,0,40,0.2),
-        0 0 40px rgba(180,0,40,0.25),
-        0 0 80px rgba(180,0,40,0.1),
-        inset 0 1px 0 rgba(212,175,55,0.1);
+        0 20px 50px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.1);
       animation: rlt-slip-in 0.45s cubic-bezier(0.22, 0.68, 0, 1.1) both;
     }
     @keyframes rlt-slip-in {
@@ -6779,8 +6791,10 @@
     .rlt-fs {
       width: 100% !important;
       padding: 9px 12px !important;
-      background: rgba(255,255,255,0.05) !important;
-      border: 1px solid rgba(180,0,40,0.4) !important;
+      background: rgba(255,255,255,0.08) !important;
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      border: 1px solid rgba(255,255,255,0.15) !important;
       border-radius: 8px !important;
       color: #fff !important;
       font-family: 'Barlow', sans-serif !important;
@@ -7224,7 +7238,7 @@
     <div id="reg-selection-area" style="display:none; position:relative; z-index:2;"></div>
 
     <!-- REGISTRATION FORM (Form Mode) -->
-    <div class="reg-sheet" id="reg-sheet" onclick="event.stopPropagation()" style="position:relative;z-index:1; display:none;">
+    <div class="reg-sheet" id="reg-sheet" onclick="event.stopPropagation()" style="position:relative;z-index:10; display:none;">
       
       <!-- FULL-SCREEN COOLDOWN BLOACKER -->
       <div id="cooldown-wall" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;text-align:center;padding:20px;">
@@ -8512,6 +8526,11 @@
 
     
     function initOverlayParticles(canvasId, overlayId) {
+      if (overlayId === 'reg-ov') {
+        initFallingRegItems(overlayId);
+        return;
+      }
+
       const overlay = document.getElementById(overlayId);
       const canvas = document.getElementById(canvasId);
       if (!canvas || !overlay) return;
@@ -8567,6 +8586,34 @@
         requestAnimationFrame(draw);
       }
       draw();
+    }
+
+    function initFallingRegItems(overlayId) {
+      const overlay = document.getElementById(overlayId);
+      if (!overlay) return;
+
+      const container = document.createElement('div');
+      container.className = 'falling-items-container';
+      overlay.insertBefore(container, overlay.firstChild);
+
+      const ITEM_COUNT = window.innerWidth < 460 ? 15 : 35;
+
+      for (let i = 0; i < ITEM_COUNT; i++) {
+        const item = document.createElement('div');
+        item.className = 'falling-item reg-item-coin';
+        
+        const xPos = Math.random() * 95;
+        const yPos = Math.random() * 95;
+        const rot = Math.random() * 360;
+        const scale = 0.8 + Math.random() * 0.4;
+
+        item.style.left = `${xPos}%`;
+        item.style.top = `${yPos}%`;
+        item.style.transform = `rotate(${rot}deg) scale(${scale})`;
+        item.style.zIndex = Math.floor(Math.random() * 10); // Random stacking order
+
+        container.appendChild(item);
+      }
     }
 
 
@@ -8971,15 +9018,16 @@ function renderComm() {
     function evSummaryCard(id) {
       const e = EVS.find(ev => ev.id === id); if (!e) return '';
       return `<div class="ev-summary-card">
-    <div class="esc-accent"></div>
-    <div class="esc-icon">${e.icon}</div>
-    <div>
-      <div class="esc-name">${e.name} ${e.isSimultaneous ? '<span style="color:var(--orange);font-size:9px;margin-left:5px">● SAME TIME</span>' : ''}</div>
-      <div class="esc-meta">${e.label} · ${e.type === 'Solo' ? 'Individual' : (e.minTeam === e.maxTeam ? `${e.minTeam} Members` : `${e.minTeam} to ${e.maxTeam} Members`)} · ${e.date}</div>
-      ${e.isSimultaneous ? `<div style="font-size:9px;color:var(--muted);font-weight:700;margin-top:4px;text-transform:uppercase;letter-spacing:0.5px">Shares a time slot with another event</div>` : ''}
-    </div>
-    <button class="esc-change" onclick="clearEvent()">Change</button>
-  </div>`;
+        <div class="esc-accent"></div>
+        <div style="display:flex;align-items:center;gap:10px;flex:1;overflow:hidden;">
+          <div class="esc-icon" style="width:28px;height:28px;font-size:14px;background:rgba(212,175,55,0.1);">${e.icon}</div>
+          <div style="overflow:hidden;">
+            <div class="esc-name" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${e.name}</div>
+            <div class="esc-meta" style="font-size:8px;opacity:0.7;">${e.label} · ${e.type}</div>
+          </div>
+        </div>
+        <button class="esc-change" style="padding:6px 12px;font-size:9px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--gold);font-weight:800;text-transform:uppercase;" onclick="clearEvent()">Change</button>
+      </div>`;
     }
 
     function showError(title, reason, desc) {
@@ -10317,10 +10365,18 @@ function renderComm() {
           if (isNaN(d.getTime()) && typeof r.ts === 'string') {
             const parts = r.ts.split(', ');
             if (parts.length === 2) {
-              const dateParts = parts[0].split('/');
-              if (dateParts.length === 3) {
-                // Reconstruct as MM/DD/YYYY for JS Date parsing
-                d = new Date(`${dateParts[1]}/${dateParts[0]}/${dateParts[2]} ${parts[1]}`);
+              // Fix: Handle both '-' and '/' to prevent browser from defaulting to US MM-DD-YY
+              // Strict fix: Use native browser parsing for MM-DD-YY to match your sheet's native output
+              const cleanDate = parts[0].replace(/-/g, '/'); 
+              d = new Date(`${cleanDate} ${parts[1] || ''}`);
+              
+              // Fallback for non-standard formats
+              if (isNaN(d.getTime())) {
+                const dp = parts[0].split(/[\/\-]/);
+                if (dp.length === 3) {
+                  const yy = dp[2].length === 2 ? '20' + dp[2] : dp[2];
+                  d = new Date(`${dp[0]}/${dp[1]}/${yy} ${parts[1] || ''}`);
+                }
               }
             }
           }
@@ -10572,7 +10628,7 @@ function doPost(e) {
       var r = d.data;
       var tName = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
       var tMem = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
-      var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
+      var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "MM/dd/yyyy, hh:mm:ss a");
       sh.appendRow([r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, tName, tMem, finalTs, r.gender||"", r.timeSlot||""]);
       SpreadsheetApp.flush();
       return ContentService.createTextOutput(JSON.stringify({success:true, regId:r.regId})).setMimeType(ContentService.MimeType.JSON);
@@ -10817,6 +10873,7 @@ function doPost(e) {
       if (loginType === 'admin') {
         if (uid === ADMIN_ID && pwd === ADMIN_PASS) {
           showAdminLoader('Authenticating Admin...');
+          localStorage.removeItem('u26r'); // Clear stale test data for fresh sync
           closeAdminLogin();
           await openAdmin();
           hideAdminLoader();
