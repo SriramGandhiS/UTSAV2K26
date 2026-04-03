@@ -24,13 +24,20 @@ function enforceHeaders(sh) {
   }
 }
 
+// ── Auth Helper for GET actions ──
+function checkAuth(e) {
+  var uid = (e.parameter.uid || "").trim();
+  var pwd = (e.parameter.pwd || "").trim();
+  return (uid === "sriram" || uid === "utsavqr") && pwd === "93611";
+}
+
 // ── GET requests (Admin Panel + Fetch Pass) ──
 function doGet(e) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName("Registrations");
   if (!sh) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [] })).setMimeType(ContentService.MimeType.JSON);
 
-  enforceHeaders(sh); // Auto-fix alignment immediately
+  if (sh.getLastRow() === 0) enforceHeaders(sh); // Auto-fix alignment if sheet is fresh
   var action = (e.parameter.action || "").trim();
 
   if (action === "adminLogin") {
@@ -55,6 +62,7 @@ function doGet(e) {
   }
 
   if (action === "getRegs") {
+    if (!checkAuth(e)) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
     var data = sh.getDataRange().getValues();
     if (data.length <= 1) return ContentService.createTextOutput(JSON.stringify({ registrations: [] })).setMimeType(ContentService.MimeType.JSON);
 
@@ -256,6 +264,7 @@ function doGet(e) {
   }
 
   if (action === "lookupTeamStatus") {
+    if (!checkAuth(e)) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
     var regId = (e.parameter.regId || "").trim();
     if (!regId) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Missing regId" })).setMimeType(ContentService.MimeType.JSON);
 
@@ -344,6 +353,9 @@ function doPost(e) {
 
     // Optimized Scan Handle (Fast execution, localized lock, duplicate prevention)
     if (d.action === "handleScan") {
+      if ((d.uid !== "sriram" && d.uid !== "utsavqr") || d.pwd !== "93611") {
+        return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
+      }
       var scanLock = LockService.getScriptLock();
       if (!scanLock.tryLock(8000)) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "System busy. Please scan again." })).setMimeType(ContentService.MimeType.JSON);
       try {
@@ -386,6 +398,9 @@ function doPost(e) {
 
     // Team-based scan: marks individual members with composite IDs
     if (d.action === "handleTeamScan") {
+      if ((d.uid !== "sriram" && d.uid !== "utsavqr") || d.pwd !== "93611") {
+        return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
+      }
       var scanLock2 = LockService.getScriptLock();
       if (!scanLock2.tryLock(8000)) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "System busy. Please scan again." })).setMimeType(ContentService.MimeType.JSON);
       try {
@@ -436,10 +451,13 @@ function doPost(e) {
     }
     try {
       var sh = ss.getSheetByName("Registrations") || ss.insertSheet("Registrations");
-      enforceHeaders(sh); // Ensure alignment is perfect before saving!
+      if (sh.getLastRow() === 0) enforceHeaders(sh); // Ensure alignment is perfect before saving!
       var headers = OFFICIAL_HEADERS;
 
       if (d.action === "syncAll") {
+        if (d.uid !== "sriram" || d.pwd !== "93611") {
+          return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
+        }
         d.data.forEach(function (r) {
           // Matured Logic: Handle Solo events clearly in the sheet
           var teamNameValue = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
@@ -453,8 +471,10 @@ function doPost(e) {
         return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
 
       } else if (d.action === "addReg") {
+        var r = d.data;
         var cache = CacheService.getScriptCache();
-        var tsStr = cache.get("reg_timestamps") || "[]";
+        var key = "limit_" + (r.email || "unknown");
+        var tsStr = cache.get(key) || "[]";
         var tsArr = [];
         try { tsArr = JSON.parse(tsStr); } catch(e){}
         var now = new Date().getTime();
@@ -466,9 +486,8 @@ function doPost(e) {
           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "RATE_LIMIT" })).setMimeType(ContentService.MimeType.JSON);
         }
         filtered.push(now);
-        cache.put("reg_timestamps", JSON.stringify(filtered), 65);
+        cache.put(key, JSON.stringify(filtered), 65);
 
-        var r = d.data;
         var regId = String(r.regId || "");
         
         // --- 0. Idempotency Check (Strong Protection) ---
@@ -532,7 +551,6 @@ function doPost(e) {
           if (tmReg) incomingRegNos.push(tmReg);
         }
 
-        var data = sh.getDataRange().getValues();
         var isDuplicate = false;
         var duplicateMsg = "You are already registered for this event.";
 
@@ -592,6 +610,9 @@ function doPost(e) {
         return ContentService.createTextOutput(JSON.stringify({ success: true, regId: r.regId })).setMimeType(ContentService.MimeType.JSON);
 
       } else if (d.action === "deleteReg") {
+        if (d.uid !== "sriram" || d.pwd !== "93611") {
+          return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
+        }
         var regIdToDelete = d.data.regId;
         var data = sh.getDataRange().getValues();
         var deleted = false;
@@ -606,6 +627,9 @@ function doPost(e) {
         return ContentService.createTextOutput(JSON.stringify({ success: deleted, error: deleted ? null : "Registration not found" })).setMimeType(ContentService.MimeType.JSON);
 
       } else if (d.action === "deleteAll") {
+        if (d.uid !== "sriram" || d.pwd !== "93611") {
+          return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
+        }
         var lastRow = sh.getLastRow();
         if (lastRow > 1) {
           // Delete all rows from row 2 downward
