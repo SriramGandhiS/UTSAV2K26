@@ -7241,12 +7241,12 @@
           <!-- ✦ CINEMATIC POKER ROOM ✦ -->
           <div class="pkt-room" id="pkt-room">
           
-            <!-- ACTIONS (Top Left consistently) -->
-            <div style="position:absolute; top:12px; left:12px; display:flex; gap:8px; z-index:100;">
-              <button class="casino-close-btn" style="position:static; padding:8px 12px; font-size:10px;" onclick="playMechanicalSnap(); doHapticSnap(); goStep(0)">
-                &larr; BACK
+            <!-- ACTIONS (Top Left safely padded for notch) -->
+            <div style="position:absolute; top:max(15px, env(safe-area-inset-top, 15px)); left:15px; display:flex; gap:10px; z-index:100;">
+              <button class="casino-close-btn" style="position:static; padding:10px 16px; font-size:12px; font-weight:900; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:24px; color:#fff;" onclick="playMechanicalSnap(); doHapticSnap(); goStep(0)">
+                ← BACK
               </button>
-              <button class="casino-close-btn" style="position:static; padding:8px 12px; font-size:10px; background:rgba(255,0,0,0.1); border-color:rgba(255,0,0,0.2);" onclick="playMechanicalSnap(); doHapticSnap(); forceCloseReg()">
+              <button class="casino-close-btn" style="position:static; padding:10px 16px; font-size:12px; font-weight:900; background:rgba(220,0,0,0.15); border:1px solid rgba(220,0,0,0.3); border-radius:24px; color:#ffeded;" onclick="playMechanicalSnap(); doHapticSnap(); forceCloseReg()">
                 ✕ CLOSE
               </button>
             </div>
@@ -8847,8 +8847,8 @@ function renderComm() {
             <div class="snooker-ball ball-white" style="bottom:20%; right:15%;"></div>
             <div class="snooker-ball ball-black" style="top:40%; right:8%;"></div>
 
-            <div style="position:fixed;top:15px;right:15px;z-index:2000;">
-              <button class="ev-modal-close-btn" style="background:rgba(255,255,255,0.05); backdrop-filter:blur(15px) saturate(180%); -webkit-backdrop-filter:blur(15px) saturate(180%); border:1px solid rgba(255,255,255,0.15); padding:8px 18px; border-radius:14px; color:#fff; font-size:10px; font-weight:800; cursor:pointer; letter-spacing:1.5px; text-transform:uppercase; box-shadow:0 8px 32px rgba(0,0,0,0.3); font-family:'Barlow Condensed',sans-serif;" onclick="closeEvMod(null,1)">✕ CLOSE</button>
+            <div style="position:absolute;top:max(15px, env(safe-area-inset-top, 15px));right:15px;z-index:99999;">
+              <button class="ev-modal-close-btn" style="background:rgba(0,0,0,0.65); backdrop-filter:blur(15px) saturate(180%); -webkit-backdrop-filter:blur(15px) saturate(180%); border:1px solid rgba(255,255,255,0.25); padding:10px 18px; border-radius:30px; color:#fff; font-size:12px; font-weight:800; cursor:pointer; letter-spacing:1.5px; text-transform:uppercase; box-shadow:0 6px 20px rgba(0,0,0,0.4); font-family:'Barlow Condensed',sans-serif;" onclick="closeEvMod(null,1)">✕ CLOSE</button>
             </div>
 
             <div style="width:100%; max-width:600px; position:relative; z-index:5; padding:10px; display:flex; flex-direction:column; align-items:center;">
