@@ -2097,7 +2097,6 @@
       border-radius: 20px 20px 0 0;
       overflow-y: auto;
       animation: su .3s cubic-bezier(.22, .68, 0, 1.1);
-      transition: max-height 0.25s ease-out, border-radius 0.25s ease-out; /* Targeted transition instead of computationally heavy all */
     }
 
     .reg-sheet-fullscreen {
@@ -6415,14 +6414,29 @@
       box-shadow: 0 12px 40px rgba(212,175,55,0.65), 0 0 80px rgba(212,175,55,0.2);
       transform: translateY(-2px);
     }
-    .pkt-back-btn {
-      background: transparent;
-      border: none; color: rgba(255,255,255,0.4);
-      font-family: 'Barlow', sans-serif; font-size: 12px;
-      cursor: pointer; padding: 4px 12px;
-      transition: color 0.2s;
+    .casino-close-btn {
+      position: absolute;
+      top: max(40px, env(safe-area-inset-top));
+      left: 18px;
+      z-index: 2500;
+      background: rgba(255,255,255,0.08); /* Stable glass effect without expensive GPU blurs */
+      border: 1px solid rgba(255,255,255,0.22);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+      padding: 8px 16px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-family: 'Barlow Condensed', sans-serif;
+      transition: all 0.15s;
     }
-    .pkt-back-btn:hover { color: rgba(255,255,255,0.8); }
+    .casino-close-btn:active {
+      transform: scale(0.92);
+      background: rgba(255,255,255,0.18);
+    }
 
     /* Hidden original controls (keep in DOM for JS compatibility) */
     #step-1 .reg-next-btn.pkt-hidden,
@@ -7234,29 +7248,10 @@
           <!-- Roulette Casino Environment -->
           <div class="rlt-room" id="rlt-room">
 
-            <!-- Spinning roulette rings (CSS animated) -->
-            <div class="rlt-wheel-bg" aria-hidden="true">
-              <div class="rlt-ring rlt-ring-1"></div>
-              <div class="rlt-ring rlt-ring-2"></div>
-              <div class="rlt-ring rlt-ring-3"></div>
-              <!-- number segments SVG-like labels -->
-              <div class="rlt-nums" id="rlt-nums"></div>
-            </div>
-
-            <!-- Ambient particles -->
-            <div id="rlt-particles" aria-hidden="true"></div>
-
-            <!-- scattered chips -->
-            <div class="rlt-chip rlt-chip-red"   style="top:12%;left:8%;"></div>
-            <div class="rlt-chip rlt-chip-black" style="top:20%;right:10%;"></div>
-            <div class="rlt-chip rlt-chip-gold"  style="bottom:18%;left:12%;"></div>
-            <div class="rlt-chip rlt-chip-red"   style="bottom:14%;right:8%;"></div>
-            <div class="rlt-chip rlt-chip-black" style="top:55%;left:5%;"></div>
-            <div class="rlt-chip rlt-chip-gold"  style="top:40%;right:6%;"></div>
+            <!-- Casino background stripped for mobile performance -->
 
             <!-- BACK BUTTON -->
-            <button onclick="playMechanicalSnap(); doHapticSnap(); document.getElementById('reg-ov').classList.remove('open'); if(currentEv) openEvMod(currentEv.id);"
-              style="position:absolute; top:max(50px, env(safe-area-inset-top)); left:20px; z-index:2100; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:12px; color:#fff; font-size:11px; font-weight:800; cursor:pointer; letter-spacing:1px; text-transform:uppercase; font-family:'Barlow Condensed',sans-serif; transition:opacity 0.2s;">
+            <button class="casino-close-btn" onclick="playMechanicalSnap(); doHapticSnap(); document.getElementById('reg-ov').classList.remove('open'); if(currentEv) openEvMod(currentEv.id);">
               &larr; CLOSE
             </button>
 
@@ -7357,7 +7352,7 @@
 
                 <div class="rlt-note" id="rlt-step-note">&#9888;&#65039; This is Leader Registration &middot; Team details on next step</div>
 
-                <button class="rlt-deal-btn" onclick="goStep(1)">DEAL ME IN &rarr;</button>
+                <button class="rlt-deal-btn" onclick="playMechanicalSnap(); doHapticSnap(); goStep(1)">DEAL ME IN &rarr;</button>
               </div>
             </div><!-- /slip -->
 
@@ -7378,6 +7373,11 @@
 
           <!-- ✦ CINEMATIC POKER ROOM ✦ -->
           <div class="pkt-room" id="pkt-room">
+          
+            <!-- BACK BUTTON (Top Left consistently) -->
+            <button class="casino-close-btn" onclick="playMechanicalSnap(); doHapticSnap(); goStep(0)">
+              &larr; BACK
+            </button>
 
             <!-- Ambient Particles (injected by JS) -->
             <div id="pkt-particles-container" aria-hidden="true"></div>
@@ -7479,8 +7479,7 @@
 
             <!-- CTA Buttons -->
             <div class="pkt-cta-area">
-              <button class="pkt-confirm-btn" onclick="pktConfirmTeam()">✦ Confirm Registration ✦</button>
-              <button class="pkt-back-btn" onclick="goStep(0)">← Back to Player Profile</button>
+              <button class="pkt-confirm-btn" onclick="playMechanicalSnap(); doHapticSnap(); pktConfirmTeam()">✦ Confirm Registration ✦</button>
             </div>
 
           </div><!-- /pkt-room -->
@@ -7495,8 +7494,8 @@
           <div
             style="font-size:11px;color:rgba(232,84,26,0.9);text-align:center;margin-bottom:12px;padding:0 10px;font-weight:600">
             During heavy traffic, registration may take a few seconds.<br>Please click submit only once.</div>
-          <button class="reg-next-btn" onclick="submitReg()">Place Your Bet</button>
-          <button class="reg-back-btn" onclick="goStep(1)">← Edit Details</button>
+          <button class="reg-next-btn" onclick="playMechanicalSnap(); doHapticSnap(); submitReg()">Place Your Bet</button>
+          <button class="reg-back-btn" onclick="playMechanicalSnap(); doHapticSnap(); goStep(1)">← Edit Details</button>
           <div id="cooldown-warning-msg" style="text-align:center;width:100%;"></div>
         </div>
 
@@ -7568,14 +7567,393 @@
 
   <!-- COMMITTEE MEMBERS -->
   <div class="comm-ov" id="comm-ov">
+    <!-- Falling Money Overlay -->
+    <div class="comm-bg-container">
+      <img src="assets/teambg.jpg" alt="" class="comm-bg-img" loading="eager" fetchpriority="high">
+    </div>
     <div class="comm-wrap">
       <div class="comm-head">
-        <div class="comm-title">The Pit <span>Bosses</span></div>
-        <button class="comm-close" onclick="closeComm()">✕ Close</button>
+        <div class="comm-title">MOST <span>WANTED</span></div>
+        <button class="comm-close" onclick="closeComm()">✕ Back to Shadows</button>
       </div>
       <div class="comm-grid" id="comm-list">
         <!-- Dynamic rendering via JS -->
       </div>
+
+      <!-- WANTED POSTER — ONE PIECE EXACT STYLE (scoped to #comm-ov) -->
+      <style id="comm-enhancements-style">
+        /* ─── ROLE TEXT COLORS (Solid & Clean) ─── */
+        .role-red .wp-role {
+          color: #d32f2f !important; /* Premium Poker Red */
+          font-weight: 950 !important;
+          text-shadow: 0.5px 0.5px 0px rgba(0,0,0,0.2);
+        }
+        .role-dark .wp-role {
+          color: #2c1a00 !important; /* Deep Poster Dark */
+          font-weight: 900 !important;
+          opacity: 0.85;
+        }
+
+        /* Redundant/Old Glow Pulse Removed */
+
+
+        /* ─── EVENT TAG STYLING ─── */
+        .wp-event-tag {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: clamp(8px, 2.2vw, 11px);
+          font-weight: 900;
+          color: #8b0000; /* Darker red for contrast on paper */
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin: 1px 0 4px;
+          opacity: 0.9;
+          position: relative;
+          z-index: 2;
+        }
+
+        /* ─── COMMITTEE BACKGROUND (Static & Fast) ─── */
+        .comm-bg-container {
+          position: fixed;
+          inset: 0;
+          z-index: 1; /* Background layer */
+          pointer-events: none;
+          overflow: hidden;
+          opacity: 0.12; /* Subtle theme presence */
+          will-change: opacity;
+        }
+        .comm-bg-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          filter: grayscale(1) contrast(1.1); /* Match the dark premium theme */
+        }
+
+        /* ────────── GRID ────────── */
+
+        #comm-ov .comm-wrap {
+          padding: 20px 2px 100px !important; /* Authentic poster immersive width */
+          max-width: 100%;
+        }
+        #comm-ov .comm-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 4px; /* Tight gap for more poster area */
+          padding: 0 !important;
+          align-items: start;
+          width: 100%;
+        }
+        @media (min-width: 560px) {
+          #comm-ov .comm-wrap { padding: 40px 24px 100px !important; }
+          #comm-ov .comm-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        }
+        @media (min-width: 900px) {
+          #comm-ov .comm-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        }
+
+        /* ────────── POSTER CARD ────────── */
+        .wanted-poster {
+          background-color: #e8d9a0;
+          background-image:
+            radial-gradient(ellipse at 15% 10%, rgba(120,80,20,0.18) 0%, transparent 55%),
+            radial-gradient(ellipse at 85% 90%, rgba(120,80,20,0.15) 0%, transparent 55%),
+            radial-gradient(ellipse at 50% 50%, rgba(255,255,220,0.35) 0%, transparent 70%),
+            url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='pn2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23pn2)' opacity='0.09'/%3E%3C/svg%3E");
+          border: 4px solid #2c1a00;
+          border-radius: 2px;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          text-align: center;
+          position: relative;
+          z-index: 50; /* Below money (150) */
+          overflow: hidden;
+          cursor: default;
+
+          box-shadow:
+            0 8px 28px rgba(0,0,0,0.75),
+            inset 0 0 0 7px #e8d9a0,
+            inset 0 0 0 9px #2c1a00;
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .wanted-poster:hover {
+          transform: scale(1.03);
+          box-shadow:
+            0 14px 40px rgba(0,0,0,0.85),
+            inset 0 0 0 7px #e8d9a0,
+            inset 0 0 0 9px #2c1a00;
+        }
+
+        /* Blood/ink stain overlay — top right corner like reference */
+        .wanted-poster::before {
+          content: '';
+          position: absolute;
+          top: -8px; right: -8px;
+          width: 55px; height: 55px;
+          background: radial-gradient(ellipse at 60% 40%, rgba(130,20,20,0.55) 0%, rgba(90,10,10,0.2) 45%, transparent 70%);
+          z-index: 5;
+          pointer-events: none;
+          border-radius: 50%;
+          mix-blend-mode: multiply;
+        }
+
+        /* Stain bottom left */
+        .wanted-poster::after {
+          content: '';
+          position: absolute;
+          bottom: 38px; left: -5px;
+          width: 38px; height: 22px;
+          background: radial-gradient(ellipse at 50% 50%, rgba(130,20,20,0.45) 0%, transparent 70%);
+          z-index: 5;
+          pointer-events: none;
+          mix-blend-mode: multiply;
+        }
+
+        /* ── Inner content wrapper (sits inside the double border) ── */
+        .wp-inner {
+          padding: 10px 10px 8px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          flex: 1;
+        }
+
+        /* ── WANTED heading ── */
+        .wp-wanted {
+          font-family: 'Barlow Condensed', 'Impact', sans-serif;
+          font-size: clamp(28px, 8vw, 36px);
+          font-weight: 900;
+          color: #1a0800;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          line-height: 0.9;
+          margin: 4px 0 5px;
+          position: relative;
+          z-index: 2;
+          text-shadow:
+            2px 2px 0 rgba(0,0,0,0.25),
+            -1px -1px 0 rgba(255,255,200,0.3);
+          width: 100%;
+          text-align: center;
+        }
+
+        /* ── Thin double-rule under WANTED ── */
+        .wp-rule {
+          width: 100%;
+          height: 5px;
+          background:
+            linear-gradient(#2c1a00, #2c1a00) 0 0 / 100% 1.5px no-repeat,
+            linear-gradient(#2c1a00, #2c1a00) 0 3.5px / 100% 1.5px no-repeat;
+          margin: 0 0 5px;
+          position: relative;
+          z-index: 2;
+          opacity: 0.7;
+        }
+
+        /* ── PHOTO FRAME ── */
+        .wp-photo-wrap {
+          width: 100%;
+          aspect-ratio: 3 / 3.5;
+          border: 2.5px solid #2c1a00;
+          overflow: hidden;
+          background: #c5b080;
+          position: relative;
+          z-index: 2;
+          flex-shrink: 0;
+          box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+        .wp-photo-wrap img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: top center;
+          display: block;
+          filter: sepia(0.15) contrast(1.08) brightness(0.97);
+        }
+        .wp-initials-fallback {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: 44px;
+          font-weight: 900;
+          color: #3a2000;
+          background: linear-gradient(135deg, #d4b870, #c4a85a);
+          letter-spacing: 2px;
+        }
+
+        /* ── Thin rule above DOA ── */
+        .wp-rule-sm {
+          width: 100%;
+          height: 3px;
+          background:
+            linear-gradient(#2c1a00, #2c1a00) 0 0 / 100% 1px no-repeat,
+            linear-gradient(#2c1a00, #2c1a00) 0 2px / 100% 1px no-repeat;
+          margin: 5px 0 3px;
+          position: relative;
+          z-index: 2;
+          opacity: 0.55;
+        }
+
+        /* ── DEAD OR ALIVE ── */
+        .wp-doa {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: clamp(7px, 2.2vw, 9.5px);
+          font-weight: 800;
+          color: #2c1a00;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          margin: 0 0 1px;
+          position: relative;
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          white-space: nowrap;
+        }
+        .wp-doa-orn {
+          font-size: 10px;
+          opacity: 0.65;
+          font-style: normal;
+          line-height: 1;
+        }
+
+        /* ── NAME ── */
+        .wp-name {
+          font-family: 'Barlow Condensed', 'Impact', sans-serif;
+          font-size: clamp(11px, 3.8vw, 16px);
+          font-weight: 900;
+          color: #1a0800;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          line-height: 1.05;
+          margin: 2px 0 1px;
+          position: relative;
+          z-index: 2;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 100%;
+          text-align: center;
+          text-shadow: 1px 1px 0 rgba(255,255,200,0.4);
+        }
+
+        /* ── ROLE (small italic under name) ── */
+        .wp-role {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: clamp(6.5px, 1.8vw, 8px);
+          font-weight: 700;
+          color: #5a3a10;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          margin-bottom: 4px;
+          position: relative;
+          z-index: 2;
+          opacity: 0.85;
+        }
+
+        /* ── BOUNTY ROW — ฿ One Piece style ── */
+        .wp-bounty-row {
+          display: flex;
+          align-items: baseline;
+          justify-content: center;
+          gap: 2px;
+          position: relative;
+          z-index: 2;
+          margin: 3px 0 2px;
+          width: 100%;
+        }
+        .wp-berry {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: clamp(10px, 3vw, 14px);
+          font-weight: 900;
+          color: #2c1a00;
+          letter-spacing: 0;
+          line-height: 1;
+        }
+        .wp-amount {
+          font-family: 'Barlow Condensed', 'Impact', sans-serif;
+          font-size: clamp(11px, 3.5vw, 15px);
+          font-weight: 900;
+          color: #2c1a00;
+          letter-spacing: 0.5px;
+          line-height: 1;
+        }
+        .wp-dash {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: clamp(11px, 3.5vw, 15px);
+          font-weight: 900;
+          color: #2c1a00;
+          line-height: 1;
+        }
+
+        /* ── FINE PRINT ── */
+        .wp-fine {
+          font-size: 5.5px;
+          color: #5a3a10;
+          letter-spacing: 0.3px;
+          line-height: 1.3;
+          opacity: 0.6;
+          text-align: center;
+          max-width: 100%;
+          margin: 2px 0 3px;
+          position: relative;
+          z-index: 2;
+          font-family: 'Barlow Condensed', sans-serif;
+        }
+
+        /* ── BOTTOM STRIP: MARINE stamp + call btn ── */
+        .wp-bottom-strip {
+          width: 100%;
+          background: #2c1a00;
+          padding: 5px 8px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+          z-index: 3;
+          flex-shrink: 0;
+          margin-top: auto;
+        }
+        .wp-marine {
+          font-family: 'Barlow Condensed', 'Impact', sans-serif;
+          font-size: clamp(9px, 2.8vw, 12px);
+          font-weight: 900;
+          color: #c8a850;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          line-height: 1;
+          text-shadow: 0 0 8px rgba(200,168,80,0.5);
+        }
+        .wp-call-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 9px;
+          background: rgba(200,168,80,0.15);
+          border: 1px solid rgba(200,168,80,0.5);
+          border-radius: 2px;
+          color: #c8a850;
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: clamp(7px, 2vw, 9px);
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          text-decoration: none;
+          transition: background 0.2s;
+          cursor: pointer;
+          flex-shrink: 0;
+        }
+        .wp-call-btn:hover, .wp-call-btn:active {
+          background: rgba(200,168,80,0.3);
+          color: #f0d070;
+        }
+        .wp-call-btn svg { flex-shrink: 0; }
+      </style>
     </div>
   </div>
 
@@ -8322,13 +8700,13 @@
       { isHead: true, name: 'Padma Priya', role: 'Asst. Prof', dept: 'Symposium Coordinator', img: '', phone: 'Asst. Prof', linkedin: '#' },
 
       /* ── TOP LEADERSHIP ── */
-      { isHead: true, name: 'Pranav', role: 'President', dept: 'Hackverse', img: 'assets/committee/pranav_final.jpg', imgStyle: 'object-position: top;', phone: '9092339133', linkedin: '#' },
-      { isHead: true, name: 'Aravind', role: 'Treasurer', dept: 'Franchise Fiesta', img: 'assets/committee/aravind_hairtop.jpeg', imgStyle: 'object-position: top;', phone: '9025810169', linkedin: '#' },
-      { isHead: true, name: 'Lekeetha Sri', role: 'Secretary', dept: 'Design Decode', img: 'assets/committee/lekeetha_cropped.jpg', phone: '8838422893', linkedin: '#' },
-      { isHead: false, name: 'Arjhun O', role: 'Joint President', dept: '', img: 'assets/committee/arjun_portrait.jpg', imgStyle: 'object-position: top;', phone: '8610051714', linkedin: '#' },
-      { isHead: false, name: 'Naga Nandhini', role: 'Joint Secretary', dept: '', img: 'assets/committee/naga_nandhini_cropped.jpg', phone: '8248963693', linkedin: '#' },
-      { isHead: false, name: 'Hrithik', role: 'Joint Treasurer', dept: '', img: 'assets/committee/hrithik_cropped_hairtop.jpg', imgStyle: 'object-position: top;', phone: '8637440253', linkedin: '#' },
-      { isHead: false, name: 'Sriram S', role: 'Web Admin & Joint Coordinator', dept: '<span style="color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.8), 0 0 15px rgba(255,255,255,0.4); font-weight: 900; font-family: \'Barlow Condensed\', sans-serif; letter-spacing: 1.5px;">UTSAV DIGITAL ARCHITECT 2026</span>', img: 'assets/committee/sriram_cropped.jpg', phone: '9361123688', linkedin: '#' },
+      { isHead: true, name: 'Pranav', role: 'President', dept: 'Hackverse', img: 'assets/committee/pranav_final.jpg', imgStyle: 'object-position: top;', phone: '9092339133', linkedin: '#', hasGlow: true },
+      { isHead: true, name: 'Aravind', role: 'Treasurer', dept: 'Franchise Fiesta', img: 'assets/committee/aravind_hairtop.jpeg', imgStyle: 'object-position: top;', phone: '9025810169', linkedin: '#', hasGlow: true },
+      { isHead: true, name: 'Lekeetha Sri', role: 'Secretary', dept: 'Design Decode', img: 'assets/committee/lekeetha_cropped.jpg', phone: '8838422893', linkedin: '#', hasGlow: true },
+      { isHead: false, name: 'Arjhun O', role: 'Joint President', dept: '', img: 'assets/committee/arjun_portrait.jpg', imgStyle: 'object-position: top;', phone: '8610051714', linkedin: '#', hasGlow: true },
+      { isHead: false, name: 'Naga Nandhini', role: 'Joint Secretary', dept: '', img: 'assets/committee/naga_nandhini_cropped.jpg', phone: '8248963693', linkedin: '#', hasGlow: true },
+      { isHead: false, name: 'Hrithik', role: 'Joint Treasurer', dept: '', img: 'assets/committee/hrithik_cropped_hairtop.jpg', imgStyle: 'object-position: top;', phone: '8637440253', linkedin: '#', hasGlow: true },
+      { isHead: false, name: 'Sriram S', role: 'Web Admin & Joint Coordinator', dept: 'UTSAV DIGITAL ARCHITECT 2026', img: 'assets/committee/sriram_cropped.jpg', phone: '9361123688', linkedin: '#', hasGlow: true },
 
       /* ── HEAD COORDINATORS (4th Years) ── */
       { isHead: true, name: 'Hariharan', role: 'Head Coordinator', dept: 'TechnoTrace', img: 'assets/committee/Hariharan_final.jpg', imgStyle: 'object-position: top;', phone: '9159191239', linkedin: '#' },
@@ -8376,23 +8754,105 @@ function getInitials(name) {
 }
 
 function renderComm() {
+  // Bounty values by role
+  function getBounty(role) {
+    const r = (role || '').toLowerCase();
+    if (r.includes('symposium coordinator') || r.includes('asst. prof')) return ['12,00,000', true];
+    if (r.includes('president') && !r.includes('joint')) return ['10,00,000', false];
+    if (r.includes('treasurer') && !r.includes('joint')) return ['9,00,000', false];
+    if (r.includes('secretary') && !r.includes('joint')) return ['8,50,000', false];
+    if (r.includes('web admin') || r.includes('digital architect') || r.includes('web')) return ['8,00,000', false];
+    if (r.includes('joint president')) return ['7,00,000', false];
+    if (r.includes('joint secretary')) return ['6,50,000', false];
+    if (r.includes('joint treasurer')) return ['6,00,000', false];
+    if (r.includes('head coordinator')) return ['5,00,000', false];
+    if (r.includes('joint coordinator')) return ['2,50,000', false];
+    if (r.includes('multimedia')) return ['1,00,000', false];
+    return ['1,00,000', false];
+  }
+
   document.getElementById('comm-list').innerHTML = COMMITTEE.map(c => {
     const initials = getInitials(c.name);
     const hasRealPhoto = c.img && !c.img.includes('ui-avatars.com');
+    const [bountyNum, isFaculty] = getBounty(c.role);
+    const isCallable = c.phone && c.phone !== 'Asst. Prof' && c.phone !== '+910000000000';
+
+    const opos = (c.imgStyle && c.imgStyle.includes('top')) ? 'top center' : 'center top';
+    // Apply Red color to Top 7 Leadership members, Dark for others
+    // Apply Dark color to ALL roles as per latest request (matching Asst. Prof)
+    let roleClass = 'role-dark';
+    let displayRole = c.role;
+
+    if (c.name === 'Sriram S') {
+      displayRole = 'WEB ADMIN & JOINT COORDINATOR';
+    }
+
+
+
+
+    // Prioritize the first 10 members to load in the "first load" itself
+    const listIndex = COMMITTEE.indexOf(c);
+    const isEager = listIndex < 10;
+
+
+    const photoContent = hasRealPhoto
+      ? `<img src="${c.img}" alt="${c.name}"
+           loading="${isEager ? 'eager' : 'lazy'}"
+           ${isEager ? 'fetchpriority="high"' : ''}
+           decoding="async"
+           style="width:100%;height:100%;object-fit:cover;object-position:${opos};display:block;filter:sepia(0.08) contrast(1.22) brightness(1.02); background: rgba(0,0,0,0.15);"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+         <div class="wp-initials-fallback" style="display:none;">${initials}</div>`
+      : `<div class="wp-initials-fallback">${initials}</div>`;
+
+
     return `
-    <div class="comm-card">
-      ${hasRealPhoto ? `<img src="${c.img}" class="comm-img" alt="${c.name}" style="${c.imgStyle ? c.imgStyle : ''}" onerror="this.parentElement.innerHTML='<div class=&quot;comm-initials&quot;>${initials}</div>'">` : `<div class="comm-initials">${initials}</div>`}
-      <div class="comm-overlay">
-        <div class="comm-dtl">
-          <div class="comm-role-p">${c.role}</div>
-          <div class="comm-name-p" title="${c.name}">${c.name}</div>
-          <div class="comm-bio">${c.dept || ''}</div>
-          <div class="comm-footer">
-            <a href="tel:${c.phone || ''}" class="comm-btn" title="Call ${c.name}">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
-            </a>
-          </div>
+    <div class="wanted-poster ${roleClass}">
+      <div class="wp-inner">
+        <!-- WANTED -->
+        <div class="wp-wanted">WANTED</div>
+        <div class="wp-rule"></div>
+
+        <!-- PHOTO -->
+        <div class="wp-photo-wrap">${photoContent}</div>
+
+        <!-- DOA line -->
+        <div class="wp-rule-sm"></div>
+        <div class="wp-doa">
+          <span class="wp-doa-orn">&#10022;</span>
+          DEAD OR ALIVE
+          <span class="wp-doa-orn">&#10022;</span>
         </div>
+        <div class="wp-rule-sm"></div>
+
+        <!-- Name -->
+        <div class="wp-name" title="${c.name}">${c.name}</div>
+        <!-- Role -->
+        <div class="wp-role">${displayRole}</div>
+        <!-- Event Tag -->
+        ${c.dept ? `<div class="wp-event-tag">#${c.dept}</div>` : ''}
+
+        <!-- Bounty ฿ row -->
+        <div class="wp-bounty-row">
+          <span class="wp-berry">฿</span>
+          <span class="wp-amount">${bountyNum}-</span>
+        </div>
+
+        <!-- Fine print -->
+        <div class="wp-fine">KONO MEMBER WA CSEUTSAV'26 EVENTS NI TOKOU SURU JITSUZAISURU JINBUTSU DESU. SHITAISHO SHITEMO IISAI MUKANKEDETH.</div>
+      </div>
+
+      <!-- Bottom strip: MARINE + Contact -->
+      <div class="wp-bottom-strip">
+        <span class="wp-marine">MARINE</span>
+        ${
+          isCallable
+            ? `<a href="tel:${c.phone}" class="wp-call-btn">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.6 2.68h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
+                CONTACT
+              </a>`
+            : `<span class="wp-call-btn" style="opacity:0.35;cursor:default;pointer-events:none;">FACULTY</span>`
+        }
       </div>
     </div>`;
   }).join('');
@@ -8827,7 +9287,7 @@ function renderComm() {
         if (i <= maxSlots) {
           slotEl.style.display = '';
           card.classList.remove('pkt-card-locked');
-          card.onclick = () => pktOpenSlot(i);
+          card.onclick = () => { playMechanicalSnap(); doHapticSnap(); pktOpenSlot(i); };
         } else {
           slotEl.style.display = 'none'; // hide unused slots entirely
           card.onclick = null;
@@ -8993,8 +9453,8 @@ function renderComm() {
                 oninput="this.value=this.value.replace(/[^0-9]/g,'');if(this.value.length>10)this.value=this.value.slice(0,10)">
             </div>
           </div>
-          <button class="pkt-form-save-btn" onclick="pktSaveSlot(${slotIdx})">✦ Confirm Seat</button>
-          <button class="pkt-form-cancel-btn" onclick="pktCloseOverlay()">Cancel</button>
+          <button class="pkt-form-save-btn" onclick="playMechanicalSnap(); doHapticSnap(); pktSaveSlot(${slotIdx})">✦ Confirm Seat</button>
+          <button class="pkt-form-cancel-btn" onclick="playMechanicalSnap(); doHapticSnap(); pktCloseOverlay()">Cancel</button>
         </div>
       `;
       document.body.appendChild(overlay);
