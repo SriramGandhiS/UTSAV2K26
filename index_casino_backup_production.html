@@ -548,7 +548,7 @@
       padding-top: 64px;
       position: relative;
       background: var(--black);
-      overflow: hidden;
+      overflow: hidden
     }
 
     .hero::before {
@@ -559,68 +559,15 @@
       width: 60%;
       height: 100%;
       background: radial-gradient(ellipse at 80% 30%, rgba(232, 84, 26, .07) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 1;
+      pointer-events: none
     }
 
-    /* Falling Poker Coins (Atmosphere) */
-    .poker-coin {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: radial-gradient(circle, #d4af37 20%, #8a6d3b 100%);
-      border-radius: 50%;
-      border: 2px dashed rgba(0,0,0,0.3);
-      opacity: 0.12;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* Decorative Floating Cards (Atmosphere) */
-    .deco-card {
-      position: absolute;
-      width: 80px;
-      height: 120px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(212,175,55,0.2);
-      border-radius: 6px;
-      backdrop-filter: blur(4px);
-      opacity: 0.08;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    @keyframes coin-fall {
-      0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.12; }
-      90% { opacity: 0.12; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-    }
-
-    @keyframes card-drift {
-      0%, 100% { transform: translate(0,0) rotate(var(--rot)); }
-      50% { transform: translate(10px, 20px) rotate(calc(var(--rot) + 5deg)); }
-    }
-
-    @keyframes badge-pulse-slow {
-      0%, 100% { box-shadow: 0 0 8px rgba(201,164,76,0.08); border-color: rgba(201,164,76,0.2); }
-      50% { box-shadow: 0 0 12px rgba(201,164,76,0.18); border-color: rgba(201,164,76,0.4); }
-    }
-
-    @keyframes coin-shake {
-      0%, 100% { transform: translate(0, 0) rotate(var(--r, 0deg)); }
-      25% { transform: translate(1px, -2px) rotate(calc(var(--r, 0deg) + 2deg)); }
-      50% { transform: translate(-1px, 1px) rotate(calc(var(--r, 0deg) - 1deg)); }
-      75% { transform: translate(2px, -1px) rotate(calc(var(--r, 0deg) + 1deg)); }
-    }
-
+    /* mobile-first: hero stays single column */
     .hero-left {
       padding: 48px 24px 32px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      position: relative;
-      z-index: 10;
+      justify-content: center
     }
 
     .hero-meta {
@@ -630,7 +577,7 @@
       letter-spacing: 3px;
       color: var(--muted);
       text-transform: uppercase;
-      margin-bottom: 14px;
+      margin-bottom: 14px
     }
 
     .hero-h {
@@ -641,15 +588,15 @@
       text-transform: uppercase;
       letter-spacing: -1px;
       margin-top: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 20px
     }
 
     .hero-h .wh {
-      color: #fff;
+      color: #fff
     }
 
     .hero-h .or {
-      color: var(--orange);
+      color: var(--orange)
     }
 
     .hero-desc {
@@ -1327,106 +1274,72 @@
       width: 100%;
       max-width: 400px;
       aspect-ratio: 4/3;
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
-      border: 1px solid rgba(180, 150, 80, 0.25);
+      border: 1px solid var(--border2);
       background: var(--card);
-      position: relative;
-      box-shadow:
-        0 30px 80px rgba(0,0,0,0.8),
-        0 0 1px rgba(180,150,80,0.3);
+      position: relative
     }
 
     .poster-inner {
       position: absolute;
       inset: 0;
-      background: linear-gradient(145deg, #111111 0%, #161413 50%, #111111 100%);
+      background: linear-gradient(135deg, #1a0a00, #0f0500, #1a0800);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      overflow: hidden;
+      gap: 8px;
+      overflow: hidden
     }
 
-    /* Subtle ambient warm light */
     .poster-inner::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 30% 25%, rgba(180,150,80,0.06), transparent 55%),
-        radial-gradient(ellipse at 70% 75%, rgba(140,110,60,0.04), transparent 55%);
-      pointer-events: none;
+      top: -30%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(232, 84, 26, .22) 0%, transparent 65%)
     }
 
     .poster-ot {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(48px, 12vw, 88px);
-      font-weight: 950;
-      letter-spacing: 3px;
+      font-size: clamp(50px, 12vw, 88px);
+      font-weight: 900;
+      letter-spacing: 4px;
       text-transform: uppercase;
-      background: linear-gradient(180deg, #c9a44c 0%, #e8c96a 40%, #b8943e 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.7));
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--orange);
+      opacity: .65;
       position: relative;
-      z-index: 2;
-      line-height: 0.9;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .poster-ot-sub {
-      font-size: clamp(28px, 7vw, 44px);
-      letter-spacing: 14px;
-      margin-top: 4px;
+      z-index: 1;
+      line-height: 1
     }
 
     .poster-dt {
       position: relative;
-      z-index: 2;
+      z-index: 1;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 3px;
-      color: rgba(200,170,90,0.7);
+      color: var(--orange);
       text-transform: uppercase;
-      padding: 5px 16px;
-      border: 1px solid rgba(180,150,80,0.2);
-      border-radius: 50px;
-      background: rgba(20,20,18,0.9);
-      margin-top: 8px;
+      padding: 5px 14px;
+      border: 1px solid rgba(232, 84, 26, .4);
+      border-radius: 3px;
+      background: rgba(232, 84, 26, .08)
     }
 
     .poster-su {
       position: relative;
-      z-index: 2;
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: rgba(255, 255, 255, .2);
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-top: 2px;
-    }
-
-    /* Falling poker coins */
-    .poster-coin {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
       z-index: 1;
-      animation: coin-fall linear infinite;
-      top: -30px;
-    }
-
-    @keyframes coin-fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      8% { opacity: 0.12; }
-      85% { opacity: 0.12; }
-      100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, .25);
+      text-transform: uppercase;
+      font-weight: 600
     }
 
     /* OUTLINE BAND */
@@ -3710,11 +3623,9 @@
     .ev-item-card {
       width: 100%;
       max-width: 450px;
-      background: rgba(18, 18, 18, 0.45); /* Glassy dark base */
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle edge shine */
-      border-radius: 14px;
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
       padding: 16px;
       display: flex;
       flex-direction: column;
@@ -3722,27 +3633,12 @@
       text-align: center;
       gap: 12px;
       cursor: pointer;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform .2s ease, border-color .2s ease
     }
 
     .ev-item-card:hover {
-      transform: translateY(-5px) scale(1.02);
-      border-color: rgba(212, 175, 55, 0.7);
-      background: rgba(25, 25, 25, 0.55);
-      box-shadow: 
-        0 15px 35px rgba(0,0,0,0.4),
-        0 0 20px rgba(212, 175, 55, 0.15);
-    }
-
-    /* Cinematic Card Reveal */
-    @keyframes card-deal {
-      0% { opacity: 0; transform: translateY(60px) rotateX(-25deg); filter: blur(4px); }
-      100% { opacity: 1; transform: translateY(0) rotateX(0deg); filter: blur(0px); }
-    }
-
-    .card-reveal-stagger {
-      animation: card-deal 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+      transform: translateY(-4px);
+      border-color: var(--orange)
     }
 
     @media (max-width: 600px) {
@@ -4711,25 +4607,29 @@
       content: '';
       position: absolute;
       inset: 0;
-      border-radius: 20px;
-      background: rgba(0, 0, 0, 0.5);
-      border: 2px solid rgba(255, 68, 68, 0.4);
+      border-radius: 24px;
+      background: rgba(232, 84, 26, .1);
+      border: 1.5px solid rgba(232, 84, 26, .3);
       transform: rotate(45deg);
-      box-shadow: 0 0 20px rgba(255, 68, 68, 0.2);
+      transition: all .4s ease
     }
 
     .form-container:hover .reg-hero-icon::before {
-      border-color: #ff4444;
-      box-shadow: 0 0 30px rgba(255, 68, 68, 0.4);
+      transform: rotate(90deg);
+      border-color: var(--orange)
     }
 
     .reg-hero-icon svg {
-      width: 40px;
-      height: 40px;
-      fill: #ff4444;
-      filter: drop-shadow(0 0 12px rgba(255, 0, 0, 0.8));
+      width: 36px;
+      height: 36px;
+      stroke: var(--orange);
+      stroke-width: 1.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
       position: relative;
       z-index: 1;
+      filter: drop-shadow(0 0 8px rgba(232, 84, 26, .5))
     }
 
     @media(max-width:767px) {
@@ -5623,25 +5523,58 @@
   <div class="sub-nav-bar"
     style="position:relative;margin-top:64px;height:42px;background:rgba(10,10,10,0.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:90">
     <div style="font-size:10px;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase;opacity:0.8">♣ APRIL 13-18 · PSNA MAIN FLOOR</div>
-
+    <div class="traffic-box" id="traffic-box"
+      style="display:flex; align-items:center; gap:10px; opacity:0; transition:opacity 0.5s ease;">
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0px">
+        <span id="t-status"
+          style="font-size:9px; font-weight:900; color:var(--gold); text-transform:uppercase; letter-spacing:1px">Table Stakes...</span>
+        <div style="width:100px; height:4px; background:rgba(212,175,55,0.1); border-radius:2px; overflow:hidden; border:1px solid rgba(212,175,55,0.2)">
+          <div id="t-bar" style="width:0%; height:100%; background:var(--gold); transition:width 1s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;"></div>
+        </div>
+      </div>
+      <div style="display:flex; gap:3px; align-items:flex-end; height:18px">
+        <div id="t-low"
+          style="width:4px; height:6px; background:var(--gold); border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
+        </div>
+        <div id="t-mid"
+          style="width:4px; height:6px; background:var(--gold); border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
+        </div>
+        <div id="t-high"
+          style="width:4px; height:12px; background:var(--neon-red); border-radius:1px; opacity:0.3; transition:height 0.3s, opacity 0.3s">
+        </div>
+      </div>
+    </div>
   </div>
+  <style>
+    @keyframes t-pulse {
+      0% {
+        filter: brightness(1);
+      }
 
+      50% {
+        filter: brightness(1.5);
+        box-shadow: 0 0 4px currentColor;
+      }
+
+      100% {
+        filter: brightness(1);
+      }
+    }
+
+    .t-active {
+      animation: t-pulse 2s infinite;
+      opacity: 1 !important;
+    }
+  </style>
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <div class="poker-coin" style="left:10%; animation: coin-fall 8s infinite linear;"></div>
-    <div class="poker-coin" style="left:30%; animation: coin-fall 10s infinite linear -2s;"></div>
-    <div class="poker-coin" style="left:55%; animation: coin-fall 7s infinite linear -5s;"></div>
-    <div class="poker-coin" style="left:75%; animation: coin-fall 9s infinite linear -1s;"></div>
-    <div class="poker-coin" style="left:90%; animation: coin-fall 11s infinite linear -4s;"></div>
-    <div class="deco-card" style="top:10%; left:5%; --rot:-15deg; animation: card-drift 12s infinite ease-in-out;"></div>
-    <div class="deco-card" style="bottom:10%; right:5%; --rot:10deg; animation: card-drift 15s infinite ease-in-out -3s;"></div>
-
     <!-- Watermark ghost names -->
     <div class="hero-left">
+      <div class="casino-badge">EST. 2026 · VIP ACCESS</div>
       <h1 class="hero-h">
-        <span class="wh">THE</span><span class="or"> CSEUTSAV'26</span>
-        <br><span class="wh">BEGINS</span>
+        <span class="gold-text">PSNA</span><br>
+        <span class="neon-purple">CSEUTSAV'26</span>
       </h1>
       <p class="hero-desc">Place your bets on innovation. The ultimate high-stakes technical floor is here. Compete with the best, take home the grand jackpot.</p>
       <div class="hero-btns">
@@ -5659,18 +5592,9 @@
     <div class="hero-right">
       <div class="poster">
         <div class="poster-inner">
-          <!-- Falling poker coins -->
-          <div class="poster-coin" style="width:22px; height:22px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:12%; animation-duration:6s; animation-delay:0s;"></div>
-          <div class="poster-coin" style="width:18px; height:18px; background:radial-gradient(circle at 35% 35%, #b8943e, #5a4a28); border:1px dashed rgba(0,0,0,0.3); left:55%; animation-duration:8s; animation-delay:2s;"></div>
-          <div class="poster-coin" style="width:15px; height:15px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:80%; animation-duration:7s; animation-delay:4s;"></div>
-          <div class="poster-coin" style="width:12px; height:12px; background:radial-gradient(circle at 35% 35%, #b8943e, #5a4a28); border:1px dashed rgba(0,0,0,0.3); left:35%; animation-duration:9s; animation-delay:1s;"></div>
-          <div class="poster-coin" style="width:20px; height:20px; background:radial-gradient(circle at 35% 35%, #c9a44c, #6b5a2e); border:1px dashed rgba(0,0,0,0.3); left:92%; animation-duration:7.5s; animation-delay:3s;"></div>
-
-          <div class="poster-ot">
-            <span>CSEUTSAV</span>
-            <span class="poster-ot-sub">2K26</span>
-          </div>
-          <div class="poster-dt">April 13 to April 18 · PSNA CSE · Dindigul</div>
+          <div class="poster-ot">CSEUTSAV'26</div>
+          <div class="poster-dt">April 13 to April 18</div>
+          <div class="poster-su">PSNA CSE · Dindigul</div>
         </div>
       </div>
     </div>
@@ -5806,23 +5730,23 @@
 
       #snooker-cue {
         position: absolute;
-        width: 12px;
-        height: 250px;
-        background: linear-gradient(to bottom, #29150c 0%, #a46d42 40%, #e0bc8f 95%, #111 95%, #111 98%, #fff 98%, #f4e8df 100%);
+        width: 250px;
+        height: 12px;
+        background: linear-gradient(to left, #29150c 0%, #a46d42 40%, #e0bc8f 95%, #111 95%, #111 98%, #fff 98%, #f4e8df 100%);
         border-radius: 6px;
-        box-shadow: 15px 0 25px rgba(0,0,0,0.6), inset 2px 0 2px rgba(255,255,255,0.2);
+        box-shadow: 0 15px 25px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2);
         z-index: 10;
         opacity: 0;
         pointer-events: none;
-        transform-origin: center bottom;
+        transform-origin: left center;
       }
 
       @keyframes cue-hit {
-        0% { transform: translateY(-150px); opacity: 0; }
-        20% { transform: translateY(-40px); opacity: 1; }
-        50% { transform: translateY(-70px); opacity: 1; }
-        65% { transform: translateY(10px); opacity: 1; }
-        100% { transform: translateY(-30px); opacity: 0; }
+        0% { transform: translate(150px, 0); opacity: 0; }
+        20% { transform: translate(40px, 0); opacity: 1; }
+        50% { transform: translate(70px, 0); opacity: 1; }
+        65% { transform: translate(-10px, 0); opacity: 1; }
+        100% { transform: translate(30px, 0); opacity: 0; }
       }
 
       @keyframes btn-impact {
@@ -5838,15 +5762,15 @@
       position: relative;
       background-color: #0b4522; /* Premium Baize Green */
       background-image: 
-      radial-gradient(ellipse at center, rgba(0,0,0,0) 20%, rgba(0,0,0,0.7) 100%),
-      url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%220.1%22 blend-mode=%22overlay%22/%3E%3C/svg%3E');
+        radial-gradient(ellipse at center, rgba(0,0,0,0) 20%, rgba(0,0,0,0.7) 100%),
+        url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%220.1%22 blend-mode=%22overlay%22/%3E%3C/svg%3E');
       border: 12px solid #2b1810; /* Dark thick wooden trim */
       border-radius: 16px;
       box-shadow: 
-      inset 0 0 40px 10px rgba(0,0,0,0.9), /* Internal cushion drop shadow */
-      0 0 0 2px #4a2f1d, /* Outer lighter wood trim */
-      0 20px 40px rgba(0,0,0,0.8), /* Outer drop shadow */
-      0 0 30px rgba(212,175,55,0.15); /* Soft ambient gold glow */
+        inset 0 0 40px 10px rgba(0,0,0,0.9), /* Internal cushion drop shadow */
+        0 0 0 2px #4a2f1d, /* Outer lighter wood trim */
+        0 20px 40px rgba(0,0,0,0.8), /* Outer drop shadow */
+        0 0 30px rgba(212,175,55,0.15); /* Soft ambient gold glow */
       overflow: hidden;
     ">
       <!-- Ambient Light -->
@@ -5869,11 +5793,9 @@
       <div id="snooker-cue"></div>
 
       <div style="position: relative; z-index: 1;">
-        <div class="reg-hero-icon" style="color:#ff4444; border:none; background:transparent; box-shadow:none; display: flex; align-items: center; justify-content: center;">
-          <!-- GLOWING RED POKER ICON (SPADE) -->
-          <svg viewBox="0 0 24 24" style="width: 48px; height: 48px; fill: #ff4444; filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.9));">
-            <path d="M12 2l-7 7.5c-2 2.2-2 5.5 0 7.7 2 2.1 5.3 2.1 7.3 0C12.3 17.2 12 17.5 12 17.5s-0.3-0.3-0.3-0.3c2 2.1 5.3 2.1 7.3 0 2-2.2 2-5.5 0-7.7L12 2z" transform="rotate(180 12 12)"></path>
-            <path d="M12 17v4m-3 1h6" stroke="#ff4444" stroke-width="2" stroke-linecap="round"></path>
+        <div class="reg-hero-icon" style="color:var(--gold);border-color:var(--gold);background:rgba(0,0,0,0.3);box-shadow:0 5px 15px rgba(0,0,0,0.5)">
+          <svg viewBox="0 0 24 24">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
           </svg>
         </div>
         <h3
@@ -5896,8 +5818,8 @@
         const cont = btn.closest('.form-container').getBoundingClientRect();
         const rect = btn.getBoundingClientRect();
         
-        cue.style.left = (rect.left - cont.left + (rect.width / 2) - 6) + 'px';
-        cue.style.top = (rect.top - cont.top - 250) + 'px';
+        cue.style.top = (rect.top - cont.top + (rect.height / 2) - 6) + 'px';
+        cue.style.left = (rect.left - cont.left + rect.width) + 'px';
         
         cue.style.animation = 'none';
         btn.style.animation = 'none';
@@ -5907,7 +5829,7 @@
         
         setTimeout(() => {
           btn.style.animation = 'btn-impact 0.3s ease-out';
-          try { navigator.vibrate([40]); } catch(e){}
+          try { navigator.vibrate([30]); } catch(e){}
         }, 390);
         
         setTimeout(() => {
@@ -6559,6 +6481,7 @@
       buildObs(); buildTicker(); renderTiles();
       renderComm(); renderContacts(); renderAllEvents();
       animStats(); tick(); setInterval(tick, 1000);
+      initTraffic();
       initHeroVideo();
       // Dummy function or minor effect to avoid ReferenceError
       if (typeof initHeroParticles !== 'function') {
@@ -6730,7 +6653,52 @@
       draw();
     }
 
+    function initTraffic() {
+      const box = document.getElementById('traffic-box');
+      const low = document.getElementById('t-low'), mid = document.getElementById('t-mid'), high = document.getElementById('t-high');
+      const status = document.getElementById('t-status');
+      if (!box) return;
 
+      const updateTraffic = (regs) => {
+        // Logic: Scale based on registrations (0-100: Low/Easy, 100-500: Moderate, 500+: High/Steady)
+        // We use local regs + a random baseline to simulate real server data
+        const baseline = 45; 
+        const totalRegs = baseline + regs;
+        
+        let val = 10; // Default
+        if (totalRegs < 100) {
+          val = 15 + Math.random() * 10;
+          status.textContent = 'LOW TRAFFIC'; status.style.color = '#2ecc71';
+          document.getElementById('t-bar').style.background = '#2ecc71';
+          low.classList.add('t-active'); low.style.height = '10px';
+        } else if (totalRegs < 500) {
+          val = 40 + Math.random() * 15;
+          status.textContent = 'STEADY TRAFFIC'; status.style.color = '#f1c40f';
+          document.getElementById('t-bar').style.background = '#f1c40f';
+          low.classList.add('t-active');
+          mid.classList.add('t-active'); mid.style.height = '14px';
+        } else {
+          val = 75 + Math.random() * 20;
+          status.textContent = 'HIGH DENSITY'; status.style.color = '#e74c3c';
+          document.getElementById('t-bar').style.background = '#e74c3c';
+          low.classList.add('t-active');
+          mid.classList.add('t-active');
+          high.classList.add('t-active'); high.style.height = '18px';
+        }
+        
+        document.getElementById('t-bar').style.width = Math.min(100, val) + '%';
+      };
+
+      const update = () => {
+        const regs = JSON.parse(localStorage.getItem('u26r') || '[]').length;
+        [low, mid, high].forEach(el => { el.classList.remove('t-active'); el.style.height = '6px'; });
+        updateTraffic(regs);
+        box.style.opacity = '1';
+      };
+
+      update();
+      setInterval(update, 15000 + Math.random() * 15000); // Less frequent updates
+    }
 
     /* ════════ OUTLINE + TICKER ════════ */
     function buildObs() {
@@ -6747,21 +6715,16 @@
     /* ════════ RENDER TILES ════════ */
     /* ════════ RENDER TILES (CASINO STYLE) ════════ */
     function renderTile(e, isFeatured) {
-      const suits = [
-        { s: '♠', c: 'var(--gold)' }, 
-        { s: '♥', c: '#ff4d4d' }, 
-        { s: '♦', c: '#ff4d4d' }, 
-        { s: '♣', c: '#ffffff' }
-      ];
-      const suitObj = suits[idx % 4];
-      const iconColor = suitObj.c;
-      const casinoIcon = suitObj.s;
+      const startTime = e.time === 'TBA' ? 'TBA' : e.time.split(' to ')[0].trim();
+      const suits = ['♠', '♥', '♦', '♣'];
+      const suit = suits[Math.floor(Math.random() * suits.length)];
       
-      const hasConflict = !!e.isSimultaneous;
+      // Highlight global timeline conflicts natively
+      const hasConflict = EVS.some(ev => ev.time !== 'TBA' && e.time !== 'TBA' && ev.time === e.time && ev.id !== e.id);
       
       let teamText = '';
       if (e.type === 'Solo') {
-        teamText = 'SINGLE ENTRY';
+        teamText = 'SINGLE';
       } else if (e.minTeam === e.maxTeam) {
         teamText = `${e.minTeam} MEMBERS`;
       } else {
@@ -6769,44 +6732,36 @@
       }
       
       return `
-    <div class="ev-tile" onclick="openEvMod('${e.id}')" 
-         style="display:flex; flex-direction:column; background:rgba(15,15,15,0.75); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(212,175,55,0.25); border-radius:16px; overflow:hidden; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); min-height:380px;">
-      
-      <div class="ev-tile-top" style="position: relative; aspect-ratio: 16/10; overflow:hidden;">
-        <img src="${e.poster}" style="width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease;" alt="${e.name}">
-        <div style="position:absolute; inset:0; background:linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.85));"></div>
-        <div style="position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.6); backdrop-filter:blur(5px); color:${iconColor}; padding:6px 12px; border-radius:8px; font-weight:900; font-size:16px; border:1px solid ${iconColor}88; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">${casinoIcon}</div>
-      </div>
-
-      <div class="ev-tile-body" style="padding: 20px; display: flex; flex-direction: column; flex: 1; gap: 15px;">
-        
-        <!-- Header: Event Name -->
-        <div style="font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:950; color:#fff; text-transform:uppercase; letter-spacing:1px; line-height:1.1;">
-          ${e.name}
+    <div class="ev-tile" onclick="openEvMod('${e.id}')">
+      <div class="ev-tile-top" style="height:250px">
+        <div class="ev-tile-bg">
+          <img src="${e.poster}" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0" alt="${e.name}">
+          <div style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);color:var(--gold);padding:4px 10px;border-radius:4px;font-weight:900;font-size:16px;z-index:2;border:1px solid var(--gold)">${suit}</div>
         </div>
-
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-          <!-- Full Time Range (Red if conflict) -->
-          <div style="display:flex; align-items:center; gap:12px; font-size:13px; font-weight:800; color:${hasConflict ? '#ff4d4d' : 'var(--gold)'}; letter-spacing:0.5px;">
-            <span style="font-size:16px; opacity:0.9;">⏰</span> ${e.time}
+      </div>
+      <div class="ev-tile-body" style="padding: 16px; background: rgba(12,12,12,0.95); display: flex; flex-direction: column;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <!-- Time block with dynamic conflict UI -->
+          <div style="background: ${hasConflict ? 'rgba(231,76,60,0.1)' : 'rgba(212,175,55,0.05)'}; 
+                      border: 1px solid ${hasConflict ? '#e74c3c' : 'rgba(212,175,55,0.3)'}; 
+                      border-radius: 4px; padding: 6px 10px; font-weight: 700; font-size: 13px; 
+                      color: ${hasConflict ? '#ff6b6b' : 'var(--gold)'}; 
+                      box-shadow: ${hasConflict ? '0 0 10px rgba(231,76,60,0.2)' : 'none'};
+                      letter-spacing: 0.5px;">
+            <span style="font-size:14px; margin-right:4px;">♦</span> ${startTime}
           </div>
           
-          <!-- Members Count (One by one) -->
-          <div style="display:flex; align-items:center; gap:12px; font-size:13px; font-weight:700; color:#eee; opacity:0.9;">
-            <span style="color:${iconColor}; font-size:16px;">${casinoIcon}</span> ${teamText}
-          </div>
-
-          <!-- Date Badge -->
-          <div style="display:flex; align-items:center; gap:10px; font-size:13px; font-weight:800; color:#fff;">
-            <span style="font-size:16px; opacity:0.9;">📅</span> ${e.date}
+          <!-- Team size badge -->
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.15); 
+                      border-radius: 4px; padding: 6px 10px; font-weight: 700; font-size: 13px; color: #ccc;
+                      letter-spacing: 0.5px;">
+            <span style="font-size:14px; margin-right:4px; color:var(--gold);">♠</span> ${teamText}
           </div>
         </div>
 
-        <!-- Action Area -->
-        <div style="margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
-          <div class="ev-tile-link" style="border: 1px solid var(--gold); background: rgba(212,175,55,0.08); color: var(--gold); font-weight: 800; letter-spacing: 2px; padding: 13px; border-radius: 10px; text-transform: uppercase; text-align: center; font-size: 11px; transition: all 0.3s ease;">
-            REGISTER NOW <span style="margin-left: 5px;">→</span>
-          </div>
+        <div class="ev-tile-link" style="border: 1px solid var(--gold); background: transparent; color: var(--gold); font-weight: 700; letter-spacing: 2px; padding: 12px; border-radius: 6px; text-transform: uppercase; text-align: center; transition: all 0.2s;">
+          REGISTER NOW <span style="margin-left: 5px;">→</span>
         </div>
       </div>
     </div>
@@ -9015,29 +8970,17 @@ function doPost(e) {
       const container = document.getElementById('allev-list');
       if (!container) return;
       
-      const cards = EVS.map((e, idx) => {
-        const suits = [
-          { s: '♠', c: 'var(--gold)' }, 
-          { s: '♥', c: '#ff4d4d' }, 
-          { s: '♦', c: '#ff4d4d' }, 
-          { s: '♣', c: '#ffffff' }
-        ];
-        const suitObj = suits[idx % 4];
-        const delay = (idx * 0.05).toFixed(2);
-        
-        return `<div class="ev-item-card card-reveal-stagger" 
-                     style="animation-delay:${delay}s; display:flex; flex-direction:column; min-height:180px; text-align:center; align-items:center; gap:12px;" 
-                     onclick="closeAllEvents();openEvMod('${e.id}')">
-          
-          <div style="width:48px; height:48px; border-radius:12px; background:rgba(255,255,255,0.03); border:1px solid ${suitObj.c}66; display:flex; align-items:center; justify-content:center; font-size:24px; color:${suitObj.c}; box-shadow:0 4px 15px rgba(0,0,0,0.2); flex-shrink:0;">${suitObj.s}</div>
-          
-          <div style="flex-grow:1; display:flex; flex-direction:column; justify-content:center;">
-            <div class="comm-name" style="font-size:17px; margin-bottom:4px; line-height:1.2;">${e.name}</div>
-            <div style="font-size:10px; font-weight:800; letter-spacing:1.5px; color:var(--orange); text-transform:uppercase; opacity:0.8;">${e.label}</div>
+      const cards = EVS.map(e => {
+        return `<div class="ev-item-card" onclick="closeAllEvents();openEvMod('${e.id}')">
+          <div style="display:flex; flex-direction:column; gap:14px; align-items:center; text-align:center; width:100%">
+            <div style="width:54px;height:54px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 4px 15px rgba(0,0,0,0.2)">${e.icon}</div>
+            <div>
+              <div class="comm-name" style="font-size:18px;margin-bottom:4px">${e.name}</div>
+              <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--orange);text-transform:uppercase">${e.label}</div>
+            </div>
           </div>
-
-          <div style="margin-top:auto; width:100%; display:flex; flex-wrap:wrap; gap:6px; justify-content:center; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05);">
-            ${[['📅', e.date], ['⏰', e.time]].map(([i, t]) => `<div style="font-size:10px; font-weight:600; color:#fff; padding:4px 8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:4px; display:flex; gap:6px; align-items:center"><span>${i}</span>${t}</div>`).join('')}
+          <div style="display:flex;flex-wrap:wrap;gap:6px;width:100%;justify-content:center">
+            ${[['📅', e.date], ['⏰', e.time]].map(([i, t]) => `<div style="font-size:11px;font-weight:600;color:var(--muted2);padding:4px 8px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;display:flex;gap:6px;align-items:center"><span>${i}</span>${t}</div>`).join('')}
           </div>
         </div>`;
       }).join('');
