@@ -2096,7 +2096,24 @@
       border-top: 2px solid var(--orange);
       border-radius: 20px 20px 0 0;
       overflow-y: auto;
-      animation: su .3s cubic-bezier(.22, .68, 0, 1.1)
+      animation: su .3s cubic-bezier(.22, .68, 0, 1.1);
+      transition: all 0.3s ease;
+    }
+
+    .reg-sheet-fullscreen {
+      height: 100svh !important;
+      max-height: 100svh !important;
+      border-radius: 0 !important;
+      border-top: none !important;
+    }
+
+    .reg-sheet-fullscreen .rsc {
+      padding: 0 !important;
+    }
+
+    .reg-sheet-fullscreen .pkt-room,
+    .reg-sheet-fullscreen .rlt-room {
+      min-height: 100svh !important;
     }
 
     @keyframes su {
@@ -5961,6 +5978,872 @@
       z-index: 9999 !important;
       position: fixed !important; /* Force fixed to ensure it moves relative to screen */
     }
+
+    /* ═══════════════════════════════════════════════════
+       POKER TABLE TEAM SCREEN — scoped to #step-1 only
+    ═══════════════════════════════════════════════════ */
+    #step-1 {
+      position: relative;
+      overflow: hidden;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    /* Purple ambient room */
+    .pkt-room {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      background: radial-gradient(ellipse 90% 80% at 50% 40%, #2a0a4a 0%, #12003a 45%, #07001a 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+      padding-bottom: 10px;
+    }
+    .pkt-room::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(180,50,255,0.18) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(100,20,200,0.15) 0%, transparent 45%),
+        radial-gradient(circle at 50% 100%, rgba(212,175,55,0.08) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    /* vignette */
+    .pkt-room::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%);
+      pointer-events: none;
+    }
+
+    /* Floating particles */
+    .pkt-particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: pkt-float linear infinite;
+    }
+    @keyframes pkt-float {
+      0%   { transform: translateY(0)   scale(1);   opacity: 0; }
+      15%  { opacity: 1; }
+      85%  { opacity: 0.6; }
+      100% { transform: translateY(-80px) scale(0.4); opacity: 0; }
+    }
+
+    /* Header inside step */
+    .pkt-header {
+      position: relative; z-index: 5;
+      text-align: center;
+      padding: 14px 20px 8px;
+      width: 100%;
+    }
+    .pkt-ev-badge {
+      display: inline-block;
+      background: rgba(212,175,55,0.12);
+      border: 1px solid rgba(212,175,55,0.35);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .pkt-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(18px, 5vw, 26px);
+      font-weight: 950;
+      color: #fff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 24px rgba(180,60,255,0.6), 0 2px 8px rgba(0,0,0,0.8);
+      margin: 0;
+    }
+
+    /* Team name input row */
+    .pkt-teamname-row {
+      position: relative; z-index: 5;
+      width: 100%; max-width: 380px;
+      padding: 0 16px 6px;
+    }
+    .pkt-teamname-row label {
+      display: block;
+      font-size: 9px; font-weight: 800;
+      color: var(--gold); letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .pkt-teamname-row input {
+      width: 100%; padding: 9px 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(212,175,55,0.4);
+      border-radius: 8px; color: #fff;
+      font-family: 'Barlow', sans-serif; font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .pkt-teamname-row input:focus {
+      border-color: rgba(212,175,55,0.8);
+      box-shadow: 0 0 12px rgba(212,175,55,0.2);
+    }
+    .pkt-teamname-row input::placeholder { color: rgba(255,255,255,0.3); }
+
+    /* Hint text */
+    .pkt-hint {
+      position: relative; z-index: 5;
+      font-size: 10px; color: rgba(180,120,255,0.8);
+      font-weight: 600; letter-spacing: 1px;
+      text-align: center; padding: 0 16px 10px;
+    }
+
+    /* ── THE TABLE ARENA ── */
+    .pkt-arena {
+      position: relative; z-index: 5;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 0; /* vertical padding for overhanging top/bottom cards, NO horizontal padding */
+      perspective: 900px;
+    }
+
+    /* Oval table */
+    .pkt-table-wrap {
+      position: relative;
+      width: min(340px, 88vw);
+      aspect-ratio: 1.55;
+      transform: rotateX(12deg);
+      transform-style: preserve-3d;
+      animation: pkt-table-in 0.45s cubic-bezier(0.22, 0.68, 0, 1.1) forwards;
+    }
+    @keyframes pkt-table-in {
+      from { opacity: 0; transform: rotateX(12deg) scale(0.7); }
+      to   { opacity: 1; transform: rotateX(12deg) scale(1); }
+    }
+    .pkt-felt {
+      position: absolute; inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(ellipse 80% 80% at 50% 45%, #2a1060 0%, #15064a 55%, #0a0330 100%);
+      border: 3px solid rgba(180,80,255,0.7);
+      box-shadow:
+        0 0 0 6px rgba(100,20,200,0.25),
+        0 0 40px rgba(180,60,255,0.45),
+        0 0 80px rgba(150,30,220,0.25),
+        inset 0 0 40px rgba(0,0,0,0.5),
+        0 18px 60px rgba(0,0,0,0.7);
+    }
+    /* Table center logo */
+    .pkt-table-logo {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(10px, 3vw, 14px);
+      font-weight: 900;
+      color: rgba(212,175,55,0.35);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+      pointer-events: none;
+    }
+    .pkt-table-logo::before {
+      content: '♠';
+      display: block;
+      font-size: 1.6em;
+      color: rgba(212,175,55,0.2);
+      margin-bottom: 2px;
+    }
+
+    /* ── PLAYER SLOT CARDS ── */
+    .pkt-slot {
+      position: absolute;
+      z-index: 10;
+      animation: pkt-card-in 0.5s cubic-bezier(0.22, 0.68, 0, 1.1) both;
+    }
+    .pkt-slot-bottom {
+      bottom: -65px; left: 50%;
+      transform: translateX(-50%);
+      animation-delay: 0.05s;
+    }
+    .pkt-slot-top {
+      top: -65px; left: 50%;
+      transform: translateX(-50%);
+      animation-delay: 0.15s;
+    }
+    .pkt-slot-left {
+      left: -116px; top: 50%;
+      transform: translateY(-50%);
+      animation-delay: 0.25s;
+    }
+    .pkt-slot-right {
+      right: -116px; top: 50%;
+      transform: translateY(-50%);
+      animation-delay: 0.35s;
+    }
+    @keyframes pkt-card-in {
+      from { opacity: 0; transform: translate(-50%,-50%) scale(0.6) rotateY(90deg); }
+      to   { opacity: 1; }
+    }
+    /* Override transform for individual slots to avoid conflict */
+    .pkt-slot-bottom { animation-name: pkt-card-in-bottom; }
+    .pkt-slot-top    { animation-name: pkt-card-in-top; }
+    .pkt-slot-left   { animation-name: pkt-card-in-left; }
+    .pkt-slot-right  { animation-name: pkt-card-in-right; }
+
+    @keyframes pkt-card-in-bottom {
+      from { opacity: 0; transform: translateX(-50%) translateY(30px) scale(0.7) rotateY(90deg); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) rotateY(0deg); }
+    }
+    @keyframes pkt-card-in-top {
+      from { opacity: 0; transform: translateX(-50%) translateY(-30px) scale(0.7) rotateY(90deg); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) rotateY(0deg); }
+    }
+    @keyframes pkt-card-in-left {
+      from { opacity: 0; transform: translateY(-50%) translateX(-30px) scale(0.7) rotateY(90deg); }
+      to   { opacity: 1; transform: translateY(-50%) translateX(0) scale(1) rotateY(0deg); }
+    }
+    @keyframes pkt-card-in-right {
+      from { opacity: 0; transform: translateY(-50%) translateX(30px) scale(0.7) rotateY(90deg); }
+      to   { opacity: 1; transform: translateY(-50%) translateX(0) scale(1) rotateY(0deg); }
+    }
+
+    /* Glass card */
+    .pkt-player-card {
+      width: 108px;
+      background: rgba(30,5,60,0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(180,80,255,0.5);
+      border-radius: 12px;
+      box-shadow:
+        0 0 18px rgba(180,60,255,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      padding: 8px 8px 10px;
+      cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.18s;
+      position: relative;
+      overflow: hidden;
+    }
+    .pkt-player-card:hover {
+      border-color: rgba(212,175,55,0.8);
+      box-shadow: 0 0 28px rgba(212,175,55,0.4), 0 0 60px rgba(180,60,255,0.2);
+      transform: scale(1.03);
+    }
+    .pkt-player-card.pkt-card-added {
+      border-color: rgba(212,175,55,0.7);
+      box-shadow: 0 0 22px rgba(212,175,55,0.45), inset 0 0 10px rgba(212,175,55,0.05);
+      cursor: default;
+    }
+    .pkt-player-card.pkt-card-leader {
+      border-color: rgba(212,175,55,0.9);
+      box-shadow: 0 0 30px rgba(212,175,55,0.55), inset 0 0 12px rgba(212,175,55,0.07);
+      cursor: default;
+    }
+    .pkt-card-glow-line {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.8), transparent);
+      border-radius: 12px 12px 0 0;
+    }
+    .pkt-card-badge {
+      font-size: 7.5px; font-weight: 900;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(212,175,55,0.85);
+      margin-bottom: 4px;
+    }
+    .pkt-card-avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(180,60,255,0.4), rgba(100,20,200,0.6));
+      border: 1px solid rgba(180,80,255,0.5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; margin: 0 auto 4px;
+    }
+    .pkt-card-added .pkt-card-avatar {
+      background: linear-gradient(135deg, rgba(212,175,55,0.3), rgba(160,120,10,0.5));
+      border-color: rgba(212,175,55,0.5);
+    }
+    .pkt-card-name {
+      font-size: 8.5px; font-weight: 800;
+      color: #fff; text-align: center;
+      white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis; margin-bottom: 2px;
+    }
+    .pkt-card-regno {
+      font-size: 7.5px; color: rgba(255,255,255,0.5);
+      text-align: center; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .pkt-card-status {
+      display: inline-block;
+      font-size: 7px; font-weight: 900;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 20px;
+      margin-top: 5px;
+    }
+    .pkt-status-waiting {
+      background: rgba(255,255,255,0.08);
+      color: rgba(180,120,255,0.9);
+      border: 1px solid rgba(180,80,255,0.4);
+    }
+    .pkt-status-added {
+      background: rgba(212,175,55,0.15);
+      color: var(--gold);
+      border: 1px solid rgba(212,175,55,0.4);
+    }
+    .pkt-status-leader {
+      background: rgba(212,175,55,0.2);
+      color: var(--gold);
+      border: 1px solid rgba(212,175,55,0.5);
+    }
+    .pkt-card-locked {
+      opacity: 0.35;
+      cursor: not-allowed !important;
+      pointer-events: none;
+    }
+
+    /* Slot click → expand form overlay */
+    .pkt-slot-form-overlay {
+      position: fixed; inset: 0;
+      background: rgba(5,0,20,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 20000;
+      display: flex; align-items: flex-end; justify-content: center;
+      animation: pkt-overlay-in 0.25s ease;
+    }
+    @keyframes pkt-overlay-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .pkt-form-sheet {
+      width: 100%; max-width: 500px;
+      background: linear-gradient(180deg, #1a0540 0%, #0d0030 100%);
+      border: 1px solid rgba(180,80,255,0.5);
+      border-radius: 22px 22px 0 0;
+      padding: 20px 20px 34px;
+      animation: pkt-sheet-in 0.32s cubic-bezier(0.22, 0.68, 0, 1.1);
+    }
+    @keyframes pkt-sheet-in {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+    .pkt-form-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px; font-weight: 950;
+      color: #fff; letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 14px; text-align: center;
+    }
+    .pkt-form-title span { color: var(--gold); }
+    .pkt-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .pkt-form-row.single { grid-template-columns: 1fr; }
+    .pkt-fg label {
+      display: block;
+      font-size: 9px; font-weight: 800;
+      color: var(--gold); letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .pkt-fg input, .pkt-fg select {
+      width: 100%; padding: 9px 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(180,80,255,0.35);
+      border-radius: 8px; color: #fff;
+      font-family: 'Barlow', sans-serif; font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .pkt-fg input:focus, .pkt-fg select:focus {
+      border-color: rgba(212,175,55,0.7);
+      box-shadow: 0 0 10px rgba(212,175,55,0.18);
+    }
+    .pkt-fg input::placeholder { color: rgba(255,255,255,0.3); }
+    .pkt-fg select option { background: #0d0030; }
+    .pkt-form-save-btn {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, rgba(212,175,55,0.9), rgba(180,130,10,0.9));
+      border: none; border-radius: 10px;
+      color: #000; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px; font-weight: 900;
+      letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; margin-top: 14px;
+      box-shadow: 0 6px 24px rgba(212,175,55,0.35);
+      transition: box-shadow 0.2s, transform 0.1s;
+    }
+    .pkt-form-save-btn:hover {
+      box-shadow: 0 8px 32px rgba(212,175,55,0.55);
+      transform: translateY(-1px);
+    }
+    .pkt-form-cancel-btn {
+      width: 100%; padding: 11px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px; color: rgba(255,255,255,0.5);
+      font-family: 'Barlow', sans-serif; font-size: 13px;
+      cursor: pointer; margin-top: 8px;
+    }
+
+    /* CTA below casino */
+    .pkt-cta-area {
+      position: relative; z-index: 5;
+      width: 100%; padding: 10px 16px 25px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      margin-top: auto; /* Push securely to the bottom of the full screen */
+    }
+    .pkt-confirm-btn {
+      width: 100%; max-width: 380px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(212,175,55,0.85) 0%, rgba(180,130,10,0.9) 100%);
+      border: none; border-radius: 12px;
+      color: #000; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px; font-weight: 950;
+      letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(212,175,55,0.4), 0 0 60px rgba(212,175,55,0.1);
+      transition: box-shadow 0.25s, transform 0.15s;
+    }
+    .pkt-confirm-btn:hover {
+      box-shadow: 0 12px 40px rgba(212,175,55,0.65), 0 0 80px rgba(212,175,55,0.2);
+      transform: translateY(-2px);
+    }
+    .pkt-back-btn {
+      background: transparent;
+      border: none; color: rgba(255,255,255,0.4);
+      font-family: 'Barlow', sans-serif; font-size: 12px;
+      cursor: pointer; padding: 4px 12px;
+      transition: color 0.2s;
+    }
+    .pkt-back-btn:hover { color: rgba(255,255,255,0.8); }
+
+    /* Hidden original controls (keep in DOM for JS compatibility) */
+    #step-1 .reg-next-btn.pkt-hidden,
+    #step-1 .reg-back-btn.pkt-hidden,
+    #step-1 .add-tm-btn.pkt-hidden,
+    #step-1 #tm-grid.pkt-hidden,
+    #step-1 #team-hint.pkt-hidden {
+      display: none !important;
+    }
+
+    /* ── POKER TABLE DECORATION: Cards on felt ── */
+    .pkt-deco-card {
+      position: absolute;
+      width: 26px; height: 36px;
+      background: #fff;
+      border-radius: 4px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.7);
+      pointer-events: none;
+      border: 0.5px solid rgba(0,0,0,0.2);
+      opacity: 0.88;
+      z-index: 2;
+    }
+    .pkt-dc-suit {
+      font-size: 13px; line-height: 1;
+      color: #d32f2f; /* red suits */
+    }
+    .pkt-dc-val {
+      font-size: 9px; font-weight: 900;
+      line-height: 1; color: #d32f2f;
+      font-family: 'Barlow Condensed', sans-serif;
+    }
+    .pkt-dc-black { color: #111 !important; }
+    /* Card positions */
+    .pkt-dc-1 { top: 22%; left: 18%; transform: rotate(-15deg); }
+    .pkt-dc-2 { top: 30%; left: 62%; transform: rotate(12deg); }
+    .pkt-dc-3 { bottom: 20%; left: 25%; transform: rotate(8deg); }
+    .pkt-dc-4 { bottom: 22%; right: 20%; transform: rotate(-10deg); }
+
+    /* ── POKER CHIPS ── */
+    .pkt-chip {
+      position: absolute;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2.5px dashed rgba(255,255,255,0.55);
+      z-index: 2; pointer-events: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+    .pkt-chip-gold   { background: radial-gradient(circle at 35% 35%, #f5d060, #c9960c); }
+    .pkt-chip-purple { background: radial-gradient(circle at 35% 35%, #c060ff, #6a0dad); }
+    .pkt-chip-white  { background: radial-gradient(circle at 35% 35%, #fff, #ccc); }
+
+    /* ── WAITING CARD PULSE ── */
+    .pkt-card-waiting:not(.pkt-card-locked) {
+      animation: pkt-pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pkt-pulse {
+      0%, 100% { box-shadow: 0 0 14px rgba(180,60,255,0.3), inset 0 1px 0 rgba(255,255,255,0.08); }
+      50%       { box-shadow: 0 0 28px rgba(180,60,255,0.6), 0 0 50px rgba(180,60,255,0.2), inset 0 1px 0 rgba(255,255,255,0.08); }
+    }
+
+    /* ── MOBILE SIZING & SPACING ── */
+    .pkt-room { min-height: 460px; padding-bottom: 6px; }
+
+    /* Arena needs breathing room vertically, but horizontal room shrinks flexbox! */
+    .pkt-arena { padding: 55px 0; box-sizing: border-box; }
+
+    /* Better spacing on header */
+    .pkt-header { padding: 10px 16px 6px; }
+    .pkt-title  { font-size: clamp(16px, 4.5vw, 24px); }
+
+    /* CTA area tighter on small screens */
+    .pkt-cta-area { padding: 8px 14px 2px; gap: 6px; }
+    .pkt-confirm-btn { padding: clamp(11px,3vw,14px); font-size: clamp(13px,3.5vw,16px); letter-spacing: 2px; }
+
+    /* Team name row */
+    .pkt-teamname-row { padding: 0 14px 4px; }
+
+    /* Mobile breakpoints */
+    @media (max-width: 460px) {
+      .pkt-room { min-height: 480px; }
+      .pkt-arena { padding: 50px 0; margin-top: 15px; margin-bottom: 25px; } /* more space top/bottom on mobile */
+      .pkt-table-wrap { width: min(280px, 75vw); } /* adjusted slightly for massive cards */
+      .pkt-player-card { width: 105px; padding: 10px 8px; } /* BIGGER CARDS */
+      .pkt-card-avatar { width: 32px; height: 32px; font-size: 14px; }
+      .pkt-card-name  { font-size: 10px; margin-top: 2px; }
+      .pkt-card-regno { font-size: 8px; }
+      .pkt-card-badge { font-size: 8px; letter-spacing: 1.5px; }
+      .pkt-card-status { font-size: 7.5px; padding: 2px 6px; }
+      .pkt-slot-left  { left: -20px; } /* Pull massive cards heavily overlapping felt so they stay bounded on 360px phones */
+      .pkt-slot-right { right: -20px; }
+      .pkt-slot-bottom { bottom: -70px; } /* Push bottom lower since buttons are fixed at bottom */
+      .pkt-slot-top    { top: -65px; }
+      .pkt-deco-card { width: 20px; height: 28px; }
+      .pkt-dc-suit { font-size: 10px; }
+      .pkt-dc-val  { font-size: 7px; }
+      .pkt-chip { width: 13px; height: 13px; }
+    }
+    @media (max-width: 360px) {
+      .pkt-arena { padding: 45px 0; }
+      .pkt-table-wrap { width: min(240px, 70vw); }
+      .pkt-player-card { width: 95px; } /* smaller for extremely tight phones */
+      .pkt-slot-left  { left: -15px; }
+      .pkt-slot-right { right: -15px; }
+      .pkt-slot-bottom { bottom: -70px; }
+      .pkt-slot-top    { top: -65px; }
+    }
+
+    /* ═══════════════════════════════════════════════════
+       ROULETTE TABLE \u2014 STEP 0 (Player Profile / Leader)
+       Deep crimson felt, spinning wheel rings, betting slip
+    ═══════════════════════════════════════════════════ */
+    #step-0 {
+      position: relative;
+      overflow: hidden;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    /* Crimson ambient room */
+    .rlt-room {
+      position: relative;
+      width: 100%;
+      min-height: 560px;
+      background: radial-gradient(ellipse 95% 90% at 50% 40%,
+        #3a0010 0%, #1e0008 50%, #0d0003 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      padding-bottom: 16px;
+    }
+    .rlt-room::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 15% 25%, rgba(255,30,60,0.15) 0%, transparent 45%),
+        radial-gradient(circle at 85% 65%, rgba(200,0,40,0.12) 0%, transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(212,175,55,0.07) 0%, transparent 35%);
+      pointer-events: none; z-index: 0;
+    }
+    .rlt-room::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 35%, rgba(0,0,0,0.6) 100%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── Spinning roulette wheel rings ── */
+    .rlt-wheel-bg {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -42%);
+      width: min(500px, 140vw);
+      aspect-ratio: 1;
+      pointer-events: none; z-index: 1;
+    }
+    .rlt-ring {
+      position: absolute; inset: 0;
+      border-radius: 50%;
+      border-style: solid;
+      border-color: transparent;
+    }
+    .rlt-ring-1 {
+      inset: 5%;
+      border-width: 28px;
+      border-top-color: rgba(180,0,40,0.35);
+      border-right-color: rgba(212,175,55,0.2);
+      border-bottom-color: rgba(180,0,40,0.35);
+      border-left-color: rgba(212,175,55,0.2);
+      animation: rlt-spin-cw 16s linear infinite;
+    }
+    .rlt-ring-2 {
+      inset: 18%;
+      border-width: 18px;
+      border-top-color: rgba(212,175,55,0.25);
+      border-right-color: rgba(180,0,40,0.2);
+      border-bottom-color: rgba(212,175,55,0.25);
+      border-left-color: rgba(180,0,40,0.2);
+      animation: rlt-spin-ccw 22s linear infinite;
+    }
+    .rlt-ring-3 {
+      inset: 30%;
+      border-width: 10px;
+      border-top-color: rgba(255,60,80,0.2);
+      border-bottom-color: rgba(255,60,80,0.2);
+      border-left-color: rgba(255,255,255,0.08);
+      border-right-color: rgba(255,255,255,0.08);
+      animation: rlt-spin-cw 10s linear infinite;
+    }
+    @keyframes rlt-spin-cw  { from { transform: rotate(0deg); }   to { transform: rotate(360deg); } }
+    @keyframes rlt-spin-ccw { from { transform: rotate(0deg); }   to { transform: rotate(-360deg); } }
+
+    /* Roulette number labels on outer ring */
+    .rlt-nums {
+      position: absolute; inset: 0;
+      border-radius: 50%;
+      animation: rlt-spin-cw 28s linear infinite;
+    }
+    .rlt-num-label {
+      position: absolute;
+      top: 3%; left: 50%;
+      transform-origin: 0 calc(min(250px, 70vw) * 0.47);
+      font-size: 7px; font-weight: 900;
+      color: rgba(212,175,55,0.5);
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0px;
+      user-select: none;
+    }
+
+    /* Scattered chips in room */
+    .rlt-chip {
+      position: absolute;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 3px dashed rgba(255,255,255,0.45);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.7);
+      z-index: 2; pointer-events: none;
+      animation: rlt-chip-drift ease-in-out infinite;
+    }
+    .rlt-chip-red   { background: radial-gradient(circle at 35% 35%, #ff4d4d, #8b0000);
+                      animation-duration: 8s; animation-delay: 0s; }
+    .rlt-chip-black { background: radial-gradient(circle at 35% 35%, #555, #111);
+                      animation-duration: 11s; animation-delay: 2s; }
+    .rlt-chip-gold  { background: radial-gradient(circle at 35% 35%, #f5d060, #b8860b);
+                      animation-duration: 9.5s; animation-delay: 4s; }
+    @keyframes rlt-chip-drift {
+      0%,100% { transform: translate(0,0) rotate(0deg); }
+      33%     { transform: translate(6px,8px) rotate(15deg); }
+      66%     { transform: translate(-5px,4px) rotate(-10deg); }
+    }
+
+    /* ── Header ── */
+    .rlt-header {
+      position: relative; z-index: 5;
+      text-align: center;
+      padding: 14px 20px 8px;
+    }
+    .rlt-badge {
+      display: inline-block;
+      background: rgba(180,0,40,0.2);
+      border: 1px solid rgba(212,175,55,0.4);
+      border-radius: 20px;
+      padding: 3px 14px;
+      font-size: 9px; font-weight: 900;
+      letter-spacing: 2px; color: var(--gold);
+      text-transform: uppercase; margin-bottom: 5px;
+    }
+    .rlt-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(20px, 5.5vw, 30px);
+      font-weight: 950; color: #fff;
+      letter-spacing: 3px; text-transform: uppercase;
+      text-shadow: 0 0 28px rgba(255,30,60,0.7), 0 2px 8px rgba(0,0,0,0.8);
+      margin: 0 0 4px;
+    }
+    .rlt-sub {
+      font-size: clamp(10px, 2.5vw, 12px);
+      color: rgba(255,200,200,0.6);
+      letter-spacing: 1px;
+    }
+
+    /* ── Betting Slip Card ── */
+    .rlt-slip {
+      position: relative; z-index: 5;
+      width: calc(100% - 28px); max-width: 420px;
+      background: rgba(15,3,8,0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(212,175,55,0.45);
+      border-radius: 16px;
+      padding: 18px 16px 16px;
+      box-shadow:
+        0 0 0 1px rgba(180,0,40,0.2),
+        0 0 40px rgba(180,0,40,0.25),
+        0 0 80px rgba(180,0,40,0.1),
+        inset 0 1px 0 rgba(212,175,55,0.1);
+      animation: rlt-slip-in 0.45s cubic-bezier(0.22, 0.68, 0, 1.1) both;
+    }
+    @keyframes rlt-slip-in {
+      from { opacity: 0; transform: translateY(24px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Corner suit icons */
+    .rlt-slip-corner {
+      position: absolute;
+      font-size: 11px;
+      color: rgba(180,0,40,0.6);
+      font-family: serif;
+      line-height: 1;
+    }
+    .rlt-slip-tl { top: 7px; left: 10px; }
+    .rlt-slip-tr { top: 7px; right: 10px; }
+    .rlt-slip-bl { bottom: 7px; left: 10px; }
+    .rlt-slip-br { bottom: 7px; right: 10px; }
+
+    /* Slip inner title */
+    .rlt-slip-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px; font-weight: 900;
+      color: var(--gold); letter-spacing: 4px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(212,175,55,0.2);
+    }
+    .rlt-slip-title::before,
+    .rlt-slip-title::after {
+      content: '—'; margin: 0 8px;
+      color: rgba(212,175,55,0.4);
+    }
+
+    /* ── Form fields on the slip ── */
+    .rlt-fg {
+      margin-bottom: 10px;
+    }
+    .rlt-fl {
+      display: block;
+      font-size: 9px; font-weight: 800;
+      color: rgba(212,175,55,0.8);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .rlt-fi,
+    .rlt-fs {
+      width: 100% !important;
+      padding: 9px 12px !important;
+      background: rgba(255,255,255,0.05) !important;
+      border: 1px solid rgba(180,0,40,0.4) !important;
+      border-radius: 8px !important;
+      color: #fff !important;
+      font-family: 'Barlow', sans-serif !important;
+      font-size: 13px !important;
+      outline: none !important;
+      transition: border-color 0.2s, box-shadow 0.2s !important;
+      -webkit-appearance: none !important;
+      appearance: none !important;
+    }
+    .rlt-fi:focus, .rlt-fs:focus {
+      border-color: rgba(212,175,55,0.7) !important;
+      box-shadow: 0 0 12px rgba(212,175,55,0.18) !important;
+    }
+    .rlt-fi::placeholder { color: rgba(255,255,255,0.28); }
+    .rlt-fs option { background: #1a0008; color: #fff; }
+
+    .rlt-row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .rlt-row2 .rlt-fg { margin-bottom: 0; }
+
+    .rlt-note {
+      font-size: 10px;
+      color: rgba(255,150,150,0.5);
+      text-align: center;
+      letter-spacing: 1px;
+      padding: 8px 0 4px;
+    }
+
+    /* Deal Me In CTA */
+    .rlt-deal-btn {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #c0001a 0%, #8b0000 100%);
+      border: 1px solid rgba(212,175,55,0.5);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px; font-weight: 950;
+      letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; margin-top: 6px;
+      box-shadow: 0 6px 24px rgba(180,0,30,0.5), 0 0 40px rgba(180,0,30,0.2);
+      transition: box-shadow 0.25s, transform 0.15s, background 0.2s;
+    }
+    .rlt-deal-btn:hover {
+      background: linear-gradient(135deg, #e0001f 0%, #a00010 100%);
+      box-shadow: 0 10px 36px rgba(200,0,40,0.65), 0 0 60px rgba(200,0,40,0.25);
+      transform: translateY(-2px);
+    }
+    .rlt-deal-btn:active { transform: translateY(0); }
+
+    /* Team size chip-picker */
+    .rlt-size-chips {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 4px;
+    }
+    .rlt-size-chip {
+      flex: 1; min-width: 60px;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(180,0,40,0.4);
+      border-radius: 8px;
+      color: rgba(255,200,200,0.7);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .rlt-size-chip:hover {
+      border-color: rgba(212,175,55,0.5);
+      color: var(--gold);
+      background: rgba(212,175,55,0.08);
+    }
+    .rlt-size-chip-active {
+      background: rgba(180,0,40,0.35) !important;
+      border-color: rgba(212,175,55,0.8) !important;
+      color: var(--gold) !important;
+      box-shadow: 0 0 14px rgba(212,175,55,0.25);
+    }
+
+    /* Mobile */
+    @media (max-width: 460px) {
+      .rlt-room { min-height: 480px; }
+      .rlt-slip { padding: 14px 12px 14px; border-radius: 12px; }
+      .rlt-row2 { gap: 8px; }
+      .rlt-fi, .rlt-fs { padding: 8px 10px !important; font-size: 12px !important; }
+      .rlt-chip { width: 16px; height: 16px; border-width: 2px; }
+      .rlt-ring-1 { border-width: 18px; }
+      .rlt-ring-2 { border-width: 12px; }
+    }
   </style>
 </head>
 
@@ -6328,77 +7211,263 @@
           <div class="step-dot" id="dot-2"></div>
         </div>
 
-        <!-- STEP 1: Personal Details -->
+        <!-- STEP 1: Player Profile — Roulette Table Theme -->
         <div class="step active" id="step-0">
-          <div id="ev-summary-here"></div>
-          <div id="reg-fields-container" style="display:none">
-            <div style="margin-bottom:12px;">
-              <div class="fc-t" style="margin-bottom:0">Player Profile</div>
+
+          <!-- Roulette Casino Environment -->
+          <div class="rlt-room" id="rlt-room">
+
+            <!-- Spinning roulette rings (CSS animated) -->
+            <div class="rlt-wheel-bg" aria-hidden="true">
+              <div class="rlt-ring rlt-ring-1"></div>
+              <div class="rlt-ring rlt-ring-2"></div>
+              <div class="rlt-ring rlt-ring-3"></div>
+              <!-- number segments SVG-like labels -->
+              <div class="rlt-nums" id="rlt-nums"></div>
             </div>
-            <div class="fg">
-              <label class="fl">Full Name</label>
-              <input class="fi" id="f-name" type="text" placeholder="Enter your full name" oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
-              <input type="text" id="f-website" name="website" style="display:none" tabindex="-1" autocomplete="off">
+
+            <!-- Ambient particles -->
+            <div id="rlt-particles" aria-hidden="true"></div>
+
+            <!-- scattered chips -->
+            <div class="rlt-chip rlt-chip-red"   style="top:12%;left:8%;"></div>
+            <div class="rlt-chip rlt-chip-black" style="top:20%;right:10%;"></div>
+            <div class="rlt-chip rlt-chip-gold"  style="bottom:18%;left:12%;"></div>
+            <div class="rlt-chip rlt-chip-red"   style="bottom:14%;right:8%;"></div>
+            <div class="rlt-chip rlt-chip-black" style="top:55%;left:5%;"></div>
+            <div class="rlt-chip rlt-chip-gold"  style="top:40%;right:6%;"></div>
+
+            <!-- BACK BUTTON -->
+            <button onclick="playMechanicalSnap(); doHapticSnap(); document.getElementById('reg-ov').classList.remove('open'); if(currentEv) openEvMod(currentEv.id);"
+              style="position:absolute; top:20px; left:20px; z-index:2100; background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:12px; color:#fff; font-size:11px; font-weight:800; cursor:pointer; letter-spacing:1px; text-transform:uppercase; font-family:'Barlow Condensed',sans-serif; transition:all 0.2s;">
+              &larr; BACK
+            </button>
+
+            <!-- Header badge -->
+            <div class="rlt-header">
+              <div class="rlt-badge" id="rlt-badge">♠ PLAYER REGISTRATION</div>
+              <div class="rlt-title">YOUR BETTING SLIP</div>
+              <div class="rlt-sub">Fill in your details to claim your seat at the table</div>
             </div>
-            <div class="row2">
-              <div class="fg"><label class="fl">Register Number</label><input class="fi" id="f-regno" type="text"
-                  placeholder="e.g. 2303921310421226" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
-              <div class="fg">
-                <label class="fl">Year</label>
-                <select class="fs" id="f-year">
-                  <option value="">Year</option>
-                  <option value="1">1st Year</option>
-                  <option value="2">2nd Year</option>
-                  <option value="3">3rd Year</option>
-                  <option value="4">4th Year</option>
-                </select>
+
+            <!-- THE BETTING SLIP CARD -->
+            <div class="rlt-slip" id="rlt-slip">
+              <div class="rlt-slip-corner rlt-slip-tl">♥</div>
+              <div class="rlt-slip-corner rlt-slip-tr">♦</div>
+              <div class="rlt-slip-corner rlt-slip-bl">♦</div>
+              <div class="rlt-slip-corner rlt-slip-br">♥</div>
+
+              <div class="rlt-slip-title">PLAYER PROFILE</div>
+
+              <!-- Hidden ev-summary -->
+              <div id="ev-summary-here"></div>
+
+              <!-- All original form fields preserved with new label/input styling -->
+              <div id="reg-fields-container" style="display:none">
+                <!-- Honeypot -->
+                <input type="text" id="f-website" name="website" style="display:none" tabindex="-1" autocomplete="off">
+
+                <div class="rlt-fg">
+                  <label class="rlt-fl">Full Name</label>
+                  <input class="fi rlt-fi" id="f-name" type="text" placeholder="Enter your full name"
+                    oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
+                </div>
+
+                <div class="rlt-row2">
+                  <div class="rlt-fg">
+                    <label class="rlt-fl">Register Number</label>
+                    <input class="fi rlt-fi" id="f-regno" type="text" placeholder="e.g. 2303921310421226"
+                      oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                  </div>
+                  <div class="rlt-fg">
+                    <label class="rlt-fl">Year</label>
+                    <select class="fs rlt-fs" id="f-year">
+                      <option value="">Year</option>
+                      <option value="1">1st Year</option>
+                      <option value="2">2nd Year</option>
+                      <option value="3">3rd Year</option>
+                      <option value="4">4th Year</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="rlt-row2">
+                  <div class="rlt-fg">
+                    <label class="rlt-fl">Section</label>
+                    <select class="fs rlt-fs" id="f-section">
+                      <option value="">Section</option>
+                      <option value="A">Section A</option>
+                      <option value="B">Section B</option>
+                      <option value="C">Section C</option>
+                      <option value="D">Section D</option>
+                      <option value="E">Section E</option>
+                    </select>
+                  </div>
+                  <div class="rlt-fg">
+                    <label class="rlt-fl">Phone Number</label>
+                    <input class="fi rlt-fi" id="f-phone" type="tel" placeholder="10-digit number"
+                      oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length>10) this.value=this.value.slice(0,10)">
+                  </div>
+                </div>
+
+                <div class="rlt-fg">
+                  <label class="rlt-fl">Gender</label>
+                  <select class="fs rlt-fs" id="f-gender">
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+
+                <!-- Team Size — own row, shown for team events only -->
+                <div id="rlt-team-size-wrap" style="display:none">
+                  <div class="rlt-fg">
+                    <label class="rlt-fl" style="color:var(--gold);font-weight:800;">
+                      &#128101; Team Size &nbsp;<span style="color:rgba(255,200,100,0.55);font-size:8px;font-weight:500;">(total players incl. you)</span>
+                    </label>
+                    <select class="fs rlt-fs" id="rlt-size-select"
+                      style="border-color:rgba(212,175,55,0.6);background:rgba(212,175,55,0.07);"
+                      onchange="selectedTeamSize=parseInt(this.value)">
+                      <option value="">Select</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="rlt-fg">
+                  <label class="rlt-fl">College Email</label>
+                  <input class="fi rlt-fi" id="f-email" type="email" placeholder="yourname@psnacet.edu.in">
+                </div>
+
+                <div class="rlt-note" id="rlt-step-note">&#9888;&#65039; This is Leader Registration &middot; Team details on next step</div>
+
+                <button class="rlt-deal-btn" onclick="goStep(1)">DEAL ME IN &rarr;</button>
               </div>
-            </div>
-            <div class="row2">
-              <div class="fg">
-                <label class="fl">Section</label>
-                <select class="fs" id="f-section">
-                  <option value="">Section</option>
-                  <option value="A">Section A</option>
-                  <option value="B">Section B</option>
-                  <option value="C">Section C</option>
-                  <option value="D">Section D</option>
-                  <option value="E">Section E</option>
-                </select>
-              </div>
-              <div class="fg">
-                <label class="fl">Phone Number</label>
-                <input class="fi" id="f-phone" type="tel" placeholder="10-digit number" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length>10) this.value=this.value.slice(0,10)">
-              </div>
-            </div>
-            <div class="fg">
-              <label class="fl">Gender</label>
-              <select class="fs" id="f-gender">
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-            <div class="fg"><label class="fl">College Email</label><input class="fi" id="f-email" type="email"
-                placeholder="yourname@psnacet.edu.in"></div>
-            <div class="free-note">Members Only · VIP Seat Reservation</div>
-            <button class="reg-next-btn" onclick="goStep(1)">Next — Assemble The Syndicate</button>
-          </div>
+            </div><!-- /slip -->
+
+          </div><!-- /rlt-room -->
         </div>
 
-        <!-- STEP 2: Team Details -->
+        <!-- STEP 2: Team Details — Poker Table UI -->
         <div class="step" id="step-1">
-          <div id="ev-summary-here2"></div>
-          <div style="margin-bottom:12px;">
-            <div class="fc-t" style="margin-bottom:0">The Syndicate</div>
-          </div>
-          <div class="fg"><label class="fl">Team Name</label><input class="fi" id="f-teamname" type="text"
-              placeholder="Enter your team name"></div>
-          <div style="font-size:11px;color:var(--muted2);margin-bottom:14px;line-height:1.5" id="team-hint"></div>
-          <div class="tm-grid" id="tm-grid"></div>
-          <button class="add-tm-btn" id="add-tm-btn" onclick="addTeamMember()">+ Add Team Member</button>
-          <button class="reg-next-btn" style="margin-top:14px" onclick="goStep(2)">Next — Ante Up</button>
-          <button class="reg-back-btn" onclick="goStep(0)">← Back</button>
+
+          <!-- Hidden fields kept for JS compatibility -->
+          <div id="ev-summary-here2" style="display:none"></div>
+          <div class="fg" style="display:none"><label class="fl">Team Name</label><input class="fi" id="f-teamname" type="text" placeholder="Enter your team name"></div>
+          <div id="team-hint" class="pkt-hidden"></div>
+          <div class="tm-grid pkt-hidden" id="tm-grid"></div>
+          <button class="add-tm-btn pkt-hidden" id="add-tm-btn" onclick="addTeamMember()">+ Add Team Member</button>
+          <button class="reg-next-btn pkt-hidden" style="margin-top:14px" onclick="goStep(2)">Next — Ante Up</button>
+          <button class="reg-back-btn pkt-hidden" onclick="goStep(0)">← Back</button>
+
+          <!-- ✦ CINEMATIC POKER ROOM ✦ -->
+          <div class="pkt-room" id="pkt-room">
+
+            <!-- Ambient Particles (injected by JS) -->
+            <div id="pkt-particles-container" aria-hidden="true"></div>
+
+            <!-- Header -->
+            <div class="pkt-header">
+              <div class="pkt-ev-badge" id="pkt-ev-badge">The Syndicate</div>
+              <div class="pkt-title">ASSEMBLE YOUR TEAM</div>
+            </div>
+
+            <!-- Team Name Row -->
+            <div class="pkt-teamname-row">
+              <label for="pkt-teamname-vis">Team Name</label>
+              <input id="pkt-teamname-vis" type="text" placeholder="Enter your team name"
+                oninput="document.getElementById('f-teamname').value=this.value">
+            </div>
+
+            <div class="pkt-hint" id="pkt-hint">Tap a seat to add a member</div>
+
+            <!-- Table Arena -->
+            <div class="pkt-arena">
+              <div class="pkt-table-wrap" id="pkt-table-wrap">
+
+                <!-- Felt Surface with casino decorations -->
+                <div class="pkt-felt">
+                  <!-- Poker cards lying on table -->
+                  <div class="pkt-deco-card pkt-dc-1"><span class="pkt-dc-suit">♥</span><span class="pkt-dc-val">2</span></div>
+                  <div class="pkt-deco-card pkt-dc-2"><span class="pkt-dc-suit pkt-dc-black">♠</span><span class="pkt-dc-val pkt-dc-black">K</span></div>
+                  <div class="pkt-deco-card pkt-dc-3"><span class="pkt-dc-suit">♦</span><span class="pkt-dc-val">A</span></div>
+                  <div class="pkt-deco-card pkt-dc-4"><span class="pkt-dc-suit pkt-dc-black">♣</span><span class="pkt-dc-val pkt-dc-black">J</span></div>
+                  <!-- Poker chips -->
+                  <div class="pkt-chip pkt-chip-gold" style="top:28%;left:52%;"></div>
+                  <div class="pkt-chip pkt-chip-purple" style="top:55%;left:38%;"></div>
+                  <div class="pkt-chip pkt-chip-gold" style="top:60%;left:56%;"></div>
+                  <div class="pkt-chip pkt-chip-white" style="top:35%;left:44%;"></div>
+                </div>
+
+                <!-- Center logo on top of felt -->
+                <div class="pkt-table-logo">THE<br>TABLE</div>
+
+                <!-- BOTTOM SLOT — Leader (Player 1) -->
+                <div class="pkt-slot pkt-slot-bottom" id="pkt-slot-0">
+                  <div class="pkt-player-card pkt-card-leader" id="pkt-card-0">
+                    <div class="pkt-card-glow-line"></div>
+                    <div class="pkt-card-badge">♠ Leader</div>
+                    <div class="pkt-card-avatar">♠</div>
+                    <div class="pkt-card-name" id="pkt-name-0">You</div>
+                    <div class="pkt-card-regno" id="pkt-regno-0">—</div>
+                    <div style="text-align:center">
+                      <span class="pkt-card-status pkt-status-leader">● Added</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- TOP SLOT — Member 2 -->
+                <div class="pkt-slot pkt-slot-top" id="pkt-slot-1">
+                  <div class="pkt-player-card pkt-card-waiting" id="pkt-card-1" onclick="pktOpenSlot(1)">
+                    <div class="pkt-card-glow-line"></div>
+                    <div class="pkt-card-badge">♦ Member 2</div>
+                    <div class="pkt-card-avatar">♦</div>
+                    <div class="pkt-card-name" id="pkt-name-1">Empty Seat</div>
+                    <div class="pkt-card-regno" id="pkt-regno-1">—</div>
+                    <div style="text-align:center">
+                      <span class="pkt-card-status pkt-status-waiting" id="pkt-status-1">👆 Tap to Add</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- LEFT SLOT — Member 3 -->
+                <div class="pkt-slot pkt-slot-left" id="pkt-slot-2">
+                  <div class="pkt-player-card pkt-card-waiting" id="pkt-card-2" onclick="pktOpenSlot(2)">
+                    <div class="pkt-card-glow-line"></div>
+                    <div class="pkt-card-badge">♥ Member 3</div>
+                    <div class="pkt-card-avatar">♥</div>
+                    <div class="pkt-card-name" id="pkt-name-2">Empty Seat</div>
+                    <div class="pkt-card-regno" id="pkt-regno-2">—</div>
+                    <div style="text-align:center">
+                      <span class="pkt-card-status pkt-status-waiting" id="pkt-status-2">👆 Tap to Add</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- RIGHT SLOT — Member 4 -->
+                <div class="pkt-slot pkt-slot-right" id="pkt-slot-3">
+                  <div class="pkt-player-card pkt-card-waiting" id="pkt-card-3" onclick="pktOpenSlot(3)">
+                    <div class="pkt-card-glow-line"></div>
+                    <div class="pkt-card-badge">♣ Member 4</div>
+                    <div class="pkt-card-avatar">♣</div>
+                    <div class="pkt-card-name" id="pkt-name-3">Empty Seat</div>
+                    <div class="pkt-card-regno" id="pkt-regno-3">—</div>
+                    <div style="text-align:center">
+                      <span class="pkt-card-status pkt-status-waiting" id="pkt-status-3">👆 Tap to Add</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- /arena -->
+
+            <!-- CTA Buttons -->
+            <div class="pkt-cta-area">
+              <button class="pkt-confirm-btn" onclick="pktConfirmTeam()">✦ Confirm Registration ✦</button>
+              <button class="pkt-back-btn" onclick="goStep(0)">← Back to Player Profile</button>
+            </div>
+
+          </div><!-- /pkt-room -->
+
         </div>
 
         <!-- STEP 3: Review -->
@@ -7490,6 +8559,7 @@ function renderComm() {
       currentEv = evId ? EVS.find(e => e.id === evId) : null;
       currentStep = 0; 
       teamMembers = [];
+      selectedTeamSize = 0;
 
       const selectionArea = document.getElementById('reg-selection-area');
       const regSheet = document.getElementById('reg-sheet');
@@ -7565,9 +8635,8 @@ function renderComm() {
         regSheet.style.background = 'var(--black2)';
         regSheet.style.borderTop = '2px solid var(--orange)';
 
-        summary1.innerHTML = evSummaryCard(currentEv.id);
-        summary2.innerHTML = evSummaryCard(currentEv.id);
-        setupTeamStep();
+        // Route through our single source of truth for form initialization
+        selectEventInForm(currentEv.id);
       }
 
       const fieldsContainer = document.getElementById('reg-fields-container');
@@ -7607,6 +8676,8 @@ function renderComm() {
       regEventDetail(id);
     }
 
+    let selectedTeamSize = 0;
+
     function selectEventInForm(id) {
       const ev = EVS.find(e => e.id === id);
       currentEv = ev;
@@ -7614,9 +8685,53 @@ function renderComm() {
       const s2 = document.getElementById('ev-summary-here2');
       s1.innerHTML = evSummaryCard(id);
       s2.innerHTML = evSummaryCard(id);
-      setupTeamStep();
 
-      // Reveal the form fields smoothly
+      // ── Update the Team Size select field ──
+      const sizeWrap   = document.getElementById('rlt-team-size-wrap');
+      const sizeSelect = document.getElementById('rlt-size-select');
+      const noteEl     = document.getElementById('rlt-step-note');
+
+      if (!ev || ev.type === 'Solo') {
+        // Solo: hide the field, set size = 1
+        if (sizeWrap) sizeWrap.style.display = 'none';
+        selectedTeamSize = 1;
+        if (noteEl) noteEl.textContent = 'Solo Event \u00b7 No team members needed';
+
+      } else if (ev.minTeam === ev.maxTeam) {
+        // Fixed size (e.g. exactly 2): show as read-only info
+        if (sizeWrap) sizeWrap.style.display = 'block';
+        if (sizeSelect) {
+          sizeSelect.innerHTML = `<option value="${ev.minTeam}">${ev.minTeam} Players (Fixed)</option>`;
+          sizeSelect.disabled = true;
+          sizeSelect.style.opacity = '0.7';
+        }
+        selectedTeamSize = ev.minTeam;
+        if (noteEl) noteEl.textContent = '\u26a0\ufe0f Leader Registration \u00b7 Next: add ' + (ev.minTeam - 1) + ' member(s)';
+
+      } else {
+        // Variable size (e.g. 2\u20134): show full dropdown
+        if (sizeWrap) sizeWrap.style.display = 'block';
+        if (sizeSelect) {
+          sizeSelect.disabled = false;
+          sizeSelect.style.opacity = '1';
+          sizeSelect.innerHTML = '';
+          for (let n = ev.minTeam; n <= Math.min(ev.maxTeam, 4); n++) {
+            const opt = document.createElement('option');
+            opt.value = n;
+            opt.textContent = n + ' Players';
+            sizeSelect.appendChild(opt);
+          }
+          sizeSelect.value = ev.minTeam;
+          selectedTeamSize = ev.minTeam;
+          sizeSelect.onchange = () => { selectedTeamSize = parseInt(sizeSelect.value); };
+        }
+        if (noteEl) noteEl.textContent = '\u26a0\ufe0f Leader Registration \u00b7 Choose team size, then add members on next page';
+      }
+
+      setupTeamStep();
+      rltInit();
+
+      // Reveal the form fields
       const fieldsContainer = document.getElementById('reg-fields-container');
       if (fieldsContainer) {
         fieldsContainer.style.display = 'block';
@@ -7632,71 +8747,368 @@ function renderComm() {
     function setupTeamStep() {
       if (!currentEv) return;
       const e = currentEv;
+
+      const room = document.getElementById('pkt-room');
+      if (!room) return;
+
+      const teamNameRow = document.querySelector('.pkt-teamname-row');
+      const badge = document.getElementById('pkt-ev-badge');
+      const title = document.querySelector('.pkt-title');
+      const hintEl = document.getElementById('pkt-hint');
+
+      // Pre-fill leader card from step-1 data
+      const leaderName  = (document.getElementById('f-name')?.value  || 'You').trim();
+      const leaderRegno = (document.getElementById('f-regno')?.value || '—').trim();
+      const nameEl = document.getElementById('pkt-name-0');
+      const regnoEl = document.getElementById('pkt-regno-0');
+
+      if (nameEl) nameEl.textContent = leaderName || 'You';
+      if (regnoEl) regnoEl.textContent = leaderRegno || '—';
+
+      // Fetch elements to toggle text dynamically depending on event type
+      const centerLogo = document.querySelector('.pkt-table-logo');
+      const leaderBadge = document.querySelector('#pkt-card-0 .pkt-card-badge');
+
+      // ── SOLO event ──
       if (e.type === 'Solo') {
-        document.getElementById('team-hint').textContent = 'This is a solo event. No team members needed.';
-        document.getElementById('tm-grid').innerHTML = '';
-        document.getElementById('add-tm-btn').style.display = 'none';
-        document.getElementById('f-teamname').closest('.fg').style.display = 'none';
-      } else {
-        document.getElementById('f-teamname').closest('.fg').style.display = 'block';
-        document.getElementById('add-tm-btn').style.display = 'block';
-        document.getElementById('team-hint').textContent = `Add ${e.minTeam - 1}–${e.maxTeam - 1} more team members (you are Member 1)`;
-        document.getElementById('tm-grid').innerHTML = '';
+        if (teamNameRow) teamNameRow.style.display = 'none';
+        if (badge) badge.textContent = 'Solo Event';
+        if (title) title.textContent = 'YOUR SEAT IS READY';
+        if (hintEl) hintEl.textContent = 'Solo Event \u00b7 Your seat is confirmed';
+        if (centerLogo) centerLogo.innerHTML = 'SOLO<br>PLAYER';
+        if (leaderBadge) leaderBadge.textContent = '♠ Solo Player';
+
+        // Hide all members slots
+        for (let i = 1; i <= 3; i++) {
+          const slotEl = document.getElementById(`pkt-slot-${i}`);
+          if (slotEl) slotEl.style.display = 'none';
+        }
+
         teamMembers = [];
-        if (e.minTeam > 1) {
-          // Pre-add minimum required members
-          for (let i = 1; i < e.minTeam; i++) addTeamMember();
+        pktSpawnParticles();
+        return;
+      }
+
+      // ── TEAM event: initialise poker table ──
+      if (teamNameRow) teamNameRow.style.display = '';
+      if (badge) badge.textContent = 'The Syndicate';
+      if (title) title.textContent = 'ASSEMBLE YOUR TEAM';
+      if (centerLogo) centerLogo.innerHTML = 'THE<br>TABLE';
+      if (leaderBadge) leaderBadge.textContent = '♠ Leader';
+
+      const chosenSize = selectedTeamSize || e.maxTeam;
+      const maxSlots = Math.min(chosenSize - 1, 3); // leader = slot 0, members = slots 1..maxSlots
+
+      // Update hint
+      if (hintEl) hintEl.textContent = `${chosenSize} Players \u00b7 Add ${chosenSize - 1} member(s) \u2014 tap a seat`;
+
+      // Show only the slots matching chosen team size; hide the rest
+      for (let i = 1; i <= 3; i++) {
+        const slotEl = document.getElementById(`pkt-slot-${i}`);
+        const card   = document.getElementById(`pkt-card-${i}`);
+        if (!slotEl || !card) continue;
+        if (i <= maxSlots) {
+          slotEl.style.display = '';
+          card.classList.remove('pkt-card-locked');
+          card.onclick = () => pktOpenSlot(i);
+        } else {
+          slotEl.style.display = 'none'; // hide unused slots entirely
+          card.onclick = null;
+        }
+      }
+
+      // Reset all non-leader slots
+      for (let i = 1; i <= 3; i++) {
+        pktResetSlotDisplay(i);
+      }
+
+      teamMembers = [];
+
+      // Spawn particles
+      pktSpawnParticles();
+
+      // Sync team-name visual → hidden input
+      const visInput = document.getElementById('pkt-teamname-vis');
+      if (visInput) {
+        visInput.value = '';
+        visInput.oninput = () => { document.getElementById('f-teamname').value = visInput.value; };
+      }
+    }
+
+    /* ── Poker Table Helpers ── */
+
+    function pktSpawnParticles() {
+      const c = document.getElementById('pkt-particles-container');
+      if (!c) return;
+      c.innerHTML = '';
+      const colors = ['rgba(180,80,255,0.7)', 'rgba(212,175,55,0.6)', 'rgba(255,255,255,0.4)', 'rgba(140,50,220,0.5)'];
+      for (let i = 0; i < 18; i++) {
+        const p = document.createElement('div');
+        p.className = 'pkt-particle';
+        const size = Math.random() * 4 + 1.5;
+        p.style.cssText = `
+          width:${size}px; height:${size}px;
+          left:${Math.random() * 100}%;
+          bottom:${Math.random() * 30}%;
+          background:${colors[Math.floor(Math.random() * colors.length)]};
+          animation-duration:${3 + Math.random() * 5}s;
+          animation-delay:${Math.random() * 4}s;
+          box-shadow:0 0 ${size * 2}px ${colors[Math.floor(Math.random() * colors.length)]};
+        `;
+        c.appendChild(p);
+      }
+    }
+
+    /* ── Roulette room initialiser (Step 0) ── */
+    function rltInit() {
+      // Spawn roulette number labels around outer ring
+      const numsEl = document.getElementById('rlt-nums');
+      if (numsEl) {
+        numsEl.innerHTML = '';
+        const rouletteNums = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+        const total = rouletteNums.length;
+        rouletteNums.forEach((n, i) => {
+          const lbl = document.createElement('span');
+          lbl.className = 'rlt-num-label';
+          lbl.textContent = n;
+          const deg = (360 / total) * i;
+          const isRed = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36].includes(n);
+          lbl.style.cssText = `
+            transform: rotate(${deg}deg);
+            color: ${n === 0 ? 'rgba(80,220,80,0.6)' : isRed ? 'rgba(220,30,50,0.65)' : 'rgba(212,175,55,0.45)'};
+          `;
+          numsEl.appendChild(lbl);
+        });
+      }
+      // Spawn ambient particles
+      const pc = document.getElementById('rlt-particles');
+      if (pc) {
+        pc.innerHTML = '';
+        const colors = ['rgba(255,30,60,0.7)','rgba(212,175,55,0.5)','rgba(255,120,120,0.4)','rgba(255,255,255,0.3)'];
+        for (let i = 0; i < 14; i++) {
+          const p = document.createElement('div');
+          const sz = Math.random() * 3.5 + 1.5;
+          const col = colors[Math.floor(Math.random() * colors.length)];
+          p.style.cssText = `
+            position:absolute;
+            width:${sz}px; height:${sz}px;
+            border-radius:50%;
+            left:${Math.random() * 100}%;
+            bottom:${Math.random() * 40}%;
+            background:${col};
+            box-shadow: 0 0 ${sz * 2}px ${col};
+            animation: pkt-rise ${3 + Math.random() * 5}s ease-in infinite;
+            animation-delay: ${Math.random() * 5}s;
+            pointer-events:none; z-index:2;
+          `;
+          pc.appendChild(p);
         }
       }
     }
 
+    function pktOpenSlot(slotIdx) {
+      if (!currentEv) return;
+      const maxSlots = Math.min((selectedTeamSize || currentEv.maxTeam) - 1, 3);
+      if (slotIdx > maxSlots) return;
+      pktCurrentEditSlot = slotIdx;
+
+      // Pre-fill if already added
+      const existing = teamMembers[slotIdx - 1] || {};
+
+      const overlay = document.createElement('div');
+      overlay.className = 'pkt-slot-form-overlay';
+      overlay.id = 'pkt-overlay';
+      overlay.innerHTML = `
+        <div class="pkt-form-sheet">
+          <div class="pkt-form-title">Member <span>${slotIdx + 1}</span></div>
+          <div class="pkt-form-row">
+            <div class="pkt-fg" style="grid-column:1/-1">
+              <label>Full Name</label>
+              <input id="pkt-fi-name" type="text" placeholder="Full name"
+                value="${existing.name || ''}"
+                oninput="this.value=this.value.replace(/[^A-Za-z\\s]/g,'')">
+            </div>
+          </div>
+          <div class="pkt-form-row">
+            <div class="pkt-fg">
+              <label>Reg Number</label>
+              <input id="pkt-fi-regno" type="text" placeholder="23039213..."
+                value="${existing.regno || ''}"
+                oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+            </div>
+            <div class="pkt-fg">
+              <label>Gender</label>
+              <select id="pkt-fi-gender">
+                <option value="">Select</option>
+                <option value="Male" ${existing.gender==='Male'?'selected':''}>Male</option>
+                <option value="Female" ${existing.gender==='Female'?'selected':''}>Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="pkt-form-row">
+            <div class="pkt-fg">
+              <label>Year</label>
+              <select id="pkt-fi-year">
+                <option value="">Year</option>
+                <option value="1" ${existing.year==='1'?'selected':''}>1st</option>
+                <option value="2" ${existing.year==='2'?'selected':''}>2nd</option>
+                <option value="3" ${existing.year==='3'?'selected':''}>3rd</option>
+                <option value="4" ${existing.year==='4'?'selected':''}>4th</option>
+              </select>
+            </div>
+            <div class="pkt-fg">
+              <label>Section</label>
+              <select id="pkt-fi-section">
+                <option value="">Section</option>
+                <option value="A" ${existing.section==='A'?'selected':''}>A</option>
+                <option value="B" ${existing.section==='B'?'selected':''}>B</option>
+                <option value="C" ${existing.section==='C'?'selected':''}>C</option>
+                <option value="D" ${existing.section==='D'?'selected':''}>D</option>
+                <option value="E" ${existing.section==='E'?'selected':''}>E</option>
+              </select>
+            </div>
+          </div>
+          <div class="pkt-form-row single">
+            <div class="pkt-fg">
+              <label>Phone</label>
+              <input id="pkt-fi-phone" type="tel" placeholder="10-digit number"
+                value="${existing.phone || ''}"
+                oninput="this.value=this.value.replace(/[^0-9]/g,'');if(this.value.length>10)this.value=this.value.slice(0,10)">
+            </div>
+          </div>
+          <button class="pkt-form-save-btn" onclick="pktSaveSlot(${slotIdx})">✦ Confirm Seat</button>
+          <button class="pkt-form-cancel-btn" onclick="pktCloseOverlay()">Cancel</button>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+    }
+
+    function pktCloseOverlay() {
+      const ov = document.getElementById('pkt-overlay');
+      if (ov) ov.remove();
+      pktCurrentEditSlot = -1;
+    }
+
+    function pktSaveSlot(slotIdx) {
+      const name   = document.getElementById('pkt-fi-name')?.value.trim()  || '';
+      const regno  = document.getElementById('pkt-fi-regno')?.value.trim() || '';
+      const gender = document.getElementById('pkt-fi-gender')?.value || '';
+      const year   = document.getElementById('pkt-fi-year')?.value   || '';
+      const section= document.getElementById('pkt-fi-section')?.value || '';
+      const phone  = document.getElementById('pkt-fi-phone')?.value.trim() || '';
+
+      if (!name || !regno || !gender || !year || !section || !phone) {
+        alert('Please fill all fields for this member.'); return;
+      }
+      if (regno.length < 7) { alert('Register number must be at least 7 digits.'); return; }
+      if (phone.length !== 10) { alert('Phone number must be exactly 10 digits.'); return; }
+
+      // Check duplicate regno vs leader
+      const leaderRegno = document.getElementById('f-regno')?.value.trim() || '';
+      if (regno === leaderRegno) { alert('Register number matches the leader. Members must be different.'); return; }
+
+      // Check duplicate vs other slots
+      for (let i = 0; i < teamMembers.length; i++) {
+        if (i === slotIdx - 1) continue;
+        if (teamMembers[i] && teamMembers[i].regno === regno) {
+          alert('This register number is already added for another member.'); return;
+        }
+      }
+
+      teamMembers[slotIdx - 1] = { name, regno, gender, year, section, phone };
+
+      // Update visual card
+      const nameEl   = document.getElementById(`pkt-name-${slotIdx}`);
+      const regnoEl  = document.getElementById(`pkt-regno-${slotIdx}`);
+      const statusEl = document.getElementById(`pkt-status-${slotIdx}`);
+      const card     = document.getElementById(`pkt-card-${slotIdx}`);
+
+      if (nameEl)   nameEl.textContent  = name;
+      if (regnoEl)  regnoEl.textContent  = regno.slice(0,12) + (regno.length > 12 ? '…' : '');
+      if (statusEl) { statusEl.textContent = '● Added'; statusEl.className = 'pkt-card-status pkt-status-added'; }
+      if (card)     card.className = 'pkt-player-card pkt-card-added';
+
+      // Also sync hidden tm-grid for goStep(2) validation
+      pktSyncHiddenGrid();
+
+      pktCloseOverlay();
+    }
+
+    function pktResetSlotDisplay(slotIdx) {
+      const nameEl   = document.getElementById(`pkt-name-${slotIdx}`);
+      const regnoEl  = document.getElementById(`pkt-regno-${slotIdx}`);
+      const statusEl = document.getElementById(`pkt-status-${slotIdx}`);
+      const card     = document.getElementById(`pkt-card-${slotIdx}`);
+      if (nameEl)   nameEl.textContent  = 'Empty Seat';
+      if (regnoEl)  regnoEl.textContent  = '—';
+      if (statusEl) { statusEl.textContent = '👆 Tap to Add'; statusEl.className = 'pkt-card-status pkt-status-waiting'; }
+      if (card)     card.className = 'pkt-player-card pkt-card-waiting';
+    }
+
+    /* Sync poker table data into the hidden tm-grid so existing goStep(2) validation works */
+    function pktSyncHiddenGrid() {
+      const grid = document.getElementById('tm-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      teamMembers.forEach((m, i) => {
+        if (!m || !m.name) return;
+        const div = document.createElement('div');
+        div.className = 'tm-card'; div.id = `tm-card-${i}`;
+        div.innerHTML = `
+          <input class="fi tm-name"    type="hidden" data-idx="${i}" value="${m.name}">
+          <input class="fi tm-regno"   type="hidden" data-idx="${i}" value="${m.regno}">
+          <select class="fs tm-gender" data-idx="${i}" style="display:none"><option value="${m.gender}" selected>${m.gender}</option></select>
+          <select class="fs tm-year"   data-idx="${i}" style="display:none"><option value="${m.year}" selected>${m.year}</option></select>
+          <select class="fs tm-section" data-idx="${i}" style="display:none"><option value="${m.section}" selected>${m.section}</option></select>
+          <input class="fi tm-phone"   type="hidden" data-idx="${i}" value="${m.phone}">
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    /* pktConfirmTeam — validate then call goStep(2) */
+    function pktConfirmTeam() {
+      if (!currentEv) return;
+      const e = currentEv;
+
+      // Sync team name
+      const vis = document.getElementById('pkt-teamname-vis');
+      if (vis) document.getElementById('f-teamname').value = vis.value.trim();
+
+      if (e.type !== 'Solo') {
+        // Count filled slots — must equal exactly selectedTeamSize - 1 members
+        const needed = (selectedTeamSize || e.minTeam) - 1;
+        const filled = teamMembers.filter(m => m && m.name).length;
+        if (filled < needed) {
+          alert(`Please add all ${needed} team member(s). Currently have ${filled}.`);
+          return;
+        }
+      }
+
+      // Sync hidden grid for downstream validation
+      pktSyncHiddenGrid();
+      goStep(2);
+    }
+
     let tmCount = 0;
     function addTeamMember() {
+      // Legacy — still called by setupTeamStep internally for compatibility
+      // In the new poker UI, slots are managed by pktOpenSlot / pktSaveSlot
       if (!currentEv) return;
       if (teamMembers.length >= currentEv.maxTeam - 1) {
         alert(`Maximum ${currentEv.maxTeam} members including you`); return;
       }
       const idx = teamMembers.length;
-      teamMembers.push({ name: '', regno: '', year: '', section: '', phone: '' });
-      const grid = document.getElementById('tm-grid');
-      const card = document.createElement('div');
-      card.className = 'tm-card'; card.id = `tm-card-${idx}`;
-      card.innerHTML = `
-    <div class="tm-hdr">
-      <div class="tm-num">Member ${idx + 2}</div>
-      <button class="remove-tm" onclick="removeTeamMember(${idx})">✕</button>
-    </div>
-    <div class="row3" style="margin-bottom:10px">
-      <div class="fg" style="margin:0"><label class="fl">Name</label><input class="fi tm-name" data-idx="${idx}" type="text" placeholder="Full name" oninput="this.value = this.value.replace(/[^A-Za-z\\s]/g, '')"></div>
-      <div class="fg" style="margin:0"><label class="fl">Reg Number</label><input class="fi tm-regno" data-idx="${idx}" type="text" placeholder="23039213..." oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
-      <div class="fg" style="margin:0"><label class="fl">Gender</label><select class="fs tm-gender" data-idx="${idx}"><option value="">Gen</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
-    </div>
-    <div class="row3">
-      <div class="fg" style="margin:0"><label class="fl">Year</label><select class="fs tm-year" data-idx="${idx}"><option value="">Yr</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
-      <div class="fg" style="margin:0"><label class="fl">Section</label><select class="fs tm-section" data-idx="${idx}"><option value="">Sec</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
-      <div class="fg" style="margin:0"><label class="fl">Phone</label><input class="fi tm-phone" data-idx="${idx}" type="tel" placeholder="Phone" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length>10) this.value=this.value.slice(0,10)"></div>
-    </div>
-  `;
-      grid.appendChild(card);
+      teamMembers.push({ name: '', regno: '', year: '', section: '', phone: '', gender: '' });
     }
 
     function removeTeamMember(idx) {
       if (!currentEv || teamMembers.length <= currentEv.minTeam - 1) {
         alert(`Minimum ${currentEv.minTeam} members required`); return;
       }
-      // Remove the card from DOM directly (preserves other members' data)
-      const card = document.getElementById(`tm-card-${idx}`);
-      if (card) card.remove();
       teamMembers.splice(idx, 1);
-      // Re-number remaining cards
-      document.querySelectorAll('.tm-card').forEach((c, i) => {
-        c.id = `tm-card-${i}`;
-        const numEl = c.querySelector('.tm-num');
-        if (numEl) numEl.textContent = `Member ${i + 2}`;
-        const rmBtn = c.querySelector('.remove-tm');
-        if (rmBtn) rmBtn.setAttribute('onclick', `removeTeamMember(${i})`);
-        c.querySelectorAll('[data-idx]').forEach(el => el.setAttribute('data-idx', i));
-      });
+      if (idx >= 1 && idx <= 3) pktResetSlotDisplay(idx);
+      pktSyncHiddenGrid();
     }
 
     /* ── STEP NAVIGATION ── */
@@ -7715,6 +9127,9 @@ function renderComm() {
         if (regno.length < 7) { showError('Invalid Input', 'Register Number short', 'Your register number must be at least 7 characters long.'); return; }
         if (!email.endsWith('@psnacet.edu.in')) { showError('Invalid Email', 'College Email Required', 'Please use your official college email ending in @psnacet.edu.in'); return; }
         if (phone.replace(/\D/g, '').length !== 10) { showError('Invalid Phone', 'Check your number', 'Phone number must be exactly 10 digits without country code.'); return; }
+        
+        // RE-INITIALIZE poker table slots based on whatever the leader selected in the Team Size dropdown
+        setupTeamStep();
       }
       if (n === 2) {
         // Validate step 1 (team)
@@ -7779,7 +9194,15 @@ function renderComm() {
         else if (i < currentStep) d.classList.add('done');
       });
       // Scroll sheet to top
-      document.querySelector('.reg-sheet')?.scrollTo(0, 0);
+      const regSheet = document.querySelector('.reg-sheet');
+      if (regSheet) {
+        regSheet.scrollTo(0, 0);
+        if (currentStep === 0 || currentStep === 1) {
+          regSheet.classList.add('reg-sheet-fullscreen');
+        } else {
+          regSheet.classList.remove('reg-sheet-fullscreen');
+        }
+      }
 
       const btn = document.querySelector('#step-2 .reg-next-btn');
       const backBtn = document.querySelector('#step-2 .reg-back-btn');
