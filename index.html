@@ -6278,7 +6278,7 @@
     }
     .casino-close-btn {
       position: absolute;
-      top: max(40px, env(safe-area-inset-top));
+      top: max(18px, env(safe-area-inset-top));
       left: 18px;
       z-index: 2500;
       background: rgba(255,255,255,0.08); /* Stable glass effect without expensive GPU blurs */
@@ -6424,14 +6424,16 @@
     .rlt-room {
       position: relative;
       width: 100%;
-      min-height: 560px;
+      min-height: 100dvh;
       background: radial-gradient(ellipse 95% 90% at 50% 40%,
         #3a0010 0%, #1e0008 50%, #0d0003 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      overflow: hidden;
-      padding-bottom: 16px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding-top: max(65px, calc(35px + env(safe-area-inset-top)));
+      padding-bottom: max(30px, env(safe-area-inset-bottom));
     }
     .rlt-room::before {
       content: '';
@@ -6579,6 +6581,7 @@
     .rlt-slip {
       position: relative; z-index: 5;
       width: 94%; max-width: 420px;
+      margin: 15px auto 40px;
       background: rgba(255, 255, 255, 0.03); /* Pure Mobile Glass */
       backdrop-filter: blur(25px) saturate(180%);
       -webkit-backdrop-filter: blur(25px) saturate(180%);
