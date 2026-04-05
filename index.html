@@ -8400,7 +8400,7 @@
 
     <!-- INSTAGRAM PROMO CTA (Moved under video) -->
     <div class="insta-btn-wrap" style="margin-top: 40px; margin-bottom: 20px;">
-      <a href="https://www.instagram.com/CSEUTSAV'26_26?igsh=cDRhM2g3ZzBtdTdi" target="_blank"
+      <a href="https://www.instagram.com/cseutsav_26?igsh=cDRhM2g3ZzBtdTdi" target="_blank"
         class="insta-glow-btn btn-fire">
         <span style="display:flex;align-items:center;gap:10px;position:relative;z-index:2">
           <svg viewBox="0 0 24 24">
@@ -12080,15 +12080,20 @@
           }
         }
 
-        // Filter local storage to only keep what is still in the latest remote data
-        // OR keep things that aren't in the checked emails list (though normally they all should be)
+        // Merge/Sync Logic: Only remove a local pass if we verified the email 
+        // AND the server successfully returned a non-empty list that specifically excludes this registration.
+        // This prevents passes from disappearing due to sync delays or network glitches.
         const currentLocal = JSON.parse(localStorage.getItem('u26r') || '[]');
         const filtered = currentLocal.filter(loc => {
-          // If we checked this email, only keep if the exact regId exists in the remote data
           if (emails.includes(loc.email)) {
-            return allLatest.some(rem => rem.regId === loc.regId);
+            const remoteForThisEmail = allLatest.filter(rem => rem.email === loc.email);
+            if (remoteForThisEmail.length > 0) {
+              return remoteForThisEmail.some(rem => rem.regId === loc.regId);
+            }
+            // If server returned 0 results for this email, keep local pass (safety against sync delay)
+            return true;
           }
-          return true; // Keep others
+          return true;
         });
 
         if (filtered.length !== currentLocal.length) {
@@ -12741,6 +12746,7 @@ function doPost(e) {
       if (loginType === 'admin') {
         if (uid === ADMIN_ID && pwd === ADMIN_PASS) {
           showAdminLoader('Authenticating Admin...');
+          localStorage.setItem('utsav_auth', 'admin');
           localStorage.removeItem('u26r'); // Clear stale test data for fresh sync
           closeAdminLogin();
           await openAdmin();
@@ -12751,6 +12757,7 @@ function doPost(e) {
       } else if (loginType === 'scanner') {
         if (uid === 'utsavqr' && pwd === '93611') {
           showAdminLoader('Initializing Scanner...');
+          localStorage.setItem('utsav_auth', 'scanner');
           closeAdminLogin();
           await openScanner();
           hideAdminLoader();
@@ -12893,7 +12900,7 @@ function doPost(e) {
     function flashScreen(type) {
       const ov = document.getElementById('flash-ov');
       if (!ov) return;
-      ov.style.background = type === 'success' ? 'rgba(46, 204, 113, 0.4)' : 'rgba(231, 76, 60, 0.4)';
+      ov.style.background = type === 'success' ? 'rgba(46, 204, 113, 0.2)' : 'rgba(231, 76, 60, 0.2)';
       ov.style.opacity = '1';
       setTimeout(() => { ov.style.opacity = '0'; }, 400);
     }
@@ -12949,15 +12956,32 @@ function doPost(e) {
         }
 
         // Show loading while fetching team status
-        document.getElementById('res-content').innerHTML = `
-          <div class="scanner-result-card" style="text-align:center;padding:40px 20px">
-            <div class="al-spinner" style="width:60px;height:60px;border-width:4px;margin:0 auto"></div>
-            <div style="margin-top:20px;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;animation:res-pulse 1.5s infinite">Fetching Team Status</div>
-            <div style="margin-top:8px;font-size:12px;color:var(--muted2);letter-spacing:1px">${regId}</div>
-          </div>
-        `;
-        document.getElementById('mark-scanned-btn').style.display = 'none';
-        document.getElementById('scanner-results').classList.add('open');
+        const resBox = document.getElementById('scanner-results');
+        const resContent = document.getElementById('res-content');
+        
+        // If results are NOT already open, show the full loader
+        if (!resBox.classList.contains('open')) {
+          resContent.innerHTML = `
+            <div class="scanner-result-card" style="text-align:center;padding:40px 20px">
+              <div class="al-spinner" style="width:60px;height:60px;border-width:4px;margin:0 auto"></div>
+              <div style="margin-top:20px;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;animation:res-pulse 1.5s infinite">Fetching Team Status</div>
+              <div style="margin-top:8px;font-size:12px;color:var(--muted2);letter-spacing:1px">${regId}</div>
+            </div>
+          `;
+          document.getElementById('mark-scanned-btn').style.display = 'none';
+          resBox.classList.add('open');
+        } else {
+          // If already open (e.g. scanning next teammate), show a subtle loader overlay on top
+          const subLoader = document.createElement('div');
+          subLoader.id = 'scanner-sub-loader';
+          subLoader.style.cssText = 'position:absolute;inset:0;background:rgba(22,22,22,0.8);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;border-radius:24px 24px 0 0;opacity:0;transition:opacity 0.2s;';
+          subLoader.innerHTML = `
+            <div class="al-spinner" style="width:40px;height:40px;border-width:3px"></div>
+            <div style="margin-top:12px;color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase">Updating...</div>
+          `;
+          resBox.appendChild(subLoader);
+          setTimeout(() => subLoader.style.opacity = '1', 10);
+        }
 
         // Backend verify
         verifyQR(regId, localReg);
@@ -12991,6 +13015,12 @@ function doPost(e) {
         }
 
         hideAdminLoader();
+        const subLoader = document.getElementById('scanner-sub-loader');
+        if (subLoader) {
+          subLoader.style.opacity = '0';
+          setTimeout(() => subLoader.remove(), 200);
+        }
+        
         selectedMembers = new Set();
         renderTeamScanUI(result.participant, result.enteredIndices || []);
         document.getElementById('scanner-results').classList.add('open');
@@ -13481,18 +13511,31 @@ function doPost(e) {
             </div>
           </div>
 
-          <!-- Open Site Button -->
-          <button onclick="document.getElementById('qr-landing-ov').style.display='none';document.body.style.overflow=''" 
-            style="
-              width:100%;padding:16px;
-              background:var(--orange);border:none;border-radius:12px;
-              font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;
-              color:#fff;letter-spacing:2px;text-transform:uppercase;cursor:pointer;
-              animation:qrl-rise .5s ease .6s both;
-              transition:opacity .2s;
-            "
-            onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'"
-          >Open CSEUTSAV'26 Website →</button>
+          <!-- Admin / Student Footer Actions -->
+          <div style="animation:qrl-rise .5s ease .6s both; display:flex; flex-direction:column; gap:12px; width:100%">
+            ${localStorage.getItem('utsav_auth') ? `
+              <button onclick="window.location.href='/?verify_id=' + encodeURIComponent('${regId}')" 
+                style="
+                  width:100%;padding:16px;
+                  background:#27ae60;border:none;border-radius:12px;
+                  font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;
+                  color:#fff;letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+                  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+                "
+              >✅ MARK ATTENDANCE (ADMIN) →</button>
+            ` : ''}
+
+            <button onclick="document.getElementById('qr-landing-ov').style.display='none';document.body.style.overflow=''" 
+              style="
+                width:100%;padding:16px;
+                background:var(--orange);border:none;border-radius:12px;
+                font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;
+                color:#fff;letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+                transition:opacity .2s;
+              "
+              onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'"
+            >${localStorage.getItem('utsav_auth') ? 'Back to Website' : 'Open CSEUTSAV\'26 Website →'}</button>
+          </div>
 
           <!-- Top Right Close -->
           <button onclick="document.getElementById('qr-landing-ov').style.display='none';document.body.style.overflow=''" 
@@ -13513,6 +13556,33 @@ function doPost(e) {
 
       document.body.style.overflow = 'hidden';
       document.body.appendChild(ov);
+    })();
+
+    /* ── Handle Direct Attendance Lookup (from External Scan) ── */
+    (function handleAttendanceRedirect() {
+      const params = new URLSearchParams(window.location.search);
+      const verifyId = params.get('verify_id');
+      const auth = localStorage.getItem('utsav_auth');
+      if (!verifyId || !auth) return;
+      
+      // Clean URL
+      history.replaceState(null, '', window.location.pathname);
+      
+      // Open the attendance marking UI
+      setTimeout(() => {
+        if (typeof verifyQR === 'function') {
+          // If scanner is not open, open it first to show the overlay container
+          document.getElementById('scanner-results').classList.add('open');
+          document.getElementById('res-content').innerHTML = `
+            <div class="scanner-result-card" style="text-align:center;padding:40px 20px">
+              <div class="al-spinner" style="width:60px;height:60px;border-width:4px;margin:0 auto"></div>
+              <div style="margin-top:20px;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;">Fetching Details...</div>
+              <div style="margin-top:8px;font-size:12px;color:var(--muted2);letter-spacing:1px">${verifyId}</div>
+            </div>
+          `;
+          verifyQR(verifyId);
+        }
+      }, 500);
     })();
 
     /* ════════════════════════════════ */
