@@ -12021,12 +12021,16 @@
         regs.forEach(r => {
           const el = document.getElementById('qr-' + r.regId.replace(/[^a-zA-Z0-9]/g, '_'));
           if (el && !el.hasChildNodes()) {
+            // Pointing to internal app with data parameter
             const verifyUrl = window.location.origin + window.location.pathname.replace('index.html', '');
             const members = getParsedMembers(r);
-            // Optimized payload for maximum scannability: ID, Name, Event, and minimal Team info
             const tmQR = members.map(m => ({ n: m.name || '', r: m.regno || '', y: m.year || '', s: m.section || '', p: m.phone || '' }));
             const data = { id: r.regId, n: r.name, e: r.eventName, rn: r.regno || '', ph: r.phone || '', yr: r.year || '', sec: r.section || '', t: r.teamName || '', tm: tmQR };
-            const qrText = verifyUrl + '?d=' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+            
+            // Standard base64 with URL-safe replacements (replace + with -, / with _)
+            let b64 = btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+            const qrText = verifyUrl + '?d=' + b64;
+            
             try { new QRCode(el, { text: qrText, width: 140, height: 140, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); } catch (ex) { console.error("QR Code rendering blocked:", ex); }
           }
         });
@@ -12921,8 +12925,12 @@ function doPost(e) {
       // 1. DECODE INSTANTLY (existing QR decode — UNTOUCHED)
       if (decodedText.includes('?d=')) {
         try {
-          const b64 = decodedText.split('?d=')[1];
-          instantDataRaw = JSON.parse(decodeURIComponent(escape(atob(b64))));
+          const b64Raw = decodedText.split('?d=')[1];
+          // Robust Base64 decode: inverse of the URL-safe transform
+          let safeB64 = b64Raw.replace(/-/g, '+').replace(/_/g, '/').replace(/ /g, '+');
+          while (safeB64.length % 4) safeB64 += '=';
+          
+          instantDataRaw = JSON.parse(decodeURIComponent(escape(atob(safeB64))));
           regId = instantDataRaw.id;
         } catch (e) { }
       }
@@ -13394,20 +13402,28 @@ function doPost(e) {
        and NEVER navigates to this URL — so it is completely unaffected. */
     (function handleQRLanding() {
       const params = new URLSearchParams(window.location.search);
-      const d = params.get('d');
-      if (!d) return; // Normal page load — do nothing
+      let d = params.get('d');
+      if (!d) return; 
 
-      // Clean the URL so sharing/reloading doesn't re-trigger
-      history.replaceState(null, '', window.location.pathname);
-
-      // Decode the embedded QR data
+      // Robust Base64 decode: inverse of the URL-safe transform
       let reg = null;
       try {
-        reg = JSON.parse(decodeURIComponent(escape(atob(d))));
+        // 1. Restore URL-safe characters (+ and /)
+        // 2. Handle potential browser space-decoding
+        let safeD = d.replace(/-/g, '+').replace(/_/g, '/').replace(/ /g, '+');
+        // 3. Add padding if missing
+        while (safeD.length % 4) safeD += '=';
+        
+        reg = JSON.parse(decodeURIComponent(escape(atob(safeD))));
       } catch (e) {
-        // Malformed QR — silently ignore and let the normal site load
-        return;
+        console.error("QR Component Decode Error:", e);
+        return; // Malformed QR — silently ignore
       }
+
+      if (!reg || !reg.id) return;
+
+      // Clean the URL ONLY AFTER we are sure we have a valid registration to show
+      history.replaceState(null, '', window.location.pathname);
 
       if (!reg || !reg.id) return;
 
