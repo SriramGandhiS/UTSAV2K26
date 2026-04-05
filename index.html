@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7210,23 +7210,17 @@
     .pkt-slot-form-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(5, 0, 20, 0.97);
-      /* Solid background to replace laggy blur */
+      background: rgba(5, 0, 20, 0.98); /* Solid for performance */
       z-index: 20000;
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      animation: pkt-overlay-in 0.25s ease;
-    }
-
-    @keyframes pkt-overlay-in {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
+      transition: opacity 0.3s ease;
+      transform: translate3d(0,0,0);
+      backface-visibility: hidden;
+      will-change: opacity;
+      animation: pkt-overlay-in 0.3s ease forwards;
+      overscroll-behavior: contain;
     }
 
     .pkt-form-sheet {
@@ -7236,17 +7230,20 @@
       border: 1px solid rgba(180, 80, 255, 0.5);
       border-radius: 22px 22px 0 0;
       padding: 20px 20px 34px;
+      transform: translate3d(0,0,0);
+      backface-visibility: hidden;
       animation: pkt-sheet-in 0.32s cubic-bezier(0.22, 0.68, 0, 1.1);
+      will-change: transform;
+    }
+
+    @keyframes pkt-overlay-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     @keyframes pkt-overlay-out {
-      from {
-        opacity: 1;
-      }
-
-      to {
-        opacity: 0;
-      }
+      from { opacity: 1; }
+      to { opacity: 0; }
     }
 
     @keyframes pkt-sheet-out {
@@ -7324,6 +7321,14 @@
     .pkt-fg select:focus {
       border-color: rgba(212, 175, 55, 0.7);
       box-shadow: 0 0 10px rgba(212, 175, 55, 0.18);
+    }
+
+    /* Error Highlighting */
+    .pkt-fg input.error,
+    .pkt-fg select.error {
+      border-color: #ff3e3e !important;
+      background: rgba(255, 62, 62, 0.08) !important;
+      box-shadow: 0 0 12px rgba(255, 62, 62, 0.4) !important;
     }
 
     .pkt-fg input::placeholder {
@@ -7549,7 +7554,7 @@
       }
     }
 
-    /* ── MOBILE SIZING & SPACING ── */
+    /* ── MOBILE SIZING & SPACING ── background removed (uses global reg-bg-layer) */
     .pkt-room {
       min-height: 460px;
       padding-bottom: 6px;
@@ -7715,13 +7720,11 @@
       margin: 0 !important;
     }
 
-    /* Crimson ambient room */
+    /* Crimson ambient room - Background removed (now uses global reg-bg-layer) */
     .rlt-room {
       position: relative;
       width: 100%;
       min-height: 100dvh;
-      background: radial-gradient(ellipse 95% 90% at 50% 40%,
-          #3a0010 0%, #1e0008 50%, #0d0003 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -8155,39 +8158,128 @@
       box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
     }
 
-    /* Mobile */
+    /* Inline Errors & Validation */
+    .inline-error {
+      display: none;
+      background: rgba(255, 50, 50, 0.15);
+      border: 1px solid rgba(255, 50, 50, 0.3);
+      color: #ff8888;
+      font-size: 11px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      text-align: left;
+      animation: res-pop 0.3s ease;
+    }
+    .inline-error.show { display: block; }
+    .fi.error, .fs.error { border-color: rgba(255, 50, 50, 0.5) !important; box-shadow: 0 0 8px rgba(255, 50, 50, 0.2) !important; }
+
+    /* Saved Members Picker */
+    .saved-members-box {
+      margin-bottom: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+    .saved-member-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .saved-member-pill:hover { background: rgba(212, 175, 55, 0.08); border-color: rgba(212, 175, 55, 0.3); }
+    .saved-member-info { flex: 1; }
+    .sm-name { font-size: 13px; font-weight: 700; color: #fff; }
+    .sm-meta { font-size: 10px; color: var(--muted2); }
+    .sm-add-icon { color: var(--gold); font-size: 14px; opacity: 0.6; }
+    .saved-member-pill:hover .sm-add-icon { opacity: 1; }
+
     @media (max-width: 460px) {
       .rlt-room {
         min-height: 480px;
       }
-
       .rlt-slip {
         padding: 14px 12px 14px;
         border-radius: 12px;
       }
+      .rlt-row2 { gap: 8px; }
+      .rlt-fi, .rlt-fs { padding: 8px 10px !important; font-size: 12px !important; }
+      .rlt-chip { width: 16px; height: 16px; border-width: 2px; }
+      .rlt-ring-1 { border-width: 18px; }
+      .rlt-ring-2 { border-width: 12px; }
+    }
 
-      .rlt-row2 {
-        gap: 8px;
+    /* Smooth Nav/Dock Toggle */
+    .nav, .dock {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nav-hidden {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(-10px);
+    }
+    .dock.nav-hidden {
+      transform: translateY(10px);
+    }
+    
+    .reg-ov {
+      transition: opacity 0.4s ease;
+      opacity: 0;
+      pointer-events: none;
+      display: block !important;
+      visibility: hidden;
+      transform: translate3d(0,0,0);
+      backface-visibility: hidden;
+      will-change: opacity;
+    }
+    .reg-ov.open {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
+    }
+
+    /* Stable Background Layer - Decoupled from content to prevent repaint lag */
+    #reg-bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(ellipse 95% 90% at 50% 40%, #1e0008 0%, #0d0003 100%);
+      pointer-events: none;
+    }
+    .reg-ov[data-theme="poker"] #reg-bg-layer {
+      background: radial-gradient(ellipse 95% 90% at 50% 40%, #1a0540 0%, #0d0030 100%);
+    }
+
+    .step {
+      contain: layout style; /* Repaint isolation */
+      transform: translate3d(0,0,0);
+      backface-visibility: hidden;
+    }
+
+    /* Mobile Performance Shield - Disable blurs during typing to avoid black glitches */
+    @media (max-width: 480px) {
+      .rlt-slip, .pkt-player-card, .rlt-fi, .rlt-fs, .pkt-fg input, .pkt-fg select {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(20, 20, 25, 0.95) !important;
       }
-
-      .rlt-fi,
-      .rlt-fs {
-        padding: 8px 10px !important;
-        font-size: 12px !important;
+      .pkt-slot-form-overlay {
+        background: #050014 !important;
       }
-
-      .rlt-chip {
-        width: 16px;
-        height: 16px;
-        border-width: 2px;
-      }
-
-      .rlt-ring-1 {
-        border-width: 18px;
-      }
-
-      .rlt-ring-2 {
-        border-width: 12px;
+      .pkt-form-sheet {
+        max-height: 92vh;
+        overflow-y: auto;
       }
     }
   </style>
@@ -8663,6 +8755,7 @@
 
   <!-- REGISTER OVERLAY (Isolated Table Selection + Smart Form) -->
   <div class="reg-ov" id="reg-ov" onclick="closeRegOv(event)">
+    <div id="reg-bg-layer"></div>
     <canvas id="reg-particles"
       style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
 
@@ -8722,6 +8815,7 @@
               <div class="rlt-slip-corner rlt-slip-br">♥</div>
 
               <div class="rlt-slip-title">PLAYER PROFILE</div>
+              <div class="inline-error" id="step-0-error"></div>
 
               <!-- Hidden ev-summary -->
               <div id="ev-summary-here"></div>
@@ -9947,8 +10041,10 @@
 
     /* ════════ STATE ════════ */
     let currentEv = null;
-    let currentStep = 0;
+    let selectedTeamSize = 0;
     let teamMembers = [];
+    let pktDrafts = {}; // Store unsaved field data for each slot index
+    let currentStep = 0;
 
     /* ════════ INIT ════════ */
     function init() {
@@ -10758,8 +10854,6 @@
       regEventDetail(id);
     }
 
-    let selectedTeamSize = 0;
-
     function selectEventInForm(id) {
       const ev = EVS.find(e => e.id === id);
       currentEv = ev;
@@ -10810,7 +10904,7 @@
         if (noteEl) noteEl.textContent = '\u26a0\ufe0f Leader Registration \u00b7 Choose team size, then add members on next page';
       }
 
-      setupTeamStep();
+      setupTeamStep(true); // pass true to reset if it's a fresh event pick
       rltInit();
 
       // Reveal the form fields
@@ -10864,9 +10958,10 @@
 
 
 
-    function setupTeamStep() {
+    function setupTeamStep(isReset) {
       if (!currentEv) return;
       const e = currentEv;
+      if (isReset) { teamMembers = []; pktDrafts = {}; }
 
       const room = document.getElementById('pkt-room');
       if (!room) return;
@@ -10904,9 +10999,7 @@
           if (slotEl) slotEl.style.display = 'none';
         }
 
-        teamMembers = [];
         pktSpawnParticles();
-
         updatePktSummaryPlate();
         return;
       }
@@ -10933,18 +11026,25 @@
           slotEl.style.display = '';
           card.classList.remove('pkt-card-locked');
           card.onclick = () => { playMechanicalSnap(); doHapticSnap(); pktOpenSlot(i); };
+          
+          // Update the visual cards from existing data
+          const m = teamMembers[i - 1];
+          if (m && m.name) {
+            const mNameEl = document.getElementById(`pkt-name-${i}`);
+            const mRegnoEl = document.getElementById(`pkt-regno-${i}`);
+            const mStatusEl = document.getElementById(`pkt-status-${i}`);
+            if (mNameEl) mNameEl.textContent = m.name;
+            if (mRegnoEl) mRegnoEl.textContent = m.regno.slice(0, 12) + (m.regno.length > 12 ? '…' : '');
+            if (mStatusEl) { mStatusEl.textContent = '● Added'; mStatusEl.className = 'pkt-card-status pkt-status-added'; }
+            card.className = 'pkt-player-card pkt-card-added';
+          } else {
+            pktResetSlotDisplay(i);
+          }
         } else {
           slotEl.style.display = 'none'; // hide unused slots entirely
           card.onclick = null;
         }
       }
-
-      // Reset all non-leader slots
-      for (let i = 1; i <= 3; i++) {
-        pktResetSlotDisplay(i);
-      }
-
-      teamMembers = [];
 
       // Spawn particles
       pktSpawnParticles();
@@ -10952,7 +11052,6 @@
       // Sync team-name visual → hidden input
       const visInput = document.getElementById('pkt-teamname-vis');
       if (visInput) {
-        visInput.value = '';
         visInput.oninput = () => { document.getElementById('f-teamname').value = visInput.value; };
       }
 
@@ -10979,9 +11078,12 @@
         const label = labels[requiredMembers] || requiredMembers + ' PLAYERS';
         let count = 0;
         for (let i = 0; i < requiredMembers - 1; i++) {
-          if (teamMembers[i] && teamMembers[i].name) count++;
+          const m = teamMembers[i];
+          if (m && m.name && m.regno && m.phone && m.gender && m.year && m.section) {
+            count++;
+          }
         }
-        if (selNameEl) selNameEl.innerHTML = `<span style="color:#fff;font-size:15px;">${label}</span> <span style="font-size:9px;color:rgba(255,255,255,0.4);display:block;">(${count + 1}/${requiredMembers} SELECTED)</span>`;
+        if (selNameEl) selNameEl.innerHTML = `<span style="color:#fff;font-size:15px;">${label}</span> <span style="font-size:9px;color:rgba(255,255,255,0.4);display:block;">(${count + 1}/${requiredMembers} COMPLETE)</span>`;
       }
     }
 
@@ -11060,8 +11162,17 @@
       if (slotIdx > maxSlots) return;
       pktCurrentEditSlot = slotIdx;
 
-      // Pre-fill if already added
-      const existing = teamMembers[slotIdx - 1] || {};
+      // Pre-fill if already added, or check drafts
+      const saved = teamMembers[slotIdx - 1] || {};
+      const draft = pktDrafts[slotIdx] || {};
+      const fields = {
+        name: draft.name !== undefined ? draft.name : (saved.name || ''),
+        regno: draft.regno !== undefined ? draft.regno : (saved.regno || ''),
+        gender: draft.gender !== undefined ? draft.gender : (saved.gender || ''),
+        year: draft.year !== undefined ? draft.year : (saved.year || ''),
+        section: draft.section !== undefined ? draft.section : (saved.section || ''),
+        phone: draft.phone !== undefined ? draft.phone : (saved.phone || '')
+      };
 
       const overlay = document.createElement('div');
       overlay.className = 'pkt-slot-form-overlay';
@@ -11069,59 +11180,57 @@
       overlay.innerHTML = `
         <div class="pkt-form-sheet">
           <div class="pkt-form-title">Member <span>${slotIdx + 1}</span></div>
+          <div class="inline-error" id="pkt-error"></div>
+          <div id="pkt-saved-container"></div>
           <div class="pkt-form-row">
             <div class="pkt-fg" style="grid-column:1/-1">
               <label>Full Name</label>
               <input id="pkt-fi-name" type="text" placeholder="Full name"
-                value="${existing.name || ''}"
-                oninput="this.value=this.value.replace(/[^A-Za-z\\s]/g,'')">
+                value="${fields.name}"
+                oninput="this.value=this.value.replace(/[^A-Za-z\\s]/g,''); pktUpdateDraft(${slotIdx}, 'name', this.value)">
             </div>
           </div>
           <div class="pkt-form-row">
             <div class="pkt-fg">
               <label>Reg Number</label>
               <input id="pkt-fi-regno" type="text" placeholder="23039213..."
-                value="${existing.regno || ''}"
-                oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                value="${fields.regno}"
+                oninput="this.value=this.value.replace(/[^0-9]/g,''); pktUpdateDraft(${slotIdx}, 'regno', this.value)">
             </div>
             <div class="pkt-fg">
               <label>Gender</label>
-              <select id="pkt-fi-gender">
+              <select id="pkt-fi-gender" onchange="pktUpdateDraft(${slotIdx}, 'gender', this.value)">
                 <option value="">Select</option>
-                <option value="Male" ${existing.gender === 'Male' ? 'selected' : ''}>Male</option>
-                <option value="Female" ${existing.gender === 'Female' ? 'selected' : ''}>Female</option>
+                <option value="Male" ${fields.gender === 'Male' ? 'selected' : ''}>Male</option>
+                <option value="Female" ${fields.gender === 'Female' ? 'selected' : ''}>Female</option>
               </select>
             </div>
           </div>
           <div class="pkt-form-row">
             <div class="pkt-fg">
               <label>Year</label>
-              <select id="pkt-fi-year">
+              <select id="pkt-fi-year" onchange="pktUpdateDraft(${slotIdx}, 'year', this.value)">
                 <option value="">Year</option>
-                <option value="1" ${existing.year === '1' ? 'selected' : ''}>1st</option>
-                <option value="2" ${existing.year === '2' ? 'selected' : ''}>2nd</option>
-                <option value="3" ${existing.year === '3' ? 'selected' : ''}>3rd</option>
-                <option value="4" ${existing.year === '4' ? 'selected' : ''}>4th</option>
+                <option value="1" ${fields.year == '1' ? 'selected' : ''}>1st</option>
+                <option value="2" ${fields.year == '2' ? 'selected' : ''}>2nd</option>
+                <option value="3" ${fields.year == '3' ? 'selected' : ''}>3rd</option>
+                <option value="4" ${fields.year == '4' ? 'selected' : ''}>4th</option>
               </select>
             </div>
             <div class="pkt-fg">
               <label>Section</label>
-              <select id="pkt-fi-section">
-                <option value="">Section</option>
-                <option value="A" ${existing.section === 'A' ? 'selected' : ''}>A</option>
-                <option value="B" ${existing.section === 'B' ? 'selected' : ''}>B</option>
-                <option value="C" ${existing.section === 'C' ? 'selected' : ''}>C</option>
-                <option value="D" ${existing.section === 'D' ? 'selected' : ''}>D</option>
-                <option value="E" ${existing.section === 'E' ? 'selected' : ''}>E</option>
+              <select id="pkt-fi-section" onchange="pktUpdateDraft(${slotIdx}, 'section', this.value)">
+                <option value="">Sec</option>
+                ${['A', 'B', 'C', 'D'].map(s => `<option value="${s}" ${fields.section === s ? 'selected' : ''}>${s}</option>`).join('')}
               </select>
             </div>
           </div>
-          <div class="pkt-form-row single">
-            <div class="pkt-fg">
-              <label>Phone</label>
-              <input id="pkt-fi-phone" type="tel" placeholder="10-digit number"
-                value="${existing.phone || ''}"
-                oninput="this.value=this.value.replace(/[^0-9]/g,'');if(this.value.length>10)this.value=this.value.slice(0,10)">
+          <div class="pkt-form-row">
+            <div class="pkt-fg" style="grid-column:1/-1">
+              <label>Contact Phone</label>
+              <input id="pkt-fi-phone" type="tel" placeholder="10-digit number" maxlength="10"
+                value="${fields.phone}"
+                oninput="this.value=this.value.replace(/[^0-9]/g,''); pktUpdateDraft(${slotIdx}, 'phone', this.value)">
             </div>
           </div>
           <button class="pkt-form-save-btn" onclick="playMechanicalSnap(); doHapticSnap(); pktSaveSlot(${slotIdx})">✦ Confirm Seat</button>
@@ -11129,6 +11238,7 @@
         </div>
       `;
       document.body.appendChild(overlay);
+      renderSavedMembers(slotIdx);
     }
 
     function pktCloseOverlay() {
@@ -11152,25 +11262,46 @@
       const section = document.getElementById('pkt-fi-section')?.value || '';
       const phone = document.getElementById('pkt-fi-phone')?.value.trim() || '';
 
+      const errEl = document.getElementById('pkt-error');
+      const inputs = document.querySelectorAll('.pkt-fi, #pkt-fi-gender, #pkt-fi-year, #pkt-fi-section');
+      inputs.forEach(el => el.classList.remove('error'));
+
+      let err = '';
       if (!name || !regno || !gender || !year || !section || !phone) {
-        alert('Please fill all fields for this member.'); return;
-      }
-      if (regno.length < 7) { alert('Register number must be at least 7 digits.'); return; }
-      if (phone.length !== 10) { alert('Phone number must be exactly 10 digits.'); return; }
-
-      // Check duplicate regno vs leader
-      const leaderRegno = document.getElementById('f-regno')?.value.trim() || '';
-      if (regno === leaderRegno) { alert('Register number matches the leader. Members must be different.'); return; }
-
-      // Check duplicate vs other slots
-      for (let i = 0; i < teamMembers.length; i++) {
-        if (i === slotIdx - 1) continue;
-        if (teamMembers[i] && teamMembers[i].regno === regno) {
-          alert('This register number is already added for another member.'); return;
+        err = 'Please fill all fields for this member.';
+      } else if (regno.length < 7) {
+        err = 'Register number must be at least 7 digits.';
+      } else if (phone.length !== 10) {
+        err = 'Phone number must be exactly 10 digits.';
+      } else {
+        const leaderRegno = document.getElementById('f-regno')?.value.trim() || '';
+        if (regno === leaderRegno) err = 'Register number matches you (the leader).';
+        else {
+          for (let i = 0; i < teamMembers.length; i++) {
+            if (i === slotIdx - 1) continue;
+            if (teamMembers[i] && teamMembers[i].regno === regno) {
+              err = 'This member is already added to another seat.'; break;
+            }
+          }
         }
       }
 
-      teamMembers[slotIdx - 1] = { name, regno, gender, year, section, phone };
+      if (err) {
+        if (errEl) { errEl.textContent = err; errEl.classList.add('show'); }
+        const sheet = document.querySelector('.pkt-form-sheet');
+        if (sheet) { sheet.style.animation = 'none'; void sheet.offsetWidth; sheet.style.animation = 'btn-impact 0.3s ease'; }
+        return;
+      }
+      if (errEl) errEl.classList.remove('show');
+
+      const member = { name, regno, gender, year, section, phone };
+      teamMembers[slotIdx - 1] = member;
+
+      // Persist to local pool
+      let pool = JSON.parse(localStorage.getItem('utsav_saved_team') || '[]');
+      const idx = pool.findIndex(m => m.regno === regno);
+      if (idx !== -1) pool[idx] = member; else pool.push(member);
+      localStorage.setItem('utsav_saved_team', JSON.stringify(pool));
 
       // Update visual card
       const nameEl = document.getElementById(`pkt-name-${slotIdx}`);
@@ -11189,6 +11320,83 @@
       updatePktSummaryPlate();
 
       pktCloseOverlay();
+    }
+
+    function renderSavedMembers(slotIdx) {
+      const container = document.getElementById('pkt-saved-container');
+      if (!container) return;
+      
+      const pool = JSON.parse(localStorage.getItem('utsav_saved_team') || '[]');
+      const genderFilter = document.getElementById('f-gender')?.value; // Leader's gender
+      
+      // Filter by gender (rule: no mixed gender teams) and exclude already added
+      const filtered = pool.filter(m => {
+        if (genderFilter && m.gender !== genderFilter) return false;
+        if (teamMembers.some(tm => tm && tm.regno === m.regno)) return false;
+        const leaderRegno = document.getElementById('f-regno')?.value.trim();
+        if (m.regno === leaderRegno) return false;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      container.innerHTML = `
+        <div style="font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;opacity:0.8">Quick Select Previous Team</div>
+        <div class="saved-members-box">
+          ${filtered.map(m => `
+            <div class="saved-member-pill" onclick="selectSavedMember('${m.regno}', ${slotIdx})">
+              <div class="saved-member-info">
+                <div class="sm-name">${m.name}</div>
+                <div class="sm-meta">${m.regno} · Year ${m.year}${m.section}</div>
+              </div>
+              <div class="sm-add-icon">＋</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function selectSavedMember(regno, slotIdx) {
+      const pool = JSON.parse(localStorage.getItem('utsav_saved_team') || '[]');
+      const member = pool.find(m => m.regno === regno);
+      if (!member) return;
+
+      document.getElementById('pkt-fi-name').value = member.name;
+      document.getElementById('pkt-fi-regno').value = member.regno;
+      document.getElementById('pkt-fi-gender').value = member.gender;
+      document.getElementById('pkt-fi-year').value = member.year;
+      document.getElementById('pkt-fi-section').value = member.section;
+      document.getElementById('pkt-fi-phone').value = member.phone;
+      
+      // Update drafts too
+      pktDrafts[slotIdx] = { ...member };
+
+      // Visual feedback
+      const pill = event.currentTarget;
+      if (pill) {
+        pill.style.background = 'rgba(46, 204, 113, 0.2)';
+        pill.style.borderColor = '#2ecc71';
+      }
+      
+      doHapticSnap();
+      playMechanicalSnap();
+    }
+
+    function pktUpdateDraft(slotIdx, field, val) {
+      if (!pktDrafts[slotIdx]) pktDrafts[slotIdx] = {};
+      pktDrafts[slotIdx][field] = val;
+    }
+
+    function shakePktCard(slotIdx) {
+      const card = document.getElementById(`pkt-card-${slotIdx}`);
+      if (card) {
+        card.style.animation = 'none';
+        void card.offsetWidth;
+        card.style.animation = 'btn-impact 0.4s ease'; // existing shake-like animation
+      }
     }
 
     function pktResetSlotDisplay(slotIdx) {
@@ -11280,10 +11488,38 @@
         const phone = document.getElementById('f-phone').value.trim();
         const email = document.getElementById('f-email').value.trim();
         const gender = document.getElementById('f-gender').value;
-        if (!name || !regno || !year || !section || !phone || !email || !gender) { showError('Missing Info', 'Incomplete Form', 'Please fill all your personal details block before continuing.'); return; }
-        if (regno.length < 7) { showError('Invalid Input', 'Register Number short', 'Your register number must be at least 7 characters long.'); return; }
-        if (!email.endsWith('@psnacet.edu.in')) { showError('Invalid Email', 'College Email Required', 'Please use your official college email ending in @psnacet.edu.in'); return; }
-        if (phone.replace(/\D/g, '').length !== 10) { showError('Invalid Phone', 'Check your number', 'Phone number must be exactly 10 digits without country code.'); return; }
+        const fields = [
+          { id: 'f-name', val: name, label: 'Full Name' },
+          { id: 'f-regno', val: regno, label: 'Register Number' },
+          { id: 'f-year', val: year, label: 'Year' },
+          { id: 'f-section', val: section, label: 'Section' },
+          { id: 'f-phone', val: phone, label: 'Phone Number' },
+          { id: 'f-gender', val: gender, label: 'Gender' }
+        ];
+
+        let err = '';
+        const errEl = document.getElementById('step-0-error');
+        document.querySelectorAll('.rlt-fi, .rlt-fs').forEach(el => el.classList.remove('error'));
+
+        const missing = fields.filter(f => !f.val);
+        if (missing.length > 0) {
+          err = `Please fill all details: ${missing.map(m => m.label).join(', ')}`;
+          missing.forEach(m => document.getElementById(m.id)?.classList.add('error'));
+        } else if (regno.length < 7) {
+          err = 'Register number must be at least 7 characters.';
+          document.getElementById('f-regno').classList.add('error');
+        } else if (phone.replace(/\D/g, '').length !== 10) {
+          err = 'Phone number must be exactly 10 digits.';
+          document.getElementById('f-phone').classList.add('error');
+        }
+
+        if (err) {
+          if (errEl) { errEl.textContent = err; errEl.classList.add('show'); }
+          const slip = document.getElementById('rlt-slip');
+          if (slip) { slip.style.animation = 'none'; void slip.offsetWidth; slip.style.animation = 'btn-impact 0.3s ease'; }
+          return;
+        }
+        if (errEl) errEl.classList.remove('show');
 
         // RE-INITIALIZE poker table slots based on whatever the leader selected in the Team Size dropdown
         setupTeamStep();
@@ -11293,46 +11529,47 @@
         if (currentEv && currentEv.type !== 'Solo') {
           const tname = document.getElementById('f-teamname').value.trim();
           if (!tname) { showError('Missing Info', 'Team Name Required', 'Please enter a team name to proceed.'); return; }
-          // Collect team member data
-          teamMembers = [];
-          let incomplete = false;
-          document.querySelectorAll('.tm-card').forEach((card, i) => {
-            const nm = card.querySelector('.tm-name')?.value.trim() || '';
-            const rg = card.querySelector('.tm-regno')?.value.trim() || '';
-            const gen = card.querySelector('.tm-gender')?.value || '';
-            const yr = card.querySelector('.tm-year')?.value || '';
-            const sc = card.querySelector('.tm-section')?.value || '';
-            const ph = card.querySelector('.tm-phone')?.value.trim() || '';
-
-            if (nm) {
-              const leaderGender = document.getElementById('f-gender').value;
-              const leaderRegNo = document.getElementById('f-regno').value.trim();
-
-              if (!rg || !yr || !sc || !ph || !gen) {
-                incomplete = true;
-              } else if (gen !== leaderGender) {
-                showError('Rule Violation', 'Mixed Gender Team', `Team member ${i + 2} (${nm}) must be ${leaderGender}. Mixed gender teams are strictly not allowed.`);
-                incomplete = true; return;
-              } else if (rg === leaderRegNo) {
-                showError('Invalid Input', 'Duplicate Register Number', `Team member ${i + 2} has the exact same register number as you (the leader).`);
-                incomplete = true; return;
-              } else if (teamMembers.some(prev => prev.regno === rg)) {
-                showError('Invalid Input', 'Duplicate Register Number', `Register number ${rg} has been entered multiple times for different team members.`);
-                incomplete = true; return;
-              } else if (rg.length < 7) {
-                showError('Invalid Input', 'Register Number short', `Team member ${i + 2}'s register number must be at least 7 characters.`);
-                incomplete = true; return;
-              } else if (ph.replace(/\D/g, '').length !== 10) {
-                showError('Invalid Input', 'Check Phone Number', `Team member ${i + 2}'s phone number must be exactly 10 digits.`);
-                incomplete = true; return;
-              } else {
-                teamMembers.push({ name: nm, regno: rg, gender: gen, year: yr, section: sc, phone: ph });
-              }
-            }
-          });
-          if (incomplete) { if (document.getElementById('err-ov').classList.contains('open')) return; showError('Missing Info', 'Incomplete Team Details', 'Please fill all details for the added team members.'); return; }
-          if (teamMembers.length < currentEv.minTeam - 1) {
-            showError('Rule Violation', 'Not enough members', `Your team needs at least ${currentEv.minTeam} members total (You + ${currentEv.minTeam - 1} more).`); return;
+          
+          // teamMembers array is now the single source of truth for Poker UI
+          const needed = (selectedTeamSize || currentEv.minTeam) - 1;
+          const leaderGender = document.getElementById('f-gender').value;
+          
+          for (let i = 0; i < needed; i++) {
+             const m = teamMembers[i];
+             const slotNum = i + 2;
+             
+             if (!m || !m.name) {
+               showError('Member Missing', `Seat ${slotNum} is Empty`, `Please tap on Seat ${slotNum} to add a team member.`);
+               shakePktCard(i + 1);
+               return; 
+             }
+             
+             const fields = [
+               { k: 'regno', l: 'Register Number' },
+               { k: 'gender', l: 'Gender' },
+               { k: 'year', l: 'Year' },
+               { k: 'section', l: 'Section' },
+               { k: 'phone', l: 'Phone Number' }
+             ];
+             
+             for (let f of fields) {
+                if (!m[f.k]) {
+                  showError('Incomplete Info', `Check Member ${slotNum}`, `Field "${f.l}" is missing for ${m.name}. Tap their seat to complete.`);
+                  shakePktCard(i + 1);
+                  return;
+                }
+             }
+             
+             if (m.gender !== leaderGender) {
+                showError('Rule Violation', 'Mixed Gender Team', `Member ${slotNum} (${m.name}) must be ${leaderGender}. Mixed-gender teams are not allowed.`);
+                shakePktCard(i + 1);
+                return;
+             }
+          }
+          
+          if (teamMembers.length < needed) {
+            showError('Incomplete Team', 'Add More Members', `Required: ${needed + 1} players total. Please fill all seats.`);
+            return;
           }
         }
         buildReview();
@@ -11342,14 +11579,30 @@
     }
 
     function updateStepUI() {
-      document.querySelectorAll('.step').forEach((s, i) => {
-        s.classList.toggle('active', i === currentStep);
+      const regOv = document.getElementById('reg-ov');
+      const steps = document.querySelectorAll('.step');
+      
+      // Update background theme based on current step
+      if (regOv) {
+        // Step 0 (Leader) = Default Crimson, Step 1 (Poker) = Purple Theme
+        if (currentStep === 1) regOv.setAttribute('data-theme', 'poker');
+        else regOv.removeAttribute('data-theme');
+      }
+
+      steps.forEach((s, i) => {
+        const isActive = i === currentStep;
+        s.classList.toggle('active', isActive);
+        // Performance: Fully hide non-active steps to prevent GPU overhead
+        s.style.visibility = isActive ? 'visible' : 'hidden';
+        s.style.display = isActive ? 'block' : 'none'; 
       });
+
       document.querySelectorAll('.step-dot').forEach((d, i) => {
         d.classList.remove('current', 'done');
         if (i === currentStep) d.classList.add('current');
         else if (i < currentStep) d.classList.add('done');
       });
+
       // Scroll sheet to top
       const regSheet = document.querySelector('.reg-sheet');
       if (regSheet) {
@@ -12976,12 +13229,14 @@ function doPost(e) {
 
     /* ════════ DOCK & NAV TOGGLE ════════ */
     function hideDock() {
-      document.getElementById('dock').classList.add('hidden');
-      document.querySelector('.nav').classList.add('hidden');
+      const d = document.getElementById('dock'); if(d) d.classList.add('nav-hidden');
+      const n = document.querySelector('.nav'); if(n) n.classList.add('nav-hidden');
+      const l = document.getElementById('logo-trigger'); if(l) l.style.opacity='0';
     }
     function showDock() {
-      document.getElementById('dock').classList.remove('hidden');
-      document.querySelector('.nav').classList.remove('hidden');
+      const d = document.getElementById('dock'); if(d) d.classList.remove('nav-hidden');
+      const n = document.querySelector('.nav'); if(n) n.classList.remove('nav-hidden');
+      const l = document.getElementById('logo-trigger'); if(l) l.style.opacity='1';
     }
 
     function dockNav(target) {
