@@ -3,7 +3,9 @@
 
 <head>
   <script>
-    if (!sessionStorage.getItem('introShown')) {
+    // Skip intro if this is a QR scan landing (?d=) or attendance redirect (?verify_id=)
+    const _qp = new URLSearchParams(window.location.search);
+    if (!sessionStorage.getItem('introShown') && !_qp.get('d') && !_qp.get('verify_id')) {
       window.location.replace('intro.html');
     }
   </script>
