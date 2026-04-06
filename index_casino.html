@@ -5381,21 +5381,13 @@
       object-fit: cover;
       display: block;
       z-index: 1;
-      /* Boost contrast and saturation to hide noise in shadows, plus subtle blur to mask blockiness */
-      filter: contrast(1.15) saturate(1.2) blur(0.45px);
+      /* Removed blur/filter to keep it clear high quality */
+      filter: none;
     }
 
     /* Film Grain Noise Overlay (Masks compression artifacts) */
-    .vid-grain {
-      position: absolute;
-      inset: -50%;
-      width: 200%;
-      height: 200%;
-      z-index: 3;
-      pointer-events: none;
-      opacity: 0.22;
-      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      animation: grain-flicker 0.2s steps(4) infinite;
+    .vid-grain, .vid-inner::after {
+      display: none;
     }
 
     @keyframes grain-flicker {
@@ -5405,16 +5397,7 @@
       75% { transform: translate(-0.5%, 0.5%); }
     }
 
-    /* Subtle dark vignette overlay */
-    .vid-inner::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0,0,0,0.7) 100%);
-      z-index: 4;
-      pointer-events: none;
-    }
+
 
     /* Fallback when video hasn't loaded */
     .vid-fallback {
@@ -5696,8 +5679,7 @@
     <div class="vid-title">IT'S <span>HAPPENING</span></div>
     <div class="vid-glow-ring" id="vid-wrapper">
       <div class="vid-inner">
-        <!-- Film Grain to mask noise -->
-        <div class="vid-grain"></div>
+        <!-- Removed vid-grain -->
         <!-- Fallback: visible instantly while video loads -->
         <div class="vid-fallback" id="vid-fallback">UTSAV 2K26</div>
         <!-- Video lazy-loaded after first paint — zero blocking -->
@@ -6582,7 +6564,7 @@
       if (!wrapper || !video) return;
 
       const loadVideo = () => {
-        video.src = 'assets/unboxing.mp4';
+        video.src = 'assets/unboxing.mp4?v=' + new Date().getTime();
         video.load();
         video.play().catch(() => {});
 
