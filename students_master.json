@@ -1,0 +1,4946 @@
+[
+  {
+    "regno": "25CS003",
+    "name": "AAKASH K M",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS005",
+    "name": "ABINAV RAMASAMY S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS009",
+    "name": "ABINESH CHANDRASEKAR",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS011",
+    "name": "ABISHEIK B",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS012",
+    "name": "ABISHEK GURU R",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS013",
+    "name": "ABISHEK R",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS015",
+    "name": "AHIL R",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS017",
+    "name": "AJAY PRASANTH R",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS018",
+    "name": "AJAY SAGAR C",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS019",
+    "name": "AJITHKUMAR G",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS020",
+    "name": "AKARSH N",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS021",
+    "name": "AKASH ARAVIND S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS022",
+    "name": "AKASH M",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS024",
+    "name": "AL FATTAH K",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS026",
+    "name": "AMALESH S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS031",
+    "name": "ARUL JOSE S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS032",
+    "name": "ARUN M",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS033",
+    "name": "ASWIN B",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS035",
+    "name": "ATHITHYAN M",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS038",
+    "name": "BARANITHARAN C",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS041",
+    "name": "BHASKAR P",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS043",
+    "name": "BHAVEESH D",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS044",
+    "name": "BHUVAN MUTHARASU S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS049",
+    "name": "CHANDRU T",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS050",
+    "name": "DEEPAK S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS054",
+    "name": "DENIS A",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS055",
+    "name": "DEV ANAND R",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS313",
+    "name": "DEVARAJ T",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS062",
+    "name": "DHAYANITHI G",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS063",
+    "name": "DILIBAN M V",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS064",
+    "name": "DINESH S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS065",
+    "name": "DIVAKAR J",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS071",
+    "name": "GANISH BALAJI V",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS001",
+    "name": "AADHI DHAMINI A",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS002",
+    "name": "AAFRIN H",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS004",
+    "name": "AARUDHRA T",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS006",
+    "name": "ABINAYA K",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS007",
+    "name": "ABINAYA T",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS008",
+    "name": "ABINAYALAKSHMI V",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS010",
+    "name": "ABIRAMI C",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS014",
+    "name": "ABIYA A",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS016",
+    "name": "AISHWARYA A T M",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS023",
+    "name": "AKSHAYAMATHI P",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS025",
+    "name": "ALAGU SARANYA R",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS027",
+    "name": "ANGU HARI DEEPTHI V",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS028",
+    "name": "ANITHA A",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS029",
+    "name": "ANUSREE R",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS030",
+    "name": "ARCHANA A",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS034",
+    "name": "ASWINI R",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS036",
+    "name": "BAKKIYALAKSHMI V",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS037",
+    "name": "BANU MIRSHA M S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS039",
+    "name": "BAVANA R",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS040",
+    "name": "BEULLA S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS042",
+    "name": "BHAVADHARANI",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS045",
+    "name": "BHUVANESWARI V",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS046",
+    "name": "BIRUNDHA S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS047",
+    "name": "BRUNDHASRI J K",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS048",
+    "name": "CANDACE J BLESSESS",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS051",
+    "name": "DEEPIKA H",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS052",
+    "name": "DEEPIKA M",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS053",
+    "name": "DEEPIKA S",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS056",
+    "name": "DEVADHARSHINI M",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS057",
+    "name": "DHARANI KASTHURI D",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS058",
+    "name": "DHARSHANAA D",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS059",
+    "name": "DHARSHINI M",
+    "year": "1",
+    "section": "A"
+  },
+  {
+    "regno": "25CS073",
+    "name": "GOKULA PRIYAN S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS074",
+    "name": "GOPINATH S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS076",
+    "name": "GURUHAASAN P",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS077",
+    "name": "GURUPRAKASH S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS078",
+    "name": "HALEY R",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS079",
+    "name": "HARI HARAN A",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS080",
+    "name": "HARIHARAN B",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS081",
+    "name": "HARIHARAN D J",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS082",
+    "name": "HARIHARAN R",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS083",
+    "name": "HARIHARAN S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS084",
+    "name": "HARIKARANSUDHAN A",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS086",
+    "name": "HARISH K",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS090",
+    "name": "HARRISON EBI D",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS095",
+    "name": "HAVELAN FRANK V",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS096",
+    "name": "HEMA BALA T",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS099",
+    "name": "HEMANTH KUMAR S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS101",
+    "name": "IMRAAN FAREED ABDUL HAKKIM",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS103",
+    "name": "ISSA JAMES I",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS108",
+    "name": "JAI ARUN VEL S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS111",
+    "name": "JASWANTH MARCUS M S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS113",
+    "name": "JAYASURYA J",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS115",
+    "name": "JEFFREY PAVAN B",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS117",
+    "name": "JEYAMURUGAN B",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS118",
+    "name": "JOHN RITHIK V",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS123",
+    "name": "JYOTHIKRISHNA S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS127",
+    "name": "KARTHIKEYAN L",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS128",
+    "name": "KARTHIKEYAN M",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS133",
+    "name": "KEMESH S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS134",
+    "name": "KESHAV AKASH R N",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS135",
+    "name": "KISHORE BENADICT P",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS137",
+    "name": "LAKSHHAN K H",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS138",
+    "name": "LALITH SARAN S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS060",
+    "name": "DHARSHINI S (03.05.2008)",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS061",
+    "name": "DHARSHINI S (06.07.2007)",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS066",
+    "name": "DIVYA BHARATHI S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS067",
+    "name": "DIVYA DARSHINI B",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS068",
+    "name": "DIVYA G K",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS069",
+    "name": "ELAKKIYA S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS070",
+    "name": "EVANGELINE AGANILA F",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS072",
+    "name": "GOBIKA K",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS075",
+    "name": "GOUSIKA S A",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS085",
+    "name": "HARINI  SRI S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS087",
+    "name": "HARITHA N",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS088",
+    "name": "HARITHA SHREE K",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS089",
+    "name": "HARITHRA K",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS091",
+    "name": "HARSHINI S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS092",
+    "name": "HARSHITHA H",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS093",
+    "name": "HASIN BANU M",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS094",
+    "name": "HASSINI S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS097",
+    "name": "HEMALATHA M",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS098",
+    "name": "HEMALESHWARI V",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS100",
+    "name": "HEMAVARSHINI G",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS102",
+    "name": "INDHUJA M",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS104",
+    "name": "ISWARYA K",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS105",
+    "name": "JABRIN SHIFA J",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS106",
+    "name": "JACINDA R",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS107",
+    "name": "JAFFRIN S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS109",
+    "name": "JANANI J",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS110",
+    "name": "JASMINE SANTHIYA A",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS112",
+    "name": "JAYASHRI K R",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS114",
+    "name": "JEEVITHA S",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS116",
+    "name": "JEGATHEESHWARI V",
+    "year": "1",
+    "section": "B"
+  },
+  {
+    "regno": "25CS143",
+    "name": "LOGESH R",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS144",
+    "name": "MABASHA K",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS145",
+    "name": "MADESHVAR A",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS146",
+    "name": "MADHAN RAJKUMAR V",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS149",
+    "name": "MAHENDRAN J",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS150",
+    "name": "MANIKANDA PRABU V",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS151",
+    "name": "MANIKANDAN G",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS153",
+    "name": "MARAN R",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS155",
+    "name": "MATHANKUMAR T",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS157",
+    "name": "MELVIN CHANDRU A",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS161",
+    "name": "MOHAMED ABDUL KADAR T",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS162",
+    "name": "MOHAMED FAIZAL M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS163",
+    "name": "MOHAMED FARHAAN A M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS164",
+    "name": "MOHAMMED RIFA M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS165",
+    "name": "MOHAMMED SHAKEEL S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS166",
+    "name": "MOHANA KRISHNAN T",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS167",
+    "name": "MOHULNATH M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS168",
+    "name": "MONIC KISHORE S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS171",
+    "name": "MUGUNDHAN M L",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS172",
+    "name": "MUKESH V R",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS173",
+    "name": "MUTHU VIGNESH M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS175",
+    "name": "MUTHUPANDI M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS178",
+    "name": "NAVEEN KUMAR S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS179",
+    "name": "NAVIN KUMAR S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS181",
+    "name": "NETHIS P",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS185",
+    "name": "NITHISH K",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS186",
+    "name": "NITHISH KARTHICK S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS187",
+    "name": "NITHISH M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS188",
+    "name": "NITHISHKUMAR S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS194",
+    "name": "PARTHIBAN R",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS195",
+    "name": "PATRICK JIVIN RAJ C",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS196",
+    "name": "PON NIVASH R",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS314",
+    "name": "PONSURYA K",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS119",
+    "name": "JOSHIKA V",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS120",
+    "name": "JOSHINI S T",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS121",
+    "name": "JOTHIKA S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS122",
+    "name": "JOYNAIR JAIKUMARI DEBORAH G",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS124",
+    "name": "KALAISELVI P",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS125",
+    "name": "KAMALINI JAYSHREE M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS126",
+    "name": "KARISHMA V",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS129",
+    "name": "KATHERINE MARIA S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS130",
+    "name": "KAVIYA R",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS131",
+    "name": "KAVIYARASI S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS132",
+    "name": "KEERTHANA B",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS136",
+    "name": "KOUSHIKA S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS139",
+    "name": "LATHIKA M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS140",
+    "name": "LAYA SARAVANAN",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS141",
+    "name": "LEKHA SRI P",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS142",
+    "name": "LEKISHA M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS147",
+    "name": "MADHUMITHA A",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS148",
+    "name": "MADHUMITHA M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS152",
+    "name": "MANSI JENILIA A",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS154",
+    "name": "MARION PRESENTA W",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS156",
+    "name": "MEGADHARSHINI S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS158",
+    "name": "MENAGA B",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS159",
+    "name": "MERLIN PREETHI A",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS160",
+    "name": "MIRUTHULA T V",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS169",
+    "name": "MONIKA L",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS170",
+    "name": "MRUTHULA D",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS174",
+    "name": "MUTHULAKSHMI S",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS176",
+    "name": "NAOMIKA N V",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS177",
+    "name": "NAVANEETHA SHREE B",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS180",
+    "name": "NESIKA M",
+    "year": "1",
+    "section": "C"
+  },
+  {
+    "regno": "25CS199",
+    "name": "PRAJAN M",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS200",
+    "name": "PRAJEETKANNA S S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS201",
+    "name": "PRAKASH K",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS202",
+    "name": "PRAKATHISH K G",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS203",
+    "name": "PRANAOU B",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS204",
+    "name": "PRANESH KUMAR P S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS205",
+    "name": "PRASANNA C",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS210",
+    "name": "RAHUL M",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS211",
+    "name": "RAJAPANDI R",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS213",
+    "name": "RATHEESH S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS220",
+    "name": "RITHESH P",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS222",
+    "name": "ROHITH RAJ S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS223",
+    "name": "ROHITH S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS227",
+    "name": "RUJITH IRUDHAYA EBINESAR S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS228",
+    "name": "SABARIMITHRAN J",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS230",
+    "name": "SAIKRISH R",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS231",
+    "name": "SAKTHIVEL A",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS232",
+    "name": "SAM JOSHUA V S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS233",
+    "name": "SAMRITHICK V",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS237",
+    "name": "SANJAY KUMAR S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS238",
+    "name": "SANJAY RAJ J",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS239",
+    "name": "SANJEEV M",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS240",
+    "name": "SANJIV PRIYAN S L",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS242",
+    "name": "SANTHOSH KUMAR C S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS243",
+    "name": "SANTOSH KUMAR MAHATO",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS244",
+    "name": "SANTHOSHKUMAR M",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS245",
+    "name": "SARANRAJ C",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS246",
+    "name": "SARVESHWARAN A M",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS247",
+    "name": "SASIDHARAN R",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS248",
+    "name": "SASIVARNAN T",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS249",
+    "name": "SATHIS KUMAR I",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS250",
+    "name": "SATHISH P",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS182",
+    "name": "NETHRA P",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS183",
+    "name": "NIRMALA NANCY A",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS184",
+    "name": "NIRUSIKA R",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS189",
+    "name": "NITHYA SREE M V",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS190",
+    "name": "NIVETHA B",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS191",
+    "name": "NIVETHA R (05-01-2008)",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS192",
+    "name": "NIVETHA R (17-09-2007)",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS193",
+    "name": "PANBARASI A",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS197",
+    "name": "POOJA S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS198",
+    "name": "POOJA SRI S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS206",
+    "name": "PRIYANKA C",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS207",
+    "name": "PRIYANKA G",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS208",
+    "name": "PRIYANKA K",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS209",
+    "name": "RAGAVI A",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS212",
+    "name": "RANI AISHWARYA R",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS214",
+    "name": "RATHIYA SRI N",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS215",
+    "name": "REENA SRI T",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS216",
+    "name": "REKA T",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS217",
+    "name": "REVATHY B",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS218",
+    "name": "RIONA R",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS219",
+    "name": "RISHIKA S M",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS221",
+    "name": "RITHIKA B",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS224",
+    "name": "ROJA R",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS225",
+    "name": "ROOBIKA K",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS226",
+    "name": "ROSHINI D",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS229",
+    "name": "SAFANA NISHA A",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS234",
+    "name": "SAMYUKTHA S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS235",
+    "name": "SANCHETHA M",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS236",
+    "name": "SANJANA S",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS241",
+    "name": "SANKARA NARAYANANI V K",
+    "year": "1",
+    "section": "D"
+  },
+  {
+    "regno": "25CS253",
+    "name": "SELVAGANESAN K",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS254",
+    "name": "SELVAKUMAR S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS256",
+    "name": "SHANMUGA PRIYAN S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS257",
+    "name": "SHIVRAM G",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS261",
+    "name": "SHURYANARAYANAN V",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS262",
+    "name": "SIDDHARTH SIVAKUMAR",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS263",
+    "name": "SIVADHANUSH A",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS264",
+    "name": "SOUNDARYAN B",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS266",
+    "name": "SRI BALAJI N V",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS267",
+    "name": "SRI KUMARAN R",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS269",
+    "name": "SUBASH CHANDRA BOSE R",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS270",
+    "name": "SUDHARSANA RAJAN M A",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS271",
+    "name": "SUGANTHAN P",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS272",
+    "name": "SUJITH RAMASAMY",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS275",
+    "name": "SURIYAA M",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS276",
+    "name": "SURYA PRAKASH S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS277",
+    "name": "SUSHIL KUMAR C",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS315",
+    "name": "THANISK S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS281",
+    "name": "THARUN BALAJI K R",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS282",
+    "name": "THARUN P S S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS283",
+    "name": "THIRUMANI S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS286",
+    "name": "UDHAYA KRISHNAN N G",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS287",
+    "name": "UDHAYA BALA C K",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS294",
+    "name": "VENGADESH S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS297",
+    "name": "VIGNESHWARAN A",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS298",
+    "name": "VINOTH C",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS299",
+    "name": "VISHAL S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS301",
+    "name": "VISHNU HAASH R",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS302",
+    "name": "VISHNU V",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS303",
+    "name": "VISHWA V",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS308",
+    "name": "YOGESHWARAN S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS311",
+    "name": "YUKESH R",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS312",
+    "name": "YUVARAJ T",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS251",
+    "name": "SATHIYA LITHIYA B",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS252",
+    "name": "SATHYA RUBA M",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS255",
+    "name": "SHANMATHI G",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS258",
+    "name": "SHREENITHI S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS259",
+    "name": "SHRI SAHANA P",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS260",
+    "name": "SHRIMATHI T",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS265",
+    "name": "SOWMIYA N",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS268",
+    "name": "SRIMATHI AISWARYA T R",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS273",
+    "name": "SUJITHA K",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS274",
+    "name": "SUPRIYA S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS278",
+    "name": "SWETHA R",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS279",
+    "name": "SWETHA S J",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS280",
+    "name": "THARSHINI J",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS284",
+    "name": "THIRUMURUGAN HARICHITRA",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS285",
+    "name": "THIVYA THARSHANI R",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS288",
+    "name": "VAGISSVARY M R",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS289",
+    "name": "VAISHAALE MEERA S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS290",
+    "name": "VANJINAYAKI S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS291",
+    "name": "VARSHAA M",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS292",
+    "name": "VARSHINI J",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS293",
+    "name": "VEERAMADHUBHALA V V",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS295",
+    "name": "VETHAVARNA R S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS296",
+    "name": "VIDYA BHARATHI S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS300",
+    "name": "VISHAYA G",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS304",
+    "name": "VITHYA M",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS305",
+    "name": "YALINI S",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS306",
+    "name": "YAZHINI P",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS307",
+    "name": "YOGASHREE N",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS309",
+    "name": "YOHITHA R",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "25CS310",
+    "name": "YOKAVI M",
+    "year": "1",
+    "section": "E"
+  },
+  {
+    "regno": "2403921310421001",
+    "name": "AAKASHRAM S",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421002",
+    "name": "AATHITHIYAA K R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421005",
+    "name": "ABISHEIK P",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421006",
+    "name": "ABISHEKKANNAN V",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421007",
+    "name": "AHAMED AATHIL Z",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421008",
+    "name": "AHAMED IRFAN A",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421010",
+    "name": "AKASH A",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421011",
+    "name": "AKASH R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421012",
+    "name": "AKILAN THOMAS T",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421014",
+    "name": "ALAGUPRASATH A",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421018",
+    "name": "ANUPAM KISHORE P R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421019",
+    "name": "ARO JOE ALTON P",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421026",
+    "name": "BALASURYA C",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421027",
+    "name": "BARATH VIJAYKUMAR R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421030",
+    "name": "BHUVANESAN N",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421035",
+    "name": "COWSIC K K",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421036",
+    "name": "DANY ABISHEK A",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421038",
+    "name": "DEEPAK P",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421039",
+    "name": "DEEPAKUMAR M",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421040",
+    "name": "DEVA SAHAYARAJ J",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421043",
+    "name": "DHARANEESH P R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421044",
+    "name": "DHARANI K S",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421045",
+    "name": "DHARANI M",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421052",
+    "name": "DHARUN M J",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421054",
+    "name": "DHIVAGAR M",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421055",
+    "name": "DIYESH P",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421057",
+    "name": "EBI RUBUCK R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421061",
+    "name": "GIRI MANIGANDAN M",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421062",
+    "name": "GIRIDHARAN S",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421063",
+    "name": "GNANAVEL S",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421064",
+    "name": "GOKUL B",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421302",
+    "name": "BALAKKANNA P",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422003",
+    "name": "ABINAYA A",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422004",
+    "name": "ABIRAMI G",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422009",
+    "name": "AISHWARYA T",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422013",
+    "name": "AKSHAYA S R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422015",
+    "name": "AMIRTHAA R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422016",
+    "name": "AMRITHA RAI J",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422017",
+    "name": "ANANTHIKA J",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422020",
+    "name": "ARO LADISKA A",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422021",
+    "name": "ASHOKA MITHRAA R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422022",
+    "name": "ASMA AFROSE N",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422023",
+    "name": "ASMA JAITHOON A",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422024",
+    "name": "BALANAGESHWARI V",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422025",
+    "name": "BALASAKTHI V",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422028",
+    "name": "BAVANA S",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422029",
+    "name": "BHARATHI P",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422031",
+    "name": "BUVANESWARI R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422032",
+    "name": "CAROLINA JULIET B",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422033",
+    "name": "CHARMATHI S",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422034",
+    "name": "CHARULATHA E",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422037",
+    "name": "DEEPADHARSHINI S",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422041",
+    "name": "DEVAKI P",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422042",
+    "name": "DHANUSHRI SA",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422046",
+    "name": "DHARANI S",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422048",
+    "name": "DHARSHINI G",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422049",
+    "name": "DHARSHINI K",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422050",
+    "name": "DHARSHINI R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422051",
+    "name": "DHARSHITHA R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422053",
+    "name": "DHEJASWINI R G",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422056",
+    "name": "DORA HASINI R",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422058",
+    "name": "ENIYA E",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422059",
+    "name": "FAHIMA A",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310422060",
+    "name": "GAYATHIRE DEVI B",
+    "year": "2",
+    "section": "A"
+  },
+  {
+    "regno": "2403921310421065",
+    "name": "GOKULA KRISHNAN S",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421066",
+    "name": "GURU KARTHIKEYAN V",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421068",
+    "name": "GURUSOWMIYANARAYANAN K G",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421070",
+    "name": "HARAN V",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421071",
+    "name": "HARI KRISHNAN A",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421073",
+    "name": "HARIHARAN B",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421074",
+    "name": "HARIHARAN S",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421077",
+    "name": "HARISH S",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421078",
+    "name": "HARISH T",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421080",
+    "name": "HARRIS KUMAR L",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421081",
+    "name": "HARSH VARDHAN",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421083",
+    "name": "JAGADEESHWARAN A G",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421084",
+    "name": "JAISANKAR S",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421090",
+    "name": "JEFRIN NIKHIL RAJ P",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421091",
+    "name": "JEROME SAM A",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421092",
+    "name": "JERRY MARKUS RAJ S",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421093",
+    "name": "JEYA VEGNESH K",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421095",
+    "name": "JEYAVEL P",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421096",
+    "name": "JOHN AUSTIN I",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421097",
+    "name": "KALIMUTHU B",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421098",
+    "name": "KAMALESH N",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421099",
+    "name": "KAPIL M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421100",
+    "name": "KARTHICK RAJA K",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421101",
+    "name": "KARTHICK RAJA P",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421102",
+    "name": "KARTHIK KUMAR V C",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421104",
+    "name": "KARTHIKEYAN G",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421107",
+    "name": "KAVIN S",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421111",
+    "name": "KISHORE V",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421112",
+    "name": "KUMARASAMY A",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421115",
+    "name": "LOGAESH G",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421116",
+    "name": "LOGESH M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421117",
+    "name": "LUKESH ADITHYA A P",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421119",
+    "name": "MAHARAJA B",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421120",
+    "name": "MAHESH BABU B",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421123",
+    "name": "MARI HARSAN M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421124",
+    "name": "MATHESH MITHRA M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421126",
+    "name": "MELKIE MARI VALAN B",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421127",
+    "name": "MIDHUN BALA J",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421128",
+    "name": "MOHAMED AKIL N",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421306",
+    "name": "VARSHAN M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422067",
+    "name": "GURU VARSHINI R S",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422069",
+    "name": "HALEEMA M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422072",
+    "name": "HARI PRASANA A",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422075",
+    "name": "HARINI M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422076",
+    "name": "HARINI V (29.12.2006)",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422079",
+    "name": "HARISMITA R",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422082",
+    "name": "INIYA E",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422085",
+    "name": "JANANI A",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422086",
+    "name": "JANANI V",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422087",
+    "name": "JAYALAKSHMI K",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422088",
+    "name": "JEBAGAYATHRI B",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422089",
+    "name": "JEEVITHA J",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422094",
+    "name": "JEYAPARANI J",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422103",
+    "name": "KARTHIKAYEENI M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422105",
+    "name": "KATHRINE DANICA M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422106",
+    "name": "KAVIMALAR P R",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422108",
+    "name": "KAVIYA V",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422109",
+    "name": "KAVYA M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422110",
+    "name": "KIRTHIGA M",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422113",
+    "name": "LAKSHANAA RM",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422114",
+    "name": "LIASHINI S",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422118",
+    "name": "MADHUMIDA K",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422121",
+    "name": "MAHIMAA SREE S G",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422122",
+    "name": "MANUSHA L",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310422125",
+    "name": "MATHUMITHA CHANDRU R T",
+    "year": "2",
+    "section": "B"
+  },
+  {
+    "regno": "2403921310421129",
+    "name": "MOHAMED BASHITH M",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421132",
+    "name": "MUKESH KUMAR K",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421133",
+    "name": "MURUGA PANDI LOGESH B",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421134",
+    "name": "MUTHAIYA M",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421135",
+    "name": "MUTHU KUMARAN A D",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421137",
+    "name": "NAGASUDHAN T",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421138",
+    "name": "NAREN KARTHIK U",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421139",
+    "name": "NAREN S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421141",
+    "name": "NAVEEN KUMAR R",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421144",
+    "name": "NISHANTH R",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421145",
+    "name": "NITHISH A",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421147",
+    "name": "PADMANABAN V",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421150",
+    "name": "PERARASU S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421151",
+    "name": "PONMANIAN SA",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421155",
+    "name": "PRABHAKARAN P R",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421156",
+    "name": "PRAJITH KANNA S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421157",
+    "name": "PRAJITH S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421158",
+    "name": "PRAMOTH S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421160",
+    "name": "PRASANNA V",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421165",
+    "name": "PRIYAN P",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421167",
+    "name": "RAGANRICHARD A R",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421169",
+    "name": "RAGHUL U",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421171",
+    "name": "RAMKRISHNAN B",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421172",
+    "name": "RANESH R",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421175",
+    "name": "ROHITHKUMAR S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421176",
+    "name": "SABARI KUMAR P",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421179",
+    "name": "SAHIL RICHARD J A",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421180",
+    "name": "SAILAN R S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421181",
+    "name": "SAIRAM B",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421185",
+    "name": "SANJAY BRUNO J J",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421186",
+    "name": "SANJAY S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421187",
+    "name": "SANJAYRAJ S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421188",
+    "name": "SANKARA PANDIAN A",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422130",
+    "name": "MONICA P R",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422131",
+    "name": "MONIKA A",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422136",
+    "name": "NAGA SHREE K",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422140",
+    "name": "NARKEES SHAHIN S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422142",
+    "name": "NEHA A",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422143",
+    "name": "NEHA B",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422146",
+    "name": "OLIMUTHU K",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422148",
+    "name": "PANDI ISHWARYA T",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422149",
+    "name": "PAVADHARANI B",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422152",
+    "name": "POOJA DHARANI M",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422153",
+    "name": "POORNA S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422154",
+    "name": "POORVA M",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422159",
+    "name": "PRASANNA AMBIGAI K",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422161",
+    "name": "PRATHIKSHA J",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422162",
+    "name": "PRIYA DHARSHNI S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422163",
+    "name": "PRIYADHARSHINI P G",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422164",
+    "name": "PRIYALAKSHMI P",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422166",
+    "name": "PUSHPANATHI S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422168",
+    "name": "RAGAVI T",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422170",
+    "name": "RAJESWARI M",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422173",
+    "name": "RASHIKA N",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422174",
+    "name": "RISHABABANU S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422177",
+    "name": "SABRIN S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422178",
+    "name": "SAGUFAR NISHA S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422182",
+    "name": "SAMIKSHA S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422183",
+    "name": "SANDHIYA B",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422184",
+    "name": "SANDHIYA S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422189",
+    "name": "SANTHIYA M",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422190",
+    "name": "SANTHIYA R",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422253",
+    "name": "MEHA S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310422308",
+    "name": "VEIYLA S",
+    "year": "2",
+    "section": "C"
+  },
+  {
+    "regno": "2403921310421191",
+    "name": "SANTHOSH KUMAAR G S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421192",
+    "name": "SANTHOSH KUMAR D",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421193",
+    "name": "SANTHOSH KUMAR K",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421195",
+    "name": "SARATHY B M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421196",
+    "name": "SARVAJITH S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421198",
+    "name": "SATHISH KUMAR M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421199",
+    "name": "SEENIVASAN M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421205",
+    "name": "SHANMUGAVEL S S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421206",
+    "name": "SHARAN AKASH M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421207",
+    "name": "SHENBHAGAPANDIYAN J",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421208",
+    "name": "SHERWIN S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421209",
+    "name": "SHOBAN HARI V P",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421215",
+    "name": "SOLAI MURUGAN M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421217",
+    "name": "SRI PAVITHRAN K",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421221",
+    "name": "SUDHAKAR P",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421222",
+    "name": "SUNDARESA PRABU M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421223",
+    "name": "SURYA D",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421224",
+    "name": "SUSENTHIRAN A",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421225",
+    "name": "SYED AKHTAR S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421226",
+    "name": "THARANIDHARAN R",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421227",
+    "name": "THARUN ABISHEK N",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421228",
+    "name": "THARUN S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421230",
+    "name": "UDHAYRAJHKUMAR K B N",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421232",
+    "name": "VAITHESVARA NARAYAN M D",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421236",
+    "name": "VARUN GIRIDAR S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421237",
+    "name": "VASISTHARAN R",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421240",
+    "name": "VELMURUGAN T",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421241",
+    "name": "VENGATESH PERUMAL S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421242",
+    "name": "VICKRANTH K",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421244",
+    "name": "VIJAY AATHITHYA V K",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421246",
+    "name": "VINOD KUMAR M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421247",
+    "name": "VISHAK ADHARSH G",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421250",
+    "name": "YOKESHWAR B",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421251",
+    "name": "YUVARAJ R",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421252",
+    "name": "YUVARAJ S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421301",
+    "name": "ARAVINDHAN R",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421303",
+    "name": "KABILAN V S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421304",
+    "name": "RAJA JANARTHANAN A",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310421307",
+    "name": "YUGESH KUMAR S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422194",
+    "name": "SARANI B",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422197",
+    "name": "SASMITHA J",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422200",
+    "name": "SERAPHIN M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422201",
+    "name": "SHABANA BANU S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422202",
+    "name": "SHAHAANA G",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422203",
+    "name": "SHALINI DEVI S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422204",
+    "name": "SHALINI PRIYA M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422210",
+    "name": "SHREE GANGA R",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422211",
+    "name": "SHRUTHI SORNAM S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422212",
+    "name": "SHURUTHI B",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422213",
+    "name": "SIVARANJANI S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422214",
+    "name": "SNEHA R",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422216",
+    "name": "SREENIVAASINI J",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422218",
+    "name": "SRI PRIYA P",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422219",
+    "name": "SUBA SREE P V",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422220",
+    "name": "SUBHASRI S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422229",
+    "name": "THASNIM FIRTHOUS S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422231",
+    "name": "VAISHNAVI M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422233",
+    "name": "VANIKRISHNA V",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422234",
+    "name": "VARNAKAVI M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422235",
+    "name": "VARSHNI S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422238",
+    "name": "VASUKI A S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422239",
+    "name": "VASUNDRA M",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422243",
+    "name": "VIGASHINI K",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422245",
+    "name": "VIJAYALAKSHMI R",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422248",
+    "name": "VISHALI K",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2403921310422249",
+    "name": "YOGASREE S",
+    "year": "2",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421002",
+    "name": "AARON MARSHALL A",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421003",
+    "name": "ABHIJIT G M",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421005",
+    "name": "ABINANDHAN S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421009",
+    "name": "ABSHAL M",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421012",
+    "name": "AKASH S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421013",
+    "name": "AKASH S M",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421015",
+    "name": "ALAGURAJAN V",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421020",
+    "name": "ARIRAM S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421021",
+    "name": "ARJHUN O",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421022",
+    "name": "ARUNPRASATH M",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421025",
+    "name": "BALA S N",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421026",
+    "name": "BALA SURYA S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421027",
+    "name": "BALAJI S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421028",
+    "name": "BARANI K",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421030",
+    "name": "BHAGAVATHI RAJA S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421033",
+    "name": "CHANDRASEKARAN S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421034",
+    "name": "CHANDRU P",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421036",
+    "name": "CHRIST ILIOCH LENIN A",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421044",
+    "name": "DEVAPRIYAN V",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421049",
+    "name": "DHARANISH P R",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421050",
+    "name": "DHARSHAN V S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421052",
+    "name": "DHINESHWARAN P",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421053",
+    "name": "DINESH BABU S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421054",
+    "name": "DINESH V",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421055",
+    "name": "DINNY PAUL NAVIS C",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421058",
+    "name": "DRAVIDKANNAN M",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421060",
+    "name": "FERDIN ELGIS G",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422001",
+    "name": "AABITHA M",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422004",
+    "name": "ABHINAYA D S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422006",
+    "name": "ABINAYA V",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422007",
+    "name": "ABINAYAA V",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422008",
+    "name": "ABIRAMI S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422010",
+    "name": "ADHARSHINI K",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422011",
+    "name": "AFILA NISHATH K",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422014",
+    "name": "AKILA S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422016",
+    "name": "AMIRTHA J",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422017",
+    "name": "ANGELINE SAHANA R",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422018",
+    "name": "ANIS FATHIMA A",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422019",
+    "name": "ARCHANAA M",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422023",
+    "name": "ASIN R",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422024",
+    "name": "AYESHA SIDDIKA JALWA M",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422029",
+    "name": "BAVANI M",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422031",
+    "name": "BLESSY CATHERINE V",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422032",
+    "name": "BRINDHA S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422035",
+    "name": "CHARVITA B",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422037",
+    "name": "DAVIS SELASTINAL H",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422038",
+    "name": "DEETCHINI V",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422039",
+    "name": "DEVADHARSHINI P",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422040",
+    "name": "DEVADHARSHINI S (07.01.2006)",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422041",
+    "name": "DEVADHARSHINI S (13.08.2005)",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422042",
+    "name": "DEVADHARSHNI S (19.09.2005)",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422043",
+    "name": "DEVAKI S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422045",
+    "name": "DEVASENA I",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422046",
+    "name": "DHANU SHREE P",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422047",
+    "name": "DHANUSHYA S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422048",
+    "name": "DHARANI J",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422051",
+    "name": "DHARSHINI S",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422056",
+    "name": "DIVYA X",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422057",
+    "name": "DIVYAPRIYA R",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422059",
+    "name": "FATHIMA HASNA A",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310422061",
+    "name": "GEETHA R",
+    "year": "3",
+    "section": "A"
+  },
+  {
+    "regno": "2303921310421064",
+    "name": "GOKULAKANNAN K",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421066",
+    "name": "HARI PRAKASH K",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421067",
+    "name": "HARI RAJ M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421068",
+    "name": "HARIHARAN S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421070",
+    "name": "HARISH BABU P S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421071",
+    "name": "HARISH K",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421072",
+    "name": "HARISH PANDIAN L",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421073",
+    "name": "HARISH SHANKAR S P",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421076",
+    "name": "HARSHAVARDHAN M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421080",
+    "name": "HRITHIK KUMAR K",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421082",
+    "name": "JAGADEESWARAN A",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421083",
+    "name": "JAI ABISHEIK B",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421088",
+    "name": "JEEVA R",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421089",
+    "name": "JEEVESH SANKAR M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421094",
+    "name": "JEYA SURYA V",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421099",
+    "name": "JOTHIR HARISHH S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421101",
+    "name": "KABILAN A S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421102",
+    "name": "KALIDASS N",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421104",
+    "name": "KANAGASABHAPATHY G",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421105",
+    "name": "KARTHICK G",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421110",
+    "name": "KISHOR M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421111",
+    "name": "KISHORE M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421113",
+    "name": "LOGESH SUNDAR V",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421114",
+    "name": "LOGESHWAR S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421119",
+    "name": "MANISH KUMAR M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421121",
+    "name": "MATHESHWARAN A S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422062",
+    "name": "GNANAPRASANNAMBIKA S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422063",
+    "name": "GOBHIKASRI M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422065",
+    "name": "GUNASRI V",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422069",
+    "name": "HARINI G",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422074",
+    "name": "HARISHNI B R",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422075",
+    "name": "HARITHA M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422077",
+    "name": "HARSHITHA S (10.02.2006)",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422078",
+    "name": "HARSHITHA S (13.08.2004)",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422079",
+    "name": "HASIENA AAFREEN FATHIMA R",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422081",
+    "name": "ISHWARYA S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422084",
+    "name": "JANANEESWARI G",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422085",
+    "name": "JANANI I",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422086",
+    "name": "JANANI S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422087",
+    "name": "JAYAPRIYA S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422090",
+    "name": "JEEVITHA V",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422091",
+    "name": "JENEERAH T",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422092",
+    "name": "JENI PRISHKILLAH K",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422093",
+    "name": "JENOLIN SUGIRTHA S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422095",
+    "name": "JEYA VARSHANI J",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422096",
+    "name": "JEYANTHI M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422097",
+    "name": "JEYAVARDHANI R",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422098",
+    "name": "JEYAVARSHINI MK",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422100",
+    "name": "JUMANA HASSIN S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422103",
+    "name": "KAMALINI R",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422106",
+    "name": "KARUNYAA R",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422107",
+    "name": "KATHRINE KEONA J",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422108",
+    "name": "KAVIPRIYA K",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422109",
+    "name": "KEERTHANA K",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422112",
+    "name": "KISHORI V S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422115",
+    "name": "MADHUMITHA S V",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422116",
+    "name": "MAHESHWARI V",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422117",
+    "name": "MALA N",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422118",
+    "name": "MANASHA R",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422120",
+    "name": "MANISHA M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422122",
+    "name": "MATHISHREE S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422123",
+    "name": "MATHIVATHANA A",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422124",
+    "name": "MATHUBALA S",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310422125",
+    "name": "MEENACHI M",
+    "year": "3",
+    "section": "B"
+  },
+  {
+    "regno": "2303921310421127",
+    "name": "MOHAMED JAVITH S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421128",
+    "name": "MOHAMED MEERAN M",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421131",
+    "name": "MOHIT VINAAKAR V",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421132",
+    "name": "MONISHKUMAR S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421134",
+    "name": "MURUGA DEEPAK M",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421139",
+    "name": "NAREN A",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421140",
+    "name": "NARESH BALAJI G V",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421141",
+    "name": "NAVEEN SAKTHI PRABHU R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421144",
+    "name": "NITHEESH V",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421145",
+    "name": "NITHISH KUMAR S J",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421146",
+    "name": "NITHISH PRIYAN V S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421148",
+    "name": "PARTHIBAN R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421149",
+    "name": "PAXTON RICKY P",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421150",
+    "name": "PEER MOHAMED M",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421153",
+    "name": "PRADEEP P K",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421154",
+    "name": "PRANAV RAJ T G",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421155",
+    "name": "PRANAV VEER N",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421156",
+    "name": "PRANESH M",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421157",
+    "name": "PRANESH R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421165",
+    "name": "RAGHUL M (09.07.2006)",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421166",
+    "name": "RAGUL M (31.10.2005)",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421170",
+    "name": "RAJESH R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421171",
+    "name": "RAMACHANDAR P",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421172",
+    "name": "RAMAPRANAV M",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421173",
+    "name": "RAMGANESH S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421175",
+    "name": "RAVIBHARATHI V",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421176",
+    "name": "REJO SOLOMON A",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421178",
+    "name": "RICHIE JOEN A",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421179",
+    "name": "RISHI G",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421180",
+    "name": "RIYASHBASHA A",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421184",
+    "name": "SABARI S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421185",
+    "name": "SABARIGANESH C",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421188",
+    "name": "SAKTHI G",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422126",
+    "name": "MENAGA DEVI R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422129",
+    "name": "MOHANA ESWARI K",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422130",
+    "name": "MOHANAPRIYA P",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422133",
+    "name": "MRIDULASHREE JEYACHANDRAN",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422135",
+    "name": "MUTHUMALAR C",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422136",
+    "name": "NABIHA AASMI R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422137",
+    "name": "NAGA NANDHINI R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422138",
+    "name": "NANDINI S R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422142",
+    "name": "NEHA A R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422143",
+    "name": "NISHA A",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422147",
+    "name": "NIVEDHA J",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422151",
+    "name": "POOJA R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422152",
+    "name": "POOJA S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422158",
+    "name": "PRATHICKSHA K",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422159",
+    "name": "PREETHI ILLATHARASI S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422160",
+    "name": "PREETHI R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422161",
+    "name": "PRIYA T",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422162",
+    "name": "PRIYADHARSHINI S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422163",
+    "name": "PRIYANKA S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422164",
+    "name": "RAGANYA N",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422167",
+    "name": "RAJANANDINI S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422168",
+    "name": "RAJAPRIYA S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422169",
+    "name": "RAJASORNA S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422174",
+    "name": "RAMYA M",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422177",
+    "name": "REXCELIN J",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422182",
+    "name": "ROSHNI K",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422183",
+    "name": "RUBHASHREE G",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422186",
+    "name": "SAHANA S",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310422187",
+    "name": "SAHANAA R",
+    "year": "3",
+    "section": "C"
+  },
+  {
+    "regno": "2303921310421191",
+    "name": "SANJAY G",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421192",
+    "name": "SANJAY KUMAR K S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421193",
+    "name": "SANJAY KUMAR M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421194",
+    "name": "SANJAY RAJ M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421198",
+    "name": "SANTHOSH KUMAR S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421199",
+    "name": "SARAN KUMAR R",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421204",
+    "name": "SELVIN JEFRE B",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421206",
+    "name": "SHACHIN V P",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421207",
+    "name": "SHAMBUGAMOORTHI K",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421209",
+    "name": "SHARAN DEV M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421213",
+    "name": "SIVA RANJAN R",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421214",
+    "name": "SIVASARAN K",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421215",
+    "name": "SIVAHARISH P L",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421218",
+    "name": "SOLAIRAJAN S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421219",
+    "name": "SRI DHARSAN S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421221",
+    "name": "SRI VARSHAN S S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421225",
+    "name": "SRINIVAS J",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421226",
+    "name": "SRIRAM S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421227",
+    "name": "SUDHARSAN E",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421229",
+    "name": "SURIYA KUMAR R",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421230",
+    "name": "SURIYAKUMARAN R",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421232",
+    "name": "TANUSH R",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421234",
+    "name": "THILAK BABU T A",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421239",
+    "name": "VENGATA VISVA P S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421240",
+    "name": "VIDHYA DHARANESH P K",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421241",
+    "name": "VIGNESH KUMAR S P",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421242",
+    "name": "VIGNESHWARAN M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421243",
+    "name": "VIJAY BALAJI P S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421244",
+    "name": "VIJAY KASTHURI K",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421245",
+    "name": "VIKRAM K",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421246",
+    "name": "VINUVARSHAN K",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421247",
+    "name": "VISHAL C",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421248",
+    "name": "VISHNUSANKAR K",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310421252",
+    "name": "YUVANRAJ A",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422189",
+    "name": "SAKTHI J",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422190",
+    "name": "SANDHIYA S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422195",
+    "name": "SANKARI M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422196",
+    "name": "SANTHIYA L",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422197",
+    "name": "SANTHIYA S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422200",
+    "name": "SARANYA S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422201",
+    "name": "SARMATHI M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422202",
+    "name": "SASMIKA S M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422203",
+    "name": "SATHYA ESWARI K",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422205",
+    "name": "SERAFINA J B",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422208",
+    "name": "SHAMIKSAA R J",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422210",
+    "name": "SHARMITHASRI T",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422211",
+    "name": "SHEREEN TREESHA A",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422212",
+    "name": "SHWETHA S M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422216",
+    "name": "SIVARANJANI S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422217",
+    "name": "SIVASANKARI S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422220",
+    "name": "SRI SIVADHARSHINI S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422222",
+    "name": "SRILEKA S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422223",
+    "name": "SRINIDHI U",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422224",
+    "name": "SRINITHI B",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422228",
+    "name": "SUJITHA M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422231",
+    "name": "SURYA P",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422233",
+    "name": "THEJNI S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422236",
+    "name": "VALARMATHI M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422237",
+    "name": "VASIKA K",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422238",
+    "name": "VEERALAKSHMI N",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422249",
+    "name": "VISHWAATHIGA N M",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422250",
+    "name": "VIYANSA MERCY S",
+    "year": "3",
+    "section": "D"
+  },
+  {
+    "regno": "2303921310422251",
+    "name": "YASWANTHINI M M",
+    "year": "3",
+    "section": "D"
+  }
+]

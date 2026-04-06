@@ -8829,45 +8829,27 @@
                 <input type="text" id="f-website" name="website" style="display:none" tabindex="-1" autocomplete="off">
 
                 <div class="rlt-fg">
+                  <label class="rlt-fl">Register Number (Roll No)</label>
+                  <input class="fi rlt-fi" id="f-regno" type="text" placeholder="e.g. 2303921310421226"
+                    oninput="this.value = this.value.replace(/[^A-Z0-9]/gi, ''); lookupStudent()">
+                </div>
+
+                <div class="rlt-fg">
                   <label class="rlt-fl">Full Name</label>
-                  <input class="fi rlt-fi" id="f-name" type="text" placeholder="Enter your full name"
-                    oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
+                  <input class="fi rlt-fi" id="f-name" type="text" placeholder="Auto-filled from RegNo" readonly
+                    style="background:rgba(255,255,255,0.05); cursor:not-allowed;">
                 </div>
 
                 <div class="rlt-row2">
-                  <div class="rlt-fg">
-                    <label class="rlt-fl">Register Number</label>
-                    <input class="fi rlt-fi" id="f-regno" type="text" placeholder="e.g. 2303921310421226"
-                      oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                  </div>
                   <div class="rlt-fg">
                     <label class="rlt-fl">Year</label>
-                    <select class="fs rlt-fs" id="f-year">
-                      <option value="">Year</option>
-                      <option value="1">1st Year</option>
-                      <option value="2">2nd Year</option>
-                      <option value="3">3rd Year</option>
-                      <option value="4">4th Year</option>
-                    </select>
+                    <input class="fi rlt-fi" id="f-year" type="text" placeholder="Auto-filled" readonly
+                      style="background:rgba(255,255,255,0.05); cursor:not-allowed;">
                   </div>
-                </div>
-
-                <div class="rlt-row2">
                   <div class="rlt-fg">
                     <label class="rlt-fl">Section</label>
-                    <select class="fs rlt-fs" id="f-section">
-                      <option value="">Section</option>
-                      <option value="A">Section A</option>
-                      <option value="B">Section B</option>
-                      <option value="C">Section C</option>
-                      <option value="D">Section D</option>
-                      <option value="E">Section E</option>
-                    </select>
-                  </div>
-                  <div class="rlt-fg">
-                    <label class="rlt-fl">Phone Number</label>
-                    <input class="fi rlt-fi" id="f-phone" type="tel" placeholder="10-digit number"
-                      oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length>10) this.value=this.value.slice(0,10)">
+                    <input class="fi rlt-fi" id="f-section" type="text" placeholder="Auto-filled" readonly
+                      style="background:rgba(255,255,255,0.05); cursor:not-allowed;">
                   </div>
                 </div>
 
@@ -8896,9 +8878,9 @@
                   </div>
                 </div>
 
-                <div class="rlt-fg">
-                  <label class="rlt-fl">College Email</label>
-                  <input class="fi rlt-fi" id="f-email" type="email" placeholder="yourname@psnacet.edu.in">
+                <div id="f-email-hidden" style="display:none">
+                  <input id="f-email" type="hidden" value="student@psnacet.edu.in">
+                  <input id="f-phone" type="hidden" value="0000000000">
                 </div>
 
                 <div class="rlt-note" id="rlt-step-note">&#9888;&#65039; This is Leader Registration &middot; Team
@@ -11177,7 +11159,7 @@
         gender: draft.gender !== undefined ? draft.gender : (saved.gender || ''),
         year: draft.year !== undefined ? draft.year : (saved.year || ''),
         section: draft.section !== undefined ? draft.section : (saved.section || ''),
-        phone: draft.phone !== undefined ? draft.phone : (saved.phone || '')
+        phone: ''
       };
 
       const overlay = document.createElement('div');
@@ -11190,52 +11172,43 @@
           <div id="pkt-saved-container"></div>
           <div class="pkt-form-row">
             <div class="pkt-fg" style="grid-column:1/-1">
-              <label>Full Name</label>
-              <input id="pkt-fi-name" type="text" placeholder="Full name"
-                value="${fields.name}"
-                oninput="this.value=this.value.replace(/[^A-Za-z\\s]/g,''); pktUpdateDraft(${slotIdx}, 'name', this.value)">
+              <label>Reg Number (RegNo)</label>
+              <input id="pkt-fi-regno" type="text" placeholder="e.g. 23039213104..." value="${fields.regno}"
+                oninput="this.value=this.value.replace(/[^A-Z0-9]/gi,''); pktLookupMember(${slotIdx}, this.value); pktUpdateDraft(${slotIdx}, 'regno', this.value)">
             </div>
           </div>
           <div class="pkt-form-row">
-            <div class="pkt-fg">
-              <label>Reg Number</label>
-              <input id="pkt-fi-regno" type="text" placeholder="23039213..."
-                value="${fields.regno}"
-                oninput="this.value=this.value.replace(/[^0-9]/g,''); pktUpdateDraft(${slotIdx}, 'regno', this.value)">
-            </div>
-            <div class="pkt-fg">
-              <label>Gender</label>
-              <select id="pkt-fi-gender" onchange="pktUpdateDraft(${slotIdx}, 'gender', this.value)">
-                <option value="">Select</option>
-                <option value="Male" ${fields.gender === 'Male' ? 'selected' : ''}>Male</option>
-                <option value="Female" ${fields.gender === 'Female' ? 'selected' : ''}>Female</option>
-              </select>
+            <div class="pkt-fg" style="grid-column:1/-1">
+              <label>Full Name</label>
+              <input id="pkt-fi-name" type="text" placeholder="Auto-filled from RegNo" value="${fields.name}" readonly
+                style="background:rgba(255,255,255,0.05); cursor:not-allowed;">
             </div>
           </div>
           <div class="pkt-form-row">
             <div class="pkt-fg">
               <label>Year</label>
-              <select id="pkt-fi-year" onchange="pktUpdateDraft(${slotIdx}, 'year', this.value)">
-                <option value="">Year</option>
-                <option value="1" ${fields.year == '1' ? 'selected' : ''}>1st</option>
-                <option value="2" ${fields.year == '2' ? 'selected' : ''}>2nd</option>
-                <option value="3" ${fields.year == '3' ? 'selected' : ''}>3rd</option>
-                <option value="4" ${fields.year == '4' ? 'selected' : ''}>4th</option>
-              </select>
+              <input id="pkt-fi-year" type="text" placeholder="Auto" value="${fields.year}" readonly
+                style="background:rgba(255,255,255,0.05); cursor:not-allowed;">
             </div>
             <div class="pkt-fg">
               <label>Section</label>
-              <select id="pkt-fi-section" onchange="pktUpdateDraft(${slotIdx}, 'section', this.value)">
-                <option value="">Sec</option>
-                ${['A', 'B', 'C', 'D'].map(s => `<option value="${s}" ${fields.section === s ? 'selected' : ''}>${s}</option>`).join('')}
-              </select>
+              <input id="pkt-fi-section" type="text" placeholder="Auto" value="${fields.section}" readonly
+                style="background:rgba(255,255,255,0.05); cursor:not-allowed;">
             </div>
           </div>
           <div class="pkt-form-row">
             <div class="pkt-fg" style="grid-column:1/-1">
-              <label>Contact Phone</label>
-              <input id="pkt-fi-phone" type="tel" placeholder="10-digit number" maxlength="10"
-                value="${fields.phone}"
+              <label>Gender</label>
+              <select id="pkt-fi-gender" onchange="pktUpdateDraft(${slotIdx}, 'gender', this.value)">
+                <option value="">Select Gender</option>
+                <option value="Male" ${fields.gender === 'Male' ? 'selected' : ''}>Male</option>
+                <option value="Female" ${fields.gender === 'Female' ? 'selected' : ''}>Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="pkt-form-row" style="display:none">
+            <div class="pkt-fg" style="grid-column:1/-1">
+              <input id="pkt-fi-phone" type="hidden" value="0000000000"
                 oninput="this.value=this.value.replace(/[^0-9]/g,''); pktUpdateDraft(${slotIdx}, 'phone', this.value)">
             </div>
           </div>
@@ -11266,26 +11239,22 @@
       const gender = document.getElementById('pkt-fi-gender')?.value || '';
       const year = document.getElementById('pkt-fi-year')?.value || '';
       const section = document.getElementById('pkt-fi-section')?.value || '';
-      const phone = document.getElementById('pkt-fi-phone')?.value.trim() || '';
+      const phone = '0000000000';
 
       const errEl = document.getElementById('pkt-error');
-      const inputs = document.querySelectorAll('.pkt-fi, #pkt-fi-gender, #pkt-fi-year, #pkt-fi-section');
-      inputs.forEach(el => el.classList.remove('error'));
 
       let err = '';
-      if (!name || !regno || !gender || !year || !section || !phone) {
-        err = 'Please fill all fields for this member.';
-      } else if (regno.length < 7) {
-        err = 'Register number must be at least 7 digits.';
-      } else if (phone.length !== 10) {
-        err = 'Phone number must be exactly 10 digits.';
+      if (!name || !regno || !gender || !year || !section) {
+        err = 'Please enter RegNo and Gender for this member.';
+      } else if (regno.length < 5) {
+        err = 'Invalid Register Number.';
       } else {
         const leaderRegno = document.getElementById('f-regno')?.value.trim() || '';
-        if (regno === leaderRegno) err = 'Register number matches you (the leader).';
+        if (regno.toLowerCase() === leaderRegno.toLowerCase()) err = 'Register number matches the leader.';
         else {
           for (let i = 0; i < teamMembers.length; i++) {
             if (i === slotIdx - 1) continue;
-            if (teamMembers[i] && teamMembers[i].regno === regno) {
+            if (teamMembers[i] && teamMembers[i].regno.toLowerCase() === regno.toLowerCase()) {
               err = 'This member is already added to another seat.'; break;
             }
           }
@@ -11489,17 +11458,15 @@
         if (!currentEv) { showError('Missing Info', 'Select an Event', 'Please choose an event to proceed.'); return; }
         const name = document.getElementById('f-name').value.trim();
         const regno = document.getElementById('f-regno').value.trim();
-        const year = document.getElementById('f-year').value;
-        const section = document.getElementById('f-section').value;
-        const phone = document.getElementById('f-phone').value.trim();
-        const email = document.getElementById('f-email').value.trim();
+        // Check dataset.raw first (auto-fetched), fall back to visible value
+        const year = document.getElementById('f-year').dataset.raw || document.getElementById('f-year').value;
+        const section = document.getElementById('f-section').dataset.raw || document.getElementById('f-section').value;
         const gender = document.getElementById('f-gender').value;
         const fields = [
           { id: 'f-name', val: name, label: 'Full Name' },
           { id: 'f-regno', val: regno, label: 'Register Number' },
           { id: 'f-year', val: year, label: 'Year' },
           { id: 'f-section', val: section, label: 'Section' },
-          { id: 'f-phone', val: phone, label: 'Phone Number' },
           { id: 'f-gender', val: gender, label: 'Gender' }
         ];
 
@@ -11514,9 +11481,6 @@
         } else if (regno.length < 7) {
           err = 'Register number must be at least 7 characters.';
           document.getElementById('f-regno').classList.add('error');
-        } else if (phone.replace(/\D/g, '').length !== 10) {
-          err = 'Phone number must be exactly 10 digits.';
-          document.getElementById('f-phone').classList.add('error');
         }
 
         if (err) {
@@ -11554,8 +11518,7 @@
                { k: 'regno', l: 'Register Number' },
                { k: 'gender', l: 'Gender' },
                { k: 'year', l: 'Year' },
-               { k: 'section', l: 'Section' },
-               { k: 'phone', l: 'Phone Number' }
+               { k: 'section', l: 'Section' }
              ];
              
              for (let f of fields) {
@@ -11633,38 +11596,49 @@
       }
     }
 
-
-
     function buildReview() {
-      const name = document.getElementById('f-name').value.trim();
-      const regno = document.getElementById('f-regno').value.trim();
-      const year = document.getElementById('f-year').value;
-      const section = document.getElementById('f-section').value;
-      const phone = document.getElementById('f-phone').value.trim();
-      const email = document.getElementById('f-email').value.trim();
+      const nameEl = document.getElementById('f-name');
+      const regnoEl = document.getElementById('f-regno');
+      const yearEl = document.getElementById('f-year');
+      const secEl = document.getElementById('f-section');
+      
+      const name = (nameEl.dataset.raw || nameEl.value || '').trim();
+      const regno = regnoEl.value.trim();
+      const year = yearEl.dataset.raw || yearEl.value || '';
+      const section = secEl.dataset.raw || secEl.value || '';
+      const gender = document.getElementById('f-gender').value;
       const tname = document.getElementById('f-teamname')?.value.trim() || '';
       const e = currentEv;
+
+      // Display year nicely
+      const yearDisplay = year === '1' ? '1st Year' : year === '2' ? '2nd Year' : year === '3' ? '3rd Year' : year === '4' ? '4th Year' : (year ? 'Year ' + year : '—');
+      const sectionDisplay = section ? 'Section ' + section : '—';
 
       let html = `
     ${evSummaryCard(e.id)}
     <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:14px">
       <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:12px">Your Details</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        ${[['Name', name], ['Reg Number', regno], ['Year', year + 'th Year'], ['Section', 'Section ' + section], ['Phone', phone], ['Email', email]].map(([l, v]) => `<div><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:3px">${l}</div><div style="font-size:13px;font-weight:600;color:#fff">${v}</div></div>`).join('')}
+        ${[['Name', name], ['Reg Number', regno], ['Year', yearDisplay], ['Section', sectionDisplay], ['Gender', gender]].map(([l, v]) => `
+          <div>
+            <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:3px">${l}</div>
+            <div style="font-size:13px;font-weight:600;color:#fff">${v}</div>
+          </div>
+        `).join('')}
       </div>
     </div>`;
 
       if (e.type !== 'Solo' && tname) {
         html += `<div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:14px">
-      <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:6px">Team: ${tname}</div>
-      <div style="font-size:11px;color:var(--muted2);margin-bottom:10px">Member 1 (You): ${name} · ${regno}</div>
-      ${teamMembers.map((m, i) => `<div style="padding:8px 0;border-top:1px solid rgba(255,255,255,.04)"><div style="font-size:12px;font-weight:700;color:#fff">Member ${i + 2}: ${m.name}</div><div style="font-size:10px;color:var(--muted2)">${m.regno} · Year ${m.year} · Sec ${m.section}</div></div>`).join('')}
-    </div>`;
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:6px">Team: ${tname}</div>
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:10px">Member 1 (You): ${name} · ${regno}</div>
+          ${teamMembers.map((m, i) => `<div style="padding:8px 0;border-top:1px solid rgba(255,255,255,.04)"><div style="font-size:12px;font-weight:700;color:#fff">Member ${i + 2}: ${m.name}</div><div style="font-size:10px;color:var(--muted2)">${m.regno} · Year ${m.year} · Sec ${m.section}</div></div>`).join('')}
+        </div>`;
       }
       document.getElementById('review-content').innerHTML = html;
     }
 
-    /* ── SUBMIT ── */
+    /* ── SYSTEM LOGIC: Speed & Safety ── */
     let isCooldown = false;
     let isSubmitting = false;
     let cooldownTimer = null;
@@ -11677,7 +11651,7 @@
       let timeleft = parseInt(timeleftStr) || 25;
       globalCooldownTime = timeleft;
 
-      let warnSec = document.getElementById('cooldown-warning-msg');
+      const warnSec = document.getElementById('cooldown-warning-msg');
       if (warnSec) { warnSec.innerHTML = penaltyMsg ? `<span style="color:var(--orange);font-size:12px;font-weight:600;display:block;margin-top:10px;">${penaltyMsg}</span>` : ''; }
 
       const wt = document.getElementById('wall-timer');
@@ -11685,10 +11659,7 @@
 
       const scb = document.getElementById('success-cooldown-box');
       const sct = document.getElementById('success-cd-timer');
-      if (scb && sct) {
-        scb.style.display = 'block';
-        sct.textContent = timeleft + 's';
-      }
+      if (scb && sct) { scb.style.display = 'block'; sct.textContent = timeleft + 's'; }
 
       if (btn) {
         btn.disabled = true;
@@ -11710,19 +11681,16 @@
 
             if (scb) scb.style.display = 'none';
 
-            // Auto-recover if they waited on the wall
+            // Auto-recover if they waited on the cooldown wall
             const wall = document.getElementById('cooldown-wall');
             if (wall && wall.style.display === 'flex') {
               wall.style.display = 'none';
-              document.getElementById('reg-rsc').style.display = 'block';
-              forceCloseReg(); // force them to click event box fresh
+              const rsc = document.getElementById('reg-rsc');
+              if (rsc) rsc.style.display = 'block';
+              forceCloseReg();
             }
 
-            if (btn) {
-              btn.disabled = false;
-              btn.style.opacity = '1';
-              btn.textContent = 'Confirm Registration';
-            }
+            if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.textContent = 'Confirm Registration'; }
             if (warnSec) warnSec.innerHTML = '';
             if (backBtn) { backBtn.style.pointerEvents = 'auto'; backBtn.style.opacity = '1'; }
           } else {
@@ -11745,11 +11713,9 @@
       const btn = document.querySelector('#step-2 .reg-next-btn');
       const backBtn = document.querySelector('#step-2 .reg-back-btn');
 
-      // Tab Protection Start
       const protectOn = () => window.onbeforeunload = () => "Registration is in progress. Closing this page might result in lost data. Are you sure?";
       const protectOff = () => window.onbeforeunload = null;
 
-      // Define resetUI FIRST (before any code path calls it)
       const resetUI = () => {
         protectOff();
         isSubmitting = false;
@@ -11761,25 +11727,26 @@
       if (backBtn) { backBtn.style.pointerEvents = 'none'; backBtn.style.opacity = '0.5'; }
       protectOn();
 
-      const name = document.getElementById('f-name').value.trim();
+      // Read auto-fetched values (dataset.raw = raw API value, .value = displayed value)
+      const nameEl = document.getElementById('f-name');
+      const name = (nameEl.dataset.raw || nameEl.value || '').trim();
       const regno = document.getElementById('f-regno').value.trim();
-      const year = document.getElementById('f-year').value;
-      const section = document.getElementById('f-section').value;
-      const phone = document.getElementById('f-phone').value.trim();
-      const email = document.getElementById('f-email').value.trim();
+      const year = document.getElementById('f-year').dataset.raw || document.getElementById('f-year').value;
+      const section = document.getElementById('f-section').dataset.raw || document.getElementById('f-section').value;
       const gender = document.getElementById('f-gender').value;
-      const website = document.getElementById('f-website') ? document.getElementById('f-website').value : '';
       const tname = (currentEv?.type !== 'Solo') ? document.getElementById('f-teamname').value.trim() : '';
 
-      // Duplicate check (Local)
+      if (!name || !regno || !gender) {
+        showError('Missing Info', 'Details Required', 'Student data not loaded. Enter your register number and try again.');
+        resetUI(); return;
+      }
+
+      // Local duplicate check
       const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
-      const currentRegNos = [{ name: name, regno: regno }, ...teamMembers.map(m => ({ name: m.name, regno: m.regno }))];
+      const currentRegNos = [{ name, regno }, ...teamMembers.map(m => ({ name: m.name, regno: m.regno }))];
 
-      let localDupeName = null;
-      let localDupeReg = null;
-
+      let localDupeName = null, localDupeReg = null;
       for (const storedReg of saved) {
-        // 1. Exact Duplicate Check — same person in same event
         if (storedReg.eventId === currentEv.id || storedReg.eventName === currentEv.name) {
           const match = currentRegNos.find(c => c.regno === storedReg.regno);
           if (match) { localDupeName = match.name; localDupeReg = match.regno; break; }
@@ -11791,14 +11758,11 @@
           }
           if (localDupeName) break;
         }
-        // 2. Local Time Slot Conflict Check — ONLY for the 4 truly simultaneous events
-        //    (CC+HV on April 15 slot A, BTB+COM on April 18 slot B)
+        // Time slot conflict check
         if (currentEv.timeSlot && currentEv.isSimultaneous && storedReg.timeSlot === currentEv.timeSlot
-          && storedReg.eventId !== currentEv.id && storedReg.eventName !== currentEv.name) {
-          // Verify the STORED event is also a simultaneous event (protects against old localStorage data)
+            && storedReg.eventId !== currentEv.id && storedReg.eventName !== currentEv.name) {
           const storedEvData = EVS.find(ev => ev.id === storedReg.eventId);
           if (storedEvData && storedEvData.isSimultaneous) {
-            // Check if any current registrant is already in a conflicting slot event
             const allStoredRegnos = [storedReg.regno];
             if (storedReg.teamMembers && Array.isArray(storedReg.teamMembers)) {
               storedReg.teamMembers.forEach(tm => { if (tm.regno) allStoredRegnos.push(tm.regno); });
@@ -11817,31 +11781,31 @@
         resetUI(); return;
       }
 
+      // Server-side duplicate check
       if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-        showAdminLoader('Validating Records...<br><span style="font-size:10px;rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Please do not refresh this page.</span>');
-
+        showAdminLoader('Validating Records...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Please do not refresh this page.</span>');
         try {
           const allRegNos = [regno, ...teamMembers.map(m => m.regno)].join(',');
-          const url = `${SHEETS_URL}?action=lookup&email=${encodeURIComponent(email)}&regnos=${encodeURIComponent(allRegNos)}&eventId=${encodeURIComponent(currentEv.id)}&eventName=${encodeURIComponent(currentEv.name)}&timeSlot=${encodeURIComponent(currentEv.timeSlot || '')}&uid=${ADMIN_ID}&pwd=${ADMIN_PASS}`;
-
+          const url = `${SHEETS_URL}?action=lookup&regnos=${encodeURIComponent(allRegNos)}&eventId=${encodeURIComponent(currentEv.id)}&eventName=${encodeURIComponent(currentEv.name)}&timeSlot=${encodeURIComponent(currentEv.timeSlot || '')}&uid=${ADMIN_ID}&pwd=${ADMIN_PASS}`;
           const resp = await fetch(url);
           const data = await resp.json();
-
-          if (data.found && data.registrations.some(r => r.eventName === currentEv.name || r.eventId === currentEv.id)) {
+          if (data.found && data.registrations && data.registrations.some(r => r.eventName === currentEv.name || r.eventId === currentEv.id)) {
             hideAdminLoader(); showError('Duplicate Blocked', 'Already registered', `You already hold a confirmed pass for ${currentEv.name}.`);
             resetUI(); return;
           }
           if (data.duplicates && data.duplicates.length > 0) {
-            hideAdminLoader(); const dupeNames = data.duplicateDetails.map(d => `${d.name} (${d.regno})`).join(' / ');
-            showError('Duplicate Detected', 'Member already registered', `Person(s) already registered for this event: \n\n${dupeNames}`);
+            hideAdminLoader();
+            const dupeNames = (data.duplicateDetails || []).map(d => `${d.name} (${d.regno})`).join(' / ');
+            showError('Duplicate Detected', 'Member already registered', `Person(s) already registered for this event:\n\n${dupeNames}`);
             resetUI(); return;
           }
           if (data.timeSlotConflicts && data.timeSlotConflicts.length > 0) {
-            hideAdminLoader(); const conflictNames = data.timeSlotConflictDetails.map(d => `${d.name} (${d.regno}) in [${d.conflictingEvent || d.eventName}]`).join(' \n ');
-            showError('Time Slot Conflict!', 'Concurrent Event', `Some members are already in another event at this same time (${currentEv.timeSlot}): \n\n${conflictNames}`);
+            hideAdminLoader();
+            const conflictNames = (data.timeSlotConflictDetails || []).map(d => `${d.name} (${d.regno}) in [${d.conflictingEvent || d.eventName}]`).join('\n');
+            showError('Time Slot Conflict!', 'Concurrent Event', `Some members are already in another event at this time (${currentEv.timeSlot}):\n\n${conflictNames}`);
             resetUI(); return;
           }
-        } catch (e) { console.error("Verify failed:", e); }
+        } catch (e) { console.error('Verify failed:', e); }
         hideAdminLoader();
       }
 
@@ -11851,7 +11815,7 @@
       const ts = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', hour12: true });
 
       const reg = {
-        regId, name, regno, gender, year, section, phone, email, website,
+        regId, name, regno, gender, year, section,
         eventId: currentEv.id, eventName: currentEv.name,
         timeSlot: currentEv.timeSlot || '',
         teamName: tname,
@@ -11859,11 +11823,11 @@
         ts
       };
 
-      // --- Simple Local Backup (Safety) ---
+      // Local backup before network call
       localStorage.setItem('pendingReg', JSON.stringify(reg));
 
       if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-        showAdminLoader('Checking Connections...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Please do not refresh this page.</span>');
+        showAdminLoader('Saving Registration...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Please do not refresh this page.</span>');
 
         let attempts = 0;
         let success = false;
@@ -11875,13 +11839,13 @@
 
             if (result.success) {
               success = true;
-              localStorage.removeItem('pendingReg'); // Clear backup on success
-            } else if (result.error === "RATE_LIMIT") {
+              localStorage.removeItem('pendingReg');
+            } else if (result.error === 'RATE_LIMIT') {
               hideAdminLoader();
               showError('Rate Limit Active', 'Anti-Spam Triggered', 'Too many requests. Please wait 60 seconds.');
               activateCooldown(60, 'Global Rate Limit Active. Please wait 60 seconds.');
               resetUI(); return;
-            } else if (result.error && result.error.includes("Server busy")) {
+            } else if (result.error && result.error.includes('Server busy')) {
               if (attempts === 0) {
                 attempts++;
                 showAdminLoader('Server Busy. Retrying in 2s...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Re-attempting connection...</span>');
@@ -11892,7 +11856,7 @@
               showError('High Traffic', 'Network Busy', 'Server is handling many requests. Please wait 20s and try again.');
               activateCooldown(); resetUI(); return;
             } else {
-              hideAdminLoader(); showError('Registration Warning', 'Save Failed', result.error);
+              hideAdminLoader(); showError('Registration Warning', 'Save Failed', result.error || 'Unknown error.');
               resetUI(); return;
             }
           } catch (e) {
@@ -11908,35 +11872,150 @@
         }
         hideAdminLoader();
       } else {
-        localStorage.removeItem('pendingReg'); // Local mode success
+        localStorage.removeItem('pendingReg');
       }
 
-      // 20-second Success Cooldown
+      // Success — activate cooldown and show confirmation
       activateCooldown(20, 'System cool-down active. Registration confirmed.');
 
-      // Final Step: Data is confirmed saved. Sync local database.
       localStorage.setItem('u26n', n);
       saved.push(reg);
       localStorage.setItem('u26r', JSON.stringify(saved));
 
       resetUI();
 
-      // Close registration overlay and show confirmation screen
       document.getElementById('reg-ov').classList.remove('open');
       document.getElementById('conf-id-v').textContent = regId;
       document.getElementById('conf-screen').classList.add('open');
 
-      // Ensure the "My Pass" button in the nav bar is visible
+      // Show My Pass button in navbar
       const passBtn = document.getElementById('pass-nav-btn');
       if (passBtn) passBtn.style.display = 'block';
     }
 
     function syncSingle(reg) {
+      if (!SHEETS_URL || SHEETS_URL.includes('your-url')) return;
       fetch(SHEETS_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: 'addReg', data: reg, uid: ADMIN_ID, pwd: ADMIN_PASS })
       }).then(r => r.json()).catch(() => { });
+    }
+
+    /* ── RegNo Auto-Fetch Lookup Functions ── */
+    let _lookupTimer = null;
+    let _lookupAbortController = null;
+
+    async function lookupStudent() {
+      const regno = (document.getElementById('f-regno')?.value || '').trim();
+      const nameEl = document.getElementById('f-name');
+      const yearEl = document.getElementById('f-year');
+      const secEl  = document.getElementById('f-section');
+      const errEl  = document.getElementById('step-0-error');
+      const nextBtn = document.querySelector('.rlt-next-btn');
+      
+      // Abort any pending fetch
+      if (_lookupAbortController) _lookupAbortController.abort();
+      
+      // Instant clear stale data
+      if (nameEl) { nameEl.value = 'Fetching...'; delete nameEl.dataset.raw; }
+      if (yearEl) { yearEl.value = ''; delete yearEl.dataset.raw; }
+      if (secEl)  { secEl.value = ''; delete secEl.dataset.raw; }
+      if (errEl)  { errEl.textContent = ''; errEl.style.display = 'none'; }
+      if (nextBtn) { nextBtn.disabled = true; nextBtn.style.opacity = '0.5'; }
+
+      clearTimeout(_lookupTimer);
+      _lookupTimer = setTimeout(async () => {
+        if (regno.length < 5) {
+           if (nameEl) nameEl.value = '';
+           if (nextBtn) { nextBtn.disabled = false; nextBtn.style.opacity = '1'; }
+           return;
+        }
+        if (!SHEETS_URL || SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
+
+        _lookupAbortController = new AbortController();
+        const signal = _lookupAbortController.signal;
+
+        try {
+          const resp = await fetch(`${SHEETS_URL}?action=studentLookup&regno=${encodeURIComponent(regno)}`, { signal });
+          const data = await resp.json();
+          if (data.success) {
+            if (nameEl) nameEl.value = data.name;
+            if (yearEl) yearEl.value = data.year === '1' ? '1st Year' : data.year === '2' ? '2nd Year' : data.year === '3' ? '3rd Year' : data.year;
+            if (secEl)  secEl.value  = 'Section ' + data.section;
+            nameEl.dataset.raw = data.name;
+            yearEl.dataset.raw = data.year;
+            secEl.dataset.raw  = data.section;
+          } else {
+            if (nameEl) nameEl.value = '';
+            if (errEl) { errEl.textContent = '⚠ ' + data.error; errEl.style.display = 'block'; }
+          }
+        } catch(e) { 
+          if (e.name === 'AbortError') return; 
+          if (nameEl) nameEl.value = '';
+          if (errEl) { errEl.textContent = '⚠ Lookup failed. Check Connection.'; errEl.style.display = 'block'; }
+          console.error('Lookup error:', e); 
+        } finally {
+          if (!signal.aborted && nextBtn) { nextBtn.disabled = false; nextBtn.style.opacity = '1'; }
+        }
+      }, 300);
+    }
+
+    let _memberLookupTimer = {};
+    let _memberAbortControllers = {};
+
+    async function pktLookupMember(slotIdx, regno) {
+      const nameEl = document.getElementById("pkt-fi-name");
+      const yearEl = document.getElementById("pkt-fi-year");
+      const secEl = document.getElementById("pkt-fi-section");
+      const errEl = document.getElementById("pkt-error");
+      const saveBtn = document.querySelector('.pkt-form-save-btn');
+
+      // Abort any pending fetch for this specific slot
+      if (_memberAbortControllers[slotIdx]) _memberAbortControllers[slotIdx].abort();
+
+      // Instant clear stale data
+      if (nameEl) nameEl.value = "Fetching...";
+      if (yearEl) yearEl.value = "";
+      if (secEl) secEl.value = "";
+      if (errEl) { errEl.textContent = ""; errEl.classList.remove("show"); }
+      if (saveBtn) { saveBtn.disabled = true; saveBtn.style.opacity = '0.5'; }
+
+      clearTimeout(_memberLookupTimer[slotIdx]);
+      _memberLookupTimer[slotIdx] = setTimeout(async () => {
+        if ((regno || "").length < 5) {
+          if (nameEl) nameEl.value = "";
+          if (saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; }
+          return;
+        }
+        if (!SHEETS_URL || SHEETS_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") return;
+
+        _memberAbortControllers[slotIdx] = new AbortController();
+        const signal = _memberAbortControllers[slotIdx].signal;
+
+        try {
+          const resp = await fetch(`${SHEETS_URL}?action=studentLookup&regno=${encodeURIComponent(regno)}`, { signal });
+          const data = await resp.json();
+          if (data.success) {
+            if (nameEl) nameEl.value = data.name;
+            if (yearEl) yearEl.value = data.year === "1" ? "1st Year" : data.year === "2" ? "2nd Year" : data.year === "3" ? "3rd Year" : data.year;
+            if (secEl) secEl.value = "Section " + data.section;
+            pktUpdateDraft(slotIdx, "name", data.name);
+            pktUpdateDraft(slotIdx, "year", data.year);
+            pktUpdateDraft(slotIdx, "section", data.section);
+          } else {
+            if (nameEl) nameEl.value = "";
+            if (errEl) { errEl.textContent = "⚠ " + data.error; errEl.classList.add("show"); }
+          }
+        } catch (e) { 
+          if (e.name === 'AbortError') return;
+          if (nameEl) nameEl.value = "";
+          if (errEl) { errEl.textContent = "⚠ Lookup failed. Try again."; errEl.classList.add("show"); }
+          console.error("Member lookup error:", e); 
+        } finally {
+          if (!signal.aborted && saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; }
+        }
+      }, 300);
     }
 
     /* ── CONFIRMATION ── */
@@ -11988,7 +12067,7 @@
           <div><div class="pfl">Reg Number</div><div class="pfv">${r.regno}</div></div>
           <div><div class="pfl">Department</div><div class="pfv">${r.department || 'CSE'}</div></div>
           <div><div class="pfl">Year & Section</div><div class="pfv">${r.year ? 'Year ' + r.year + ' · Sec ' + (r.section || '—') : '—'}</div></div>
-          <div><div class="pfl">Register Phone</div><div class="pfv">${r.phone || '—'}</div></div>
+          <div><div class="pfl">Gender</div><div class="pfv">${r.gender || '—'}</div></div>
           <div><div class="pfl">Date & Venue</div><div class="pfv">${exactDate} · ${exactVenue}</div></div>
         </div>
         ${(r.teamName && r.teamName.trim() !== 'Solo' && !r.teamName.includes('[{"name"')) || members.length > 0 ? `

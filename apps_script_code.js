@@ -12,7 +12,7 @@
 
 // The exact column structure you need, with Gender at the very end. 
 // The script will automatically fix your Sheet's header row to match this!
-var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "Email", "Event", "TeamName", "TeamMembers", "Timestamp", "Gender", "TimeSlot"];
+var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Event", "TeamName", "TeamMembers", "Timestamp"];
 var SCAN_HEADERS = ["RegID", "Name", "RegNo", "Event", "TeamName", "Timestamp", "ScannerID"];
 
 function enforceHeaders(sh) {
@@ -81,13 +81,14 @@ function doGet(e) {
         section: String(row[headers.indexOf("Section")] || ""),
         phone: String(row[headers.indexOf("Phone")] || ""),
         email: String(row[headers.indexOf("Email")] || ""),
-        gender: String(row[headers.indexOf("Gender")] || ""),
+        email: "",
+        gender: "",
         eventId: "", // EventID column removed to match your exact sheet
         eventName: String(row[headers.indexOf("Event")] || ""),
         teamName: String(row[headers.indexOf("TeamName")] || ""),
         teamMembers: teamMembers,
         ts: String(row[headers.indexOf("Timestamp")] || ""),
-        timeSlot: String(row[headers.indexOf("TimeSlot")] || "")
+        timeSlot: ""
       });
     }
     return ContentService.createTextOutput(JSON.stringify({ registrations: results })).setMimeType(ContentService.MimeType.JSON);
@@ -96,11 +97,15 @@ function doGet(e) {
   if (action === "lookup") {
     var email = (e.parameter.email || "").toLowerCase().trim();
     var lookupId = (e.parameter.id || "").trim();
-    if (!email && !lookupId) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [] })).setMimeType(ContentService.MimeType.JSON);
+    var checkRegNosStr = e.parameter.regnos || "";
+    var checkEventName = (e.parameter.eventName || "").trim();
+    // Allow regno-only duplicate checks (no email needed with new auto-fetch model)
+    var hasRegnoCheck = checkRegNosStr && checkEventName;
+    if (!email && !lookupId && !hasRegnoCheck) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [] })).setMimeType(ContentService.MimeType.JSON);
 
     var checkEventId = e.parameter.eventId || ""; // Using eventName fallback below
-    var checkEventName = (e.parameter.eventName || "").trim();
-    var checkRegNosStr = e.parameter.regnos || "";
+    if (!checkRegNosStr) checkRegNosStr = e.parameter.regnos || "";
+    if (!checkEventName) checkEventName = "";
     var checkRegNos = checkRegNosStr ? checkRegNosStr.split(",").map(function (r) { return r.trim().toLowerCase(); }) : [];
     var checkTimeSlot = (e.parameter.timeSlot || "").trim();
 
@@ -130,14 +135,14 @@ function doGet(e) {
           gender: String(row[headers.indexOf("Gender")] || ""),
           year: String(row[headers.indexOf("Year")] || ""),
           section: String(row[headers.indexOf("Section")] || ""),
-          phone: String(row[headers.indexOf("Phone")] || ""),
-          email: rowEmail,
+          phone: "",
+          email: "",
           eventId: "",
           eventName: rowEventName,
           teamName: String(row[headers.indexOf("TeamName")] || ""),
           teamMembers: teamMembers,
           ts: String(row[headers.indexOf("Timestamp")] || ""),
-          timeSlot: String(row[headers.indexOf("TimeSlot")] || "")
+          timeSlot: ""
         });
       }
 
@@ -208,6 +213,50 @@ function doGet(e) {
       timeSlotConflicts: timeSlotConflicts,
       timeSlotConflictDetails: timeSlotConflictDetails
     })).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // ── Student Auto-Fetch by Register Number ──
+  if (action === "studentLookup") {
+    var regno = (e.parameter.regno || "").replace(/[^0-9]/g, "").trim();
+    if (!regno || regno.length < 5) {
+      return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Invalid register number" })).setMimeType(ContentService.MimeType.JSON);
+    }
+    var studentsSh = ss.getSheetByName("Students");
+    if (!studentsSh) {
+      return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Students sheet not found" })).setMimeType(ContentService.MimeType.JSON);
+    }
+    var sData = studentsSh.getDataRange().getValues();
+    if (sData.length < 2) {
+      return ContentService.createTextOutput(JSON.stringify({ success: false, error: "No student data available" })).setMimeType(ContentService.MimeType.JSON);
+    }
+    // Detect columns from header row (case-insensitive)
+    var sHeaders = sData[0].map(function(h) { return String(h).toLowerCase().trim(); });
+    var colRegno   = sHeaders.indexOf("regno");
+    var colName    = sHeaders.indexOf("name");
+    var colYear    = sHeaders.indexOf("year");
+    var colSection = sHeaders.indexOf("section");
+    // Fallback aliases
+    if (colRegno   === -1) colRegno   = sHeaders.findIndex(function(h) { return h.includes("reg"); });
+    if (colName    === -1) colName    = sHeaders.findIndex(function(h) { return h.includes("name"); });
+    if (colYear    === -1) colYear    = sHeaders.findIndex(function(h) { return h.includes("year"); });
+    if (colSection === -1) colSection = sHeaders.findIndex(function(h) { return h.includes("sec"); });
+    if (colRegno === -1 || colName === -1) {
+      return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Students sheet missing RegNo or Name column" })).setMimeType(ContentService.MimeType.JSON);
+    }
+    for (var i = 1; i < sData.length; i++) {
+      var rowRegno = String(sData[i][colRegno] || "").replace(/[^0-9]/g, "").trim();
+      if (rowRegno === regno) {
+        var year    = colYear    >= 0 ? String(sData[i][colYear]    || "").trim() : "";
+        var section = colSection >= 0 ? String(sData[i][colSection] || "").trim() : "";
+        return ContentService.createTextOutput(JSON.stringify({
+          success: true,
+          name: String(sData[i][colName] || "").trim(),
+          year: year,
+          section: section
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+    return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Student not found. Please enter details manually." })).setMimeType(ContentService.MimeType.JSON);
   }
 
   if (action === "lookupScan") {
@@ -363,7 +412,7 @@ function doPost(e) {
       try {
         var r = d.data;
         var regId = String(r.regId);
-        
+
         // --- TURBO CACHE CHECK ---
         var cache = CacheService.getScriptCache();
         if (cache.get("scan_" + regId)) {
@@ -372,26 +421,26 @@ function doPost(e) {
 
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
         if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
-        
+
         // Safety Fallback: Check sheet if cache is empty but sheet isn't
         if (scansSh.getLastRow() > 1) {
-           var scanIds = scansSh.getRange(2, 1, Math.min(scansSh.getLastRow() - 1, 1000), 1).getValues();
-           for (var idx = 0; idx < scanIds.length; idx++) {
-             if (String(scanIds[idx][0]) === regId) {
-               cache.put("scan_" + regId, "1", 21600); // Backfill cache
-               return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Pass Already Scanned!" })).setMimeType(ContentService.MimeType.JSON);
-             }
-           }
+          var scanIds = scansSh.getRange(2, 1, Math.min(scansSh.getLastRow() - 1, 1000), 1).getValues();
+          for (var idx = 0; idx < scanIds.length; idx++) {
+            if (String(scanIds[idx][0]) === regId) {
+              cache.put("scan_" + regId, "1", 21600); // Backfill cache
+              return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Pass Already Scanned!" })).setMimeType(ContentService.MimeType.JSON);
+            }
+          }
         }
 
         var scannerId = r.scannerId || "unknown";
         var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
         scansSh.appendRow([regId, String(r.name || ""), String(r.regno || ""), String(r.eventName || ""), String(r.teamName || "Solo"), finalTs, String(scannerId)]);
-        
+
         // Mark as scanned in Cache for 6 hours
         cache.put("scan_" + regId, "1", 21600);
-        
-        SpreadsheetApp.flush(); 
+
+        SpreadsheetApp.flush();
         return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
       } finally {
         scanLock.releaseLock();
@@ -414,21 +463,21 @@ function doPost(e) {
 
         // Check if the entire team pass was already scanned
         if (cache.get("scan_" + baseRegId)) {
-           var allRes = [];
-           for (var i = 0; i < members.length; i++) allRes.push({ index: members[i].index, status: "already_entered" });
-           return ContentService.createTextOutput(JSON.stringify({ success: true, results: allRes })).setMimeType(ContentService.MimeType.JSON);
+          var allRes = [];
+          for (var i = 0; i < members.length; i++) allRes.push({ index: members[i].index, status: "already_entered" });
+          return ContentService.createTextOutput(JSON.stringify({ success: true, results: allRes })).setMimeType(ContentService.MimeType.JSON);
         }
 
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
         if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
-        
+
         var results = [];
         var ts = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-        
+
         for (var i = 0; i < members.length; i++) {
           var m = members[i];
           var scanId = baseRegId + "_M" + m.index;
-          
+
           if (cache.get("scan_" + scanId)) {
             results.push({ index: m.index, status: "already_entered" });
           } else {
@@ -437,8 +486,8 @@ function doPost(e) {
             results.push({ index: m.index, status: "marked" });
           }
         }
-        
-        SpreadsheetApp.flush(); 
+
+        SpreadsheetApp.flush();
         return ContentService.createTextOutput(JSON.stringify({ success: true, results: results })).setMimeType(ContentService.MimeType.JSON);
       } finally {
         scanLock2.releaseLock();
@@ -466,7 +515,7 @@ function doPost(e) {
           var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
 
           var finalTs = r.ts && r.ts.indexOf("T") === -1 ? "'" + r.ts : "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-          var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || ""];
+          var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.eventName, teamNameValue, teamMembersValue, finalTs];
           sh.appendRow(rowToAppend);
         });
         SpreadsheetApp.flush(); // Ensure instantly saved
@@ -475,14 +524,15 @@ function doPost(e) {
       } else if (d.action === "addReg") {
         var r = d.data;
         var cache = CacheService.getScriptCache();
-        var key = "limit_" + (r.email || "unknown");
+        // Rate limit by regno (since email is no longer collected)
+        var key = "limit_" + (r.regno || "unknown").replace(/[^a-z0-9]/gi, "");
         var tsStr = cache.get(key) || "[]";
         var tsArr = [];
-        try { tsArr = JSON.parse(tsStr); } catch(e){}
+        try { tsArr = JSON.parse(tsStr); } catch (e) { }
         var now = new Date().getTime();
         var filtered = [];
         for (var i = 0; i < tsArr.length; i++) {
-           if (now - tsArr[i] < 60000) filtered.push(tsArr[i]);
+          if (now - tsArr[i] < 60000) filtered.push(tsArr[i]);
         }
         if (filtered.length >= 20) {
           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "RATE_LIMIT" })).setMimeType(ContentService.MimeType.JSON);
@@ -491,7 +541,7 @@ function doPost(e) {
         cache.put(key, JSON.stringify(filtered), 65);
 
         var regId = String(r.regId || "");
-        
+
         // --- 0. Idempotency Check (Strong Protection) ---
         var data = sh.getDataRange().getValues();
         var headers = OFFICIAL_HEADERS;
@@ -506,47 +556,35 @@ function doPost(e) {
         if (r.website && r.website.trim() !== "") {
           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Bot detected. Request denied." })).setMimeType(ContentService.MimeType.JSON);
         }
-        
-        // 2. Strict Empty Field Verification
-        if (!r.name || !r.name.trim() || !r.regno || !r.phone || !r.email || !r.email.trim()) {
-           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Missing required personal details. All fields are mandatory." })).setMimeType(ContentService.MimeType.JSON);
-        }
-        
-        // 3. Email Domain Enforcer
-        var emailLC = (r.email || "").toLowerCase().trim();
-        if (!emailLC.endsWith("@psnacet.edu.in")) {
-           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized email domain. Only @psnacet.edu.in allowed." })).setMimeType(ContentService.MimeType.JSON);
+
+        // 2. Strict Empty Field Verification (phone/email no longer required)
+        if (!r.name || !r.name.trim() || !r.regno || !r.regno.trim()) {
+          return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Missing required details: Name and Register Number are mandatory." })).setMimeType(ContentService.MimeType.JSON);
         }
 
-        // 4. Phone Length Enforcer (strictly 10 digits)
-        var purePhone = (r.phone || "").replace(/\D/g, "");
-        if (purePhone.length !== 10) {
-           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Phone number must be exactly 10 digits." })).setMimeType(ContentService.MimeType.JSON);
-        }
-
-        // 5. Name / Regno format Enforcer
+        // 3. Name / Regno format Enforcer
         var pureName = (r.name || "").replace(/[^A-Za-z\s]/g, "").trim();
         var pureRegNo = (r.regno || "").replace(/[^0-9]/g, "");
         if (pureName.length < 2 || pureRegNo.length < 7) {
-           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Invalid format for Name or Register Number." })).setMimeType(ContentService.MimeType.JSON);
+          return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Invalid format for Name or Register Number." })).setMimeType(ContentService.MimeType.JSON);
         }
         // Force replace with cleaned values
         r.name = pureName;
         r.regno = pureRegNo;
-        
+
         var eventNameLC = String(r.eventName || "").toLowerCase().trim();
 
         var incomingRegNos = [String(r.regno || "").toLowerCase().trim()];
         var tMembers = r.teamMembers || [];
         // Max Team size hard check
         if (tMembers.length > 15) {
-           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Exceeded maximum team size limits." })).setMimeType(ContentService.MimeType.JSON);
+          return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Exceeded maximum team size limits." })).setMimeType(ContentService.MimeType.JSON);
         }
         for (var k = 0; k < tMembers.length; k++) {
           var tmReg = String(tMembers[k].regno || "").replace(/[^0-9]/g, "").toLowerCase().trim();
           var tmName = String(tMembers[k].name || "").replace(/[^A-Za-z\s]/g, "").trim();
           if (!tmReg || !tmName) {
-             return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Incomplete team member details." })).setMimeType(ContentService.MimeType.JSON);
+            return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Incomplete team member details." })).setMimeType(ContentService.MimeType.JSON);
           }
           tMembers[k].regno = tmReg;
           tMembers[k].name = tmName;
@@ -565,11 +603,7 @@ function doPost(e) {
           var rowEventName = String(row[headers.indexOf("Event")] || "").toLowerCase().trim();
 
           if (rowEventName === eventNameLC) {
-            var rowEmail = String(row[headers.indexOf("Email")] || "").toLowerCase().trim();
-            if (rowEmail && rowEmail === emailLC) {
-              isDuplicate = true; break;
-            }
-
+            // Duplicate check by RegNo (email no longer in use)
             var rowLeaderRegNo = String(row[headers.indexOf("RegNo")] || "").toLowerCase().trim();
             if (incomingRegNos.indexOf(rowLeaderRegNo) !== -1) {
               isDuplicate = true;
@@ -604,7 +638,8 @@ function doPost(e) {
         var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
 
         var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.phone, r.email, r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || "", r.timeSlot || ""];
+        // Columns: RegID, Name, RegNo, Year, Section, Event, TeamName, TeamMembers, Timestamp
+        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.eventName, teamNameValue, teamMembersValue, finalTs];
         sh.appendRow(rowToAppend);
         SpreadsheetApp.flush(); // Forces the sheet to save and sync instantly, preventing the "blank screen" effect
 
@@ -654,4 +689,102 @@ function doPost(e) {
   } catch (ex) {
     return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Server Error: " + ex.message })).setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+// ══════════════════════════════════════════
+// DATA CLEANER UTILITY FUNCTION
+// Run this directly from the Google Apps Script editor
+// ══════════════════════════════════════════
+function cleanRegistrationsDatabase() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName("Registrations");
+  if (!sh) { Logger.log("Registrations sheet not found!"); return; }
+
+  var data = sh.getDataRange().getValues();
+  if (data.length <= 1) { Logger.log("No data to clean!"); return; }
+
+  var headers = data[0].map(function (h) { return String(h).trim(); });
+
+  // Goal Structure
+  var GOAL = ["RegID", "Name", "RegNo", "Year", "Section", "Event", "TeamName", "TeamMembers", "Timestamp"];
+
+  // Create a clean array of records
+  var cleanRecords = [];
+  var seenMap = {}; // Tracks RegNo + Event for deduplication
+  var removedInvalid = 0;
+  var removedDupes = 0;
+
+  for (var i = 1; i < data.length; i++) {
+    var rawRow = data[i];
+
+    // Map current arbitrary row to standard dictionary
+    var mapped = {};
+    for (var col = 0; col < headers.length; col++) {
+      mapped[headers[col]] = rawRow[col];
+    }
+
+    var regno = String(mapped["RegNo"] || "").replace(/[^0-9]/g, "").trim();
+    var name = String(mapped["Name"] || "").trim();
+    var eventName = String(mapped["Event"] || "").trim();
+    var teamData = String(mapped["TeamMembers"] || "").trim();
+
+    // 1. Invalid checks
+    if (!regno || regno.length < 5 || !name || name.toLowerCase() === "test" || regno === "555555") {
+      removedInvalid++;
+      continue;
+    }
+
+    // 2. Duplicate Check (Keep latest valid entry by reading from top to down, overriding older)
+    var key = regno + "||" + eventName;
+    
+    // 3. Fix TeamMembers JSON
+    var validTeam = "Solo";
+    if (teamData && teamData !== "Solo") {
+      try {
+        var parsed = JSON.parse(teamData);
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].name) {
+          validTeam = JSON.stringify(parsed);
+        }
+      } catch (e) {
+        validTeam = "Solo"; // Reset corrupted JSON
+      }
+    }
+
+    // Standardize object
+    seenMap[key] = [
+      String(mapped["RegID"] || ""),
+      name,
+      regno,
+      String(mapped["Year"] || ""),
+      String(mapped["Section"] || ""),
+      eventName,
+      String(mapped["TeamName"] || "Solo"),
+      validTeam,
+      String(mapped["Timestamp"] || "")
+    ];
+  }
+
+  // Convert valid map to array
+  var keys = Object.keys(seenMap);
+  for (var j = 0; j < keys.length; j++) {
+    cleanRecords.push(seenMap[keys[j]]);
+  }
+
+  removedDupes = (data.length - 1) - cleanRecords.length - removedInvalid;
+
+  // Clear sheet and apply target format
+  sh.clear();
+  sh.getRange(1, 1, 1, GOAL.length).setValues([GOAL]);
+  sh.getRange(1, 1, 1, GOAL.length).setFontWeight("bold");
+
+  if (cleanRecords.length > 0) {
+    sh.getRange(2, 1, cleanRecords.length, GOAL.length).setValues(cleanRecords);
+  }
+
+  Logger.log("=== CLEANUP REPORT ===");
+  Logger.log("Original Rows: " + (data.length - 1));
+  Logger.log("Removed Invalid: " + removedInvalid);
+  Logger.log("Removed Duplicates: " + removedDupes);
+  Logger.log("Final Row Count: " + cleanRecords.length);
+  Logger.log("Transformation Complete: Phone and Email detached. Columns stand at format.");
 }

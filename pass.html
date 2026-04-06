@@ -574,8 +574,8 @@
           <div class="pfv" id="p-ys">...</div>
         </div>
         <div>
-          <div class="pfl">Register Phone</div>
-          <div class="pfv" id="p-ph">...</div>
+          <div class="pfl">Gender</div>
+          <div class="pfv" id="p-gd">...</div>
         </div>
         <div>
           <div class="pfl">Date & Venue</div>
@@ -666,7 +666,7 @@
           document.getElementById('p-nm').textContent = r.name;
           document.getElementById('p-rn').textContent = r.regno;
           document.getElementById('p-ys').textContent = r.year ? 'Year ' + r.year + ' · Sec ' + (r.section || '—') : '—';
-          document.getElementById('p-ph').textContent = r.phone || '—';
+          document.getElementById('p-gd').textContent = r.gender || '—';
 
           const venue = VENUES[r.eventName] || 'PSNA CSE';
           document.getElementById('p-dv').textContent = '18 April · ' + venue;
