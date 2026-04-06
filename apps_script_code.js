@@ -33,8 +33,9 @@ function checkAuth(e) {
 // ── GET requests (Admin Panel + Fetch Pass) ──
 function doGet(e) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sh = ss.getSheetByName("Registrations");
-  if (!sh) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [] })).setMimeType(ContentService.MimeType.JSON);
+  var targetSheet = (e.parameter.targetSheet || "Registrations").trim();
+  var sh = ss.getSheetByName(targetSheet);
+  if (!sh) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [], error: "Sheet not found: " + targetSheet })).setMimeType(ContentService.MimeType.JSON);
 
   if (sh.getLastRow() === 0) enforceHeaders(sh); // Auto-fix alignment if sheet is fresh
   var action = (e.parameter.action || "").trim();
@@ -532,8 +533,16 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Server busy, please try again." })).setMimeType(ContentService.MimeType.JSON);
     }
     try {
-      var sh = ss.getSheetByName("Registrations") || ss.insertSheet("Registrations");
-      if (sh.getLastRow() === 0) enforceHeaders(sh); // Ensure alignment is perfect before saving!
+      var r = d.data || {};
+      var targetSheet = (r.targetSheet || "Registrations").trim();
+      
+      // Separate Dance registrations into their own tab
+      if (r.eventName && (r.eventName.toLowerCase().indexOf("dance") !== -1 || r.eventName.toLowerCase().indexOf("cultural") !== -1)) {
+        targetSheet = "Dance_Registrations";
+      }
+
+      var sh = ss.getSheetByName(targetSheet) || ss.insertSheet(targetSheet);
+      if (sh.getLastRow() === 0) enforceHeaders(sh); 
       var headers = OFFICIAL_HEADERS;
 
       if (d.action === "syncAll") {
@@ -624,8 +633,10 @@ function doPost(e) {
 
         var isDuplicate = false;
         var duplicateMsg = "You are already registered for this event.";
+        var allowMultiple = !!r.allowMultiple;
 
-        for (var i = 1; i < data.length; i++) {
+        if (!allowMultiple) {
+          for (var i = 1; i < data.length; i++) {
           var row = data[i];
           if (String(row[headers.indexOf("RegID")] || "") === r.regId) {
             isDuplicate = true; break;
@@ -656,6 +667,7 @@ function doPost(e) {
               }
             }
             if (isDuplicate) break;
+          }
           }
         }
 

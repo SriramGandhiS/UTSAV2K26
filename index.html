@@ -5502,6 +5502,140 @@
       display: flex
     }
 
+    /* WhatsApp List Overlay */
+    .wa-list-ov {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeInWa 0.3s ease;
+    }
+
+    .wa-list-ov.open {
+      display: flex;
+    }
+
+    .wa-list-sheet {
+      width: 100%;
+      max-width: 400px;
+      background: #0a0a0a;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      animation: slideUpWa 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .wa-list-head {
+      padding: 20px;
+      background: rgba(212, 175, 55, 0.05);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wa-list-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 2px;
+    }
+
+    .wa-list-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 22px;
+      cursor: pointer;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+
+    .wa-list-close:hover {
+      color: #fff;
+    }
+
+    .wa-list-scroll {
+      max-height: 70vh;
+      overflow-y: auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .wa-list-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .wa-list-scroll::-webkit-scrollbar-thumb {
+      background: rgba(212, 175, 55, 0.2);
+      border-radius: 10px;
+    }
+
+    .wa-item-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .wa-item-btn:hover {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: rgba(212, 175, 55, 0.4);
+      transform: translateX(5px);
+    }
+
+    .wa-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .wa-item-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .wa-item-status {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .wa-item-icon {
+      color: #25D366;
+      display: flex;
+      align-items: center;
+    }
+
+    @keyframes fadeInWa {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUpWa {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+
     .err-box {
       width: 100%;
       max-width: 380px;
@@ -8382,7 +8516,7 @@
 
     <!-- WHATSAPP PROMO CTA -->
     <div class="insta-btn-wrap" style="margin-bottom: 20px;">
-      <a href="#" target="_blank"
+      <a href="javascript:void(0)" onclick="openWaList()"
         class="insta-glow-btn btn-fire">
         <span style="display:flex;align-items:center;gap:10px;position:relative;z-index:2">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
@@ -8857,6 +8991,19 @@
                   </div>
                 </div>
 
+                <!-- Dance Specific Team Size (Simple Input) -->
+                <div id="rlt-dance-size-wrap" style="display:none">
+                  <div class="rlt-fg">
+                    <label class="rlt-fl" style="color:var(--gold);font-weight:800;">
+                      👯 Number of Members &nbsp;<span
+                        style="color:rgba(255,200,100,0.55);font-size:8px;font-weight:500;">(max 10 including you)</span>
+                    </label>
+                    <input class="fi rlt-fi" id="f-dance-size" type="number" inputmode="numeric" 
+                      placeholder="e.g. 5" min="1" max="10" 
+                      oninput="let v=parseInt(this.value); if(v>10)this.value=10; if(v<1)this.value=1; selectedTeamSize=parseInt(this.value)||1;">
+                  </div>
+                </div>
+
                 <div id="f-email-hidden" style="display:none">
                   <input id="f-email" type="hidden" value="student@psnacet.edu.in">
                   <input id="f-phone" type="hidden" value="0000000000">
@@ -9025,6 +9172,65 @@
 
           </div><!-- /pkt-room -->
 
+        </div>
+
+        <!-- NEW STEP: Dance Sequential Member Entry -->
+        <div class="step" id="step-dance-member">
+          <div class="rlt-room" id="rlt-room-dance">
+            <div id="rlt-particles-dance" style="position:absolute; width:100%; height:100%; pointer-events:none; z-index:1;"></div>
+            
+            <div style="position:absolute; top:max(15px, env(safe-area-inset-top, 15px)); left:15px; z-index:100;">
+              <button class="casino-close-btn"
+                style="padding:10px 16px; font-size:12px; font-weight:900; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:24px; color:#fff;"
+                onclick="playMechanicalSnap(); doHapticSnap(); prevDanceMember()">
+                ← BACK
+              </button>
+            </div>
+
+            <div class="rlt-slip" id="dance-member-slip" style="margin-top:20px; position:relative; z-index:10; opacity: 1; transform: none;">
+              <div class="rlt-slip-header">
+                <div class="rlt-slip-badge" style="background:var(--gold); color:#000;">Dance</div>
+                <div class="rlt-slip-title" id="dance-member-title">MEMBER 2 OF 10</div>
+              </div>
+
+              <div class="rlt-slip-content" style="padding: 24px; overflow-y: auto; max-height: calc(100vh - 200px);">
+                <div class="inline-error" id="dance-member-error"></div>
+
+                <div class="rlt-fg">
+                  <label class="rlt-fl">Member Register Number</label>
+                  <input class="fi rlt-fi" id="fd-regno" type="number" inputmode="numeric" placeholder="Enter RegNo"
+                    oninput="this.value=this.value.replace(/[^0-9]/g,''); lookupDanceStudent()" onkeypress="return /[0-9]/.test(event.key)">
+                </div>
+
+                <div class="rlt-fg">
+                  <label class="rlt-fl">Full Name</label>
+                  <input class="fi rlt-fi" id="fd-name" type="text" placeholder="Auto-filled" readonly style="background:rgba(255,255,255,0.05);">
+                </div>
+
+                <div class="rlt-row2">
+                  <div class="rlt-fg">
+                    <label class="rlt-fl">Year</label>
+                    <input class="fi rlt-fi" id="fd-year" type="text" placeholder="Auto" readonly style="background:rgba(255,255,255,0.05);">
+                  </div>
+                  <div class="rlt-fg">
+                    <label class="rlt-fl">Section</label>
+                    <input class="fi rlt-fi" id="fd-section" type="text" placeholder="Auto" readonly style="background:rgba(255,255,255,0.05);">
+                  </div>
+                </div>
+
+                <div class="rlt-fg">
+                  <label class="rlt-fl">Gender (Strictly Same as Leader)</label>
+                  <select class="fs rlt-fs" id="fd-gender" disabled style="background:rgba(255,255,255,0.05); cursor:not-allowed;">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+
+                <button class="rlt-deal-btn" id="dance-next-btn" style="margin-top:15px;" onclick="playMechanicalSnap(); doHapticSnap(); nextDanceMember()">NEXT MEMBER &rarr;</button>
+              </div>
+            </div><!-- /slip -->
+
+          </div>
         </div>
 
         <!-- STEP 3: Review -->
@@ -9807,6 +10013,20 @@
     const ADMIN_ID = 'sriram';
     const SCANNER_ID = 'utsavqr';
     const ADMIN_PASS = '93611';
+    
+    /* ═══ WHATSAPP GROUP LINKS ═══ */
+    const EVENT_WHATSAPP_MAP = {
+      "DESIGN DECODE": "https://chat.whatsapp.com/DjFzaKUd1e925Mwot5Li9L?mode=gi_t",
+      "FRANCHISE FIESTA": "https://chat.whatsapp.com/Fc8otG9IlqN99FzuPiRty9",
+      "CHECKMATE CODERS": "https://chat.whatsapp.com/HM2osS4hkYaLExQnQVw2TL",
+      "HACKVERSE": "https://chat.whatsapp.com/EPVfUdxaIqAIJEQFgs79b7",
+      "THE ALGORITHMIC PLATTER": "https://chat.whatsapp.com/LKa7feP7CPkIWbhyb2yJo7",
+      "TECHNOTRACE": "https://chat.whatsapp.com/Id7RvnVMPtjBeur8ISIwj7",
+      "UNO REVERSE": "https://chat.whatsapp.com/GxbewbKXWC2EMXvZXG56zO",
+      "CLASH OF MINDS": "https://chat.whatsapp.com/Id7RvnVMPtjBeur8ISIwj7",
+      "ZERO CODE ZONE": "https://chat.whatsapp.com/HXi7JqCoAVx9Ly97Mu6h2K",
+      "BRAND TO BILLION": "https://chat.whatsapp.com/LWue9Cn8wj399upfwEwTc1"
+    };
 
     /* ═══ EMERGENCY MAINTENANCE MODE (Global via Google Sheets) ═══ */
     let emergencyMode = false;
@@ -9893,6 +10113,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', checkEmergencyStatus);
+    
+    function getTeamLabel(min, max) {
+      if (min === 1 && max === 1) return 'SOLO';
+      if (min === 2 && max === 2) return 'DUO';
+      if (min === 3 && max === 3) return 'TRIO';
+      if (min === 4 && max === 4) return 'SQUAD';
+      return min === max ? `${max} PLAYERS` : `${min}-${max} PLAYERS`;
+    }
 
     /* ════════ EVENT DATA ════════ */
     const EVS = [
@@ -9900,14 +10128,14 @@
         id: 'dd', name: 'DESIGN DECODE', label: 'Graphic Design', category: 'Technical', type: 'Solo', minTeam: 1, maxTeam: 1, tag: 'Design', poster: 'assets/posters/designdecode.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dd" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fd79a8"/><stop offset="100%" stop-color="#e84393"/></linearGradient></defs><circle cx="13.5" cy="10.5" r="2.5" fill="#fd79a8" stroke="none"/><path d="m20.24 12.24-5.48 5.48a2.83 2.83 0 0 1-4 0l-5.48-5.48a2.83 2.83 0 0 1 0-4l5.48-5.48a2.83 2.83 0 0 1 4 0l5.48 5.48a2.83 2.83 0 0 1 0 4Z" stroke="url(#g-dd)" fill="url(#g-dd)" fill-opacity="0.15"/><path d="M3.76 11.76l5.48-5.48" stroke="#00cec9"/><path d="M14.76 20.24l5.48-5.48" stroke="#00cec9"/></svg>', grad: 'linear-gradient(135deg,#1a0a28,#0f0518)', accent: '#e84393',
         desc: 'Designers compete solo to create stunning posters under time constraints. Starting with a given theme, they have complete creative freedom, but every 20 minutes, a new challenge is introduced, testing their adaptability and innovation.',
-        date: 'April 13', time: '09:00 AM to 10:35 AM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
+        date: 'April 13', time: '09:00 AM to 10:35 AM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Individual', 'Design tools provided', 'Time-bound rounds', 'Theme given on spot', 'Originality is key'],
         ec: 'Lekeetha Sri A', ep: '8838422893', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456',
         jcs: ['Sriram', 'Naresh Balaji', 'Ragul', 'Vinuvarsan']
       },
       {
-        id: 'ff', name: 'FRANCHISE FIESTA', label: 'Business Simulation Game', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Management', timeSlot: 'A', isSimultaneous: true, poster: 'assets/posters/franchisefiesta.jpeg',
+        id: 'ff', name: 'FRANCHISE FIESTA', label: 'Business Simulation Game', category: 'Non-Technical', type: 'Team', minTeam: 4, maxTeam: 4, tag: 'Management', timeSlot: 'A', isSimultaneous: true, poster: 'assets/posters/franchisefiesta.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ff" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#g-ff)"/><circle cx="9" cy="7" r="4" stroke="url(#g-ff)"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#g-ff)"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
         desc: 'Build your dream team. Rule the auction. Step into the shoes of an IPL franchise owner and craft the ultimate squad within a budget. Every bid matters, every choice counts. Strategy, balance, and smart decisions will lead you to championship glory.',
         date: 'April 13', time: '11:00 AM to 04:00 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
@@ -9920,24 +10148,24 @@
         id: 'cc', name: 'CHECKMATE CODERS', label: 'Bug Gambit and Arena', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Coding', timeSlot: 'A', isSimultaneous: true, poster: 'assets/posters/checkmatecoders.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-cc" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2ecc71"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-cc)"/></svg>', grad: 'linear-gradient(135deg,#031a0d,#021008)', accent: '#2ecc71',
         desc: 'Enter the arena where code meets strategy. Bug Gambit and Power Coding Arena is not just a coding contest, it is a battle of logic and mind games. Crack buggy programs to rise through the ranks, then step into a chess-inspired showdown where your role Queen, Knight, or Pawn unlocks powerful moves. Outsmart, outcode, and outplay your opponents to claim victory.',
-        date: 'April 13', time: '01:30 PM to 04:30 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
+        date: 'April 13', time: '01:30 PM to 04:30 PM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Team of 2', 'Round 1 - Bug Gambit: Teams must identify and fix errors in buggy programs within the given time. Top 10 teams qualify for Round 2 and receive chess roles based on rank', 'Round 2 - Power Coding Arena: Qualified teams solve coding challenges while using chess-based powers. Queen can skip a problem, Knight can freeze another team, Pawn earns bonus points', 'Languages: C, C++, Java, Python', 'No internet, Judge decision final'],
         ec: 'Kalaisevi S', ep: '7094257586', sc: 'Ms. Anitha L.', sp: '+91 93450 67890',
         jcs: ['Hirthick', 'Jeevesh', 'Naren']
       },
       {
-        id: 'hv', name: 'HACKVERSE', label: '24-Hour Hackathon', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Hackathon', timeSlot: 'B', isSimultaneous: true, poster: 'assets/committee/hackverse.jpeg',
+        id: 'hv', name: 'HACKVERSE', label: '24-Hour Hackathon', category: 'Technical', type: 'Team', minTeam: 4, maxTeam: 4, tag: 'Hackathon', timeSlot: 'B', isSimultaneous: true, poster: 'assets/committee/hackverse.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-hv" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00cec9"/><stop offset="100%" stop-color="#0984e3"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-hv)"/></svg>', grad: 'linear-gradient(135deg,#021a1a,#010f10)', accent: '#00cec9',
         desc: 'Build, innovate, and deploy! A high-intensity hackathon where teams race to develop solutions to real-world challenges.',
-        date: 'April 15', time: '09:00 AM to 11:00 AM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
+        date: 'April 15', time: '09:00 AM to 11:00 AM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.5,000', p2: 'Rs.3,000', p3: 'Rs.2,000',
         rules: ['Team of 2 to 4', 'Theme given on spot', 'Working prototype required', 'Any tech stack allowed', 'Judge decision final'],
         ec: 'Pranav A', ep: '9092339133', sc: 'Dr. Priya M.', sp: '+91 97890 12345',
         jcs: ['Dharshan', 'Jeevesh', 'Naren', 'Naga Nandhini', 'Mathivadhana']
       },
       {
-        id: 'tap', name: 'THE ALGORITHMIC PLATTER', label: 'Fun Algorithmic Puzzles', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Puzzle', timeSlot: 'B', isSimultaneous: true, poster: 'assets/posters/algorithmicplatter.jpeg',
+        id: 'tap', name: 'THE ALGORITHMIC PLATTER', label: 'Fun Algorithmic Puzzles', category: 'Non-Technical', type: 'Team', minTeam: 4, maxTeam: 4, tag: 'Puzzle', timeSlot: 'B', isSimultaneous: true, poster: 'assets/posters/algorithmicplatter.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tap" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-tap)" fill="url(#g-tap)" fill-opacity="0.2"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
         desc: 'Where cooking meets computation. Create a dish without fire, just like designing an efficient algorithm, optimize ingredients, maximize creativity, and present your idea as a masterpiece. It is innovation, but delicious.',
         date: 'April 15', time: '09:00 AM to 12:00 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
@@ -9947,27 +10175,27 @@
         jcs: ['Arjhun', 'Meeran', 'Abirami']
       },
       {
-        id: 'tt', name: 'TECHNOTRACE', label: 'Tech Treasure Hunt', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Fun', poster: 'assets/posters/technotrace.jpeg',
+        id: 'tt', name: 'TECHNOTRACE', label: 'Tech Treasure Hunt', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Fun', poster: 'assets/posters/technotrace.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tt" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="url(#g-tt)" fill="url(#g-tt)" fill-opacity="0.15"></polygon></svg>', grad: 'linear-gradient(135deg,#0d1f3c,#0a1428)', accent: '#3498db',
         desc: 'Follow the trail. Solve the mystery. From tackling real-world tech challenges to unlocking layers of encrypted files, every step takes you deeper into a high-stakes digital chase. Only the sharpest minds will crack the codes and reach the final breakthrough.',
-        date: 'April 15', time: '01:30 PM to 04:30 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
+        date: 'April 15', time: '01:30 PM to 04:30 PM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Team of 2 to 3', 'Round 1 - Tech Code Challenge: Participants analyze short real world technology scenarios and write a program or logic to solve them within a limited time', 'Round 2 - Password Trace: Finalist teams are given a system containing multiple password-protected files. After unlocking a file, they must solve the question inside it to obtain the password for the next file. The team that completes the challenge in the shortest time wins', 'No external help', 'Fastest team wins'],
         ec: 'Hariharan R', ep: '9159191239', sc: 'Dr. Priya M.', sp: '+91 97890 12345',
         jcs: ['Ariram', 'Deva Priyan', 'Dhanusiya']
       },
       {
-        id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Coding', poster: 'assets/posters/unoreverse.jpeg',
+        id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding', category: 'Technical', type: 'Solo', minTeam: 1, maxTeam: 1, tag: 'Coding', poster: 'assets/posters/unoreverse.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ur" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-ur)" fill="url(#g-ur)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-ur)"/><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3" stroke="#e74c3c"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
         desc: 'Expect the unexpected. Teams are formed on the spot, roles are split, and just when you think you are settled, UNO cards flip the game. With surprise swaps and unpredictable twists, this event is all about adaptability, teamwork, and thinking on your feet.',
-        date: 'April 16', time: '09:00 AM to 12:00 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
+        date: 'April 16', time: '09:00 AM to 12:00 PM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Exclusive to 1st and 2nd years', 'Junior senior random tag team selection on the spot', 'Junior will be coding, senior will be sitting beside', 'We will shuffle UNO cards and circulate cards', 'Surprise Rule: Swap teams'],
         ec: 'Arikara Sudhan M', ep: '6374156308', sc: 'Dr. Senthil P.', sp: '+91 91230 45678',
         jcs: ['Sankari', 'Srinidhi', 'Sudharsan', 'Vijay Kasthuri']
       },
       {
-        id: 'com', name: 'CLASH OF MINDS', label: 'Quiz and Debate Showdown', category: 'Non-Technical', type: 'Team', minTeam: 2, maxTeam: 3, tag: 'Quiz', poster: 'assets/posters/clashofminds.jpeg', posterScale: 1.12,
+        id: 'com', name: 'CLASH OF MINDS', label: 'Quiz and Debate Showdown', category: 'Non-Technical', type: 'Team', minTeam: 4, maxTeam: 4, tag: 'Quiz', poster: 'assets/posters/clashofminds.jpeg', posterScale: 1.12,
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-com" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#9b59b6"/><stop offset="100%" stop-color="#3498db"/></linearGradient></defs><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="url(#g-com)" fill="url(#g-com)" fill-opacity="0.15"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" stroke="url(#g-com)"/></svg>', grad: 'linear-gradient(135deg,#150a28,#0a0518)', accent: '#9b59b6',
         desc: 'Debate. Defend. Dominate. Get paired on the spot, receive unpredictable topics, and argue for or against with limited prep time. It is a battle of perspectives where quick thinking and strong reasoning decide the winner.',
         date: 'April 16', time: '02:00 PM to 04:00 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
@@ -9980,21 +10208,33 @@
         id: 'zcz', name: 'ZERO CODE ZONE', label: 'Non Coding Tech', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Logic', timeSlot: 'C', isSimultaneous: true, poster: 'assets/posters/zerocodezone.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-zcz" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-zcz)" fill="url(#g-zcz)" fill-opacity="0.15"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
         desc: 'No coding, just pure brainpower. From fast-paced visual quizzes to spotting impostors and racing through puzzle-filled checkpoints, this event is a rollercoaster of logic, teamwork, and quick thinking. Stay sharp because not everything is as it seems.',
-        date: 'April 18', time: '11:00 AM to 12:30 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
+        date: 'April 18', time: '11:00 AM to 12:30 PM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.2,000', p2: 'Rs.1,500', p3: 'Rs.1,000',
         rules: ['Team size: Strictly 2 members (Duo only)', 'Round 1 – Mind Trap: Looks easy… but hidden twists await. See beyond the obvious to survive.', 'Round 2 – The Smart Hunt: Solve puzzles while playing X-O at the same time. Two members. Two games. Coordinate as a team — think fast, play smart.', 'Final Stage – Treasure Hunt: Crack this stage, and the Treasure Hunt begins. Clues are scattered. Nothing is obvious. Follow the trail, decode the hints, uncover the treasure… and win.'],
         ec: 'Reshmaa K J', ep: '9944042400', sc: 'Dr. Murugan A.', sp: '+91 87890 01234',
         jcs: ['Naga Nandhini', 'Mathivadhana', 'Adharsini']
       },
       {
-        id: 'btb', name: 'BRAND TO BILLION', label: 'Tech Startup Pitch', category: 'Technical', type: 'Team', minTeam: 1, maxTeam: 3, tag: 'Strategy', timeSlot: 'C', isSimultaneous: true, poster: 'assets/posters/brandtobillion.jpeg',
+        id: 'btb', name: 'BRAND TO BILLION', label: 'Tech Startup Pitch', category: 'Technical', type: 'Team', minTeam: 3, maxTeam: 3, tag: 'Strategy', timeSlot: 'C', isSimultaneous: true, poster: 'assets/posters/brandtobillion.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-btb" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e67e22"/><stop offset="100%" stop-color="#f1c40f"/></linearGradient></defs><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="url(#g-btb)"/></svg>', grad: 'linear-gradient(135deg,#1f1200,#120b00)', accent: '#e67e22',
         desc: 'Turn the absurd into unforgettable. From selling the silliest product to pitching a million-dollar startup idea, this event tests your creativity, persuasion, and business instincts. Think fast, pitch smarter, and convince the investors that your idea is the next big thing.',
-        date: 'April 18', time: '11:30 AM to 12:30 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
+        date: 'April 18', time: '11:30 AM to 12:30 PM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.4,000', p2: 'Rs.2,500', p3: 'Rs.1,500',
         rules: ['Open to all, max of 3 in a team', 'Round 1 - Sell the Silliest: Participants are given a random funny object and must transform it into a desirable product through a creative advertisement and marketing pitch', 'Round 2 - Start-up Investment Pitch: Shortlisted teams present their original start-up idea to the judges, who act as investors, and compete to secure the maximum funding based on innovation, feasibility, and presentation', 'Judges decision final'],
         ec: 'Syedali Fathima S', ep: '9894845055', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456',
         jcs: ['Dharshan', 'Devadharshini', 'Adharsini']
+      },
+      {
+        id: 'dn', name: 'DANCE', label: 'Cultural Dance', category: 'Cultural', type: 'Range', minTeam: 1, maxTeam: 10, tag: 'CULTURAL', poster: '',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-dn" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fd79a8"/><stop offset="100%" stop-color="#e84393"/></linearGradient></defs><circle cx="12" cy="12" r="10" stroke="url(#g-dn)" fill="url(#g-dn)" fill-opacity="0.15"/><path d="M12 8v8M8 12h8" stroke="#fd79a8"/></svg>', grad: 'linear-gradient(135deg,#1f0518,#120310)', accent: '#fd79a8',
+        desc: 'adalam boys chinnatha dance and nengalum kuda girls adalam girls chinnatha dance',
+        date: 'April 18', time: 'Cultural Event', venue: 'Auditorium', deadline: 'No Deadline',
+        p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
+        rules: ['Open to all participants', 'Min 1 member, Max 10 members', 'No registration limit \u2014 register multiple times if needed', 'Judges decision is final'],
+        ec: 'Arjhun', ep: '8610051714', sc: 'Cultural Committee', sp: '',
+        jcs: ['Arjhun', 'Hrithik', 'Sriram'],
+        targetSheet: 'Dance_Registrations',
+        allowMultiple: true
       }
     ];
 
@@ -10270,14 +10510,7 @@
 
       const hasConflict = !!e.isSimultaneous;
 
-      let teamText = '';
-      if (e.type === 'Solo') {
-        teamText = 'SINGLE ENTRY';
-      } else if (e.minTeam === e.maxTeam) {
-        teamText = `${e.minTeam} MEMBERS`;
-      } else {
-        teamText = `${e.minTeam}-${e.maxTeam} MEMBERS`;
-      }
+      const teamText = getTeamLabel(e.minTeam, e.maxTeam);
 
       return `
     <div class="ev-tile" onclick="triggerDetailsTransition('${e.id}', this)" 
@@ -10329,6 +10562,7 @@
     function renderTiles() {
       const techEvs = EVS.filter(e => e.category === 'Technical');
       const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
+      const culturalEvs = EVS.filter(e => e.category === 'Cultural');
 
       document.getElementById('ev-tiles').innerHTML = `
     <style>
@@ -10360,6 +10594,11 @@
       <div class="casino-badge">NON-TECHNICAL GAMES</div>
     </div>
     ${nonTechEvs.map(e => renderTile(e, false)).join('')}
+    
+    <div style="grid-column:1/-1;margin-top:50px;margin-bottom:20px">
+      <div class="casino-badge">CULTURAL REGISTRATION</div>
+    </div>
+    ${culturalEvs.map(e => renderTile(e, false)).join('')}
   `;
     }
 
@@ -10645,7 +10884,7 @@
           <div class="esc-icon" style="width:28px;height:28px;font-size:14px;background:rgba(212,175,55,0.1);">${e.icon}</div>
           <div style="overflow:hidden;">
             <div class="esc-name" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${e.name}</div>
-            <div class="esc-meta" style="font-size:8px;opacity:0.7;">${e.label} · ${e.type}</div>
+            <div class="esc-meta" style="font-size:8px;opacity:0.7;">${e.label} · ${getTeamLabel(e.minTeam, e.maxTeam)}</div>
           </div>
         </div>
         <button class="esc-change" style="padding:6px 12px;font-size:9px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--gold);font-weight:800;text-transform:uppercase;" onclick="clearEvent()">Change</button>
@@ -10721,7 +10960,7 @@
         const nonTechEvs = EVS.filter(e => e.category === 'Non-Technical');
 
         function evRow(e, globalIdx) {
-          const players = e.type === 'Solo' ? 'Solo' : `${e.minTeam}–${e.maxTeam} Players`;
+          const players = getTeamLabel(e.minTeam, e.maxTeam);
           const delay = globalIdx * 350;
           revealTimeouts.push(setTimeout(() => {
             if (document.getElementById('reg-ov').classList.contains('open')) {
@@ -10832,29 +11071,39 @@
 
       // ── Update the Team Size select field ──
       const sizeWrap = document.getElementById('rlt-team-size-wrap');
+      const danceSizeWrap = document.getElementById('rlt-dance-size-wrap');
       const sizeSelect = document.getElementById('rlt-size-select');
       const noteEl = document.getElementById('rlt-step-note');
 
       if (!ev || ev.type === 'Solo') {
-        // Solo: hide the field, set size = 1
         if (sizeWrap) sizeWrap.style.display = 'none';
+        if (danceSizeWrap) danceSizeWrap.style.display = 'none';
         selectedTeamSize = 1;
         if (noteEl) noteEl.textContent = 'Solo Event \u00b7 No team members needed';
 
+      } else if (ev.id === 'dn') {
+        // Dance: show simple numeric input
+        if (sizeWrap) sizeWrap.style.display = 'none';
+        if (danceSizeWrap) danceSizeWrap.style.display = 'block';
+        selectedTeamSize = 1; // Default to solo initially
+        document.getElementById('f-dance-size').value = 1;
+        if (noteEl) noteEl.textContent = '\u26a0\ufe0f Cultural Registration \u00b7 Enter total number of performers below';
+
       } else if (ev.minTeam === ev.maxTeam) {
-        // Fixed size (e.g. exactly 2): show as read-only info
         if (sizeWrap) sizeWrap.style.display = 'block';
+        if (danceSizeWrap) danceSizeWrap.style.display = 'none';
         if (sizeSelect) {
-          sizeSelect.innerHTML = `<option value="${ev.minTeam}">${ev.minTeam} Players (Fixed)</option>`;
+          sizeSelect.innerHTML = `<option value="${ev.minTeam}">${getTeamLabel(ev.minTeam, ev.maxTeam)} (FIXED)</option>`;
           sizeSelect.disabled = true;
-          sizeSelect.style.opacity = '0.7';
+          sizeSelect.style.opacity = '0.9';
+          sizeSelect.style.borderColor = 'var(--gold)';
         }
         selectedTeamSize = ev.minTeam;
-        if (noteEl) noteEl.textContent = '\u26a0\ufe0f Leader Registration \u00b7 Next: add ' + (ev.minTeam - 1) + ' member(s)';
+        if (noteEl) noteEl.textContent = `\u26a0\ufe0f Fixed Team Size \u00b7 Must add exactly ${ev.minTeam - 1} member(s) to form your ${getTeamLabel(ev.minTeam, ev.maxTeam).toLowerCase()}`;
 
       } else {
-        // Variable size (e.g. 2\u20134): show full dropdown
         if (sizeWrap) sizeWrap.style.display = 'block';
+        if (danceSizeWrap) danceSizeWrap.style.display = 'none';
         if (sizeSelect) {
           sizeSelect.disabled = false;
           sizeSelect.style.opacity = '1';
@@ -10983,7 +11232,7 @@
       const maxSlots = Math.min(chosenSize - 1, 3); // leader = slot 0, members = slots 1..maxSlots
 
       // Update hint
-      if (hintEl) hintEl.textContent = `${chosenSize} Players \u00b7 Add ${chosenSize - 1} member(s) \u2014 tap a seat`;
+      if (hintEl) hintEl.textContent = `FIXED TEAM: ${chosenSize} Players \u00b7 Add ${chosenSize - 1} member(s) to proceed`;
 
       // Show only the slots matching chosen team size; hide the rest
       for (let i = 1; i <= 3; i++) {
@@ -11405,7 +11654,7 @@
         const needed = (selectedTeamSize || e.minTeam) - 1;
         const filled = teamMembers.filter(m => m && m.name).length;
         if (filled < needed) {
-          alert(`Please add all ${needed} team member(s). Currently have ${filled}.`);
+          alert(`Your team is incomplete. For "${e.name}", you must add exactly ${needed} member(s) to the remaining seats.`);
           return;
         }
       }
@@ -11480,18 +11729,43 @@
         if (errEl) errEl.classList.remove('show');
 
         // RE-INITIALIZE poker table slots based on whatever the leader selected in the Team Size dropdown
+        if (currentEv.id === 'dn') {
+          if (selectedTeamSize > 1) {
+            initDanceMemberFlow();
+            return;
+          } else {
+            // Solo dance - go straight to review
+            teamMembers = [];
+            goStep(2);
+            return;
+          }
+        }
         setupTeamStep();
       }
       if (n === 2) {
         // Validate step 1 (team)
         if (currentEv && currentEv.type !== 'Solo') {
+          const leaderGender = document.getElementById('f-gender').value;
+          if (currentEv.id === 'dn') {
+            const tnInput = document.getElementById('f-teamname');
+            if (tnInput && !tnInput.value.trim()) tnInput.value = 'Dance Performance Group';
+            for (let m of teamMembers) {
+              if (m.gender && m.gender !== leaderGender) {
+                showError('Rule Violation', 'Mixed Gender Team', `All members must be ${leaderGender}. Mixed-gender teams are not allowed in this event.`);
+                return;
+              }
+            }
+            buildReview();
+            currentStep = n;
+            updateStepUI();
+            return;
+          }
           const tname = document.getElementById('f-teamname').value.trim();
           if (!tname) { showError('Missing Info', 'Team Name Required', 'Please enter a team name to proceed.'); return; }
           
-          // teamMembers array is now the single source of truth for Poker UI
+          // Only perform Poker Table Card validation for non-Dance events
           const needed = (selectedTeamSize || currentEv.minTeam) - 1;
-          const leaderGender = document.getElementById('f-gender').value;
-          
+
           for (let i = 0; i < needed; i++) {
              const m = teamMembers[i];
              const slotNum = i + 2;
@@ -11535,21 +11809,184 @@
       updateStepUI();
     }
 
+    /* ── DANCE SEQUENTIAL FLOW HELPERS ── */
+    let danceMemberIndex = 1; 
+    let _danceLookupTimer = null;
+    let _danceLookupAbortController = null;
+
+    function initDanceMemberFlow() {
+      danceMemberIndex = 1;
+      teamMembers = [];
+      const total = selectedTeamSize || 1;
+      if (total <= 1) { goStep(2); return; }
+      
+      currentStep = 1.5;
+      updateStepUI();
+      renderDanceMemberForm();
+      
+      // Initialize particles for the dance-specific room
+      spawnDanceParticles();
+      
+      // Animation Reset for the Slip
+      const slip = document.getElementById('dance-member-slip');
+      if (slip) {
+        slip.style.animation = 'none';
+        void slip.offsetWidth; 
+        slip.style.animation = 'btn-impact 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      }
+    }
+
+    function spawnDanceParticles() {
+      const pc = document.getElementById('rlt-particles-dance');
+      if (pc) {
+        pc.innerHTML = '';
+        const colors = ['rgba(255,215,0,0.4)', 'rgba(212,175,55,0.3)', 'rgba(255,255,255,0.2)'];
+        for (let i = 0; i < 15; i++) {
+          const p = document.createElement('div');
+          const sz = Math.random() * 3 + 1;
+          const col = colors[Math.floor(Math.random() * colors.length)];
+          p.style.cssText = `
+            position:absolute; width:${sz}px; height:${sz}px; border-radius:50%;
+            left:${Math.random() * 100}%; bottom:${Math.random() * 20}%;
+            background:${col}; box-shadow: 0 0 ${sz * 2}px ${col};
+            animation: pkt-rise ${4 + Math.random() * 4}s ease-in infinite;
+            animation-delay: ${Math.random() * 4}s;
+          `;
+          pc.appendChild(p);
+        }
+      }
+    }
+
+    function renderDanceMemberForm() {
+      const title = document.getElementById('dance-member-title');
+      const nextBtn = document.getElementById('dance-next-btn');
+      const total = selectedTeamSize;
+      
+      if (title) title.textContent = `MEMBER ${danceMemberIndex + 1} OF ${total}`;
+      if (nextBtn) nextBtn.textContent = (danceMemberIndex + 1 === total) ? 'REVIEW REGISTRATION \u2192' : 'NEXT MEMBER \u2192';
+      
+      // Clear fields
+      document.getElementById('fd-regno').value = '';
+      document.getElementById('fd-name').value = '';
+      document.getElementById('fd-year').value = '';
+      document.getElementById('fd-section').value = '';
+      document.getElementById('fd-gender').value = document.getElementById('f-gender').value || ''; // Default to leader gender
+      document.getElementById('dance-member-error').classList.remove('show');
+    }
+
+    function nextDanceMember() {
+      const regno = document.getElementById('fd-regno').value.trim();
+      const name = document.getElementById('fd-name').value.trim();
+      const gender = document.getElementById('fd-gender').value;
+      const year = document.getElementById('fd-year').value;
+      const section = document.getElementById('fd-section').value;
+      const errEl = document.getElementById('dance-member-error');
+
+      let err = '';
+      if (!regno || !name || !gender) err = 'Please enter Member details.';
+      else if (regno.length < 5) err = 'Register number is too short.';
+      else {
+        const leaderRegno = document.getElementById('f-regno').value.trim();
+        const leaderGender = document.getElementById('f-gender').value;
+        if (regno === leaderRegno) err = 'Member cannot be the same as Leader.';
+        else if (teamMembers.some((m, idx) => idx !== danceMemberIndex - 1 && m.regno === regno)) err = 'Member already added to this team.';
+        else if (gender !== leaderGender) err = `Mixed gender not allowed. Member must be ${leaderGender}.`;
+      }
+
+      if (err) {
+        if (errEl) { errEl.textContent = err; errEl.classList.add('show'); }
+        return;
+      }
+
+      // Save member
+      teamMembers[danceMemberIndex - 1] = { name, regno, gender, year, section, phone: '0000000000' };
+
+      if (danceMemberIndex + 1 < selectedTeamSize) {
+        danceMemberIndex++;
+        renderDanceMemberForm();
+        const sheet = document.querySelector('#step-dance-member .rlt-slip');
+        if (sheet) { sheet.style.animation = 'none'; void sheet.offsetWidth; sheet.style.animation = 'su 0.4s ease'; }
+      } else {
+        goStep(2);
+      }
+    }
+
+    function prevDanceMember() {
+      if (danceMemberIndex > 1) {
+        danceMemberIndex--;
+        // Pre-fill from saved
+        const m = teamMembers[danceMemberIndex - 1];
+        renderDanceMemberForm();
+        document.getElementById('fd-regno').value = m.regno;
+        document.getElementById('fd-name').value = m.name;
+        document.getElementById('fd-year').value = m.year;
+        document.getElementById('fd-section').value = m.section;
+        document.getElementById('fd-gender').value = m.gender;
+      } else {
+        goStep(0);
+      }
+    }
+
+    function lookupDanceStudent() {
+      const regno = document.getElementById('fd-regno').value.trim();
+      const nameEl = document.getElementById('fd-name');
+      const yearEl = document.getElementById('fd-year');
+      const secEl = document.getElementById('fd-section');
+      const errEl = document.getElementById('dance-member-error');
+      
+      if (_danceLookupAbortController) _danceLookupAbortController.abort();
+      
+      clearTimeout(_danceLookupTimer);
+      if (regno.length < 5) {
+        if (nameEl) nameEl.value = '';
+        return;
+      }
+
+      if (nameEl) nameEl.value = '🔍 Finding student...';
+      if (errEl)  errEl.classList.remove('show');
+
+      _danceLookupTimer = setTimeout(async () => {
+        if (!SHEETS_URL || SHEETS_URL.includes('YOUR_GOOGLE')) return;
+
+        _danceLookupAbortController = new AbortController();
+        try {
+          const resp = await fetch(`${SHEETS_URL}?action=studentLookup&regno=${encodeURIComponent(regno)}`, { signal: _danceLookupAbortController.signal });
+          const data = await resp.json();
+          if (data.success) {
+            if (nameEl) nameEl.value = data.name;
+            if (yearEl) yearEl.value = (data.year === '1' ? '1st Year' : data.year === '2' ? '2nd Year' : data.year === '3' ? '3rd Year' : data.year === '4' ? '4th Year' : data.year);
+            if (secEl)  secEl.value = 'Section ' + data.section;
+          } else {
+            if (nameEl) nameEl.value = '';
+            if (errEl) { errEl.textContent = ' ⚠ ' + data.error; errEl.classList.add('show'); }
+          }
+        } catch(e) {
+          if (e.name === 'AbortError') return;
+          if (nameEl) nameEl.value = '';
+          console.error('Dance lookup error:', e);
+        }
+      }, 300);
+    }
+
     function updateStepUI() {
       const regOv = document.getElementById('reg-ov');
       const steps = document.querySelectorAll('.step');
+      const danceStepActive = (currentStep === 1.5);
       
-      // Update background theme based on current step
+      // Update background theme
       if (regOv) {
-        // Step 0 (Leader) = Default Crimson, Step 1 (Poker) = Purple Theme
-        if (currentStep === 1) regOv.setAttribute('data-theme', 'poker');
+        if (currentStep === 1 || danceStepActive) regOv.setAttribute('data-theme', 'poker');
         else regOv.removeAttribute('data-theme');
       }
 
-      steps.forEach((s, i) => {
-        const isActive = i === currentStep;
+      steps.forEach((s) => {
+        let isActive = false;
+        if (s.id === 'step-0') isActive = (currentStep === 0);
+        else if (s.id === 'step-1') isActive = (currentStep === 1);
+        else if (s.id === 'step-2') isActive = (currentStep === 2);
+        else if (s.id === 'step-dance-member') isActive = (currentStep === 1.5);
+        
         s.classList.toggle('active', isActive);
-        // Performance: Fully hide non-active steps to prevent GPU overhead
         s.style.visibility = isActive ? 'visible' : 'hidden';
         s.style.display = isActive ? 'block' : 'none'; 
       });
@@ -11617,8 +12054,9 @@
     </div>`;
 
       if (e.type !== 'Solo' && tname) {
+        const teamTitle = (e.id === 'dn') ? 'Dance Performance Group' : 'Team: ' + tname;
         html += `<div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:14px">
-          <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:6px">Team: ${tname}</div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:6px">${teamTitle}</div>
           <div style="font-size:11px;color:var(--muted2);margin-bottom:10px">Member 1 (You): ${name} · ${regno}</div>
           ${teamMembers.map((m, i) => `<div style="padding:8px 0;border-top:1px solid rgba(255,255,255,.04)"><div style="font-size:12px;font-weight:700;color:#fff">Member ${i + 2}: ${m.name}</div><div style="font-size:10px;color:var(--muted2)">${m.regno} · Year ${m.year} · Sec ${m.section}</div></div>`).join('')}
         </div>`;
@@ -11734,33 +12172,35 @@
       const currentRegNos = [{ name, regno }, ...teamMembers.map(m => ({ name: m.name, regno: m.regno }))];
 
       let localDupeName = null, localDupeReg = null;
-      for (const storedReg of saved) {
-        if (storedReg.eventId === currentEv.id || storedReg.eventName === currentEv.name) {
-          // Check leader regno (current) against stored leader + all stored members
-          const allStoredRegnosForEvent = [storedReg.regno];
-          if (storedReg.teamMembers && Array.isArray(storedReg.teamMembers)) {
-            storedReg.teamMembers.forEach(tm => { if (tm.regno) allStoredRegnosForEvent.push(tm.regno); });
-          }
-          // Check ALL current participants (leader + team) against ALL stored participants for this event
-          for (const cur of currentRegNos) {
-            const dupeFound = allStoredRegnosForEvent.find(sr => sr.toLowerCase() === cur.regno.toLowerCase());
-            if (dupeFound) { localDupeName = cur.name; localDupeReg = cur.regno; break; }
-          }
-          if (localDupeName) break;
-        }
-        // Time slot conflict check
-        if (currentEv.timeSlot && currentEv.isSimultaneous && storedReg.timeSlot === currentEv.timeSlot
-            && storedReg.eventId !== currentEv.id && storedReg.eventName !== currentEv.name) {
-          const storedEvData = EVS.find(ev => ev.id === storedReg.eventId);
-          if (storedEvData && storedEvData.isSimultaneous) {
-            const allStoredRegnos = [storedReg.regno];
+      if (!currentEv.allowMultiple) {
+        for (const storedReg of saved) {
+          if (storedReg.eventId === currentEv.id || storedReg.eventName === currentEv.name) {
+            // Check leader regno (current) against stored leader + all stored members
+            const allStoredRegnosForEvent = [storedReg.regno];
             if (storedReg.teamMembers && Array.isArray(storedReg.teamMembers)) {
-              storedReg.teamMembers.forEach(tm => { if (tm.regno) allStoredRegnos.push(tm.regno); });
+              storedReg.teamMembers.forEach(tm => { if (tm.regno) allStoredRegnosForEvent.push(tm.regno); });
             }
-            const conflictMember = currentRegNos.find(c => allStoredRegnos.map(r => r.toLowerCase()).includes(c.regno.toLowerCase()));
-            if (conflictMember) {
-              showError('Time Slot Conflict', 'Same Time Slot', `${conflictMember.name} (${conflictMember.regno}) is already registered for "${storedReg.eventName}" which runs at the same time as ${currentEv.name}.`);
-              resetUI(); return;
+            // Check ALL current participants (leader + team) against ALL stored participants for this event
+            for (const cur of currentRegNos) {
+              const dupeFound = allStoredRegnosForEvent.find(sr => sr.toLowerCase() === cur.regno.toLowerCase());
+              if (dupeFound) { localDupeName = cur.name; localDupeReg = cur.regno; break; }
+            }
+            if (localDupeName) break;
+          }
+          // Time slot conflict check
+          if (currentEv.timeSlot && currentEv.isSimultaneous && storedReg.timeSlot === currentEv.timeSlot
+              && storedReg.eventId !== currentEv.id && storedReg.eventName !== currentEv.name) {
+            const storedEvData = EVS.find(ev => ev.id === storedReg.eventId);
+            if (storedEvData && storedEvData.isSimultaneous) {
+              const allStoredRegnos = [storedReg.regno];
+              if (storedReg.teamMembers && Array.isArray(storedReg.teamMembers)) {
+                storedReg.teamMembers.forEach(tm => { if (tm.regno) allStoredRegnos.push(tm.regno); });
+              }
+              const conflictMember = currentRegNos.find(c => allStoredRegnos.map(r => r.toLowerCase()).includes(c.regno.toLowerCase()));
+              if (conflictMember) {
+                showError('Time Slot Conflict', 'Same Time Slot', `${conflictMember.name} (${conflictMember.regno}) is already registered for "${storedReg.eventName}" which runs at the same time as ${currentEv.name}.`);
+                resetUI(); return;
+              }
             }
           }
         }
@@ -11780,7 +12220,7 @@
         let serverCheckPassed = false;
         try {
           const allRegNos = [regno, ...teamMembers.filter(m => m && m.regno).map(m => m.regno)].join(',');
-          const checkUrl = `${SHEETS_URL}?action=lookup&regnos=${encodeURIComponent(allRegNos)}&eventId=${encodeURIComponent(currentEv.id)}&eventName=${encodeURIComponent(currentEv.name)}&timeSlot=${encodeURIComponent(currentEv.timeSlot || '')}`;
+          const checkUrl = `${SHEETS_URL}?action=lookup&regnos=${encodeURIComponent(allRegNos)}&eventId=${encodeURIComponent(currentEv.id)}&eventName=${encodeURIComponent(currentEv.name)}&timeSlot=${encodeURIComponent(currentEv.timeSlot || '')}&targetSheet=${encodeURIComponent(currentEv.targetSheet || '')}`;
           
           // Abort after 12 seconds to prevent infinite wait
           const controller = new AbortController();
@@ -11846,7 +12286,9 @@
         timeSlot: currentEv.timeSlot || '',
         teamName: tname,
         teamMembers: teamMembers.slice(),
-        ts
+        ts,
+        targetSheet: currentEv.targetSheet || 'Registrations',
+        allowMultiple: !!currentEv.allowMultiple
       };
 
       // Local backup before network call
@@ -11912,7 +12354,19 @@
 
       document.getElementById('reg-ov').classList.remove('open');
       document.getElementById('conf-id-v').textContent = regId;
+
+      const waGroupLink = EVENT_WHATSAPP_MAP[reg.eventName] || '#';
+      document.getElementById('conf-wa-container').innerHTML = `
+        <a href="${waGroupLink}" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #25D366; color: #fff; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s ease;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+          </svg>
+          JOIN WHATSAPP GROUP
+        </a>
+      `;
+
       document.getElementById('conf-screen').classList.add('open');
+
 
       // Show My Pass button in navbar
       const passBtn = document.getElementById('pass-nav-btn');
@@ -12076,6 +12530,7 @@
         const exactVenue = matchEv ? matchEv.venue : 'PSNA';
         const shareLink = window.location.origin + window.location.pathname.replace('index.html', '') + 'pass.html?id=' + r.regId;
         const waText = encodeURIComponent(`🎟️ CSEUTSAV'26 2K26 Pass\nName: ${r.name}\nEvent: ${r.eventName}\nPass ID: ${r.regId}\n\nShow this pass at entry:\n${shareLink}`);
+        const waGroupLink = EVENT_WHATSAPP_MAP[r.eventName] || '#';
         return `
     <div class="pass-card">
       <div class="pass-top">
@@ -12117,7 +12572,7 @@
           </svg>
           Share Pass on WhatsApp
         </a>
-        <a href="#" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #25D366; color: #fff; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s ease;">
+        <a href="${waGroupLink}" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #25D366; color: #fff; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s ease;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
           </svg>
@@ -13738,7 +14193,47 @@ function doPost(e) {
       }, 500);
     })();
 
+    /* ─── WhatsApp Group List Functions ─── */
+    function openWaList() {
+      const container = document.getElementById('wa-list-container');
+      if (!container) return;
+      
+      container.innerHTML = '';
+      Object.keys(EVENT_WHATSAPP_MAP).forEach(event => {
+        const link = EVENT_WHATSAPP_MAP[event];
+        if (link && link !== '#') {
+          const btn = document.createElement('a');
+          btn.href = link;
+          btn.target = '_blank';
+          btn.rel = 'noopener noreferrer';
+          btn.className = 'wa-item-btn';
+          btn.innerHTML = `
+            <div class="wa-item-info">
+              <div class="wa-item-name">${event}</div>
+              <div class="wa-item-status">Official Group</div>
+            </div>
+            <div class="wa-item-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+              </svg>
+            </div>
+          `;
+          container.appendChild(btn);
+        }
+      });
+      
+      document.getElementById('wa-list-ov').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWaList(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('wa-list-ov').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
     /* ════════════════════════════════ */
+
   </script>
   <!-- ═══ EMERGENCY MAINTENANCE OVERLAY ═══ -->
   <div class="maint-ov" id="maint-ov">
@@ -13764,6 +14259,18 @@ function doPost(e) {
 
 
 
+  <!-- WHATSAPP LIST OVERLAY -->
+  <div class="wa-list-ov" id="wa-list-ov" onclick="closeWaList(event)">
+    <div class="wa-list-sheet" onclick="event.stopPropagation()">
+      <div class="wa-list-head">
+        <div class="wa-list-title">EVENT GROUPS</div>
+        <button class="wa-list-close" onclick="closeWaList(event)">✕</button>
+      </div>
+      <div class="wa-list-scroll" id="wa-list-container"></div>
+    </div>
+  </div>
+
 </body>
+
 
 </html>
