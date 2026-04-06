@@ -10,9 +10,8 @@
 //    → Set Version to "New version" → Deploy
 // ══════════════════════════════════════════
 
-// The exact column structure you need, with Gender at the very end. 
-// The script will automatically fix your Sheet's header row to match this!
-var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Event", "TeamName", "TeamMembers", "Timestamp"];
+// The exact column structure you need, with Gender at the end and SystemData hidden.
+var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "Email", "Event", "TeamName", "TeamMembers", "Timestamp", "Gender", "SystemData"];
 var SCAN_HEADERS = ["RegID", "Name", "RegNo", "Event", "TeamName", "Timestamp", "ScannerID"];
 
 function enforceHeaders(sh) {
@@ -70,7 +69,8 @@ function doGet(e) {
     var results = [];
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
-      var teamMembersRaw = row[headers.indexOf("TeamMembers")] || "[]";
+      var systemDataIndex = headers.indexOf("SystemData");
+      var teamMembersRaw = (systemDataIndex >= 0 && row[systemDataIndex]) ? row[systemDataIndex] : (row[headers.indexOf("TeamMembers")] || "[]");
       var teamMembers = [];
       try { teamMembers = JSON.parse(teamMembersRaw); } catch (ex) { teamMembers = []; }
       results.push({
@@ -81,8 +81,7 @@ function doGet(e) {
         section: String(row[headers.indexOf("Section")] || ""),
         phone: String(row[headers.indexOf("Phone")] || ""),
         email: String(row[headers.indexOf("Email")] || ""),
-        email: "",
-        gender: "",
+        gender: String(row[headers.indexOf("Gender")] || ""),
         eventId: "", // EventID column removed to match your exact sheet
         eventName: String(row[headers.indexOf("Event")] || ""),
         teamName: String(row[headers.indexOf("TeamName")] || ""),
@@ -97,11 +96,13 @@ function doGet(e) {
   if (action === "lookup") {
     var email = (e.parameter.email || "").toLowerCase().trim();
     var lookupId = (e.parameter.id || "").trim();
+    var fetchRegno = (e.parameter.fetchRegno || "").replace(/[^0-9]/g, "").trim(); // RegNo-based pass recovery
     var checkRegNosStr = e.parameter.regnos || "";
     var checkEventName = (e.parameter.eventName || "").trim();
     // Allow regno-only duplicate checks (no email needed with new auto-fetch model)
     var hasRegnoCheck = checkRegNosStr && checkEventName;
-    if (!email && !lookupId && !hasRegnoCheck) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [] })).setMimeType(ContentService.MimeType.JSON);
+    var hasPassFetch = fetchRegno.length >= 7; // Pass recovery by RegNo
+    if (!email && !lookupId && !hasRegnoCheck && !hasPassFetch) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [] })).setMimeType(ContentService.MimeType.JSON);
 
     var checkEventId = e.parameter.eventId || ""; // Using eventName fallback below
     if (!checkRegNosStr) checkRegNosStr = e.parameter.regnos || "";
@@ -123,9 +124,12 @@ function doGet(e) {
       var rowRegId = String(row[headers.indexOf("RegID")] || ("GF-" + (i + 1)));
       var rowEmail = String(row[headers.indexOf("Email")] || "").toLowerCase().trim();
       var rowEventName = String(row[headers.indexOf("Event")] || "").trim();
-      var teamMembersRaw = row[headers.indexOf("TeamMembers")] || "[]";
+      var systemDataIndex = headers.indexOf("SystemData");
+      // SystemData column holds JSON team array; TeamMembers is just a visual string
+      // Only parse from SystemData — falling back to TeamMembers visual string always fails JSON.parse
+      var teamMembersRaw = (systemDataIndex >= 0 && row[systemDataIndex] && String(row[systemDataIndex]).trim() !== "Solo" && String(row[systemDataIndex]).trim() !== "") ? String(row[systemDataIndex]) : "[]";
       var teamMembers = [];
-      try { teamMembers = JSON.parse(teamMembersRaw); } catch (ex) { }
+      try { teamMembers = JSON.parse(teamMembersRaw); if (!Array.isArray(teamMembers)) teamMembers = []; } catch (ex) { teamMembers = []; }
 
       if ((email && rowEmail === email) || (lookupId && rowRegId === lookupId)) {
         results.push({
@@ -135,8 +139,8 @@ function doGet(e) {
           gender: String(row[headers.indexOf("Gender")] || ""),
           year: String(row[headers.indexOf("Year")] || ""),
           section: String(row[headers.indexOf("Section")] || ""),
-          phone: "",
-          email: "",
+          phone: String(row[headers.indexOf("Phone")] || ""),
+          email: String(row[headers.indexOf("Email")] || ""),
           eventId: "",
           eventName: rowEventName,
           teamName: String(row[headers.indexOf("TeamName")] || ""),
@@ -144,6 +148,33 @@ function doGet(e) {
           ts: String(row[headers.indexOf("Timestamp")] || ""),
           timeSlot: ""
         });
+      }
+
+      // ── Pass Recovery by RegNo: match leader OR team member ──
+      if (hasPassFetch) {
+        var rowLeaderRegNoForFetch = String(row[headers.indexOf("RegNo")] || "").replace(/[^0-9]/g, "").trim();
+        var isLeaderMatch = (rowLeaderRegNoForFetch === fetchRegno);
+        var isMemberMatch = false;
+        for (var m = 0; m < teamMembers.length; m++) {
+          var tmReg = String(teamMembers[m].regno || "").replace(/[^0-9]/g, "").trim();
+          if (tmReg === fetchRegno) { isMemberMatch = true; break; }
+        }
+        if ((isLeaderMatch || isMemberMatch) && !results.some(function(r) { return r.regId === rowRegId; })) {
+          results.push({
+            regId: rowRegId,
+            name: String(row[headers.indexOf("Name")] || ""),
+            regno: String(row[headers.indexOf("RegNo")] || ""),
+            gender: String(row[headers.indexOf("Gender")] || ""),
+            year: String(row[headers.indexOf("Year")] || ""),
+            section: String(row[headers.indexOf("Section")] || ""),
+            eventId: "",
+            eventName: rowEventName,
+            teamName: String(row[headers.indexOf("TeamName")] || ""),
+            teamMembers: teamMembers,
+            ts: String(row[headers.indexOf("Timestamp")] || ""),
+            timeSlot: ""
+          });
+        }
       }
 
       // Look for duplicate register numbers for the SAME EVENT name
@@ -221,7 +252,7 @@ function doGet(e) {
     if (!regno || regno.length < 5) {
       return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Invalid register number" })).setMimeType(ContentService.MimeType.JSON);
     }
-    var studentsSh = ss.getSheetByName("Students");
+    var studentsSh = ss.getSheetByName("AllStudents") || ss.getSheetByName("Students");
     if (!studentsSh) {
       return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Students sheet not found" })).setMimeType(ContentService.MimeType.JSON);
     }
@@ -230,23 +261,23 @@ function doGet(e) {
       return ContentService.createTextOutput(JSON.stringify({ success: false, error: "No student data available" })).setMimeType(ContentService.MimeType.JSON);
     }
     // Detect columns from header row (case-insensitive)
-    var sHeaders = sData[0].map(function(h) { return String(h).toLowerCase().trim(); });
-    var colRegno   = sHeaders.indexOf("regno");
-    var colName    = sHeaders.indexOf("name");
-    var colYear    = sHeaders.indexOf("year");
+    var sHeaders = sData[0].map(function (h) { return String(h).toLowerCase().trim(); });
+    var colRegno = sHeaders.indexOf("regno");
+    var colName = sHeaders.indexOf("name");
+    var colYear = sHeaders.indexOf("year");
     var colSection = sHeaders.indexOf("section");
     // Fallback aliases
-    if (colRegno   === -1) colRegno   = sHeaders.findIndex(function(h) { return h.includes("reg"); });
-    if (colName    === -1) colName    = sHeaders.findIndex(function(h) { return h.includes("name"); });
-    if (colYear    === -1) colYear    = sHeaders.findIndex(function(h) { return h.includes("year"); });
-    if (colSection === -1) colSection = sHeaders.findIndex(function(h) { return h.includes("sec"); });
+    if (colRegno === -1) colRegno = sHeaders.findIndex(function (h) { return h.includes("reg"); });
+    if (colName === -1) colName = sHeaders.findIndex(function (h) { return h.includes("name"); });
+    if (colYear === -1) colYear = sHeaders.findIndex(function (h) { return h.includes("year"); });
+    if (colSection === -1) colSection = sHeaders.findIndex(function (h) { return h.includes("sec"); });
     if (colRegno === -1 || colName === -1) {
       return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Students sheet missing RegNo or Name column" })).setMimeType(ContentService.MimeType.JSON);
     }
     for (var i = 1; i < sData.length; i++) {
       var rowRegno = String(sData[i][colRegno] || "").replace(/[^0-9]/g, "").trim();
       if (rowRegno === regno) {
-        var year    = colYear    >= 0 ? String(sData[i][colYear]    || "").trim() : "";
+        var year = colYear >= 0 ? String(sData[i][colYear] || "").trim() : "";
         var section = colSection >= 0 ? String(sData[i][colSection] || "").trim() : "";
         return ContentService.createTextOutput(JSON.stringify({
           success: true,
@@ -515,7 +546,7 @@ function doPost(e) {
           var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
 
           var finalTs = r.ts && r.ts.indexOf("T") === -1 ? "'" + r.ts : "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-          var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.eventName, teamNameValue, teamMembersValue, finalTs];
+          var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, "", "", r.eventName, teamNameValue, teamMembersValue, finalTs, r.gender || "Not Set", teamMembersValue];
           sh.appendRow(rowToAppend);
         });
         SpreadsheetApp.flush(); // Ensure instantly saved
@@ -547,7 +578,7 @@ function doPost(e) {
         var headers = OFFICIAL_HEADERS;
         var regIdCol = headers.indexOf("RegID");
         for (var i = 1; i < data.length; i++) {
-          if (String(data[i][regIdCol]) === regId) {
+          if (regIdCol !== -1 && String(data[i][regIdCol]) === regId) {
             return ContentService.createTextOutput(JSON.stringify({ success: true, regId: regId, alreadyExisted: true })).setMimeType(ContentService.MimeType.JSON);
           }
         }
@@ -611,7 +642,8 @@ function doPost(e) {
               break;
             }
 
-            var teamMembersRaw = String(row[headers.indexOf("TeamMembers")] || "[]");
+            var systemDataIndex = headers.indexOf("SystemData");
+            var teamMembersRaw = String((systemDataIndex >= 0 && row[systemDataIndex]) ? row[systemDataIndex] : (row[headers.indexOf("TeamMembers")] || "[]"));
             var existTeam = [];
             try { existTeam = JSON.parse(teamMembersRaw); } catch (ex) { }
 
@@ -635,11 +667,20 @@ function doPost(e) {
         // Prepending an apostrophe (') forces Google Sheets to treat it as plain text instead of trying to autoconvert to an ISO Date
         // Matured Logic: Explicitly label Solo registrations in the sheet for clarity
         var teamNameValue = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
-        var teamMembersValue = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
+        var teamMembersJSON = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
+        var teamMembersVisual = "Solo";
+        if (r.teamMembers && r.teamMembers.length > 0) {
+          var vArr = [];
+          for (var k = 0; k < r.teamMembers.length; k++) {
+            vArr.push((k + 1) + ". " + (r.teamMembers[k].name || "Unknown") + " (" + (r.teamMembers[k].regno || "No Reg") + ")");
+          }
+          teamMembersVisual = vArr.join(" | "); // Formatted for sheet view
+        }
 
         var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-        // Columns: RegID, Name, RegNo, Year, Section, Event, TeamName, TeamMembers, Timestamp
-        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, r.eventName, teamNameValue, teamMembersValue, finalTs];
+        var genderStr = r.gender || "Not Set";
+        // Columns: RegID, Name, RegNo, Year, Section, Phone, Email, Event, TeamName, TeamMembers (Visual), Timestamp, Gender, SystemData (JSON)
+        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, "", "", r.eventName, teamNameValue, teamMembersVisual, finalTs, genderStr, teamMembersJSON];
         sh.appendRow(rowToAppend);
         SpreadsheetApp.flush(); // Forces the sheet to save and sync instantly, preventing the "blank screen" effect
 
@@ -706,7 +747,7 @@ function cleanRegistrationsDatabase() {
   var headers = data[0].map(function (h) { return String(h).trim(); });
 
   // Goal Structure
-  var GOAL = ["RegID", "Name", "RegNo", "Year", "Section", "Event", "TeamName", "TeamMembers", "Timestamp"];
+  var GOAL = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "Email", "Event", "TeamName", "TeamMembers", "Timestamp", "Gender", "SystemData"];
 
   // Create a clean array of records
   var cleanRecords = [];
@@ -726,7 +767,12 @@ function cleanRegistrationsDatabase() {
     var regno = String(mapped["RegNo"] || "").replace(/[^0-9]/g, "").trim();
     var name = String(mapped["Name"] || "").trim();
     var eventName = String(mapped["Event"] || "").trim();
-    var teamData = String(mapped["TeamMembers"] || "").trim();
+    var genderStr = String(mapped["Gender"] || "");
+
+    // Safety fallback for old sheets where JSON might be in TeamMembers
+    var systemData = String(mapped["SystemData"] || "");
+    var teamDataRaw = String(mapped["TeamMembers"] || "").trim();
+    var stringToParse = systemData || teamDataRaw;
 
     // 1. Invalid checks
     if (!regno || regno.length < 5 || !name || name.toLowerCase() === "test" || regno === "555555") {
@@ -736,17 +782,26 @@ function cleanRegistrationsDatabase() {
 
     // 2. Duplicate Check (Keep latest valid entry by reading from top to down, overriding older)
     var key = regno + "||" + eventName;
-    
-    // 3. Fix TeamMembers JSON
-    var validTeam = "Solo";
-    if (teamData && teamData !== "Solo") {
+
+    // 3. Fix TeamMembers Formatting
+    var validTeamJSON = "Solo";
+    var validTeamVisual = "Solo";
+
+    if (stringToParse && stringToParse !== "Solo") {
       try {
-        var parsed = JSON.parse(teamData);
+        var parsed = JSON.parse(stringToParse);
         if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].name) {
-          validTeam = JSON.stringify(parsed);
+          validTeamJSON = JSON.stringify(parsed);
+          var vArr = [];
+          for (var k = 0; k < parsed.length; k++) {
+            vArr.push((k + 1) + ". " + (parsed[k].name || "Unknown") + " (" + (parsed[k].regno || "No Reg") + ")");
+          }
+          validTeamVisual = vArr.join(" | ");
         }
       } catch (e) {
-        validTeam = "Solo"; // Reset corrupted JSON
+        // Not valid JSON, keep as is for visual, JSON is blank
+        validTeamVisual = teamDataRaw || "Solo";
+        validTeamJSON = "Solo";
       }
     }
 
@@ -757,10 +812,14 @@ function cleanRegistrationsDatabase() {
       regno,
       String(mapped["Year"] || ""),
       String(mapped["Section"] || ""),
+      String(mapped["Phone"] || ""),
+      String(mapped["Email"] || ""),
       eventName,
       String(mapped["TeamName"] || "Solo"),
-      validTeam,
-      String(mapped["Timestamp"] || "")
+      validTeamVisual,
+      String(mapped["Timestamp"] || ""),
+      genderStr,
+      validTeamJSON
     ];
   }
 
@@ -786,5 +845,5 @@ function cleanRegistrationsDatabase() {
   Logger.log("Removed Invalid: " + removedInvalid);
   Logger.log("Removed Duplicates: " + removedDupes);
   Logger.log("Final Row Count: " + cleanRecords.length);
-  Logger.log("Transformation Complete: Phone and Email detached. Columns stand at format.");
+  Logger.log("Transformation Complete: Formatted arrays with hidden JSON backup.");
 }

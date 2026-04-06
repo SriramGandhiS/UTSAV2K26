@@ -8337,6 +8337,8 @@
       </h1>
       <p class="hero-desc">Place your bets on innovation. The ultimate high-stakes technical floor is here. Compete with
         the best, take home the grand jackpot.</p>
+      <p style="font-size:11px; font-style:italic; margin-top:-10px; margin-bottom:18px; letter-spacing:1px; font-family:'Outfit',sans-serif; font-weight:600; color:#f0c060; text-shadow: 0 0 6px rgba(255,200,80,0.9), 0 0 14px rgba(255,160,40,0.7), 0 0 28px rgba(255,120,0,0.5); animation: neon-credit-pulse 2.8s ease-in-out infinite alternate;">High stakes, no breaks&mdash;made with love by Batch &apos;26 &amp; &apos;27 &#9829;</p>
+      <style>@keyframes neon-credit-pulse { 0%{text-shadow:0 0 4px rgba(255,200,80,0.8),0 0 12px rgba(255,160,40,0.6),0 0 22px rgba(255,120,0,0.4);opacity:0.75;} 100%{text-shadow:0 0 8px rgba(255,220,100,1),0 0 20px rgba(255,180,50,0.9),0 0 40px rgba(255,140,0,0.7),0 0 60px rgba(212,175,55,0.4);opacity:1;} }</style>
       <div class="hero-btns" style="justify-content: center; margin-bottom: 20px;">
         <button class="btn-casino-gold" onclick="openReg(null)"><span>Join The Table</span></button>
         <button class="btn-casino-outline"
@@ -8830,8 +8832,8 @@
 
                 <div class="rlt-fg">
                   <label class="rlt-fl">Register Number (Roll No)</label>
-                  <input class="fi rlt-fi" id="f-regno" type="text" placeholder="e.g. 2303921310421226"
-                    oninput="this.value = this.value.replace(/[^A-Z0-9]/gi, ''); lookupStudent()">
+                  <input class="fi rlt-fi" id="f-regno" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="e.g. 2303921310421226"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, ''); lookupStudent()" onkeypress="return /[0-9]/.test(event.key)" onpaste="setTimeout(()=>{this.value=this.value.replace(/[^0-9]/g,'');lookupStudent();},0)">
                 </div>
 
                 <div class="rlt-fg">
@@ -9131,9 +9133,14 @@
         <div class="fetch-pass-box">
           <div class="fetch-icon">🎫</div>
           <div class="fetch-title">Get Your Pass</div>
-          <div class="fetch-sub">Registered via Google Form? Enter your email below to fetch your digital pass.</div>
-          <div class="fg"><input class="fi" id="fetch-email" type="email"
-              placeholder="Enter the email you registered with"></div>
+          <div class="fetch-sub">Enter your <strong style="color:var(--gold)">Register Number</strong> to recover all your digital passes.</div>
+          <div class="fg">
+            <input class="fi" id="fetch-regno" type="number" inputmode="numeric" pattern="[0-9]*"
+              placeholder="Enter your Register Number (e.g. 23039213...)"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              onkeypress="return /[0-9]/.test(event.key)"
+              onkeydown="if(event.key==='Enter') fetchMyPass()">
+          </div>
           <button class="reg-next-btn" onclick="fetchMyPass()">Fetch My Pass</button>
           <div class="fetch-status" id="fetch-status"></div>
         </div>
@@ -10807,16 +10814,15 @@
         fieldsContainer.style.display = currentEv ? 'block' : 'none';
       }
 
+      // Pre-fill ONLY gender from last registration — it’s safe because it doesn't depend on lookup
+      // NOTE: Do NOT pre-fill regno/name/year/section — those must come from lookupStudent() to populate
+      // dataset.raw correctly. Pre-filling .value without dataset.raw causes buildReview() to use
+      // stale unverified data (name shows but year/section would be blank in the sheet).
       const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
-      if (saved.length > 0 && !document.getElementById('f-name').value) {
+      if (saved.length > 0) {
         const last = saved[saved.length - 1];
-        document.getElementById('f-name').value = last.name || '';
-        document.getElementById('f-regno').value = last.regno || '';
-        document.getElementById('f-year').value = last.year || '';
-        document.getElementById('f-section').value = last.section || '';
-        document.getElementById('f-phone').value = last.phone || '';
-        document.getElementById('f-email').value = last.email || '';
-        document.getElementById('f-gender').value = last.gender || '';
+        const genderEl = document.getElementById('f-gender');
+        if (genderEl && !genderEl.value && last.gender) genderEl.value = last.gender;
       }
 
       updateStepUI();
@@ -11173,8 +11179,8 @@
           <div class="pkt-form-row">
             <div class="pkt-fg" style="grid-column:1/-1">
               <label>Reg Number (RegNo)</label>
-              <input id="pkt-fi-regno" type="text" placeholder="e.g. 23039213104..." value="${fields.regno}"
-                oninput="this.value=this.value.replace(/[^A-Z0-9]/gi,''); pktLookupMember(${slotIdx}, this.value); pktUpdateDraft(${slotIdx}, 'regno', this.value)">
+              <input id="pkt-fi-regno" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="e.g. 23039213104..." value="${fields.regno}"
+                oninput="this.value=this.value.replace(/[^0-9]/g,''); pktLookupMember(${slotIdx}, this.value); pktUpdateDraft(${slotIdx}, 'regno', this.value)" onkeypress="return /[0-9]/.test(event.key)" onpaste="setTimeout(()=>{this.value=this.value.replace(/[^0-9]/g,'');pktLookupMember(${slotIdx},this.value);pktUpdateDraft(${slotIdx},'regno',this.value);},0)">
             </div>
           </div>
           <div class="pkt-form-row">
@@ -11247,7 +11253,9 @@
       if (!name || !regno || !gender || !year || !section) {
         err = 'Please enter RegNo and Gender for this member.';
       } else if (regno.length < 5) {
-        err = 'Invalid Register Number.';
+        err = 'Register number must be at least 5 digits.';
+      } else if (/[^0-9]/.test(regno)) {
+        err = 'Register number must contain digits only. No letters allowed.';
       } else {
         const leaderRegno = document.getElementById('f-regno')?.value.trim() || '';
         if (regno.toLowerCase() === leaderRegno.toLowerCase()) err = 'Register number matches the leader.';
@@ -11479,7 +11487,10 @@
           err = `Please fill all details: ${missing.map(m => m.label).join(', ')}`;
           missing.forEach(m => document.getElementById(m.id)?.classList.add('error'));
         } else if (regno.length < 7) {
-          err = 'Register number must be at least 7 characters.';
+          err = 'Register number must be at least 7 digits.';
+          document.getElementById('f-regno').classList.add('error');
+        } else if (/[^0-9]/.test(regno)) {
+          err = 'Register number must contain digits only — no letters allowed.';
           document.getElementById('f-regno').classList.add('error');
         }
 
@@ -11748,13 +11759,15 @@
       let localDupeName = null, localDupeReg = null;
       for (const storedReg of saved) {
         if (storedReg.eventId === currentEv.id || storedReg.eventName === currentEv.name) {
-          const match = currentRegNos.find(c => c.regno === storedReg.regno);
-          if (match) { localDupeName = match.name; localDupeReg = match.regno; break; }
+          // Check leader regno (current) against stored leader + all stored members
+          const allStoredRegnosForEvent = [storedReg.regno];
           if (storedReg.teamMembers && Array.isArray(storedReg.teamMembers)) {
-            for (const tm of storedReg.teamMembers) {
-              const tmMatch = currentRegNos.find(c => c.regno === tm.regno);
-              if (tmMatch) { localDupeName = tmMatch.name; localDupeReg = tmMatch.regno; break; }
-            }
+            storedReg.teamMembers.forEach(tm => { if (tm.regno) allStoredRegnosForEvent.push(tm.regno); });
+          }
+          // Check ALL current participants (leader + team) against ALL stored participants for this event
+          for (const cur of currentRegNos) {
+            const dupeFound = allStoredRegnosForEvent.find(sr => sr.toLowerCase() === cur.regno.toLowerCase());
+            if (dupeFound) { localDupeName = cur.name; localDupeReg = cur.regno; break; }
           }
           if (localDupeName) break;
         }
@@ -11767,7 +11780,7 @@
             if (storedReg.teamMembers && Array.isArray(storedReg.teamMembers)) {
               storedReg.teamMembers.forEach(tm => { if (tm.regno) allStoredRegnos.push(tm.regno); });
             }
-            const conflictMember = currentRegNos.find(c => allStoredRegnos.includes(c.regno));
+            const conflictMember = currentRegNos.find(c => allStoredRegnos.map(r => r.toLowerCase()).includes(c.regno.toLowerCase()));
             if (conflictMember) {
               showError('Time Slot Conflict', 'Same Time Slot', `${conflictMember.name} (${conflictMember.regno}) is already registered for "${storedReg.eventName}" which runs at the same time as ${currentEv.name}.`);
               resetUI(); return;
@@ -11781,32 +11794,68 @@
         resetUI(); return;
       }
 
-      // Server-side duplicate check
+      // ── MANDATORY SERVER-SIDE DUPLICATE + TIME CONFLICT CHECK ──
+      // This check MUST pass before allowing registration.
+      // Errors are NOT silently swallowed — any failure BLOCKS registration.
       if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
         showAdminLoader('Validating Records...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Please do not refresh this page.</span>');
+        
+        let serverCheckPassed = false;
         try {
-          const allRegNos = [regno, ...teamMembers.map(m => m.regno)].join(',');
-          const url = `${SHEETS_URL}?action=lookup&regnos=${encodeURIComponent(allRegNos)}&eventId=${encodeURIComponent(currentEv.id)}&eventName=${encodeURIComponent(currentEv.name)}&timeSlot=${encodeURIComponent(currentEv.timeSlot || '')}&uid=${ADMIN_ID}&pwd=${ADMIN_PASS}`;
-          const resp = await fetch(url);
-          const data = await resp.json();
-          if (data.found && data.registrations && data.registrations.some(r => r.eventName === currentEv.name || r.eventId === currentEv.id)) {
-            hideAdminLoader(); showError('Duplicate Blocked', 'Already registered', `You already hold a confirmed pass for ${currentEv.name}.`);
+          const allRegNos = [regno, ...teamMembers.filter(m => m && m.regno).map(m => m.regno)].join(',');
+          const checkUrl = `${SHEETS_URL}?action=lookup&regnos=${encodeURIComponent(allRegNos)}&eventId=${encodeURIComponent(currentEv.id)}&eventName=${encodeURIComponent(currentEv.name)}&timeSlot=${encodeURIComponent(currentEv.timeSlot || '')}`;
+          
+          // Abort after 12 seconds to prevent infinite wait
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 12000);
+          
+          const resp = await fetch(checkUrl, { signal: controller.signal });
+          clearTimeout(timeoutId);
+          
+          if (!resp.ok) {
+            hideAdminLoader();
+            showError('Server Error', 'Validation Failed', `Server returned error ${resp.status}. Please try again.`);
             resetUI(); return;
           }
+          
+          const data = await resp.json();
+          
+          // ── Check 1: Duplicate reg number for same event ──
           if (data.duplicates && data.duplicates.length > 0) {
             hideAdminLoader();
             const dupeNames = (data.duplicateDetails || []).map(d => `${d.name} (${d.regno})`).join(' / ');
-            showError('Duplicate Detected', 'Member already registered', `Person(s) already registered for this event:\n\n${dupeNames}`);
+            showError('Duplicate Detected', 'Already Registered for this Event', `The following person(s) are already registered for ${currentEv.name}:\n\n${dupeNames}\n\nEach student can only register once per event.`);
             resetUI(); return;
           }
+          
+          // ── Check 2: Cross-event time slot conflict ──  
           if (data.timeSlotConflicts && data.timeSlotConflicts.length > 0) {
             hideAdminLoader();
-            const conflictNames = (data.timeSlotConflictDetails || []).map(d => `${d.name} (${d.regno}) in [${d.conflictingEvent || d.eventName}]`).join('\n');
-            showError('Time Slot Conflict!', 'Concurrent Event', `Some members are already in another event at this time (${currentEv.timeSlot}):\n\n${conflictNames}`);
+            const conflictNames = (data.timeSlotConflictDetails || []).map(d => `${d.name} (${d.regno}) — already in "${d.conflictingEvent || d.eventName}"`).join('\n');
+            showError('Time Slot Conflict!', 'Cannot Register for Simultaneous Events', `These members are already registered for another event running at the same time as ${currentEv.name}:\n\n${conflictNames}`);
             resetUI(); return;
           }
-        } catch (e) { console.error('Verify failed:', e); }
+          
+          serverCheckPassed = true;
+          
+        } catch (fetchErr) {
+          hideAdminLoader();
+          if (fetchErr.name === 'AbortError') {
+            showError('Server Timeout', 'Validation Could Not Complete', 'The duplicate check timed out. Please check your internet connection and try again. Registration is blocked until validation succeeds.');
+          } else {
+            showError('Connection Error', 'Validation Failed', 'Could not reach the server to validate your registration. Please check your internet and try again.\n\nRegistration is blocked until server confirms no duplicate.');
+          }
+          console.error('Server duplicate check failed:', fetchErr);
+          resetUI(); return; // ← BLOCK registration — never silently proceed
+        }
+        
         hideAdminLoader();
+        
+        // Safety net — should never happen, but guard against unexpected flow
+        if (!serverCheckPassed) {
+          showError('Validation Error', 'Check Incomplete', 'Server validation did not complete. Please try again.');
+          resetUI(); return;
+        }
       }
 
       const n = parseInt(localStorage.getItem('u26n') || '0') + 1;
@@ -12207,48 +12256,71 @@
     }
 
     /* ── FETCH PASS FROM GOOGLE SHEETS ── */
-    async function fetchMyPass(emailArg) {
-      const email = emailArg || document.getElementById('fetch-email')?.value.trim();
-      const statusEl = emailArg ? document.getElementById('fetch-status-inline') : document.getElementById('fetch-status');
-      if (!email || !email.includes('@')) {
-        statusEl.textContent = 'Please enter a valid email address.';
+    async function fetchMyPass(regnoArg) {
+      const regno = (regnoArg || document.getElementById('fetch-regno')?.value || '').replace(/[^0-9]/g, '').trim();
+      const statusEl = document.getElementById('fetch-status');
+
+      if (!statusEl) return;
+
+      if (!regno || regno.length < 7) {
+        statusEl.textContent = 'Please enter a valid Register Number (minimum 7 digits).';
         statusEl.className = 'fetch-status error';
         return;
       }
       if (!SHEETS_URL || SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-        statusEl.textContent = '⚠ Google Sheets not configured. Ask admin to set up.';
+        statusEl.textContent = '⚠ System not configured. Contact admin.';
         statusEl.className = 'fetch-status error';
         return;
       }
+
       statusEl.textContent = 'Looking up your registration...';
       statusEl.className = 'fetch-status loading';
+
       try {
-        const url = `${SHEETS_URL}?action=lookup&email=${encodeURIComponent(email)}&uid=${ADMIN_ID}&pwd=${ADMIN_PASS}`;
-        const resp = await fetch(url);
-        const data = await resp.json();
-        if (!data.found || !data.registrations || data.registrations.length === 0) {
-          statusEl.textContent = 'No registration found for this email. Try again after a few seconds.';
+        // fetchRegno path: look up all registrations where RegNo matches in the Registrations sheet
+        const url = `${SHEETS_URL}?action=lookup&fetchRegno=${encodeURIComponent(regno)}`;
+        const controller = new AbortController();
+        const tid = setTimeout(() => controller.abort(), 12000);
+        const resp = await fetch(url, { signal: controller.signal });
+        clearTimeout(tid);
+
+        if (!resp.ok) {
+          statusEl.textContent = `Server error (${resp.status}). Try again.`;
           statusEl.className = 'fetch-status error';
           return;
         }
-        // Save to localStorage so passes persist
+
+        const data = await resp.json();
+
+        if (!data.found || !data.registrations || data.registrations.length === 0) {
+          statusEl.textContent = '❌ No registration found for this Register Number. Double-check and try again.';
+          statusEl.className = 'fetch-status error';
+          return;
+        }
+
+        // Merge into localStorage — avoid duplicate regIds
         const saved = JSON.parse(localStorage.getItem('u26r') || '[]');
+        let added = 0;
         data.registrations.forEach(r => {
-          // Avoid duplicates
           if (!saved.some(s => s.regId === r.regId)) {
             saved.push(r);
+            added++;
           }
         });
         localStorage.setItem('u26r', JSON.stringify(saved));
         document.getElementById('pass-nav-btn').style.display = 'inline-flex';
-        statusEl.textContent = '✓ Found ' + data.registrations.length + ' registration(s)!';
+
+        statusEl.textContent = `✓ Found ${data.registrations.length} pass(es)! Opening...`;
         statusEl.className = 'fetch-status success';
-        // Re-render passes after short delay
-        setTimeout(() => {
-          openPass();
-        }, 800);
+
+        setTimeout(() => { openPass(); }, 700);
+
       } catch (err) {
-        statusEl.textContent = 'Network error. Check your connection and try again.';
+        if (err.name === 'AbortError') {
+          statusEl.textContent = 'Request timed out. Check your connection and try again.';
+        } else {
+          statusEl.textContent = 'Network error. Check your connection and try again.';
+        }
         statusEl.className = 'fetch-status error';
       }
     }
@@ -12273,18 +12345,8 @@
         backBtn.style.opacity = '1';
       }
     }
-    function closeRegOv(ev) {
-      if (ev && ev.target === document.getElementById('reg-ov')) {
-        resetRegState();
-        document.getElementById('reg-ov').classList.remove('open');
-        showDock();
-      }
-    }
-    function forceCloseReg() {
-      resetRegState();
-      document.getElementById('reg-ov').classList.remove('open');
-      showDock();
-    }
+    // NOTE: closeRegOv and forceCloseReg are defined above (lines ~10917 & ~10908)
+    // These duplicate definitions are intentionally removed to avoid shadowing.
 
     /* ════════ ADMIN PANEL ════════ */
     let allAdminRegs = [];
