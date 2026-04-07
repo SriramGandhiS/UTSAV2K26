@@ -625,11 +625,20 @@ function doPost(e) {
       
       var teamMembers = [];
       try {
-        // PRIORITIZE TeamMembers column for the actual teammate list
-        var rawTM = record.TeamMembers || record.SystemData;
-        if (rawTM && rawTM !== "Solo" && rawTM !== "") {
-           var parsed = typeof rawTM === "string" ? JSON.parse(rawTM) : rawTM;
-           if (Array.isArray(parsed)) teamMembers = parsed;
+        // SystemData has the real JSON array. TeamMembers is just visual text.
+        var rawSD = record["SystemData"];
+        var rawTM = record["TeamMembers"];
+        var rawToUse = "";
+        // Use SystemData if it has JSON array
+        if (rawSD && String(rawSD).trim().charAt(0) === "[") {
+          rawToUse = String(rawSD).trim();
+        } else if (rawTM && String(rawTM).trim().charAt(0) === "[") {
+          // Only use TeamMembers if it looks like JSON
+          rawToUse = String(rawTM).trim();
+        }
+        if (rawToUse) {
+          var parsed = JSON.parse(rawToUse);
+          if (Array.isArray(parsed)) teamMembers = parsed;
         }
       } catch (e) { teamMembers = []; }
       
@@ -688,8 +697,7 @@ function doPost(e) {
         }
 
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
-        if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
-        if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
+        enforceHeaders(scansSh); // ALWAYS enforce correct 17 headers
 
         // Safety Fallback: Check sheet if cache is empty but sheet isn't
         if (scansSh.getLastRow() > 1) {
@@ -777,8 +785,7 @@ function doPost(e) {
         }
 
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
-        if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
-        if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
+        enforceHeaders(scansSh); // ALWAYS enforce correct 17 headers
 
         var results = [];
         var ts = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
