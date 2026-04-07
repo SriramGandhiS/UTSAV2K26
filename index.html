@@ -10077,17 +10077,6 @@
 
     <div style="padding: 24px; max-width: 500px; margin: 0 auto;">
       <form id="committee-form" onsubmit="submitCommitteeForm(event)" style="display:flex; flex-direction:column; gap: 16px;">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(212,175,55,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(212,175,55,0.1);">
-          <div class="form-group">
-            <label style="color:var(--gold); font-size: 11px; margin-bottom: 6px; display:block; font-weight: bold; letter-spacing: 1px;">🔐 ACCESS ID</label>
-            <input type="text" id="comm-auth-id" placeholder="Enter ID" required style="width:100%; background:#000; border:1px solid #444; color:#fff; padding:10px; border-radius:4px; font-size: 13px;">
-          </div>
-          <div class="form-group">
-            <label style="color:var(--gold); font-size: 11px; margin-bottom: 6px; display:block; font-weight: bold; letter-spacing: 1px;">🔑 SECRET KEY</label>
-            <input type="password" id="comm-auth-pwd" placeholder="Enter Pass" required style="width:100%; background:#000; border:1px solid #444; color:#fff; padding:10px; border-radius:4px; font-size: 13px;">
-          </div>
-        </div>
-
         <div class="form-group">
           <label style="color:var(--orange); font-size: 12px; margin-bottom: 8px; display:block;">MEMBER NAME</label>
           <input type="text" id="comm-name" placeholder="Enter Full Name" required style="width:100%; background:#1a1a1a; border:1px solid #333; color:#fff; padding:12px; border-radius:4px;">
@@ -13583,6 +13572,9 @@ function doPost(e) {
       if (loginType === 'scanner') {
         title.innerHTML = 'Scanner <span style="color:var(--orange)">Login</span>';
         sub.textContent = 'Enter scanner credentials (utsavqr)';
+      } else if (loginType === 'committee') {
+        title.innerHTML = 'Committee <span style="color:var(--gold)">Login</span>';
+        sub.textContent = 'Enter Core Team credentials to Manage';
       } else {
         title.innerHTML = 'Admin <span style="color:var(--orange)">Login</span>';
         sub.textContent = 'Enter admin credentials to access the panel';
@@ -13619,6 +13611,15 @@ function doPost(e) {
           localStorage.setItem('utsav_auth', 'scanner');
           closeAdminLogin();
           await openScanner();
+          hideAdminLoader();
+        } else {
+          showLoginError();
+        }
+      } else if (loginType === 'committee') {
+        if (uid === 'core' && pwd === '93611') {
+          showAdminLoader('Opening Committee Manager...');
+          closeAdminLogin();
+          openCommitteePortalReal(); // Open the form
           hideAdminLoader();
         } else {
           showLoginError();
@@ -13660,23 +13661,15 @@ function doPost(e) {
 
     function portalToAdmin() { closePortal(); openAdminLogin('admin'); }
     function portalToScanner() { closePortal(); openAdminLogin('scanner'); }
-    function openCommitteePortal() { closePortal(); document.getElementById('committee-ov').style.display = 'flex'; }
+    function openCommitteePortal() { closePortal(); openAdminLogin('committee'); }
+    function openCommitteePortalReal() { document.getElementById('committee-ov').style.display = 'flex'; }
     function closeCommitteePortal() { document.getElementById('committee-ov').style.display = 'none'; openPortal(); }
 
     async function submitCommitteeForm(e) {
       e.preventDefault();
       const status = document.getElementById('comm-status');
-      const aid = document.getElementById('comm-auth-id').value.trim().toLowerCase();
-      const apass = document.getElementById('comm-auth-pwd').value.trim();
-
-      if (aid !== 'core' || apass !== '93611') {
-        status.innerText = '❌ Access Denied: Invalid Credentials';
-        status.style.background = 'rgba(255,0,0,0.1)';
-        status.style.color = '#ff0000';
-        status.style.display = 'block';
-        return;
-      }
-
+      // Using global params or fixed sriram/93611 for backend auth
+      // as they are verified at the login step already.
       const btn = document.getElementById('comm-submit-btn');
       const data = {
         name: document.getElementById('comm-name').value,
@@ -13692,7 +13685,7 @@ function doPost(e) {
       try {
         const resp = await fetch(SHEETS_URL, {
           method: 'POST',
-          body: JSON.stringify({ action: 'addCommittee', data, uid: ADMIN_ID, pwd: ADMIN_PASS })
+          body: JSON.stringify({ action: 'addCommittee', data, uid: 'sriram', pwd: '93611' })
         });
         const res = await resp.json();
         if (res.success) {
