@@ -13,7 +13,7 @@
 // The exact column structure you need, with Gender at the very end. 
 // The script will automatically fix your Sheet's header row to match this!
 var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "Email", "Event", "TeamName", "TeamMembers", "Timestamp", "Gender", "TimeSlot"];
-var SCAN_HEADERS = ["RegID", "Name", "RegNo", "Event", "TeamName", "Timestamp", "ScannerID"];
+var SCAN_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Event", "TeamName", "Member1", "Member1RegNo", "Member2", "Member2RegNo", "Member3", "Member3RegNo", "Member4", "Member4RegNo", "Timestamp", "ScannerID"];
 
 function enforceHeaders(sh) {
   var headers = sh.getName() === "Scans" ? SCAN_HEADERS : OFFICIAL_HEADERS;
@@ -22,6 +22,29 @@ function enforceHeaders(sh) {
   if (lc > headers.length) {
     sh.getRange(1, headers.length + 1, sh.getMaxRows(), lc - headers.length).clearContent();
   }
+}
+
+function findRegistrationRecord(ss, regId) {
+  var sheets = ["Registrations", "Dance_Registrations"];
+  for (var s = 0; s < sheets.length; s++) {
+    var sh = ss.getSheetByName(sheets[s]);
+    if (!sh) continue;
+    var data = sh.getDataRange().getValues();
+    if (data.length < 2) continue;
+    var headers = data[0];
+    var idCol = headers.indexOf("RegID");
+    if (idCol === -1) continue;
+    for (var i = 1; i < data.length; i++) {
+      if (String(data[i][idCol]) === regId) {
+        var record = {};
+        for (var j = 0; j < headers.length; j++) {
+          record[headers[j]] = data[i][j];
+        }
+        return record;
+      }
+    }
+  }
+  return null;
 }
 
 // ── Auth Helper for GET actions ──
@@ -408,6 +431,64 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // ── Optimized Get Registration by ID (for RegID-only QR model) ──
+    if (d.action === "getRegById") {
+      var regId = (d.regId || "").trim();
+      if (!regId) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Missing RegID" })).setMimeType(ContentService.MimeType.JSON);
+      
+      var record = findRegistrationRecord(ss, regId);
+      if (!record) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Registration Not Found" })).setMimeType(ContentService.MimeType.JSON);
+
+      // Check "Already Scanned" status and Individual Member statuses
+      var isScanned = false;
+      var enteredIndices = [];
+      var scansSh = ss.getSheetByName("Scans");
+      
+      var teamMembers = [];
+      try {
+        var rawTM = record.SystemData || record.TeamMembers;
+        if (rawTM && rawTM !== "Solo" && rawTM !== "") {
+           teamMembers = typeof rawTM === "string" ? JSON.parse(rawTM) : rawTM;
+        }
+      } catch (e) { teamMembers = []; }
+      if (!Array.isArray(teamMembers)) teamMembers = [];
+      var totalPossible = 1 + teamMembers.length;
+
+      if (scansSh && scansSh.getLastRow() > 1) {
+        var scanIds = scansSh.getRange(2, 1, Math.min(scansSh.getLastRow() - 1, 5000), 1).getValues();
+        for (var i = 0; i < scanIds.length; i++) {
+          var sid = String(scanIds[i][0]);
+          if (sid === regId) { 
+            isScanned = true; 
+            for (var k = 0; k < totalPossible; k++) enteredIndices.push(k);
+            break; 
+          }
+          if (sid.indexOf(regId + "_M") === 0) {
+            var mIdx = parseInt(sid.substring((regId + "_M").length));
+            if (!isNaN(mIdx) && enteredIndices.indexOf(mIdx) === -1) enteredIndices.push(mIdx);
+          }
+        }
+      }
+      
+      if (enteredIndices.length >= totalPossible) isScanned = true;
+
+      return ContentService.createTextOutput(JSON.stringify({
+        success: true,
+        isAlreadyScanned: isScanned,
+        enteredIndices: enteredIndices,
+        participant: {
+          regId: String(record.RegID || ""),
+          name: String(record.Name || ""),
+          regno: String(record.RegNo || ""),
+          year: String(record.Year || ""),
+          section: String(record.Section || ""),
+          eventName: String(record.Event || ""),
+          teamName: String(record.TeamName || "Solo"),
+          teamMembers: teamMembers
+        }
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // Optimized Scan Handle (Fast execution, localized lock, duplicate prevention)
     if (d.action === "handleScan") {
       if ((d.uid !== "sriram" && d.uid !== "utsavqr") || d.pwd !== "93611") {
@@ -426,7 +507,7 @@ function doPost(e) {
         }
 
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
-        if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
+        if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
 
         // Safety Fallback: Check sheet if cache is empty but sheet isn't
         if (scansSh.getLastRow() > 1) {
@@ -441,7 +522,45 @@ function doPost(e) {
 
         var scannerId = r.scannerId || "unknown";
         var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-        scansSh.appendRow([regId, String(r.name || ""), String(r.regno || ""), String(r.eventName || ""), String(r.teamName || "Solo"), finalTs, String(scannerId)]);
+
+        // --- ENHANCED OD LOGGING ---
+        var record = findRegistrationRecord(ss, regId);
+        var resName = r.name || (record ? record.Name : "");
+        var resRegNo = r.regno || (record ? record.RegNo : "");
+        var resEvent = r.eventName || (record ? record.Event : "");
+        var resTeam = r.teamName || (record ? record.TeamName : "Solo");
+        var resYear = record ? record.Year : "";
+        var resSection = record ? record.Section : "";
+
+        var m1 = "", m1r = "", m2 = "", m2r = "", m3 = "", m3r = "", m4 = "", m4r = "";
+        
+        if (record) {
+          var members = [];
+          if (String(resTeam).toLowerCase() === "solo" || !record.TeamMembers || record.TeamMembers === "Solo") {
+            members = [{ name: String(record.Name), regno: String(record.RegNo) }];
+          } else {
+            try {
+              members = typeof record.TeamMembers === "string" ? JSON.parse(record.TeamMembers) : record.TeamMembers;
+            } catch (e) {
+              members = [{ name: String(record.Name), regno: String(record.RegNo) }];
+            }
+          }
+          if (!Array.isArray(members)) members = [members];
+
+          if (members[0]) { m1 = members[0].name; m1r = members[0].regno; }
+          if (members[1]) { m2 = members[1].name; m2r = members[1].regno; }
+          if (members[2]) { m3 = members[2].name; m3r = members[2].regno; }
+          if (members[3]) { m4 = members[3].name; m4r = members[3].regno; }
+        } else {
+          m1 = resName; m1r = resRegNo;
+        }
+
+        var scanRow = [
+          regId, String(resName), String(resRegNo), String(resYear), String(resSection), String(resEvent), String(resTeam),
+          String(m1 || ""), String(m1r || ""), String(m2 || ""), String(m2r || ""), String(m3 || ""), String(m3r || ""), String(m4 || ""), String(m4r || ""),
+          finalTs, String(scannerId)
+        ];
+        scansSh.appendRow(scanRow);
 
         // Mark as scanned in Cache for 6 hours
         cache.put("scan_" + regId, "1", 21600);
@@ -475,21 +594,36 @@ function doPost(e) {
         }
 
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
-        if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
+        if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
 
         var results = [];
         var ts = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
 
         for (var i = 0; i < members.length; i++) {
           var m = members[i];
-          var scanId = baseRegId + "_M" + m.index;
+          var mIndex = parseInt(m.index);
+          var scanId = baseRegId + "_M" + mIndex;
 
           if (cache.get("scan_" + scanId)) {
-            results.push({ index: m.index, status: "already_entered" });
+            results.push({ index: mIndex, status: "already_entered" });
           } else {
-            scansSh.appendRow([scanId, String(m.name || ""), String(m.regno || ""), String(r.eventName || ""), String(r.teamName || "Solo"), ts, String(scannerId)]);
+            // Construct 17-column row with member in correct slot
+            var rowData = [
+              scanId, String(m.name || ""), String(m.regno || ""), "", "", String(r.eventName || ""), String(r.teamName || "Solo"),
+              "", "", "", "", "", "", "", "", // Member 1-4 slots (8-15)
+              ts, String(scannerId)
+            ];
+            
+            // Map index to correct columns: 0->8,9; 1->10,11; 2->12,13; 3->14,15
+            var colStart = 7 + (mIndex * 2);
+            if (colStart >= 7 && colStart <= 14) {
+              rowData[colStart] = String(m.name || "");
+              rowData[colStart + 1] = String(m.regno || "");
+            }
+
+            scansSh.appendRow(rowData);
             cache.put("scan_" + scanId, "1", 21600);
-            results.push({ index: m.index, status: "marked" });
+            results.push({ index: mIndex, status: "marked" });
           }
         }
 
