@@ -95,6 +95,11 @@
       --od: rgba(212, 175, 55, .12);
     }
 
+    @keyframes flashing-tag {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(0.98); background: #ff0000; }
+    }
+
     body {
       background: var(--black);
       background-image: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
@@ -10442,11 +10447,12 @@
       },
       {
         id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding', category: 'Technical', type: 'Solo', minTeam: 1, maxTeam: 1, tag: 'Coding', poster: 'assets/posters/unoreverse.jpeg',
+        caution: '1st & 2nd YEARS ONLY',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ur" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-ur)" fill="url(#g-ur)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-ur)"/><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3" stroke="#e74c3c"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
         desc: "Dive into a coding experience where every line matters and every second counts. UNO Reverse Coding Arena pushes teams to think differently by breaking down disordered code and rebuilding it into working solutions. It's a test of clarity, teamwork, and fast decision-making under pressure. Decode the chaos, master the logic, and lead your team to victory.",
         date: 'April 16', time: '09:00 AM to 12:00 PM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
-        rules: ['Team size 1', 'Round 1: Code Flip. Teams are given problems with scrambled code; they must rearrange, understand, and submit them on HackerRank, with the top 10 teams qualifying.', 'Round 2: Code Endgame. A standard HackerRank contest where winners are determined based on the number of problems solved and time efficiency.'],
+        rules: ['Open to 1st and 2nd years ONLY. 3rd years should not register.', 'Team size 1', 'Round 1: Code Flip. Teams are given problems with scrambled code; they must rearrange, understand, and submit them on HackerRank, with the top 10 teams qualifying.', 'Round 2: Code Endgame. A standard HackerRank contest where winners are determined based on the number of problems solved and time efficiency.'],
         ec: 'Arikara Sudhan M', ep: '6374156308', sc: 'Dr. Senthil P.', sp: '+91 91230 45678',
         jcs: ['Sankari', 'Srinidhi', 'Sudharsan', 'Vijay Kasthuri']
       },
@@ -10462,11 +10468,13 @@
       },
       {
         id: 'zcz', name: 'ZERO CODE ZONE', label: 'Non Coding Tech', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Logic', timeSlot: 'C', isSimultaneous: true, poster: 'assets/posters/zerocodezone.jpeg',
+        caution: '1st YEARS ONLY',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-zcz" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-zcz)" fill="url(#g-zcz)" fill-opacity="0.15"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
         desc: 'No coding, just pure brainpower. Face tricky puzzles, hidden twists, and fast-paced challenges. Test your logic, teamwork, and quick thinking. Stay sharp not everything is as it seems.',
         date: 'April 18', time: '11:00 AM to 12:30 PM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.2,000', p2: 'Rs.1,500', p3: 'Rs.1,000',
         rules: [
+          'Open to 1st years ONLY. 2nd and 3rd years should not register.',
           'Team size: Strictly 2 members',
           'Round 1 – Mind Trap: Looks easy… but hidden twists await. See beyond the obvious to survive.',
           'Round 2 – The Smart Hunt: Solve puzzles while playing X-O at the same time. Two members. Two games. Coordinate as a team — think fast, play smart. Crack this stage, and the Treasure Hunt begins.',
@@ -10788,6 +10796,7 @@
         <!-- Cinematic Name Overlay -->
         <div style="position:absolute; bottom:12px; left:16px; right:16px; font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:950; color:#fff; text-transform:uppercase; letter-spacing:1px; line-height:1.1; text-shadow:0 2px 10px rgba(0,0,0,0.8);">
           ${e.name}
+          ${e.caution ? `<div style="display:inline-block; font-size:9px; background:#e74c3c; color:#fff; padding:2px 6px; border-radius:4px; margin-left:8px; vertical-align:middle; animation: flashing-tag 1s infinite; letter-spacing:0.5px;">${e.caution}</div>` : ''}
         </div>
       </div>
 
@@ -11119,7 +11128,10 @@
             <div style="width:100%; max-width:600px; position:relative; z-index:5; padding:10px; display:flex; flex-direction:column; align-items:center;">
             <div style="text-align:center; margin-bottom:25px;">
                <div style="width:70px;height:70px;border-radius:18px;background:rgba(10,10,10,0.9);border:2px solid rgba(212,175,55,0.5);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 12px;box-shadow:0 8px 25px rgba(0,0,0,0.5); color:var(--gold);">${icon}</div>
-               <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px, 6vw, 36px);font-weight:950;color:#fff;text-transform:uppercase;letter-spacing:1px;line-height:1;margin:0 0 5px 0;">${e.name}</h1>
+               <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px, 6vw, 36px);font-weight:950;color:#fff;text-transform:uppercase;letter-spacing:1px;line-height:1.2;margin:0 0 5px 0;">
+                 ${e.name}
+                 ${e.caution ? `<div style="display:block; width:fit-content; margin:8px auto 0; font-size:12px; background:#ff3333; color:#fff; padding:4px 12px; border-radius:30px; animation: flashing-tag 0.8s infinite; box-shadow:0 0 15px rgba(255,51,51,0.5); font-weight:900;">⚠ ${e.caution}</div>` : ''}
+               </h1>
                <div style="font-family:'Outfit',sans-serif;font-size:13px;color:var(--gold);font-weight:800;letter-spacing:2px;text-transform:uppercase">${e.label}</div>
             </div>
 
@@ -11163,7 +11175,10 @@
         <div style="display:flex;align-items:center;gap:10px;flex:1;overflow:hidden;">
           <div class="esc-icon" style="width:28px;height:28px;font-size:14px;background:rgba(212,175,55,0.1);">${e.icon}</div>
           <div style="overflow:hidden;">
-            <div class="esc-name" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${e.name}</div>
+            <div class="esc-name" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+              ${e.name}
+              ${e.caution ? `<span style="font-size:8px; background:#ff3333; color:#fff; padding:1px 5px; border-radius:3px; margin-left:5px; animation: flashing-tag 1s infinite; vertical-align: middle; font-weight:900;">${e.caution}</span>` : ''}
+            </div>
             <div class="esc-meta" style="font-size:8px;opacity:0.7;">${e.label} · ${getTeamLabel(e.minTeam, e.maxTeam)}</div>
           </div>
         </div>
