@@ -15,12 +15,12 @@ var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "E
 var SCAN_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Event", "TeamName", "Member1", "Member1RegNo", "Member2", "Member2RegNo", "Member3", "Member3RegNo", "Member4", "Member4RegNo", "Timestamp", "ScannerID"];
 
 function enforceHeaders(sh) {
-  var headers = sh.getName() === "Scans" ? SCAN_HEADERS : OFFICIAL_HEADERS;
+  var shName = String(sh.getName()).trim();
+  var headers = shName === "Scans" ? SCAN_HEADERS : OFFICIAL_HEADERS;
   sh.getRange(1, 1, 1, headers.length).setValues([headers]);
-  var lc = sh.getLastColumn();
-  if (lc > headers.length) {
-    sh.getRange(1, headers.length + 1, sh.getMaxRows(), lc - headers.length).clearContent();
-  }
+  sh.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#f3f3f3");
+  // Auto-resize columns for readability
+  try { sh.autoResizeColumns(1, headers.length); } catch(e){}
 }
 
 function findRegistrationRecord(ss, regId) {
@@ -620,7 +620,8 @@ function doPost(e) {
       // Check "Already Scanned" status and Individual Member statuses
       var isScanned = false;
       var enteredIndices = [];
-      var scansSh = ss.getSheetByName("Scans");
+    var scansSh = ss.getSheetByName("Scans");
+    if (scansSh && scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
       
       var teamMembers = [];
       try {
@@ -687,6 +688,7 @@ function doPost(e) {
         }
 
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
+        if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
         if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
 
         // Safety Fallback: Check sheet if cache is empty but sheet isn't
@@ -776,6 +778,7 @@ function doPost(e) {
 
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
         if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
+        if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
 
         var results = [];
         var ts = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
@@ -798,9 +801,8 @@ function doPost(e) {
             // Map index to correct columns: 0->8,9; 1->10,11; 2->12,13; 3->14,15
             var colStart = 7 + (mIndex * 2);
             if (colStart >= 7 && colStart <= 14) {
-              // USER REQUEST: Cleaner scan row. 
-              // Identity is in Column B/C. Slot just marking attendance.
-              rowData[colStart] = "✅ CHECKED-IN"; 
+              // Populate slot with Member Data as requested
+              rowData[colStart] = String(m.name || "");
               rowData[colStart + 1] = String(m.regno || "");
             }
 
