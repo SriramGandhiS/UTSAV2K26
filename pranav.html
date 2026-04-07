@@ -10404,6 +10404,17 @@
                       evObj.rules = evObj.rules.map(r => r.replace('Max 10', 'Max 20'));
                     }
 
+                    if (evObj.id === 'zcz') {
+                      evObj.minTeam = 2;
+                      evObj.maxTeam = 2;
+                      evObj.rules = [
+                        'Team size: Strictly 2 members',
+                        'Round 1 – Mind Trap: Looks easy… but hidden twists await. See beyond the obvious to survive.',
+                        'Round 2 – The Smart Hunt: Solve puzzles while playing X-O at the same time. Two members. Two games. Coordinate as a team — think fast, play smart. Crack this stage, and the Treasure Hunt begins.',
+                        'Final Stage - Treasure Hunt: Clues are scattered. Nothing is obvious. Follow the trail, decode the hints, uncover the treasure… and win.'
+                      ];
+                    }
+
                     return evObj;
                   });
 
