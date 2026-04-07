@@ -816,7 +816,7 @@ function doPost(e) {
           } else {
             // Construct 17-column row with member in correct slot
             var rowData = [
-              scanId, String(m.name || ""), String(m.regno || ""), "", "", String(r.eventName || ""), String(r.teamName || "Solo"),
+              scanId, String(m.name || ""), String(m.regno || ""), String(m.year || ""), String(m.section || ""), String(r.eventName || ""), String(r.teamName || "Solo"),
               "", "", "", "", "", "", "", "", // Member 1-4 slots (8-15)
               ts, String(scannerId)
             ];

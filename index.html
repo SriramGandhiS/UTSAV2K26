@@ -14085,11 +14085,20 @@ function doPost(e) {
       btn.style.color = '#fff';
 
       const allMembersData = [
-        { name: currentScanData.name, regno: currentScanData.regno },
-        ...getParsedMembers(currentScanData).map(m => ({ name: m.name, regno: m.regno }))
+        { name: currentScanData.name, regno: currentScanData.regno, year: currentScanData.year || '', section: currentScanData.section || '' },
+        ...getParsedMembers(currentScanData).map(m => ({ 
+          name: m.name || m.n || '', 
+          regno: m.regno || m.r || '', 
+          year: m.year || m.y || '', 
+          section: m.section || m.s || ''
+        }))
       ];
       const membersToMark = [...selectedMembers].map(i => ({
-        index: i, name: allMembersData[i]?.name || '', regno: allMembersData[i]?.regno || ''
+        index: i, 
+        name: allMembersData[i]?.name || '', 
+        regno: allMembersData[i]?.regno || '',
+        year: allMembersData[i]?.year || '',
+        section: allMembersData[i]?.section || ''
       }));
 
       try {
