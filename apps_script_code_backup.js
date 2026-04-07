@@ -446,12 +446,14 @@ function doPost(e) {
       
       var teamMembers = [];
       try {
-        var rawTM = record.SystemData || record.TeamMembers;
+        // PRIORITIZE TeamMembers column for the actual teammate list
+        var rawTM = record.TeamMembers || record.SystemData;
         if (rawTM && rawTM !== "Solo" && rawTM !== "") {
-           teamMembers = typeof rawTM === "string" ? JSON.parse(rawTM) : rawTM;
+           var parsed = typeof rawTM === "string" ? JSON.parse(rawTM) : rawTM;
+           if (Array.isArray(parsed)) teamMembers = parsed;
         }
       } catch (e) { teamMembers = []; }
-      if (!Array.isArray(teamMembers)) teamMembers = [];
+      
       var totalPossible = 1 + teamMembers.length;
 
       if (scansSh && scansSh.getLastRow() > 1) {
@@ -617,7 +619,9 @@ function doPost(e) {
             // Map index to correct columns: 0->8,9; 1->10,11; 2->12,13; 3->14,15
             var colStart = 7 + (mIndex * 2);
             if (colStart >= 7 && colStart <= 14) {
-              rowData[colStart] = String(m.name || "");
+              // USER REQUEST: Cleaner scan row. 
+              // Identity is in Column B/C. Slot just marking attendance.
+              rowData[colStart] = "✅ CHECKED-IN"; 
               rowData[colStart + 1] = String(m.regno || "");
             }
 

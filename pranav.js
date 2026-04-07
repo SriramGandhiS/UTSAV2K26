@@ -12,10 +12,13 @@
 
 // The exact column structure you need, with Gender at the end and SystemData hidden.
 var OFFICIAL_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Phone", "Email", "Event", "TeamName", "TeamMembers", "Timestamp", "Gender", "SystemData"];
-var SCAN_HEADERS = ["RegID", "Name", "RegNo", "Year", "Section", "Event", "TeamName", "Member1", "Member1RegNo", "Member2", "Member2RegNo", "Member3", "Member3RegNo", "Member4", "Member4RegNo", "Timestamp", "ScannerID"];
+var SCAN_HEADERS = ["RegID", "Name", "RegNo", "Event", "TeamName", "Timestamp", "ScannerID"];
+var EVENT_HEADERS = ["EventID", "EventName", "Label", "Category", "Type", "MinTeam", "MaxTeam", "Tag", "TimeSlot", "Venue", "EventDate", "TimeRange", "Description", "Prize1", "Prize2", "Prize3", "Rules", "EventCoordinator", "ECPhone", "StaffCoordinator", "SCPhone", "JuniorCoordinators", "PosterURL", "IconSVG", "AccentColor", "Gradient", "IsSimultaneous", "TargetSheet", "AllowMultiple"];
+var ACCESS_HEADERS = ["Key", "Value", "Label"];
 
 function enforceHeaders(sh) {
   var headers = sh.getName() === "Scans" ? SCAN_HEADERS : OFFICIAL_HEADERS;
+  if (sh.getName().toLowerCase().indexOf("events") !== -1) headers = EVENT_HEADERS;
   sh.getRange(1, 1, 1, headers.length).setValues([headers]);
   var lc = sh.getLastColumn();
   if (lc > headers.length) {
@@ -23,27 +26,14 @@ function enforceHeaders(sh) {
   }
 }
 
-function findRegistrationRecord(ss, regId) {
-  var sheets = ["Registrations", "Dance_Registrations"];
-  for (var s = 0; s < sheets.length; s++) {
-    var sh = ss.getSheetByName(sheets[s]);
-    if (!sh) continue;
-    var data = sh.getDataRange().getValues();
-    if (data.length < 2) continue;
-    var headers = data[0];
-    var idCol = headers.indexOf("RegID");
-    if (idCol === -1) continue;
-    for (var i = 1; i < data.length; i++) {
-      if (String(data[i][idCol]) === regId) {
-        var record = {};
-        for (var j = 0; j < headers.length; j++) {
-          record[headers[j]] = data[i][j];
-        }
-        return record;
-      }
-    }
-  }
-  return null;
+function getColIndices(sh, goalHeaders) {
+  var currentHeaders = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(function(h) { return String(h).trim(); });
+  var map = {};
+  goalHeaders.forEach(function(h) {
+    var idx = currentHeaders.indexOf(h);
+    map[h] = idx; // -1 if not found
+  });
+  return map;
 }
 
 // ── Auth Helper for GET actions ──
@@ -57,6 +47,12 @@ function checkAuth(e) {
 function doGet(e) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var targetSheet = (e.parameter.targetSheet || "Registrations").trim();
+  // 🔥 Optimization: Auto-detect sheet based on event name for lookup
+  var eventNameSearch = (e.parameter.eventName || "").toLowerCase();
+  if (eventNameSearch.indexOf("dance") !== -1 || eventNameSearch.indexOf("cultural") !== -1) {
+    targetSheet = "Dance_Registrations";
+  }
+  
   var sh = ss.getSheetByName(targetSheet);
   if (!sh) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [], error: "Sheet not found: " + targetSheet })).setMimeType(ContentService.MimeType.JSON);
 
@@ -84,62 +80,61 @@ function doGet(e) {
     return ContentService.createTextOutput(JSON.stringify({ emergency: emergency })).setMimeType(ContentService.MimeType.JSON);
   }
 
+  // ── Get Public Events List ──
+  if (action === "getEvents") {
+    var evSh = ss.getSheetByName("Events") || ss.getSheetByName("events");
+    if (!evSh) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Events sheet not found" })).setMimeType(ContentService.MimeType.JSON);
+    var data = evSh.getDataRange().getValues();
+    if (data.length <= 1) return ContentService.createTextOutput(JSON.stringify({ success: true, events: [] })).setMimeType(ContentService.MimeType.JSON);
+    
+    var sheetHeaders = data[0].map(function(h) { return String(h).trim(); });
+    var events = [];
+    for (var i = 1; i < data.length; i++) {
+        var row = data[i];
+        var ev = {};
+        sheetHeaders.forEach(function(h, idx) {
+            ev[h] = row[idx];
+        });
+        events.push(ev);
+    }
+    return ContentService.createTextOutput(JSON.stringify({ success: true, events: events })).setMimeType(ContentService.MimeType.JSON);
+  }
+
+
   // ── Get Access Feature Flags & Committee Data (public) ──
   if (action === "getAccess") {
-    var accessMap = { show_team_btn: true, registrations_open: true };
+    var accessMap = { show_team_btn: true, registrations_open: true, committee_visible: true };
     var accessSh = ss.getSheetByName("Access");
     
-    // Auto-create Access tab if missing
-    if (!accessSh) {
-      accessSh = ss.insertSheet("Access");
-      accessSh.getRange(1, 1, 1, 2).setValues([["Flag", "Value"]]);
-      accessSh.getRange(2, 1, 2, 2).setValues([
-        ["show_team_btn", "TRUE"],
-        ["registrations_open", "TRUE"]
-      ]);
-      accessSh.getRange(1, 1, 1, 2).setFontWeight("bold");
-      accessSh.setColumnWidth(1, 200);
-      accessSh.setColumnWidth(2, 120);
-    }
-    
-    var accessData = accessSh.getDataRange().getValues();
-    for (var i = 1; i < accessData.length; i++) {
-      var key = String(accessData[i][0] || "").trim();
-      var val = String(accessData[i][1] || "").trim();
-      if (!key) continue;
-      if (val.toUpperCase() === "TRUE") accessMap[key] = true;
-      else if (val.toUpperCase() === "FALSE") accessMap[key] = false;
-      else accessMap[key] = val;
+    if (accessSh) {
+      var accessData = accessSh.getDataRange().getValues();
+      for (var i = 1; i < accessData.length; i++) {
+        var key = String(accessData[i][0] || "").trim();
+        var val = String(accessData[i][1] || "").trim();
+        if (!key) continue;
+        // Parse booleans
+        if (val.toUpperCase() === "TRUE") accessMap[key] = true;
+        else if (val.toUpperCase() === "FALSE") accessMap[key] = false;
+        else accessMap[key] = val;
+      }
     }
 
-    // Read Committee (Team Members) sheet — auto-create if missing
+    // Read Committee (Team Members) sheet
     var committeeData = [];
     var commSh = ss.getSheetByName("Committee");
-    if (!commSh) {
-      commSh = ss.insertSheet("Committee");
-      var commHeaders = ["Name", "Role", "Department", "Photo", "Phone", "IsHead", "HasGlow"];
-      commSh.getRange(1, 1, 1, commHeaders.length).setValues([commHeaders]);
-      commSh.getRange(1, 1, 1, commHeaders.length).setFontWeight("bold");
-      commSh.setColumnWidth(1, 160);
-      commSh.setColumnWidth(2, 180);
-      commSh.setColumnWidth(3, 160);
-      commSh.setColumnWidth(4, 300);
-      commSh.setColumnWidth(5, 140);
-      commSh.setColumnWidth(6, 80);
-      commSh.setColumnWidth(7, 80);
-    }
-
-    var commRows = commSh.getDataRange().getValues();
-    if (commRows.length > 1) {
-      var commHeaders = commRows[0].map(function(h) { return String(h).trim().toLowerCase(); });
-      for (var c = 1; c < commRows.length; c++) {
-        var cRow = commRows[c];
-        var commObj = {};
-        for (var col = 0; col < commHeaders.length; col++) {
-          commObj[commHeaders[col]] = cRow[col];
-        }
-        if (commObj.name || commObj.role) {
-          committeeData.push(commObj);
+    if (commSh) {
+      var commRows = commSh.getDataRange().getValues();
+      if (commRows.length > 1) {
+        var commHeaders = commRows[0].map(function(h) { return String(h).trim().toLowerCase(); });
+        for (var c = 1; c < commRows.length; c++) {
+          var cRow = commRows[c];
+          var commObj = {};
+          for (var col = 0; col < commHeaders.length; col++) {
+            commObj[commHeaders[col]] = cRow[col];
+          }
+          if (commObj.name || commObj.role) { // Only push valid rows
+            committeeData.push(commObj);
+          }
         }
       }
     }
@@ -148,36 +143,6 @@ function doGet(e) {
       success: true, 
       access: accessMap,
       committee: committeeData
-    })).setMimeType(ContentService.MimeType.JSON);
-  }
-
-  // ── Fetch Events list dynamically (public) ──
-  if (action === "getEvents") {
-    var evSh = ss.getSheetByName("Events");
-    var eventsData = [];
-    
-    if (evSh) {
-      var evRows = evSh.getDataRange().getValues();
-      if (evRows.length > 1) {
-        var evHeaders = evRows[0].map(function(h) { return String(h).trim(); }); // keep case for UI mapped names
-        for (var eRow = 1; eRow < evRows.length; eRow++) {
-          var rowObj = {};
-          var hasName = false;
-          for (var col = 0; col < evHeaders.length; col++) {
-            var cellVal = String(evRows[eRow][col] || "").trim();
-            rowObj[evHeaders[col]] = cellVal;
-            var headerKey = evHeaders[col].replace(/\s/g, '').toLowerCase();
-            if (headerKey === "eventname" && cellVal) hasName = true;
-          }
-          if (hasName) {
-            eventsData.push(rowObj);
-          }
-        }
-      }
-    }
-    return ContentService.createTextOutput(JSON.stringify({
-      success: true,
-      events: eventsData
     })).setMimeType(ContentService.MimeType.JSON);
   }
 
@@ -236,16 +201,22 @@ function doGet(e) {
     var timeSlotConflicts = [];
     var timeSlotConflictDetails = [];
 
-    var data = sh.getDataRange().getValues();
+    // 🔥 Optimization: Only read what we need for the scan
+    var lastRow = sh.getLastRow();
+    if (lastRow <= 1) return ContentService.createTextOutput(JSON.stringify({ found: false, registrations: [] })).setMimeType(ContentService.MimeType.JSON);
+    
+    var data = sh.getRange(1, 1, lastRow, sh.getLastColumn()).getValues();
     var headers = OFFICIAL_HEADERS;
+    var colMap = getColIndices(sh, headers);
+    
     var results = [];
-
+    var EVENT_SLOTS = getEventSlotsMap(ss);
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
-      var rowRegId = String(row[headers.indexOf("RegID")] || ("GF-" + (i + 1)));
-      var rowEmail = String(row[headers.indexOf("Email")] || "").toLowerCase().trim();
-      var rowEventName = String(row[headers.indexOf("Event")] || "").trim();
-      var systemDataIndex = headers.indexOf("SystemData");
+      var rowRegId = String(row[colMap["RegID"]] || ("GF-" + (i + 1)));
+      var rowEmail = String(row[colMap["Email"]] || "").toLowerCase().trim();
+      var rowEventName = String(row[colMap["Event"]] || "").trim();
+      var systemDataIndex = colMap["SystemData"];
       // SystemData column holds JSON team array; TeamMembers is just a visual string
       // Only parse from SystemData — falling back to TeamMembers visual string always fails JSON.parse
       var teamMembersRaw = (systemDataIndex >= 0 && row[systemDataIndex] && String(row[systemDataIndex]).trim() !== "Solo" && String(row[systemDataIndex]).trim() !== "") ? String(row[systemDataIndex]) : "[]";
@@ -254,26 +225,26 @@ function doGet(e) {
 
       if ((email && rowEmail === email) || (lookupId && rowRegId === lookupId)) {
         results.push({
-          regId: String(row[headers.indexOf("RegID")] || ("GF-" + (i + 1))),
-          name: String(row[headers.indexOf("Name")] || ""),
-          regno: String(row[headers.indexOf("RegNo")] || ""),
-          gender: String(row[headers.indexOf("Gender")] || ""),
-          year: String(row[headers.indexOf("Year")] || ""),
-          section: String(row[headers.indexOf("Section")] || ""),
-          phone: String(row[headers.indexOf("Phone")] || ""),
-          email: String(row[headers.indexOf("Email")] || ""),
+          regId: String(row[colMap["RegID"]] || ("GF-" + (i + 1))),
+          name: String(row[colMap["Name"]] || ""),
+          regno: String(row[colMap["RegNo"]] || ""),
+          gender: String(row[colMap["Gender"]] || ""),
+          year: String(row[colMap["Year"]] || ""),
+          section: String(row[colMap["Section"]] || ""),
+          phone: String(row[colMap["Phone"]] || ""),
+          email: String(row[colMap["Email"]] || ""),
           eventId: "",
           eventName: rowEventName,
-          teamName: String(row[headers.indexOf("TeamName")] || ""),
+          teamName: String(row[colMap["TeamName"]] || ""),
           teamMembers: teamMembers,
-          ts: String(row[headers.indexOf("Timestamp")] || ""),
+          ts: String(row[colMap["Timestamp"]] || ""),
           timeSlot: ""
         });
       }
 
       // ── Pass Recovery by RegNo: match leader OR team member ──
       if (hasPassFetch) {
-        var rowLeaderRegNoForFetch = String(row[headers.indexOf("RegNo")] || "").replace(/[^0-9]/g, "").trim();
+        var rowLeaderRegNoForFetch = String(row[colMap["RegNo"]] || "").replace(/[^0-9]/g, "").trim();
         var isLeaderMatch = (rowLeaderRegNoForFetch === fetchRegno);
         var isMemberMatch = false;
         for (var m = 0; m < teamMembers.length; m++) {
@@ -283,16 +254,16 @@ function doGet(e) {
         if ((isLeaderMatch || isMemberMatch) && !results.some(function (r) { return r.regId === rowRegId; })) {
           results.push({
             regId: rowRegId,
-            name: String(row[headers.indexOf("Name")] || ""),
-            regno: String(row[headers.indexOf("RegNo")] || ""),
-            gender: String(row[headers.indexOf("Gender")] || ""),
-            year: String(row[headers.indexOf("Year")] || ""),
-            section: String(row[headers.indexOf("Section")] || ""),
+            name: String(row[colMap["Name"]] || ""),
+            regno: String(row[colMap["RegNo"]] || ""),
+            gender: String(row[colMap["Gender"]] || ""),
+            year: String(row[colMap["Year"]] || ""),
+            section: String(row[colMap["Section"]] || ""),
             eventId: "",
             eventName: rowEventName,
-            teamName: String(row[headers.indexOf("TeamName")] || ""),
+            teamName: String(row[colMap["TeamName"]] || ""),
             teamMembers: teamMembers,
-            ts: String(row[headers.indexOf("Timestamp")] || ""),
+            ts: String(row[colMap["Timestamp"]] || ""),
             timeSlot: ""
           });
         }
@@ -300,8 +271,8 @@ function doGet(e) {
 
       // Look for duplicate register numbers for the SAME EVENT name
       if (checkEventName && rowEventName.toLowerCase() === checkEventName.toLowerCase() && checkRegNos.length > 0) {
-        var rowLeaderRegNo = String(row[headers.indexOf("RegNo")] || "").trim().toLowerCase();
-        var rowLeaderName = String(row[headers.indexOf("Name")] || "");
+        var rowLeaderRegNo = String(row[colMap["RegNo"]] || "").trim().toLowerCase();
+        var rowLeaderName = String(row[colMap["Name"]] || "");
 
         if (checkRegNos.indexOf(rowLeaderRegNo) !== -1) {
           if (duplicates.indexOf(rowLeaderRegNo) === -1) {
@@ -322,16 +293,8 @@ function doGet(e) {
       }
 
       // Check for Cross-Event Time Slot conflicts
-      // If the incoming event has a timeSlot (e.g., 'A'), and the row event shares the same timeSlot, AND it's a DIFFERENT event
       if (checkTimeSlot && checkRegNos.length > 0) {
-        // We need a map of which events are in which time slots to know if rowEventName belongs to checkTimeSlot
-        var EVENT_SLOTS = {
-          "hackverse": "A",
-          "zero code zone": "A",
-          "brand to billion": "B",
-          "clash of minds": "B"
-        };
-        var rowSlot = EVENT_SLOTS[rowEventName.toLowerCase()];
+        var rowSlot = (EVENT_SLOTS || {})[rowEventName.toLowerCase()];
 
         if (rowSlot === checkTimeSlot && rowEventName.toLowerCase() !== checkEventName.toLowerCase()) {
           var rowLeaderRegNo = String(row[headers.indexOf("RegNo")] || "").trim().toLowerCase();
@@ -554,121 +517,6 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({ success: true, emergency: !!d.enabled })).setMimeType(ContentService.MimeType.JSON);
     }
 
-    // ── Toggle Members Section (requires admin auth) ──
-    if (d.action === "setMembersVisibility") {
-      if (d.uid !== "sriram" || d.pwd !== "93611") {
-        return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
-      }
-      var accessSh = ss.getSheetByName("Access");
-      if (!accessSh) {
-         accessSh = ss.insertSheet("Access");
-         accessSh.getRange(1, 1).setValue("members");
-      }
-      var data = accessSh.getDataRange().getValues();
-      var foundRow = -1;
-      for (var i = 0; i < data.length; i++) {
-        if (String(data[i][0]).toLowerCase().trim() === "members") {
-          foundRow = i + 1;
-          break;
-        }
-      }
-      if (foundRow === -1) {
-        foundRow = accessSh.getLastRow() + 1;
-        accessSh.getRange(foundRow, 1).setValue("members");
-      }
-      var newVal = d.status === "ON" ? "ON" : "OFF";
-      accessSh.getRange(foundRow, 2).setValue(newVal);
-      SpreadsheetApp.flush();
-      return ContentService.createTextOutput(JSON.stringify({ success: true, members: newVal })).setMimeType(ContentService.MimeType.JSON);
-    }
-
-    // ── Add Committee Member (requires admin auth) ──
-    if (d.action === "addCommittee") {
-      if (d.uid !== "sriram" || d.pwd !== "93611") {
-        return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
-      }
-      var commSh = ss.getSheetByName("Committee") || ss.insertSheet("Committee");
-      if (commSh.getLastRow() === 0) {
-        var commHeaders = ["Name", "Role", "Department", "Photo", "Phone", "IsHead", "HasGlow", "Visible"];
-        commSh.getRange(1, 1, 1, commHeaders.length).setValues([commHeaders]);
-        commSh.getRange(1, 1, 1, commHeaders.length).setFontWeight("bold");
-      }
-      var r = d.data;
-      var newRow = [
-        String(r.name || ""),
-        String(r.position || ""),
-        String(r.event || ""),
-        String(r.image || ""),
-        "", // Phone (not requested but standard)
-        r.highlight ? "TRUE" : "FALSE", // IsHead
-        r.highlight ? "TRUE" : "FALSE", // HasGlow
-        r.visible !== undefined ? (r.visible ? "ON" : "OFF") : "ON"
-      ];
-      commSh.appendRow(newRow);
-      SpreadsheetApp.flush();
-      return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
-    }
-
-    // ── Optimized Get Registration by ID (for RegID-only QR model) ──
-    if (d.action === "getRegById") {
-      var regId = (d.regId || "").trim();
-      if (!regId) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Missing RegID" })).setMimeType(ContentService.MimeType.JSON);
-      
-      var record = findRegistrationRecord(ss, regId);
-      if (!record) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Registration Not Found" })).setMimeType(ContentService.MimeType.JSON);
-
-      // Check "Already Scanned" status and Individual Member statuses
-      var isScanned = false;
-      var enteredIndices = [];
-      var scansSh = ss.getSheetByName("Scans");
-      
-      var teamMembers = [];
-      try {
-        // PRIORITIZE TeamMembers column for the actual teammate list
-        var rawTM = record.TeamMembers || record.SystemData;
-        if (rawTM && rawTM !== "Solo" && rawTM !== "") {
-           var parsed = typeof rawTM === "string" ? JSON.parse(rawTM) : rawTM;
-           if (Array.isArray(parsed)) teamMembers = parsed;
-        }
-      } catch (e) { teamMembers = []; }
-      
-      var totalPossible = 1 + teamMembers.length;
-
-      if (scansSh && scansSh.getLastRow() > 1) {
-        var scanIds = scansSh.getRange(2, 1, Math.min(scansSh.getLastRow() - 1, 5000), 1).getValues();
-        for (var i = 0; i < scanIds.length; i++) {
-          var sid = String(scanIds[i][0]);
-          if (sid === regId) { 
-            isScanned = true; 
-            for (var k = 0; k < totalPossible; k++) enteredIndices.push(k);
-            break; 
-          }
-          if (sid.indexOf(regId + "_M") === 0) {
-            var mIdx = parseInt(sid.substring((regId + "_M").length));
-            if (!isNaN(mIdx) && enteredIndices.indexOf(mIdx) === -1) enteredIndices.push(mIdx);
-          }
-        }
-      }
-      
-      if (enteredIndices.length >= totalPossible) isScanned = true;
-
-      return ContentService.createTextOutput(JSON.stringify({
-        success: true,
-        isAlreadyScanned: isScanned,
-        enteredIndices: enteredIndices,
-        participant: {
-          regId: String(record.RegID || ""),
-          name: String(record.Name || ""),
-          regno: String(record.RegNo || ""),
-          year: String(record.Year || ""),
-          section: String(record.Section || ""),
-          eventName: String(record.Event || ""),
-          teamName: String(record.TeamName || "Solo"),
-          teamMembers: teamMembers
-        }
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-
     // Optimized Scan Handle (Fast execution, localized lock, duplicate prevention)
     if (d.action === "handleScan") {
       if ((d.uid !== "sriram" && d.uid !== "utsavqr") || d.pwd !== "93611") {
@@ -687,7 +535,7 @@ function doPost(e) {
         }
 
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
-        if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
+        if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
 
         // Safety Fallback: Check sheet if cache is empty but sheet isn't
         if (scansSh.getLastRow() > 1) {
@@ -702,46 +550,7 @@ function doPost(e) {
 
         var scannerId = r.scannerId || "unknown";
         var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
-
-        // --- ENHANCED OD LOGGING ---
-        var record = findRegistrationRecord(ss, regId);
-        var resName = r.name || (record ? record.Name : "");
-        var resRegNo = r.regno || (record ? record.RegNo : "");
-        var resEvent = r.eventName || (record ? record.Event : "");
-        var resTeam = r.teamName || (record ? record.TeamName : "Solo");
-        var resYear = record ? record.Year : "";
-        var resSection = record ? record.Section : "";
-
-        var m1 = "", m1r = "", m2 = "", m2r = "", m3 = "", m3r = "", m4 = "", m4r = "";
-        
-        if (record) {
-          var members = [];
-          if (String(resTeam).toLowerCase() === "solo" || !record.TeamMembers || record.TeamMembers === "Solo") {
-            members = [{ name: String(record.Name), regno: String(record.RegNo) }];
-          } else {
-            try {
-              members = typeof record.TeamMembers === "string" ? JSON.parse(record.TeamMembers) : record.TeamMembers;
-            } catch (e) {
-              members = [{ name: String(record.Name), regno: String(record.RegNo) }];
-            }
-          }
-          if (!Array.isArray(members)) members = [members];
-
-          if (members[0]) { m1 = members[0].name; m1r = members[0].regno; }
-          if (members[1]) { m2 = members[1].name; m2r = members[1].regno; }
-          if (members[2]) { m3 = members[2].name; m3r = members[2].regno; }
-          if (members[3]) { m4 = members[3].name; m4r = members[3].regno; }
-        } else {
-          // Fallback to basic data if record not found
-          m1 = resName; m1r = resRegNo;
-        }
-
-        var scanRow = [
-          regId, String(resName), String(resRegNo), String(resYear), String(resSection), String(resEvent), String(resTeam),
-          String(m1 || ""), String(m1r || ""), String(m2 || ""), String(m2r || ""), String(m3 || ""), String(m3r || ""), String(m4 || ""), String(m4r || ""),
-          finalTs, String(scannerId)
-        ];
-        scansSh.appendRow(scanRow);
+        scansSh.appendRow([regId, String(r.name || ""), String(r.regno || ""), String(r.eventName || ""), String(r.teamName || "Solo"), finalTs, String(scannerId)]);
 
         // Mark as scanned in Cache for 6 hours
         cache.put("scan_" + regId, "1", 21600);
@@ -775,38 +584,21 @@ function doPost(e) {
         }
 
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
-        if (scansSh.getLastColumn() < SCAN_HEADERS.length) enforceHeaders(scansSh);
+        if (scansSh.getLastRow() === 0) enforceHeaders(scansSh);
 
         var results = [];
         var ts = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
 
         for (var i = 0; i < members.length; i++) {
           var m = members[i];
-          var mIndex = parseInt(m.index);
-          var scanId = baseRegId + "_M" + mIndex;
+          var scanId = baseRegId + "_M" + m.index;
 
           if (cache.get("scan_" + scanId)) {
-            results.push({ index: mIndex, status: "already_entered" });
+            results.push({ index: m.index, status: "already_entered" });
           } else {
-            // Construct 17-column row with member in correct slot
-            var rowData = [
-              scanId, String(m.name || ""), String(m.regno || ""), "", "", String(r.eventName || ""), String(r.teamName || "Solo"),
-              "", "", "", "", "", "", "", "", // Member 1-4 slots (8-15)
-              ts, String(scannerId)
-            ];
-            
-            // Map index to correct columns: 0->8,9; 1->10,11; 2->12,13; 3->14,15
-            var colStart = 7 + (mIndex * 2);
-            if (colStart >= 7 && colStart <= 14) {
-              // USER REQUEST: Cleaner scan row. 
-              // Identity is in Column B/C. Slot just marking attendance.
-              rowData[colStart] = "✅ CHECKED-IN"; 
-              rowData[colStart + 1] = String(m.regno || "");
-            }
-
-            scansSh.appendRow(rowData);
+            scansSh.appendRow([scanId, String(m.name || ""), String(m.regno || ""), String(r.eventName || ""), String(r.teamName || "Solo"), ts, String(scannerId)]);
             cache.put("scan_" + scanId, "1", 21600);
-            results.push({ index: mIndex, status: "marked" });
+            results.push({ index: m.index, status: "marked" });
           }
         }
 
@@ -855,7 +647,6 @@ function doPost(e) {
       } else if (d.action === "addReg") {
         var r = d.data;
         var cache = CacheService.getScriptCache();
-        // Rate limit by regno (since email is no longer collected)
         var key = "limit_" + (r.regno || "unknown").replace(/[^a-z0-9]/gi, "");
         var tsStr = cache.get(key) || "[]";
         var tsArr = [];
@@ -872,14 +663,17 @@ function doPost(e) {
         cache.put(key, JSON.stringify(filtered), 65);
 
         var regId = String(r.regId || "");
-
-        // --- 0. Idempotency Check (Strong Protection) ---
-        var data = sh.getDataRange().getValues();
-        var headers = OFFICIAL_HEADERS;
-        var regIdCol = headers.indexOf("RegID");
-        for (var i = 1; i < data.length; i++) {
-          if (regIdCol !== -1 && String(data[i][regIdCol]) === regId) {
-            return ContentService.createTextOutput(JSON.stringify({ success: true, regId: regId, alreadyExisted: true })).setMimeType(ContentService.MimeType.JSON);
+        var lastRow = sh.getLastRow();
+        var colMap = getColIndices(sh, OFFICIAL_HEADERS);
+        
+        // --- 0. Idempotency Check (Instant Duplicate Protection) ---
+        var regIdCol = colMap["RegID"];
+        if (regIdCol !== -1 && lastRow > 1) {
+          var idData = sh.getRange(2, regIdCol + 1, lastRow - 1, 1).getValues();
+          for (var i = 0; i < idData.length; i++) {
+            if (String(idData[i][0]) === regId) {
+              return ContentService.createTextOutput(JSON.stringify({ success: true, regId: regId, alreadyExisted: true })).setMimeType(ContentService.MimeType.JSON);
+            }
           }
         }
 
@@ -888,32 +682,29 @@ function doPost(e) {
           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Bot detected. Request denied." })).setMimeType(ContentService.MimeType.JSON);
         }
 
-        // 2. Strict Empty Field Verification (phone/email no longer required)
+        // 2. Strict Empty Field Verification
         if (!r.name || !r.name.trim() || !r.regno || !r.regno.trim()) {
           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Missing required details: Name and Register Number are mandatory." })).setMimeType(ContentService.MimeType.JSON);
         }
 
-        // 3. Name / Regno format Enforcer
-        var pureName = (r.name || "").replace(/[^A-Za-z\s]/g, "").trim();
+        // 3. Name / Regno format Enforcer - Refined to allow initials like S. Sriram
+        var pureName = (r.name || "").replace(/[^A-Za-z.\s]/g, "").trim();
         var pureRegNo = (r.regno || "").replace(/[^0-9]/g, "");
         if (pureName.length < 2 || pureRegNo.length < 7) {
           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Invalid format for Name or Register Number." })).setMimeType(ContentService.MimeType.JSON);
         }
-        // Force replace with cleaned values
         r.name = pureName;
         r.regno = pureRegNo;
 
         var eventNameLC = String(r.eventName || "").toLowerCase().trim();
-
         var incomingRegNos = [String(r.regno || "").toLowerCase().trim()];
         var tMembers = r.teamMembers || [];
-        // Max Team size hard check
         if (tMembers.length > 15) {
           return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Exceeded maximum team size limits." })).setMimeType(ContentService.MimeType.JSON);
         }
         for (var k = 0; k < tMembers.length; k++) {
           var tmReg = String(tMembers[k].regno || "").replace(/[^0-9]/g, "").toLowerCase().trim();
-          var tmName = String(tMembers[k].name || "").replace(/[^A-Za-z\s]/g, "").trim();
+          var tmName = String(tMembers[k].name || "").replace(/[^A-Za-z.\s]/g, "").trim();
           if (!tmReg || !tmName) {
             return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Incomplete team member details." })).setMimeType(ContentService.MimeType.JSON);
           }
@@ -922,53 +713,10 @@ function doPost(e) {
           if (tmReg) incomingRegNos.push(tmReg);
         }
 
-        var isDuplicate = false;
-        var duplicateMsg = "You are already registered for this event.";
-        var allowMultiple = !!r.allowMultiple;
+        // --- 4. DATA ASSEMBLY ---
+        // Note: Conflict and duplicate checks are handled by the separate 'lookup' action
+        // which the frontend calls before addReg to ensure speed and UX fluidity.
 
-        if (!allowMultiple) {
-          for (var i = 1; i < data.length; i++) {
-            var row = data[i];
-            if (String(row[headers.indexOf("RegID")] || "") === r.regId) {
-              isDuplicate = true; break;
-            }
-
-            var rowEventName = String(row[headers.indexOf("Event")] || "").toLowerCase().trim();
-
-            if (rowEventName === eventNameLC) {
-              // Duplicate check by RegNo (email no longer in use)
-              var rowLeaderRegNo = String(row[headers.indexOf("RegNo")] || "").toLowerCase().trim();
-              if (incomingRegNos.indexOf(rowLeaderRegNo) !== -1) {
-                isDuplicate = true;
-                duplicateMsg = "Duplicate error: Register number " + rowLeaderRegNo + " is already registered for this event.";
-                break;
-              }
-
-              var systemDataIndex = headers.indexOf("SystemData");
-              var teamMembersRaw = String((systemDataIndex >= 0 && row[systemDataIndex]) ? row[systemDataIndex] : (row[headers.indexOf("TeamMembers")] || "[]"));
-              var existTeam = [];
-              try { existTeam = JSON.parse(teamMembersRaw); } catch (ex) { }
-
-              for (var j = 0; j < existTeam.length; j++) {
-                var existTmReg = String(existTeam[j].regno || "").toLowerCase().trim();
-                if (existTmReg && incomingRegNos.indexOf(existTmReg) !== -1) {
-                  isDuplicate = true;
-                  duplicateMsg = "Duplicate error: Register number " + existTmReg + " is already in another team for this event.";
-                  break;
-                }
-              }
-              if (isDuplicate) break;
-            }
-          }
-        }
-
-        if (isDuplicate) {
-          return ContentService.createTextOutput(JSON.stringify({ success: false, error: duplicateMsg })).setMimeType(ContentService.MimeType.JSON);
-        }
-
-        // Forcefully overwrite the frontend's timestamp with the server's exact Indian Standard Time
-        // Prepending an apostrophe (') forces Google Sheets to treat it as plain text instead of trying to autoconvert to an ISO Date
-        // Matured Logic: Explicitly label Solo registrations in the sheet for clarity
         var teamNameValue = r.teamName && r.teamName.trim() !== "" ? r.teamName : "Solo";
         var teamMembersJSON = r.teamMembers && r.teamMembers.length > 0 ? JSON.stringify(r.teamMembers) : "Solo";
         var teamMembersVisual = "Solo";
@@ -977,15 +725,34 @@ function doPost(e) {
           for (var k = 0; k < r.teamMembers.length; k++) {
             vArr.push((k + 1) + ". " + (r.teamMembers[k].name || "Unknown") + " (" + (r.teamMembers[k].regno || "No Reg") + ")");
           }
-          teamMembersVisual = vArr.join(" | "); // Formatted for sheet view
+          teamMembersVisual = vArr.join(" | ");
         }
 
         var finalTs = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
         var genderStr = r.gender || "Not Set";
-        // Columns: RegID, Name, RegNo, Year, Section, Phone, Email, Event, TeamName, TeamMembers (Visual), Timestamp, Gender, SystemData (JSON)
-        var rowToAppend = [r.regId, r.name, r.regno, r.year, r.section, "", "", r.eventName, teamNameValue, teamMembersVisual, finalTs, genderStr, teamMembersJSON];
-        sh.appendRow(rowToAppend);
-        SpreadsheetApp.flush(); // Forces the sheet to save and sync instantly, preventing the "blank screen" effect
+        
+        // Assemble Row using dynamic mapping
+        var finalRow = new Array(OFFICIAL_HEADERS.length).fill("");
+        OFFICIAL_HEADERS.forEach(function(h) {
+          var targetIdx = colMap[h];
+          if (targetIdx === -1) return;
+          var val = "";
+          if (h === "RegID") val = r.regId;
+          else if (h === "Name") val = r.name;
+          else if (h === "RegNo") val = r.regno;
+          else if (h === "Year") val = r.year;
+          else if (h === "Section") val = r.section;
+          else if (h === "Event") val = r.eventName;
+          else if (h === "TeamName") val = teamNameValue;
+          else if (h === "TeamMembers") val = teamMembersVisual;
+          else if (h === "Timestamp") val = finalTs;
+          else if (h === "Gender") val = genderStr;
+          else if (h === "SystemData") val = teamMembersJSON;
+          finalRow[targetIdx] = val;
+        });
+
+        sh.appendRow(finalRow);
+        SpreadsheetApp.flush();
 
         return ContentService.createTextOutput(JSON.stringify({ success: true, regId: r.regId })).setMimeType(ContentService.MimeType.JSON);
 
@@ -1142,11 +909,30 @@ function cleanRegistrationsDatabase() {
   if (cleanRecords.length > 0) {
     sh.getRange(2, 1, cleanRecords.length, GOAL.length).setValues(cleanRecords);
   }
-
   Logger.log("=== CLEANUP REPORT ===");
   Logger.log("Original Rows: " + (data.length - 1));
   Logger.log("Removed Invalid: " + removedInvalid);
   Logger.log("Removed Duplicates: " + removedDupes);
   Logger.log("Final Row Count: " + cleanRecords.length);
   Logger.log("Transformation Complete: Formatted arrays with hidden JSON backup.");
+}
+
+function getEventSlotsMap(ss) {
+  var ss = ss || SpreadsheetApp.getActiveSpreadsheet();
+  var evSh = ss.getSheetByName("Events") || ss.getSheetByName("events");
+  if (!evSh) return {};
+  var data = evSh.getDataRange().getValues();
+  if (data.length <= 1) return {};
+  var headers = data[0].map(function (h) { return String(h).toLowerCase().trim(); });
+  var colName = headers.indexOf("eventname");
+  var colSlot = headers.indexOf("timeslot");
+  if (colName === -1 || colSlot === -1) return {};
+
+  var map = {};
+  for (var i = 1; i < data.length; i++) {
+    var name = String(data[i][colName]).toLowerCase().trim();
+    var slot = String(data[i][colSlot]).trim();
+    if (name && slot) map[name] = slot;
+  }
+  return map;
 }
