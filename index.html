@@ -5574,6 +5574,7 @@
     .wa-list-scroll::-webkit-scrollbar {
       width: 4px;
     }
+
     .wa-list-scroll::-webkit-scrollbar-thumb {
       background: rgba(212, 175, 55, 0.2);
       border-radius: 10px;
@@ -5626,13 +5627,25 @@
     }
 
     @keyframes fadeInWa {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
     @keyframes slideUpWa {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
 
@@ -6072,8 +6085,10 @@
       top: 50%;
       left: 50%;
       /* Swap dimensions to fix sideways vertical video into a 16:9 container */
-      width: 56.25%;      /* 9/16 * 100 */
-      height: 177.777%;   /* 16/9 * 100 */
+      width: 56.25%;
+      /* 9/16 * 100 */
+      height: 177.777%;
+      /* 16/9 * 100 */
       transform: translate(-50%, -50%) rotate(-90deg);
       object-fit: cover;
       display: block;
@@ -6083,7 +6098,8 @@
     }
 
     /* Removed Film Grain and vignette to ensure clear un-smudged video */
-    .vid-grain, .vid-inner::after {
+    .vid-grain,
+    .vid-inner::after {
       display: none;
     }
 
@@ -7310,18 +7326,20 @@
     .pkt-slot-form-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(4, 0, 15, 0.98); /* Deep dark for performance */
+      background: rgba(4, 0, 15, 0.98);
+      /* Deep dark for performance */
       z-index: 20000;
       display: flex;
       align-items: flex-end;
       justify-content: center;
       transition: opacity 0.25s ease;
-      transform: translateZ(0); /* Hardware acceleration */
+      transform: translateZ(0);
+      /* Hardware acceleration */
       will-change: opacity;
       animation: pkt-overlay-in 0.25s ease forwards;
       overscroll-behavior: contain;
       /* Fix: Don't let keyboard resize the backdrop container */
-      height: 100dvh; 
+      height: 100dvh;
     }
 
     .pkt-form-sheet {
@@ -7331,20 +7349,31 @@
       border: 1px solid rgba(180, 80, 255, 0.4);
       border-radius: 24px 24px 0 0;
       padding: 20px 20px env(safe-area-inset-bottom, 30px);
-      transform: translate3d(0,0,1px); /* GPU promotion */
+      transform: translate3d(0, 0, 1px);
+      /* GPU promotion */
       will-change: transform;
       animation: pkt-sheet-in 0.35s cubic-bezier(0.15, 0.85, 0, 1.1);
-      box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
     }
 
     @keyframes pkt-overlay-in {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
     @keyframes pkt-overlay-out {
-      from { opacity: 1; }
-      to { opacity: 0; }
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
     }
 
     @keyframes pkt-sheet-out {
@@ -8272,8 +8301,16 @@
       text-align: left;
       animation: res-pop 0.3s ease;
     }
-    .inline-error.show { display: block; }
-    .fi.error, .fs.error { border-color: rgba(255, 50, 50, 0.5) !important; box-shadow: 0 0 8px rgba(255, 50, 50, 0.2) !important; }
+
+    .inline-error.show {
+      display: block;
+    }
+
+    .fi.error,
+    .fs.error {
+      border-color: rgba(255, 50, 50, 0.5) !important;
+      box-shadow: 0 0 8px rgba(255, 50, 50, 0.2) !important;
+    }
 
     /* Saved Members Picker */
     .saved-members-box {
@@ -8285,6 +8322,7 @@
       max-height: 180px;
       overflow-y: auto;
     }
+
     .saved-member-pill {
       display: flex;
       align-items: center;
@@ -8297,53 +8335,101 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .saved-member-pill:hover { background: rgba(212, 175, 55, 0.08); border-color: rgba(212, 175, 55, 0.3); }
-    .saved-member-info { flex: 1; }
-    .sm-name { font-size: 13px; font-weight: 700; color: #fff; }
-    .sm-meta { font-size: 10px; color: var(--muted2); }
-    .sm-add-icon { color: var(--gold); font-size: 14px; opacity: 0.6; }
-    .saved-member-pill:hover .sm-add-icon { opacity: 1; }
+
+    .saved-member-pill:hover {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .saved-member-info {
+      flex: 1;
+    }
+
+    .sm-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .sm-meta {
+      font-size: 10px;
+      color: var(--muted2);
+    }
+
+    .sm-add-icon {
+      color: var(--gold);
+      font-size: 14px;
+      opacity: 0.6;
+    }
+
+    .saved-member-pill:hover .sm-add-icon {
+      opacity: 1;
+    }
 
     @media (max-width: 460px) {
       .rlt-room {
         min-height: 480px;
       }
+
       .rlt-slip {
         padding: 14px 12px 14px;
         border-radius: 12px;
       }
-      .rlt-row2 { gap: 8px; }
-      .rlt-fi, .rlt-fs { padding: 8px 10px !important; font-size: 12px !important; }
-      .rlt-chip { width: 16px; height: 16px; border-width: 2px; }
-      .rlt-ring-1 { border-width: 18px; }
-      .rlt-ring-2 { border-width: 12px; }
+
+      .rlt-row2 {
+        gap: 8px;
+      }
+
+      .rlt-fi,
+      .rlt-fs {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+      }
+
+      .rlt-chip {
+        width: 16px;
+        height: 16px;
+        border-width: 2px;
+      }
+
+      .rlt-ring-1 {
+        border-width: 18px;
+      }
+
+      .rlt-ring-2 {
+        border-width: 12px;
+      }
     }
 
     /* Smooth Nav/Dock Toggle */
-    .nav, .dock {
+    .nav,
+    .dock {
       transition: opacity 0.3s ease, transform 0.3s ease;
       opacity: 1;
       pointer-events: auto;
     }
+
     .nav-hidden {
       opacity: 0 !important;
       pointer-events: none !important;
       transform: translateY(-10px);
     }
+
     .dock.nav-hidden {
       transform: translateY(10px);
     }
-    
+
     .reg-ov {
       transition: opacity 0.4s ease;
       opacity: 0;
       pointer-events: none;
       display: block !important;
       visibility: hidden;
-      transform: translate3d(0,0,0);
+      transform: translate3d(0, 0, 0);
       backface-visibility: hidden;
       will-change: opacity;
     }
+
     .reg-ov.open {
       opacity: 1 !important;
       pointer-events: auto !important;
@@ -8358,26 +8444,36 @@
       background: radial-gradient(ellipse 95% 90% at 50% 40%, #1e0008 0%, #0d0003 100%);
       pointer-events: none;
     }
+
     .reg-ov[data-theme="poker"] #reg-bg-layer {
       background: radial-gradient(ellipse 95% 90% at 50% 40%, #1a0540 0%, #0d0030 100%);
     }
 
     .step {
-      contain: layout style; /* Repaint isolation */
-      transform: translate3d(0,0,0);
+      contain: layout style;
+      /* Repaint isolation */
+      transform: translate3d(0, 0, 0);
       backface-visibility: hidden;
     }
 
     /* Mobile Performance Shield - Disable blurs during typing to avoid black glitches */
     @media (max-width: 480px) {
-      .rlt-slip, .pkt-player-card, .rlt-fi, .rlt-fs, .pkt-fg input, .pkt-fg select {
+
+      .rlt-slip,
+      .pkt-player-card,
+      .rlt-fi,
+      .rlt-fs,
+      .pkt-fg input,
+      .pkt-fg select {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
         background: rgba(20, 20, 25, 0.95) !important;
       }
+
       .pkt-slot-form-overlay {
         background: #050014 !important;
       }
+
       .pkt-form-sheet {
         max-height: 92vh;
         overflow-y: auto;
@@ -8435,8 +8531,22 @@
       </h1>
       <p class="hero-desc">Place your bets on innovation. The ultimate high-stakes technical floor is here. Compete with
         the best, take home the grand jackpot.</p>
-      <p style="font-size:11px; font-style:italic; margin-top:-10px; margin-bottom:18px; letter-spacing:1px; font-family:'Outfit',sans-serif; font-weight:600; color:#f0c060; text-shadow: 0 0 6px rgba(255,200,80,0.9), 0 0 14px rgba(255,160,40,0.7), 0 0 28px rgba(255,120,0,0.5); animation: neon-credit-pulse 2.8s ease-in-out infinite alternate;">High stakes, no breaks&mdash;made with love by Batch &apos;26 &amp; &apos;27 &#9829;</p>
-      <style>@keyframes neon-credit-pulse { 0%{text-shadow:0 0 4px rgba(255,200,80,0.8),0 0 12px rgba(255,160,40,0.6),0 0 22px rgba(255,120,0,0.4);opacity:0.75;} 100%{text-shadow:0 0 8px rgba(255,220,100,1),0 0 20px rgba(255,180,50,0.9),0 0 40px rgba(255,140,0,0.7),0 0 60px rgba(212,175,55,0.4);opacity:1;} }</style>
+      <p
+        style="font-size:11px; font-style:italic; margin-top:-10px; margin-bottom:18px; letter-spacing:1px; font-family:'Outfit',sans-serif; font-weight:600; color:#f0c060; text-shadow: 0 0 6px rgba(255,200,80,0.9), 0 0 14px rgba(255,160,40,0.7), 0 0 28px rgba(255,120,0,0.5); animation: neon-credit-pulse 2.8s ease-in-out infinite alternate;">
+        High stakes, no breaks&mdash;made with love by Batch &apos;26 &amp; &apos;27 &#9829;</p>
+      <style>
+        @keyframes neon-credit-pulse {
+          0% {
+            text-shadow: 0 0 4px rgba(255, 200, 80, 0.8), 0 0 12px rgba(255, 160, 40, 0.6), 0 0 22px rgba(255, 120, 0, 0.4);
+            opacity: 0.75;
+          }
+
+          100% {
+            text-shadow: 0 0 8px rgba(255, 220, 100, 1), 0 0 20px rgba(255, 180, 50, 0.9), 0 0 40px rgba(255, 140, 0, 0.7), 0 0 60px rgba(212, 175, 55, 0.4);
+            opacity: 1;
+          }
+        }
+      </style>
       <div class="hero-btns" style="justify-content: center; margin-bottom: 20px;">
         <button class="btn-casino-gold" onclick="openReg(null)"><span>Join The Table</span></button>
         <button class="btn-casino-outline"
@@ -8516,11 +8626,11 @@
 
     <!-- WHATSAPP PROMO CTA -->
     <div class="insta-btn-wrap" style="margin-bottom: 20px;">
-      <a href="javascript:void(0)" onclick="openWaList()"
-        class="insta-glow-btn btn-fire">
+      <a href="javascript:void(0)" onclick="openWaList()" class="insta-glow-btn btn-fire">
         <span style="display:flex;align-items:center;gap:10px;position:relative;z-index:2">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
           </svg>
           JOIN WHATSAPP GROUP
         </span>
@@ -8943,8 +9053,11 @@
 
                 <div class="rlt-fg">
                   <label class="rlt-fl">Register Number (Roll No)</label>
-                  <input class="fi rlt-fi" id="f-regno" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="e.g. 2303921310421226"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, ''); lookupStudent()" onkeypress="return /[0-9]/.test(event.key)" onpaste="setTimeout(()=>{this.value=this.value.replace(/[^0-9]/g,'');lookupStudent();},0)">
+                  <input class="fi rlt-fi" id="f-regno" type="number" inputmode="numeric" pattern="[0-9]*"
+                    placeholder="e.g. 2303921310421226"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, ''); lookupStudent()"
+                    onkeypress="return /[0-9]/.test(event.key)"
+                    onpaste="setTimeout(()=>{this.value=this.value.replace(/[^0-9]/g,'');lookupStudent();},0)">
                 </div>
 
                 <div class="rlt-fg">
@@ -8996,10 +9109,11 @@
                   <div class="rlt-fg">
                     <label class="rlt-fl" style="color:var(--gold);font-weight:800;">
                       👯 Number of Members &nbsp;<span
-                        style="color:rgba(255,200,100,0.55);font-size:8px;font-weight:500;">(max 10 including you)</span>
+                        style="color:rgba(255,200,100,0.55);font-size:8px;font-weight:500;">(max 10 including
+                        you)</span>
                     </label>
-                    <input class="fi rlt-fi" id="f-dance-size" type="number" inputmode="numeric" 
-                      placeholder="e.g. 5" min="1" max="10" 
+                    <input class="fi rlt-fi" id="f-dance-size" type="number" inputmode="numeric" placeholder="e.g. 5"
+                      min="1" max="10"
                       oninput="let v=parseInt(this.value); if(v>10)this.value=10; if(v<1)this.value=1; selectedTeamSize=parseInt(this.value)||1;">
                   </div>
                 </div>
@@ -9177,8 +9291,9 @@
         <!-- NEW STEP: Dance Sequential Member Entry -->
         <div class="step" id="step-dance-member">
           <div class="rlt-room" id="rlt-room-dance">
-            <div id="rlt-particles-dance" style="position:absolute; width:100%; height:100%; pointer-events:none; z-index:1;"></div>
-            
+            <div id="rlt-particles-dance"
+              style="position:absolute; width:100%; height:100%; pointer-events:none; z-index:1;"></div>
+
             <div style="position:absolute; top:max(15px, env(safe-area-inset-top, 15px)); left:15px; z-index:100;">
               <button class="casino-close-btn"
                 style="padding:10px 16px; font-size:12px; font-weight:900; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:24px; color:#fff;"
@@ -9187,7 +9302,8 @@
               </button>
             </div>
 
-            <div class="rlt-slip" id="dance-member-slip" style="margin-top:20px; position:relative; z-index:10; opacity: 1; transform: none;">
+            <div class="rlt-slip" id="dance-member-slip"
+              style="margin-top:20px; position:relative; z-index:10; opacity: 1; transform: none;">
               <div class="rlt-slip-header">
                 <div class="rlt-slip-badge" style="background:var(--gold); color:#000;">Dance</div>
                 <div class="rlt-slip-title" id="dance-member-title">MEMBER 2 OF 10</div>
@@ -9199,34 +9315,40 @@
                 <div class="rlt-fg">
                   <label class="rlt-fl">Member Register Number</label>
                   <input class="fi rlt-fi" id="fd-regno" type="number" inputmode="numeric" placeholder="Enter RegNo"
-                    oninput="this.value=this.value.replace(/[^0-9]/g,''); lookupDanceStudent()" onkeypress="return /[0-9]/.test(event.key)">
+                    oninput="this.value=this.value.replace(/[^0-9]/g,''); lookupDanceStudent()"
+                    onkeypress="return /[0-9]/.test(event.key)">
                 </div>
 
                 <div class="rlt-fg">
                   <label class="rlt-fl">Full Name</label>
-                  <input class="fi rlt-fi" id="fd-name" type="text" placeholder="Auto-filled" readonly style="background:rgba(255,255,255,0.05);">
+                  <input class="fi rlt-fi" id="fd-name" type="text" placeholder="Auto-filled" readonly
+                    style="background:rgba(255,255,255,0.05);">
                 </div>
 
                 <div class="rlt-row2">
                   <div class="rlt-fg">
                     <label class="rlt-fl">Year</label>
-                    <input class="fi rlt-fi" id="fd-year" type="text" placeholder="Auto" readonly style="background:rgba(255,255,255,0.05);">
+                    <input class="fi rlt-fi" id="fd-year" type="text" placeholder="Auto" readonly
+                      style="background:rgba(255,255,255,0.05);">
                   </div>
                   <div class="rlt-fg">
                     <label class="rlt-fl">Section</label>
-                    <input class="fi rlt-fi" id="fd-section" type="text" placeholder="Auto" readonly style="background:rgba(255,255,255,0.05);">
+                    <input class="fi rlt-fi" id="fd-section" type="text" placeholder="Auto" readonly
+                      style="background:rgba(255,255,255,0.05);">
                   </div>
                 </div>
 
                 <div class="rlt-fg">
                   <label class="rlt-fl">Gender (Strictly Same as Leader)</label>
-                  <select class="fs rlt-fs" id="fd-gender" disabled style="background:rgba(255,255,255,0.05); cursor:not-allowed;">
+                  <select class="fs rlt-fs" id="fd-gender" disabled
+                    style="background:rgba(255,255,255,0.05); cursor:not-allowed;">
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                   </select>
                 </div>
 
-                <button class="rlt-deal-btn" id="dance-next-btn" style="margin-top:15px;" onclick="playMechanicalSnap(); doHapticSnap(); nextDanceMember()">NEXT MEMBER &rarr;</button>
+                <button class="rlt-deal-btn" id="dance-next-btn" style="margin-top:15px;"
+                  onclick="playMechanicalSnap(); doHapticSnap(); nextDanceMember()">NEXT MEMBER &rarr;</button>
               </div>
             </div><!-- /slip -->
 
@@ -9316,12 +9438,12 @@
         <div class="fetch-pass-box">
           <div class="fetch-icon">🎫</div>
           <div class="fetch-title">Get Your Pass</div>
-          <div class="fetch-sub">Enter your <strong style="color:var(--gold)">Register Number</strong> to recover all your digital passes.</div>
+          <div class="fetch-sub">Enter your <strong style="color:var(--gold)">Register Number</strong> to recover all
+            your digital passes.</div>
           <div class="fg">
             <input class="fi" id="fetch-regno" type="number" inputmode="numeric" pattern="[0-9]*"
               placeholder="Enter your Register Number (e.g. 23039213...)"
-              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-              onkeypress="return /[0-9]/.test(event.key)"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')" onkeypress="return /[0-9]/.test(event.key)"
               onkeydown="if(event.key==='Enter') fetchMyPass()">
           </div>
           <button class="reg-next-btn" id="fetch-pass-btn" onclick="fetchMyPass()">Fetch My Pass</button>
@@ -9986,7 +10108,7 @@
         </svg>
         <span>My Pass</span>
       </button>
-      <button class="dock-item" id="dock-committee" onclick="openComm()">
+      <button class="dock-item" id="dock-committee" onclick="openComm()" style="display: none;">
         <svg viewBox="0 0 24 24">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
           <circle cx="9" cy="7" r="4" />
@@ -10013,7 +10135,7 @@
     const ADMIN_ID = 'sriram';
     const SCANNER_ID = 'utsavqr';
     const ADMIN_PASS = '93611';
-    
+
     /* ═══ WHATSAPP GROUP LINKS ═══ */
     const EVENT_WHATSAPP_MAP = {
       "DESIGN DECODE": "https://chat.whatsapp.com/DjFzaKUd1e925Mwot5Li9L?mode=gi_t",
@@ -10113,7 +10235,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', checkEmergencyStatus);
-    
+
     function getTeamLabel(min, max) {
       if (min === 1 && max === 1) return 'SOLO';
       if (min === 2 && max === 2) return 'DUO';
@@ -10130,17 +10252,17 @@
         desc: 'Designers compete solo to create stunning posters under time constraints. Starting with a given theme, they have complete creative freedom, but every 20 minutes, a new challenge is introduced, testing their adaptability and innovation.',
         date: 'April 13', time: '09:00 AM to 10:35 AM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
-        rules: ['Individual', 'Design tools provided', 'Time-bound rounds', 'Theme given on spot', 'Originality is key'],
+        rules: ['Individual', 'face the hindrance', 'Tackle the Twists', 'Theme given on spot', 'Originality is key'],
         ec: 'Lekeetha Sri A', ep: '8838422893', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456',
         jcs: ['Sriram', 'Naresh Balaji', 'Ragul', 'Vinuvarsan']
       },
       {
         id: 'ff', name: 'FRANCHISE FIESTA', label: 'Business Simulation Game', category: 'Non-Technical', type: 'Team', minTeam: 4, maxTeam: 4, tag: 'Management', timeSlot: 'A', isSimultaneous: true, poster: 'assets/posters/franchisefiesta.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ff" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#g-ff)"/><circle cx="9" cy="7" r="4" stroke="url(#g-ff)"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#g-ff)"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
-        desc: 'Build your dream team. Rule the auction. Step into the shoes of an IPL franchise owner and craft the ultimate squad within a budget. Every bid matters, every choice counts. Strategy, balance, and smart decisions will lead you to championship glory.',
-        date: 'April 13', time: '11:00 AM to 04:00 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
+        desc: '🎰 Event Description: Experience the thrill of an IPL-style auction blended with casino strategy! Teams compete to build the strongest squad within a fixed budget, using smart bidding, trading, and special power cards. With bonus points for strategic picks and performance-based scoring, this event is a perfect mix of risk, tactics, and excitement.',
+        date: 'April 13', time: '11:00 AM to 04:00 PM', venue: 'CLASSROOM', deadline: 'Mar 30',
         p1: 'Rs.4,000', p2: 'Rs.2,500', p3: 'Rs.1,500',
-        rules: ['Team of 4 members', 'Teams selected through a quiz round, top 10 advance to live auction', 'Virtual budget of 100 Crores to build a squad of minimum 11 players including 5 batsmen, 1 wicketkeeper, 2 all-rounders, and at least 5 bowlers', 'Strategic bidding, smart budgeting, and perfect team balance are the keys to victory', 'Plan wisely. Bid smartly. Build the ultimate champion team'],
+        rules: ['Each team of 4 members represents an IPL team (10 teams selected via quiz) and gets a budget of ₹100 Cr.', 'Build a squad of 12–14 players with constraints: 5 Batsmen, 5 Bowlers (incl. all-rounders), 1 Wicketkeeper, max 2 All-rounders', 'Players are categorized (Bat, Bowl, WK, All-rounder, Star) with performance stats.', 'Each team can use ONE power card: Skip (cancel opponent bid) OR Steal (take player after auction)', 'Trading allowed after auction with mutual agreement and organizer approval.', 'Bonus points for selecting team star players & captains (combo → ×1.25); winner decided based on team stats + strategy + bonuses.'],
         ec: 'Shriram Adithya S', ep: '9087654321', sc: 'Prof. Lavanya S.', sp: '+91 89010 23456',
         jcs: ['Arjhun', 'Nitheesh', 'Abinayaa']
       },
@@ -10155,7 +10277,7 @@
         jcs: ['Hirthick', 'Jeevesh', 'Naren']
       },
       {
-        id: 'hv', name: 'HACKVERSE', label: '24-Hour Hackathon', category: 'Technical', type: 'Team', minTeam: 4, maxTeam: 4, tag: 'Hackathon', timeSlot: 'B', isSimultaneous: true, poster: 'assets/committee/hackverse.jpeg',
+        id: 'hv', name: 'HACKVERSE', label: '24-Hour Hackathon', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 4, tag: 'Hackathon', timeSlot: 'B', isSimultaneous: true, poster: 'assets/committee/hackverse.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-hv" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00cec9"/><stop offset="100%" stop-color="#0984e3"/></linearGradient></defs><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="url(#g-hv)"/></svg>', grad: 'linear-gradient(135deg,#021a1a,#010f10)', accent: '#00cec9',
         desc: 'Build, innovate, and deploy! A high-intensity hackathon where teams race to develop solutions to real-world challenges.',
         date: 'April 15', time: '09:00 AM to 11:00 AM', venue: 'CSE LAB', deadline: 'Mar 30',
@@ -10168,7 +10290,7 @@
         id: 'tap', name: 'THE ALGORITHMIC PLATTER', label: 'Fun Algorithmic Puzzles', category: 'Non-Technical', type: 'Team', minTeam: 4, maxTeam: 4, tag: 'Puzzle', timeSlot: 'B', isSimultaneous: true, poster: 'assets/posters/algorithmicplatter.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tap" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f1c40f"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f1c40f"/><path d="M12 5a7 7 0 0 0-7 7c0 2 1 3.9 2.5 5.1.7.6 1.1 1.4 1.1 2.4v1.5c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.5c0-1 .4-1.8 1.1-2.4C18 15.9 19 14 19 12a7 7 0 0 0-7-7Z" stroke="url(#g-tap)" fill="url(#g-tap)" fill-opacity="0.2"/></svg>', grad: 'linear-gradient(135deg,#1a1200,#100c00)', accent: '#f1c40f',
         desc: 'Where cooking meets computation. Create a dish without fire, just like designing an efficient algorithm, optimize ingredients, maximize creativity, and present your idea as a masterpiece. It is innovation, but delicious.',
-        date: 'April 15', time: '09:00 AM to 12:00 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
+        date: 'April 15', time: '09:00 AM to 12:00 PM', venue: 'CLASSROOM', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Team of 2 to 3', 'A Fireless Cooking Innovation Challenge - No fire or electricity allowed', 'Participants create an innovative dish optimizing ingredients, creativity, and presentation within given constraints', 'Round - Logic of Flavors: Teams prepare a dish based on a surprise theme or ingredient and present it as a unique product concept', 'Time-bound, Judges decision final'],
         ec: 'Priyanka M', ep: '9943696367', sc: 'Dr. Murugan A.', sp: '+91 87890 01234',
@@ -10177,20 +10299,20 @@
       {
         id: 'tt', name: 'TECHNOTRACE', label: 'Tech Treasure Hunt', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Fun', poster: 'assets/posters/technotrace.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-tt" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="url(#g-tt)" fill="url(#g-tt)" fill-opacity="0.15"></polygon></svg>', grad: 'linear-gradient(135deg,#0d1f3c,#0a1428)', accent: '#3498db',
-        desc: 'Follow the trail. Solve the mystery. From tackling real-world tech challenges to unlocking layers of encrypted files, every step takes you deeper into a high-stakes digital chase. Only the sharpest minds will crack the codes and reach the final breakthrough.',
+        desc: 'Step into a murder mystery where every clue is a puzzle. Solve coding challenges, uncover hidden evidence, and piece together the story to crack the case. Speed, logic, and teamwork will lead you to the truth.',
         date: 'April 15', time: '01:30 PM to 04:30 PM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
-        rules: ['Team of 2 to 3', 'Round 1 - Tech Code Challenge: Participants analyze short real world technology scenarios and write a program or logic to solve them within a limited time', 'Round 2 - Password Trace: Finalist teams are given a system containing multiple password-protected files. After unlocking a file, they must solve the question inside it to obtain the password for the next file. The team that completes the challenge in the shortest time wins', 'No external help', 'Fastest team wins'],
+        rules: ['Team size 2', 'Round 1 – Mystery Code Quest: Participants dive into a series of mystery-based puzzles where each clue hides a solvable coding challenge. By decoding hints, analyzing patterns, and applying logic, they must write programs or find solution to reach end. Success depends on problem-solving skills, creativity, and speed as participants unravel the mystery step by step.'],
         ec: 'Hariharan R', ep: '9159191239', sc: 'Dr. Priya M.', sp: '+91 97890 12345',
         jcs: ['Ariram', 'Deva Priyan', 'Dhanusiya']
       },
       {
         id: 'ur', name: 'UNO REVERSE', label: 'Reverse Coding', category: 'Technical', type: 'Solo', minTeam: 1, maxTeam: 1, tag: 'Coding', poster: 'assets/posters/unoreverse.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-ur" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#e67e22"/></linearGradient></defs><path d="M17.4 9c.4.8.6 1.7.6 2.7 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-1 .2-1.9.6-2.7" stroke="url(#g-ur)" fill="url(#g-ur)" fill-opacity="0.15"/><path d="M12 2A4.5 4.5 0 0 0 7.5 6.5C7.5 8.9 9.5 11 12 11s4.5-2.1 4.5-4.5A4.5 4.5 0 0 0 12 2z" stroke="url(#g-ur)"/><path d="M11 20.3L6.8 16M13 20.3l4.2-4.3" stroke="#e74c3c"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
-        desc: 'Expect the unexpected. Teams are formed on the spot, roles are split, and just when you think you are settled, UNO cards flip the game. With surprise swaps and unpredictable twists, this event is all about adaptability, teamwork, and thinking on your feet.',
+        desc: "Dive into a coding experience where every line matters and every second counts. UNO Reverse Coding Arena pushes teams to think differently by breaking down disordered code and rebuilding it into working solutions. It's a test of clarity, teamwork, and fast decision-making under pressure. Decode the chaos, master the logic, and lead your team to victory.",
         date: 'April 16', time: '09:00 AM to 12:00 PM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
-        rules: ['Exclusive to 1st and 2nd years', 'Junior senior random tag team selection on the spot', 'Junior will be coding, senior will be sitting beside', 'We will shuffle UNO cards and circulate cards', 'Surprise Rule: Swap teams'],
+        rules: ['Team size 1', 'Round 1: Code Flip. Teams are given problems with scrambled code; they must rearrange, understand, and submit them on HackerRank, with the top 10 teams qualifying.', 'Round 2: Code Endgame. A standard HackerRank contest where winners are determined based on the number of problems solved and time efficiency.'],
         ec: 'Arikara Sudhan M', ep: '6374156308', sc: 'Dr. Senthil P.', sp: '+91 91230 45678',
         jcs: ['Sankari', 'Srinidhi', 'Sudharsan', 'Vijay Kasthuri']
       },
@@ -10198,7 +10320,7 @@
         id: 'com', name: 'CLASH OF MINDS', label: 'Quiz and Debate Showdown', category: 'Non-Technical', type: 'Team', minTeam: 4, maxTeam: 4, tag: 'Quiz', poster: 'assets/posters/clashofminds.jpeg', posterScale: 1.12,
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-com" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#9b59b6"/><stop offset="100%" stop-color="#3498db"/></linearGradient></defs><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="url(#g-com)" fill="url(#g-com)" fill-opacity="0.15"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" stroke="url(#g-com)"/></svg>', grad: 'linear-gradient(135deg,#150a28,#0a0518)', accent: '#9b59b6',
         desc: 'Debate. Defend. Dominate. Get paired on the spot, receive unpredictable topics, and argue for or against with limited prep time. It is a battle of perspectives where quick thinking and strong reasoning decide the winner.',
-        date: 'April 16', time: '02:00 PM to 04:00 PM', venue: 'Check WhatsApp for live updates', deadline: 'Mar 30',
+        date: 'April 16', time: '02:00 PM to 04:00 PM', venue: 'CLASSROOM', deadline: 'Mar 30',
         p1: 'Rs.3,000', p2: 'Rs.2,000', p3: 'Rs.1,000',
         rules: ['Participants will be randomly paired into teams on the spot', 'Each team will receive a debate topic given by another team, making the competition more dynamic and unpredictable', 'Teams will be assigned either FOR or AGAINST the topic', 'Short preparation time before presenting arguments', 'Judges decision final'],
         ec: 'Jeya Dharshini L', ep: '8870495552', sc: 'Prof. Ramesh K.', sp: '+91 95670 23456',
@@ -10207,7 +10329,7 @@
       {
         id: 'zcz', name: 'ZERO CODE ZONE', label: 'Non Coding Tech', category: 'Technical', type: 'Team', minTeam: 2, maxTeam: 2, tag: 'Logic', timeSlot: 'C', isSimultaneous: true, poster: 'assets/posters/zerocodezone.jpeg',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em"><defs><linearGradient id="g-zcz" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#9b59b6"/></linearGradient></defs><path d="M12 21a9 9 0 1 0-9-9c0 1.6.4 3.1 1.2 4.4.2.4.3.9.1 1.4-.4 1.1-1.3 2.9-1.3 3.2 0 .2.2.4.4.3.3 0 2.1-.9 3.2-1.3.5-.2 1-.2 1.4.1 1.3.8 2.8 1.2 4.4 1.2z" stroke="url(#g-zcz)" fill="url(#g-zcz)" fill-opacity="0.15"/></svg>', grad: 'linear-gradient(135deg,#1f0505,#120303)', accent: '#e74c3c',
-        desc: 'No coding, just pure brainpower. From fast-paced visual quizzes to spotting impostors and racing through puzzle-filled checkpoints, this event is a rollercoaster of logic, teamwork, and quick thinking. Stay sharp because not everything is as it seems.',
+        desc: 'No coding, just pure brainpower. Face tricky puzzles, hidden twists, and fast-paced challenges. Test your logic, teamwork, and quick thinking. Stay sharp not everything is as it seems.',
         date: 'April 18', time: '11:00 AM to 12:30 PM', venue: 'CSE LAB', deadline: 'Mar 30',
         p1: 'Rs.2,000', p2: 'Rs.1,500', p3: 'Rs.1,000',
         rules: ['Team size: Strictly 2 members (Duo only)', 'Round 1 – Mind Trap: Looks easy… but hidden twists await. See beyond the obvious to survive.', 'Round 2 – The Smart Hunt: Solve puzzles while playing X-O at the same time. Two members. Two games. Coordinate as a team — think fast, play smart.', 'Final Stage – Treasure Hunt: Crack this stage, and the Treasure Hunt begins. Clues are scattered. Nothing is obvious. Follow the trail, decode the hints, uncover the treasure… and win.'],
@@ -10508,7 +10630,7 @@
       const iconColor = suitObj.c;
       const casinoIcon = suitObj.s;
 
-      const hasConflict = !!e.isSimultaneous;
+      const hasConflict = false; // Conflict logic removed as per request
 
       const teamText = getTeamLabel(e.minTeam, e.maxTeam);
 
@@ -11232,7 +11354,7 @@
       const maxSlots = Math.min(chosenSize - 1, 3); // leader = slot 0, members = slots 1..maxSlots
 
       // Update hint
-      if (hintEl) hintEl.textContent = `FIXED TEAM: ${chosenSize} Players \u00b7 Add ${chosenSize - 1} member(s) to proceed`;
+      if (hintEl) hintEl.textContent = (e.minTeam === e.maxTeam ? 'FIXED TEAM: ' : 'TEAM: ') + `${chosenSize} Players \u00b7 Add ${chosenSize - 1} member(s) to proceed`;
 
       // Show only the slots matching chosen team size; hide the rest
       for (let i = 1; i <= 3; i++) {
@@ -11243,7 +11365,7 @@
           slotEl.style.display = '';
           card.classList.remove('pkt-card-locked');
           card.onclick = () => { playMechanicalSnap(); doHapticSnap(); pktOpenSlot(i); };
-          
+
           // Update the visual cards from existing data
           const m = teamMembers[i - 1];
           if (m && m.name) {
@@ -11534,10 +11656,10 @@
     function renderSavedMembers(slotIdx) {
       const container = document.getElementById('pkt-saved-container');
       if (!container) return;
-      
+
       const pool = JSON.parse(localStorage.getItem('utsav_saved_team') || '[]');
       const genderFilter = document.getElementById('f-gender')?.value; // Leader's gender
-      
+
       // Filter by gender (rule: no mixed gender teams) and exclude already added
       const filtered = pool.filter(m => {
         if (genderFilter && m.gender !== genderFilter) return false;
@@ -11579,7 +11701,7 @@
       document.getElementById('pkt-fi-year').value = member.year;
       document.getElementById('pkt-fi-section').value = member.section;
       document.getElementById('pkt-fi-phone').value = member.phone;
-      
+
       // Update drafts too
       pktDrafts[slotIdx] = { ...member };
 
@@ -11589,7 +11711,7 @@
         pill.style.background = 'rgba(46, 204, 113, 0.2)';
         pill.style.borderColor = '#2ecc71';
       }
-      
+
       doHapticSnap();
       playMechanicalSnap();
     }
@@ -11762,42 +11884,42 @@
           }
           const tname = document.getElementById('f-teamname').value.trim();
           if (!tname) { showError('Missing Info', 'Team Name Required', 'Please enter a team name to proceed.'); return; }
-          
+
           // Only perform Poker Table Card validation for non-Dance events
           const needed = (selectedTeamSize || currentEv.minTeam) - 1;
 
           for (let i = 0; i < needed; i++) {
-             const m = teamMembers[i];
-             const slotNum = i + 2;
-             
-             if (!m || !m.name) {
-               showError('Member Missing', `Seat ${slotNum} is Empty`, `Please tap on Seat ${slotNum} to add a team member.`);
-               shakePktCard(i + 1);
-               return; 
-             }
-             
-             const fields = [
-               { k: 'regno', l: 'Register Number' },
-               { k: 'gender', l: 'Gender' },
-               { k: 'year', l: 'Year' },
-               { k: 'section', l: 'Section' }
-             ];
-             
-             for (let f of fields) {
-                if (!m[f.k]) {
-                  showError('Incomplete Info', `Check Member ${slotNum}`, `Field "${f.l}" is missing for ${m.name}. Tap their seat to complete.`);
-                  shakePktCard(i + 1);
-                  return;
-                }
-             }
-             
-             if (m.gender !== leaderGender) {
-                showError('Rule Violation', 'Mixed Gender Team', `Member ${slotNum} (${m.name}) must be ${leaderGender}. Mixed-gender teams are not allowed.`);
+            const m = teamMembers[i];
+            const slotNum = i + 2;
+
+            if (!m || !m.name) {
+              showError('Member Missing', `Seat ${slotNum} is Empty`, `Please tap on Seat ${slotNum} to add a team member.`);
+              shakePktCard(i + 1);
+              return;
+            }
+
+            const fields = [
+              { k: 'regno', l: 'Register Number' },
+              { k: 'gender', l: 'Gender' },
+              { k: 'year', l: 'Year' },
+              { k: 'section', l: 'Section' }
+            ];
+
+            for (let f of fields) {
+              if (!m[f.k]) {
+                showError('Incomplete Info', `Check Member ${slotNum}`, `Field "${f.l}" is missing for ${m.name}. Tap their seat to complete.`);
                 shakePktCard(i + 1);
                 return;
-             }
+              }
+            }
+
+            if (m.gender !== leaderGender) {
+              showError('Rule Violation', 'Mixed Gender Team', `Member ${slotNum} (${m.name}) must be ${leaderGender}. Mixed-gender teams are not allowed.`);
+              shakePktCard(i + 1);
+              return;
+            }
           }
-          
+
           if (teamMembers.length < needed) {
             showError('Incomplete Team', 'Add More Members', `Required: ${needed + 1} players total. Please fill all seats.`);
             return;
@@ -11810,7 +11932,7 @@
     }
 
     /* ── DANCE SEQUENTIAL FLOW HELPERS ── */
-    let danceMemberIndex = 1; 
+    let danceMemberIndex = 1;
     let _danceLookupTimer = null;
     let _danceLookupAbortController = null;
 
@@ -11819,19 +11941,19 @@
       teamMembers = [];
       const total = selectedTeamSize || 1;
       if (total <= 1) { goStep(2); return; }
-      
+
       currentStep = 1.5;
       updateStepUI();
       renderDanceMemberForm();
-      
+
       // Initialize particles for the dance-specific room
       spawnDanceParticles();
-      
+
       // Animation Reset for the Slip
       const slip = document.getElementById('dance-member-slip');
       if (slip) {
         slip.style.animation = 'none';
-        void slip.offsetWidth; 
+        void slip.offsetWidth;
         slip.style.animation = 'btn-impact 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
       }
     }
@@ -11861,10 +11983,10 @@
       const title = document.getElementById('dance-member-title');
       const nextBtn = document.getElementById('dance-next-btn');
       const total = selectedTeamSize;
-      
+
       if (title) title.textContent = `MEMBER ${danceMemberIndex + 1} OF ${total}`;
       if (nextBtn) nextBtn.textContent = (danceMemberIndex + 1 === total) ? 'REVIEW REGISTRATION \u2192' : 'NEXT MEMBER \u2192';
-      
+
       // Clear fields
       document.getElementById('fd-regno').value = '';
       document.getElementById('fd-name').value = '';
@@ -11933,9 +12055,9 @@
       const yearEl = document.getElementById('fd-year');
       const secEl = document.getElementById('fd-section');
       const errEl = document.getElementById('dance-member-error');
-      
+
       if (_danceLookupAbortController) _danceLookupAbortController.abort();
-      
+
       clearTimeout(_danceLookupTimer);
       if (regno.length < 5) {
         if (nameEl) nameEl.value = '';
@@ -11943,7 +12065,7 @@
       }
 
       if (nameEl) nameEl.value = '🔍 Finding student...';
-      if (errEl)  errEl.classList.remove('show');
+      if (errEl) errEl.classList.remove('show');
 
       _danceLookupTimer = setTimeout(async () => {
         if (!SHEETS_URL || SHEETS_URL.includes('YOUR_GOOGLE')) return;
@@ -11955,12 +12077,12 @@
           if (data.success) {
             if (nameEl) nameEl.value = data.name;
             if (yearEl) yearEl.value = (data.year === '1' ? '1st Year' : data.year === '2' ? '2nd Year' : data.year === '3' ? '3rd Year' : data.year === '4' ? '4th Year' : data.year);
-            if (secEl)  secEl.value = 'Section ' + data.section;
+            if (secEl) secEl.value = 'Section ' + data.section;
           } else {
             if (nameEl) nameEl.value = '';
             if (errEl) { errEl.textContent = ' ⚠ ' + data.error; errEl.classList.add('show'); }
           }
-        } catch(e) {
+        } catch (e) {
           if (e.name === 'AbortError') return;
           if (nameEl) nameEl.value = '';
           console.error('Dance lookup error:', e);
@@ -11972,7 +12094,7 @@
       const regOv = document.getElementById('reg-ov');
       const steps = document.querySelectorAll('.step');
       const danceStepActive = (currentStep === 1.5);
-      
+
       // Update background theme
       if (regOv) {
         if (currentStep === 1 || danceStepActive) regOv.setAttribute('data-theme', 'poker');
@@ -11985,10 +12107,10 @@
         else if (s.id === 'step-1') isActive = (currentStep === 1);
         else if (s.id === 'step-2') isActive = (currentStep === 2);
         else if (s.id === 'step-dance-member') isActive = (currentStep === 1.5);
-        
+
         s.classList.toggle('active', isActive);
         s.style.visibility = isActive ? 'visible' : 'hidden';
-        s.style.display = isActive ? 'block' : 'none'; 
+        s.style.display = isActive ? 'block' : 'none';
       });
 
       document.querySelectorAll('.step-dot').forEach((d, i) => {
@@ -12026,7 +12148,7 @@
       const regnoEl = document.getElementById('f-regno');
       const yearEl = document.getElementById('f-year');
       const secEl = document.getElementById('f-section');
-      
+
       const name = (nameEl.dataset.raw || nameEl.value || '').trim();
       const regno = regnoEl.value.trim();
       const year = yearEl.dataset.raw || yearEl.value || '';
@@ -12189,7 +12311,7 @@
           }
           // Time slot conflict check
           if (currentEv.timeSlot && currentEv.isSimultaneous && storedReg.timeSlot === currentEv.timeSlot
-              && storedReg.eventId !== currentEv.id && storedReg.eventName !== currentEv.name) {
+            && storedReg.eventId !== currentEv.id && storedReg.eventName !== currentEv.name) {
             const storedEvData = EVS.find(ev => ev.id === storedReg.eventId);
             if (storedEvData && storedEvData.isSimultaneous) {
               const allStoredRegnos = [storedReg.regno];
@@ -12216,27 +12338,27 @@
       // Errors are NOT silently swallowed — any failure BLOCKS registration.
       if (SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
         showAdminLoader('Validating Records...<br><span style="font-size:10px;color:rgba(255,255,255,0.7);display:block;margin-top:8px;font-weight:600">Please do not refresh this page.</span>');
-        
+
         let serverCheckPassed = false;
         try {
           const allRegNos = [regno, ...teamMembers.filter(m => m && m.regno).map(m => m.regno)].join(',');
           const checkUrl = `${SHEETS_URL}?action=lookup&regnos=${encodeURIComponent(allRegNos)}&eventId=${encodeURIComponent(currentEv.id)}&eventName=${encodeURIComponent(currentEv.name)}&timeSlot=${encodeURIComponent(currentEv.timeSlot || '')}&targetSheet=${encodeURIComponent(currentEv.targetSheet || '')}`;
-          
+
           // Abort after 12 seconds to prevent infinite wait
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 12000);
-          
+
           const resp = await fetch(checkUrl, { signal: controller.signal });
           clearTimeout(timeoutId);
-          
+
           if (!resp.ok) {
             hideAdminLoader();
             showError('Server Error', 'Validation Failed', `Server returned error ${resp.status}. Please try again.`);
             resetUI(); return;
           }
-          
+
           const data = await resp.json();
-          
+
           // ── Check 1: Duplicate reg number for same event ──
           if (data.duplicates && data.duplicates.length > 0) {
             hideAdminLoader();
@@ -12244,17 +12366,9 @@
             showError('Duplicate Detected', 'Already Registered for this Event', `The following person(s) are already registered for ${currentEv.name}:\n\n${dupeNames}\n\nEach student can only register once per event.`);
             resetUI(); return;
           }
-          
-          // ── Check 2: Cross-event time slot conflict ──  
-          if (data.timeSlotConflicts && data.timeSlotConflicts.length > 0) {
-            hideAdminLoader();
-            const conflictNames = (data.timeSlotConflictDetails || []).map(d => `${d.name} (${d.regno}) — already in "${d.conflictingEvent || d.eventName}"`).join('\n');
-            showError('Time Slot Conflict!', 'Cannot Register for Simultaneous Events', `These members are already registered for another event running at the same time as ${currentEv.name}:\n\n${conflictNames}`);
-            resetUI(); return;
-          }
-          
+
           serverCheckPassed = true;
-          
+
         } catch (fetchErr) {
           hideAdminLoader();
           if (fetchErr.name === 'AbortError') {
@@ -12265,9 +12379,9 @@
           console.error('Server duplicate check failed:', fetchErr);
           resetUI(); return; // ← BLOCK registration — never silently proceed
         }
-        
+
         hideAdminLoader();
-        
+
         // Safety net — should never happen, but guard against unexpected flow
         if (!serverCheckPassed) {
           showError('Validation Error', 'Check Incomplete', 'Server validation did not complete. Please try again.');
@@ -12390,26 +12504,26 @@
       const regno = (document.getElementById('f-regno')?.value || '').trim();
       const nameEl = document.getElementById('f-name');
       const yearEl = document.getElementById('f-year');
-      const secEl  = document.getElementById('f-section');
-      const errEl  = document.getElementById('step-0-error');
+      const secEl = document.getElementById('f-section');
+      const errEl = document.getElementById('step-0-error');
       const nextBtn = document.querySelector('.rlt-next-btn');
-      
+
       // Abort any pending fetch
       if (_lookupAbortController) _lookupAbortController.abort();
-      
+
       // Instant clear stale data
       if (nameEl) { nameEl.value = 'Fetching...'; delete nameEl.dataset.raw; }
       if (yearEl) { yearEl.value = ''; delete yearEl.dataset.raw; }
-      if (secEl)  { secEl.value = ''; delete secEl.dataset.raw; }
-      if (errEl)  { errEl.textContent = ''; errEl.style.display = 'none'; }
+      if (secEl) { secEl.value = ''; delete secEl.dataset.raw; }
+      if (errEl) { errEl.textContent = ''; errEl.style.display = 'none'; }
       if (nextBtn) { nextBtn.disabled = true; nextBtn.style.opacity = '0.5'; }
 
       clearTimeout(_lookupTimer);
       _lookupTimer = setTimeout(async () => {
         if (regno.length < 5) {
-           if (nameEl) nameEl.value = '';
-           if (nextBtn) { nextBtn.disabled = false; nextBtn.style.opacity = '1'; }
-           return;
+          if (nameEl) nameEl.value = '';
+          if (nextBtn) { nextBtn.disabled = false; nextBtn.style.opacity = '1'; }
+          return;
         }
         if (!SHEETS_URL || SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
 
@@ -12422,19 +12536,19 @@
           if (data.success) {
             if (nameEl) nameEl.value = data.name;
             if (yearEl) yearEl.value = data.year === '1' ? '1st Year' : data.year === '2' ? '2nd Year' : data.year === '3' ? '3rd Year' : data.year;
-            if (secEl)  secEl.value  = 'Section ' + data.section;
+            if (secEl) secEl.value = 'Section ' + data.section;
             nameEl.dataset.raw = data.name;
             yearEl.dataset.raw = data.year;
-            secEl.dataset.raw  = data.section;
+            secEl.dataset.raw = data.section;
           } else {
             if (nameEl) nameEl.value = '';
             if (errEl) { errEl.textContent = '⚠ ' + data.error; errEl.style.display = 'block'; }
           }
-        } catch(e) { 
-          if (e.name === 'AbortError') return; 
+        } catch (e) {
+          if (e.name === 'AbortError') return;
           if (nameEl) nameEl.value = '';
           if (errEl) { errEl.textContent = '⚠ Lookup failed. Check Connection.'; errEl.style.display = 'block'; }
-          console.error('Lookup error:', e); 
+          console.error('Lookup error:', e);
         } finally {
           if (!signal.aborted && nextBtn) { nextBtn.disabled = false; nextBtn.style.opacity = '1'; }
         }
@@ -12487,11 +12601,11 @@
             if (nameEl) nameEl.value = "";
             if (errEl) { errEl.textContent = "⚠ " + data.error; errEl.classList.add("show"); }
           }
-        } catch (e) { 
+        } catch (e) {
           if (e.name === 'AbortError') return;
           if (nameEl) nameEl.value = "";
           if (errEl) { errEl.textContent = "⚠ Lookup failed. Try again."; errEl.classList.add("show"); }
-          console.error("Member lookup error:", e); 
+          console.error("Member lookup error:", e);
         } finally {
           if (!signal.aborted && saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; }
         }
@@ -12594,11 +12708,11 @@
             const members = getParsedMembers(r);
             const tmQR = members.map(m => ({ n: m.name || '', r: m.regno || '', y: m.year || '', s: m.section || '', p: m.phone || '' }));
             const data = { id: r.regId, n: r.name, e: r.eventName, rn: r.regno || '', ph: r.phone || '', yr: r.year || '', sec: r.section || '', t: r.teamName || '', tm: tmQR };
-            
+
             // Standard base64 with URL-safe replacements (replace + with -, / with _)
             let b64 = btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
             const qrText = verifyUrl + '?d=' + b64;
-            
+
             try { new QRCode(el, { text: qrText, width: 140, height: 140, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); } catch (ex) { console.error("QR Code rendering blocked:", ex); }
           }
         });
@@ -13521,7 +13635,7 @@ function doPost(e) {
           // Robust Base64 decode: inverse of the URL-safe transform
           let safeB64 = b64Raw.replace(/-/g, '+').replace(/_/g, '/').replace(/ /g, '+');
           while (safeB64.length % 4) safeB64 += '=';
-          
+
           instantDataRaw = JSON.parse(decodeURIComponent(escape(atob(safeB64))));
           regId = instantDataRaw.id;
         } catch (e) { }
@@ -13558,7 +13672,7 @@ function doPost(e) {
         // Show loading while fetching team status
         const resBox = document.getElementById('scanner-results');
         const resContent = document.getElementById('res-content');
-        
+
         // If results are NOT already open, show the full loader
         if (!resBox.classList.contains('open')) {
           resContent.innerHTML = `
@@ -13620,7 +13734,7 @@ function doPost(e) {
           subLoader.style.opacity = '0';
           setTimeout(() => subLoader.remove(), 200);
         }
-        
+
         selectedMembers = new Set();
         renderTeamScanUI(result.participant, result.enteredIndices || []);
         document.getElementById('scanner-results').classList.add('open');
@@ -13863,14 +13977,14 @@ function doPost(e) {
 
     /* ════════ DOCK & NAV TOGGLE ════════ */
     function hideDock() {
-      const d = document.getElementById('dock'); if(d) d.classList.add('nav-hidden');
-      const n = document.querySelector('.nav'); if(n) n.classList.add('nav-hidden');
-      const l = document.getElementById('logo-trigger'); if(l) l.style.opacity='0';
+      const d = document.getElementById('dock'); if (d) d.classList.add('nav-hidden');
+      const n = document.querySelector('.nav'); if (n) n.classList.add('nav-hidden');
+      const l = document.getElementById('logo-trigger'); if (l) l.style.opacity = '0';
     }
     function showDock() {
-      const d = document.getElementById('dock'); if(d) d.classList.remove('nav-hidden');
-      const n = document.querySelector('.nav'); if(n) n.classList.remove('nav-hidden');
-      const l = document.getElementById('logo-trigger'); if(l) l.style.opacity='1';
+      const d = document.getElementById('dock'); if (d) d.classList.remove('nav-hidden');
+      const n = document.querySelector('.nav'); if (n) n.classList.remove('nav-hidden');
+      const l = document.getElementById('logo-trigger'); if (l) l.style.opacity = '1';
     }
 
     function dockNav(target) {
@@ -13995,7 +14109,7 @@ function doPost(e) {
     (function handleQRLanding() {
       const params = new URLSearchParams(window.location.search);
       let d = params.get('d');
-      if (!d) return; 
+      if (!d) return;
 
       // Robust Base64 decode: inverse of the URL-safe transform
       let reg = null;
@@ -14005,7 +14119,7 @@ function doPost(e) {
         let safeD = d.replace(/-/g, '+').replace(/_/g, '/').replace(/ /g, '+');
         // 3. Add padding if missing
         while (safeD.length % 4) safeD += '=';
-        
+
         reg = JSON.parse(decodeURIComponent(escape(atob(safeD))));
       } catch (e) {
         console.error("QR Component Decode Error:", e);
@@ -14172,10 +14286,10 @@ function doPost(e) {
       const verifyId = params.get('verify_id');
       const auth = localStorage.getItem('utsav_auth');
       if (!verifyId || !auth) return;
-      
+
       // Clean URL
       history.replaceState(null, '', window.location.pathname);
-      
+
       // Open the attendance marking UI
       setTimeout(() => {
         if (typeof verifyQR === 'function') {
@@ -14197,7 +14311,7 @@ function doPost(e) {
     function openWaList() {
       const container = document.getElementById('wa-list-container');
       if (!container) return;
-      
+
       container.innerHTML = '';
       Object.keys(EVENT_WHATSAPP_MAP).forEach(event => {
         const link = EVENT_WHATSAPP_MAP[event];
@@ -14221,7 +14335,7 @@ function doPost(e) {
           container.appendChild(btn);
         }
       });
-      
+
       document.getElementById('wa-list-ov').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
