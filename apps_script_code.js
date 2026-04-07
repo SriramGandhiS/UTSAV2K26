@@ -625,20 +625,36 @@ function doPost(e) {
       
       var teamMembers = [];
       try {
-        // SystemData has the real JSON array. TeamMembers is just visual text.
-        var rawSD = record["SystemData"];
-        var rawTM = record["TeamMembers"];
+        // SystemData has the real JSON array. TeamMembers may be visual text or JSON.
+        var rawSD = String(record["SystemData"] || "").trim();
+        var rawTM = String(record["TeamMembers"] || "").trim();
         var rawToUse = "";
-        // Use SystemData if it has JSON array
-        if (rawSD && String(rawSD).trim().charAt(0) === "[") {
-          rawToUse = String(rawSD).trim();
-        } else if (rawTM && String(rawTM).trim().charAt(0) === "[") {
-          // Only use TeamMembers if it looks like JSON
-          rawToUse = String(rawTM).trim();
+        
+        // Priority 1: SystemData with JSON array
+        if (rawSD && rawSD.charAt(0) === "[") {
+          rawToUse = rawSD;
         }
+        // Priority 2: TeamMembers with JSON array (fresh registrations)
+        else if (rawTM && rawTM.charAt(0) === "[") {
+          rawToUse = rawTM;
+        }
+        
         if (rawToUse) {
           var parsed = JSON.parse(rawToUse);
           if (Array.isArray(parsed)) teamMembers = parsed;
+        }
+        
+        // Priority 3: Parse visual string "1. Name (RegNo) | 2. Name (RegNo)" as fallback
+        if (teamMembers.length === 0 && rawTM && rawTM !== "Solo" && rawTM.indexOf(".") !== -1) {
+          var parts = rawTM.split("|");
+          for (var p = 0; p < parts.length; p++) {
+            var part = parts[p].trim();
+            // Match "1. Name (RegNo)" pattern
+            var nameMatch = part.match(/^\d+\.\s*(.+?)\s*\(([^)]+)\)/);
+            if (nameMatch) {
+              teamMembers.push({ name: nameMatch[1].trim(), regno: nameMatch[2].trim() });
+            }
+          }
         }
       } catch (e) { teamMembers = []; }
       
