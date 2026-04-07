@@ -61,6 +61,103 @@ function doGet(e) {
     return ContentService.createTextOutput(JSON.stringify({ emergency: emergency })).setMimeType(ContentService.MimeType.JSON);
   }
 
+  // ── Get Access Feature Flags & Committee Data (public) ──
+  if (action === "getAccess") {
+    var accessMap = { show_team_btn: true, registrations_open: true };
+    var accessSh = ss.getSheetByName("Access");
+    
+    // Auto-create Access tab if missing
+    if (!accessSh) {
+      accessSh = ss.insertSheet("Access");
+      accessSh.getRange(1, 1, 1, 2).setValues([["Flag", "Value"]]);
+      accessSh.getRange(2, 1, 2, 2).setValues([
+        ["show_team_btn", "TRUE"],
+        ["registrations_open", "TRUE"]
+      ]);
+      accessSh.getRange(1, 1, 1, 2).setFontWeight("bold");
+      accessSh.setColumnWidth(1, 200);
+      accessSh.setColumnWidth(2, 120);
+    }
+    
+    var accessData = accessSh.getDataRange().getValues();
+    for (var i = 1; i < accessData.length; i++) {
+      var key = String(accessData[i][0] || "").trim();
+      var val = String(accessData[i][1] || "").trim();
+      if (!key) continue;
+      if (val.toUpperCase() === "TRUE") accessMap[key] = true;
+      else if (val.toUpperCase() === "FALSE") accessMap[key] = false;
+      else accessMap[key] = val;
+    }
+
+    // Read Committee (Team Members) sheet — auto-create if missing
+    var committeeData = [];
+    var commSh = ss.getSheetByName("Committee");
+    if (!commSh) {
+      commSh = ss.insertSheet("Committee");
+      var commHeaders = ["Name", "Role", "Department", "Photo", "Phone", "IsHead", "HasGlow"];
+      commSh.getRange(1, 1, 1, commHeaders.length).setValues([commHeaders]);
+      commSh.getRange(1, 1, 1, commHeaders.length).setFontWeight("bold");
+      commSh.setColumnWidth(1, 160);
+      commSh.setColumnWidth(2, 180);
+      commSh.setColumnWidth(3, 160);
+      commSh.setColumnWidth(4, 300);
+      commSh.setColumnWidth(5, 140);
+      commSh.setColumnWidth(6, 80);
+      commSh.setColumnWidth(7, 80);
+    }
+
+    var commRows = commSh.getDataRange().getValues();
+    if (commRows.length > 1) {
+      var commHeaders = commRows[0].map(function(h) { return String(h).trim().toLowerCase(); });
+      for (var c = 1; c < commRows.length; c++) {
+        var cRow = commRows[c];
+        var commObj = {};
+        for (var col = 0; col < commHeaders.length; col++) {
+          commObj[commHeaders[col]] = cRow[col];
+        }
+        if (commObj.name || commObj.role) {
+          committeeData.push(commObj);
+        }
+      }
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({ 
+      success: true, 
+      access: accessMap,
+      committee: committeeData
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // ── Fetch Events list dynamically (public) ──
+  if (action === "getEvents") {
+    var evSh = ss.getSheetByName("Events");
+    var eventsData = [];
+    
+    if (evSh) {
+      var evRows = evSh.getDataRange().getValues();
+      if (evRows.length > 1) {
+        var evHeaders = evRows[0].map(function(h) { return String(h).trim(); }); // keep case for UI mapped names
+        for (var eRow = 1; eRow < evRows.length; eRow++) {
+          var rowObj = {};
+          var hasName = false;
+          for (var col = 0; col < evHeaders.length; col++) {
+            var cellVal = String(evRows[eRow][col] || "").trim();
+            rowObj[evHeaders[col]] = cellVal;
+            var headerKey = evHeaders[col].replace(/\s/g, '').toLowerCase();
+            if (headerKey === "eventname" && cellVal) hasName = true;
+          }
+          if (hasName) {
+            eventsData.push(rowObj);
+          }
+        }
+      }
+    }
+    return ContentService.createTextOutput(JSON.stringify({
+      success: true,
+      events: eventsData
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+
   if (action === "getRegs") {
     if (!checkAuth(e)) return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
     var data = sh.getDataRange().getValues();
@@ -160,7 +257,7 @@ function doGet(e) {
           var tmReg = String(teamMembers[m].regno || "").replace(/[^0-9]/g, "").trim();
           if (tmReg === fetchRegno) { isMemberMatch = true; break; }
         }
-        if ((isLeaderMatch || isMemberMatch) && !results.some(function(r) { return r.regId === rowRegId; })) {
+        if ((isLeaderMatch || isMemberMatch) && !results.some(function (r) { return r.regId === rowRegId; })) {
           results.push({
             regId: rowRegId,
             name: String(row[headers.indexOf("Name")] || ""),
@@ -434,6 +531,34 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({ success: true, emergency: !!d.enabled })).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // ── Toggle Members Section (requires admin auth) ──
+    if (d.action === "setMembersVisibility") {
+      if (d.uid !== "sriram" || d.pwd !== "93611") {
+        return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
+      }
+      var accessSh = ss.getSheetByName("Access");
+      if (!accessSh) {
+         accessSh = ss.insertSheet("Access");
+         accessSh.getRange(1, 1).setValue("members");
+      }
+      var data = accessSh.getDataRange().getValues();
+      var foundRow = -1;
+      for (var i = 0; i < data.length; i++) {
+        if (String(data[i][0]).toLowerCase().trim() === "members") {
+          foundRow = i + 1;
+          break;
+        }
+      }
+      if (foundRow === -1) {
+        foundRow = accessSh.getLastRow() + 1;
+        accessSh.getRange(foundRow, 1).setValue("members");
+      }
+      var newVal = d.status === "ON" ? "ON" : "OFF";
+      accessSh.getRange(foundRow, 2).setValue(newVal);
+      SpreadsheetApp.flush();
+      return ContentService.createTextOutput(JSON.stringify({ success: true, members: newVal })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // Optimized Scan Handle (Fast execution, localized lock, duplicate prevention)
     if (d.action === "handleScan") {
       if ((d.uid !== "sriram" && d.uid !== "utsavqr") || d.pwd !== "93611") {
@@ -535,14 +660,14 @@ function doPost(e) {
     try {
       var r = d.data || {};
       var targetSheet = (r.targetSheet || "Registrations").trim();
-      
+
       // Separate Dance registrations into their own tab
       if (r.eventName && (r.eventName.toLowerCase().indexOf("dance") !== -1 || r.eventName.toLowerCase().indexOf("cultural") !== -1)) {
         targetSheet = "Dance_Registrations";
       }
 
       var sh = ss.getSheetByName(targetSheet) || ss.insertSheet(targetSheet);
-      if (sh.getLastRow() === 0) enforceHeaders(sh); 
+      if (sh.getLastRow() === 0) enforceHeaders(sh);
       var headers = OFFICIAL_HEADERS;
 
       if (d.action === "syncAll") {
@@ -637,37 +762,37 @@ function doPost(e) {
 
         if (!allowMultiple) {
           for (var i = 1; i < data.length; i++) {
-          var row = data[i];
-          if (String(row[headers.indexOf("RegID")] || "") === r.regId) {
-            isDuplicate = true; break;
-          }
-
-          var rowEventName = String(row[headers.indexOf("Event")] || "").toLowerCase().trim();
-
-          if (rowEventName === eventNameLC) {
-            // Duplicate check by RegNo (email no longer in use)
-            var rowLeaderRegNo = String(row[headers.indexOf("RegNo")] || "").toLowerCase().trim();
-            if (incomingRegNos.indexOf(rowLeaderRegNo) !== -1) {
-              isDuplicate = true;
-              duplicateMsg = "Duplicate error: Register number " + rowLeaderRegNo + " is already registered for this event.";
-              break;
+            var row = data[i];
+            if (String(row[headers.indexOf("RegID")] || "") === r.regId) {
+              isDuplicate = true; break;
             }
 
-            var systemDataIndex = headers.indexOf("SystemData");
-            var teamMembersRaw = String((systemDataIndex >= 0 && row[systemDataIndex]) ? row[systemDataIndex] : (row[headers.indexOf("TeamMembers")] || "[]"));
-            var existTeam = [];
-            try { existTeam = JSON.parse(teamMembersRaw); } catch (ex) { }
+            var rowEventName = String(row[headers.indexOf("Event")] || "").toLowerCase().trim();
 
-            for (var j = 0; j < existTeam.length; j++) {
-              var existTmReg = String(existTeam[j].regno || "").toLowerCase().trim();
-              if (existTmReg && incomingRegNos.indexOf(existTmReg) !== -1) {
+            if (rowEventName === eventNameLC) {
+              // Duplicate check by RegNo (email no longer in use)
+              var rowLeaderRegNo = String(row[headers.indexOf("RegNo")] || "").toLowerCase().trim();
+              if (incomingRegNos.indexOf(rowLeaderRegNo) !== -1) {
                 isDuplicate = true;
-                duplicateMsg = "Duplicate error: Register number " + existTmReg + " is already in another team for this event.";
+                duplicateMsg = "Duplicate error: Register number " + rowLeaderRegNo + " is already registered for this event.";
                 break;
               }
+
+              var systemDataIndex = headers.indexOf("SystemData");
+              var teamMembersRaw = String((systemDataIndex >= 0 && row[systemDataIndex]) ? row[systemDataIndex] : (row[headers.indexOf("TeamMembers")] || "[]"));
+              var existTeam = [];
+              try { existTeam = JSON.parse(teamMembersRaw); } catch (ex) { }
+
+              for (var j = 0; j < existTeam.length; j++) {
+                var existTmReg = String(existTeam[j].regno || "").toLowerCase().trim();
+                if (existTmReg && incomingRegNos.indexOf(existTmReg) !== -1) {
+                  isDuplicate = true;
+                  duplicateMsg = "Duplicate error: Register number " + existTmReg + " is already in another team for this event.";
+                  break;
+                }
+              }
+              if (isDuplicate) break;
             }
-            if (isDuplicate) break;
-          }
           }
         }
 

@@ -353,6 +353,34 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({ success: true, emergency: !!d.enabled })).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // ── Toggle Members Section (requires admin auth) ──
+    if (d.action === "setMembersVisibility") {
+      if (d.uid !== "sriram" || d.pwd !== "93611") {
+        return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
+      }
+      var accessSh = ss.getSheetByName("Access");
+      if (!accessSh) {
+         accessSh = ss.insertSheet("Access");
+         accessSh.getRange(1, 1).setValue("members");
+      }
+      var data = accessSh.getDataRange().getValues();
+      var foundRow = -1;
+      for (var i = 0; i < data.length; i++) {
+        if (String(data[i][0]).toLowerCase().trim() === "members") {
+          foundRow = i + 1;
+          break;
+        }
+      }
+      if (foundRow === -1) {
+        foundRow = accessSh.getLastRow() + 1;
+        accessSh.getRange(foundRow, 1).setValue("members");
+      }
+      var newVal = d.status === "ON" ? "ON" : "OFF";
+      accessSh.getRange(foundRow, 2).setValue(newVal);
+      SpreadsheetApp.flush();
+      return ContentService.createTextOutput(JSON.stringify({ success: true, members: newVal })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // Optimized Scan Handle (Fast execution, localized lock, duplicate prevention)
     if (d.action === "handleScan") {
       if ((d.uid !== "sriram" && d.uid !== "utsavqr") || d.pwd !== "93611") {

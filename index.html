@@ -9957,6 +9957,14 @@
         </button>
       </div>
 
+      <!-- Member Section Toggle -->
+      <div class="admin-sec-title" style="margin-top:16px;color:var(--orange);border-color:rgba(212,175,55,.2)">👥 Site Controls</div>
+      <div class="admin-action-row">
+        <button class="em-toggle-btn off" id="members-toggle-btn" onclick="toggleMembersSection()" style="flex:1; border-color:var(--orange); color:var(--orange);">
+          👁 Show Members Section
+        </button>
+      </div>
+
       <div class="admin-sec-title">Overall Stats</div>
       <div class="admin-stat-grid" id="admin-stats"></div>
 
@@ -10205,7 +10213,46 @@
       applyEmergencyMode();
     }
 
-    // Check emergency status on page load
+    let membersVisibleState = false;
+    async function toggleMembersSection() {
+      if (!verifyAdminOTP('toggle Members Section Visibility')) return;
+      const btn = document.getElementById('members-toggle-btn');
+      const newState = !membersVisibleState;
+      btn.disabled = true;
+      btn.innerHTML = newState ? '⏳ Showing...' : '⏳ Hiding...';
+      try {
+        const resp = await fetch(SHEETS_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'setMembersVisibility', status: newState ? 'ON' : 'OFF', uid: ADMIN_ID, pwd: ADMIN_PASS })
+        });
+        const data = await resp.json();
+        if (data.success) {
+          membersVisibleState = (data.members === 'ON');
+          localStorage.setItem('u26_mem_cache', membersVisibleState ? 'ON' : 'OFF');
+        } else {
+          alert("Error: " + (data.error || "Server validation failed"));
+          console.error("SetMembersVisibility failed", data);
+        }
+      } catch (err) {
+        alert("Network Error: Could not connect to Google Apps Script. Ensure it is redeployed.");
+      }
+      btn.disabled = false;
+      applyMembersVisibility();
+    }
+    
+    function applyMembersVisibility() {
+      const btn = document.getElementById('members-toggle-btn');
+      if (btn) {
+        btn.innerHTML = membersVisibleState ? '👁 Hide Members Section' : '👁 Show Members Section';
+        btn.className = membersVisibleState ? 'em-toggle-btn on' : 'em-toggle-btn off';
+      }
+      const dockComm = document.getElementById('dock-committee');
+      if (dockComm) {
+        dockComm.style.display = membersVisibleState ? '' : 'none';
+      }
+    }
+
+    // Check emergency status and members visibility on page load
     async function checkEmergencyStatus() {
       // 1. Apply cached value instantly (no flash)
       try {
@@ -10213,18 +10260,19 @@
         if (cached.v === true) { emergencyMode = true; applyEmergencyMode(); }
       } catch (e) { }
 
-      // 2. Fetch fresh value from Google Sheets (with 10-second spam protection)
+      try {
+        // Optimistic apply of members cache so it doesn't flash
+        const memCached = localStorage.getItem('u26_mem_cache');
+        if (memCached) {
+          membersVisibleState = (memCached === 'ON');
+          applyMembersVisibility();
+        }
+      } catch (e) {}
+
+      // 2. Fetch fresh value from Google Sheets
       if (!SHEETS_URL || SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
 
-      try {
-        const cached = JSON.parse(localStorage.getItem('u26_em_cache') || '{}');
-        if (cached.t && Date.now() - cached.t < 10000) {
-          emergencyMode = !!cached.v;
-          applyEmergencyMode();
-          return;
-        }
-      } catch (e) { }
-
+      // Emergency status fetch
       try {
         const resp = await fetch(SHEETS_URL + '?action=getEmergencyStatus');
         const data = await resp.json();
@@ -10232,6 +10280,18 @@
         localStorage.setItem('u26_em_cache', JSON.stringify({ v: emergencyMode, t: Date.now() }));
         applyEmergencyMode();
       } catch (e) { /* silent fail, use cached */ }
+
+      // Members visibility fetch
+      try {
+        const respMem = await fetch(SHEETS_URL + '?action=getAccess');
+        const dataMem = await respMem.json();
+        if (dataMem.success && dataMem.access) {
+           // We use members key, or fallback to tracking mechanism
+           membersVisibleState = (dataMem.access.members === 'ON');
+           localStorage.setItem('u26_mem_cache', membersVisibleState ? 'ON' : 'OFF');
+           applyMembersVisibility();
+        }
+      } catch (e) { /* silent fail */ }
     }
 
     document.addEventListener('DOMContentLoaded', checkEmergencyStatus);
