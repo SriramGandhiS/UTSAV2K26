@@ -819,19 +819,25 @@ function doPost(e) {
         var ts = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
         var results = [];
 
-        // ── Find existing team row by base RegID ──
+        // ── Find existing team row by base RegID (Match exact ID or partial matches starting with ID) ──
         var existingRowIndex = -1;
         var existingRowData = null;
         if (scansSh.getLastRow() > 1) {
           var sheetIds = scansSh.getRange(2, 1, scansSh.getLastRow() - 1, 1).getValues();
           for (var i = 0; i < sheetIds.length; i++) {
-            if (String(sheetIds[i][0]) === baseRegId) {
+            var rowId = String(sheetIds[i][0]);
+            if (rowId === baseRegId || rowId.indexOf(baseRegId + "_") === 0) {
               existingRowIndex = i + 2; // +1 header, +1 for 1-based index
               existingRowData = scansSh.getRange(existingRowIndex, 1, 1, SCAN_HEADERS.length).getValues()[0];
               break;
             }
           }
         }
+
+        // ── Fetch GROUND TRUTH record from Master database ──
+        var masterRecord = findRegistrationRecord(ss, baseRegId); 
+        var masterYear = masterRecord ? String(masterRecord.Year || "") : "";
+        var masterSection = masterRecord ? String(masterRecord.Section || "") : "";
 
         // Build base row (used when creating a new row)
         var rowToWrite = existingRowData ? existingRowData.slice() : [
@@ -853,12 +859,12 @@ function doPost(e) {
           }
 
           // Fill base identity from leader (index 0) or first marked member 
-          // CRITICAL: Only fill if the row identity is currently empty to avoid overwriting with blank strings
+          // CRITICAL: Ground Truth fallback. Always prefer master data if it exists.
           if (!anyNewMark) {
-            if (!rowToWrite[1] && m.name) rowToWrite[1] = String(m.name);
-            if (!rowToWrite[2] && m.regno) rowToWrite[2] = String(m.regno);
-            if (!rowToWrite[3] && m.year) rowToWrite[3] = String(m.year);
-            if (!rowToWrite[4] && m.section) rowToWrite[4] = String(m.section);
+            if (m.name) rowToWrite[1] = String(m.name);
+            if (m.regno) rowToWrite[2] = String(m.regno);
+            rowToWrite[3] = masterYear || String(m.year || "");
+            rowToWrite[4] = masterSection || String(m.section || "");
           }
 
           // Write member name+regno in their correct Member slot (Member1–4)
