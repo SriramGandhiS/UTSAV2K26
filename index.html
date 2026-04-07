@@ -10027,6 +10027,15 @@
           </svg>
           <span>Validator</span>
         </div>
+        <div class="portal-btn" onclick="openCommitteePortal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>Committee</span>
+        </div>
       </div>
       <button class="reg-back-btn" style="margin-top:32px" onclick="closePortal()">Exit Portal</button>
     </div>
@@ -10053,6 +10062,68 @@
       <button class="res-btn" id="mark-scanned-btn" onclick="markEntryScanned()">Mark Entry</button>
       <button class="reg-back-btn" style="margin-top:12px;background:var(--border2);border:none;color:#fff"
         onclick="closeScanResults()">Next Scan (Clear)</button>
+    </div>
+  </div>
+
+  <!-- COMMITTEE MANAGER OVERLAY -->
+  <div class="scanner-ov" id="committee-ov" style="display:none; overflow-y: auto;">
+    <div class="scanner-header">
+      <div style="display:flex;flex-direction:column">
+        <div class="sc-title">UTSA<span>V</span> Committee <span>Manager</span></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:2px;font-family:monospace;letter-spacing:1px">ADD NEW FACES TO THE TABLE</div>
+      </div>
+      <button class="reg-back-btn" style="width:auto;padding:8px 16px" onclick="closeCommitteePortal()">Close</button>
+    </div>
+
+    <div style="padding: 24px; max-width: 500px; margin: 0 auto;">
+      <form id="committee-form" onsubmit="submitCommitteeForm(event)" style="display:flex; flex-direction:column; gap: 16px;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(212,175,55,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(212,175,55,0.1);">
+          <div class="form-group">
+            <label style="color:var(--gold); font-size: 11px; margin-bottom: 6px; display:block; font-weight: bold; letter-spacing: 1px;">🔐 ACCESS ID</label>
+            <input type="text" id="comm-auth-id" placeholder="Enter ID" required style="width:100%; background:#000; border:1px solid #444; color:#fff; padding:10px; border-radius:4px; font-size: 13px;">
+          </div>
+          <div class="form-group">
+            <label style="color:var(--gold); font-size: 11px; margin-bottom: 6px; display:block; font-weight: bold; letter-spacing: 1px;">🔑 SECRET KEY</label>
+            <input type="password" id="comm-auth-pwd" placeholder="Enter Pass" required style="width:100%; background:#000; border:1px solid #444; color:#fff; padding:10px; border-radius:4px; font-size: 13px;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label style="color:var(--orange); font-size: 12px; margin-bottom: 8px; display:block;">MEMBER NAME</label>
+          <input type="text" id="comm-name" placeholder="Enter Full Name" required style="width:100%; background:#1a1a1a; border:1px solid #333; color:#fff; padding:12px; border-radius:4px;">
+        </div>
+
+        <div class="form-group">
+          <label style="color:var(--orange); font-size: 12px; margin-bottom: 8px; display:block;">POSITION / ROLE</label>
+          <input type="text" id="comm-position" placeholder="e.g. Joint Coordinator" required style="width:100%; background:#1a1a1a; border:1px solid #333; color:#fff; padding:12px; border-radius:4px;">
+        </div>
+
+        <div class="form-group">
+          <label style="color:var(--orange); font-size: 12px; margin-bottom: 8px; display:block;">EVENT / DEPARTMENT</label>
+          <input type="text" id="comm-event" placeholder="e.g. Technical Team" style="width:100%; background:#1a1a1a; border:1px solid #333; color:#fff; padding:12px; border-radius:4px;">
+        </div>
+
+        <div class="form-group">
+          <label style="color:var(--orange); font-size: 12px; margin-bottom: 8px; display:block;">IMAGE URL (Direct Link)</label>
+          <input type="url" id="comm-image" placeholder="https://example.com/photo.jpg" required style="width:100%; background:#1a1a1a; border:1px solid #333; color:#fff; padding:12px; border-radius:4px;">
+        </div>
+
+        <div style="display:flex; gap: 20px; align-items:center; margin-top: 8px;">
+           <label style="display:flex; align-items:center; gap: 8px; cursor:pointer; color:#fff; font-size: 13px;">
+             <input type="checkbox" id="comm-highlight" style="width:18px; height:18px;">
+             Highlight Member (Is Head)
+           </label>
+
+           <label style="display:flex; align-items:center; gap: 8px; cursor:pointer; color:#fff; font-size: 13px;">
+             <input type="checkbox" id="comm-visible" checked style="width:18px; height:18px;">
+             Visible on Website
+           </label>
+        </div>
+
+        <button type="submit" id="comm-submit-btn" class="res-btn" style="margin-top:16px; width:100%;">Add New Member</button>
+      </form>
+
+      <div id="comm-status" style="margin-top:20px; padding:12px; border-radius:4px; text-align:center; display:none;"></div>
     </div>
   </div>
 
@@ -10285,11 +10356,25 @@
       try {
         const respMem = await fetch(SHEETS_URL + '?action=getAccess');
         const dataMem = await respMem.json();
-        if (dataMem.success && dataMem.access) {
-           // We use members key, or fallback to tracking mechanism
-           membersVisibleState = (dataMem.access.members === 'ON');
-           localStorage.setItem('u26_mem_cache', membersVisibleState ? 'ON' : 'OFF');
-           applyMembersVisibility();
+        if (dataMem.success) {
+           if (dataMem.access) {
+             membersVisibleState = (dataMem.access.members === 'ON');
+             localStorage.setItem('u26_mem_cache', membersVisibleState ? 'ON' : 'OFF');
+             applyMembersVisibility();
+           }
+           if (dataMem.committee && dataMem.committee.length > 0) {
+             window.DYNAMIC_COMMITTEE = dataMem.committee.filter(m => String(m.visible).toUpperCase() !== 'OFF').map(m => ({
+               isHead: m.ishead === true || String(m.ishead).toUpperCase() === 'TRUE',
+               name: m.name,
+               role: m.role,
+               dept: m.department,
+               img: m.photo,
+               imgStyle: 'object-position: top;',
+               phone: m.phone || '+910000000000',
+               linkedin: '#'
+             }));
+             renderComm();
+           }
         }
       } catch (e) { /* silent fail */ }
     }
@@ -10785,7 +10870,7 @@
     }
 
     /* ════════ CONTACTS ════════ */
-    const COMMITTEE = [
+    let COMMITTEE = [
       /* ── FACULTY COORDINATORS ── */
       { isHead: true, name: 'Hemalatha', role: 'Asst. Prof', dept: 'Symposium Coordinator', img: '', phone: 'Asst. Prof', linkedin: '#' },
       { isHead: true, name: 'Padma Priya', role: 'Asst. Prof', dept: 'Symposium Coordinator', img: '', phone: 'Asst. Prof', linkedin: '#' },
@@ -10845,9 +10930,13 @@
     }
 
     function renderComm() {
-      // Bounty values by role
-      function getBounty(role) {
+      function getBounty(role, dept) {
         const r = (role || '').toLowerCase();
+        const d = (dept || '').toLowerCase();
+        // Priority 1: Multimedia section cap
+        if (d.includes('multi media') || d.includes('multimedia')) return ['1,00,000', false];
+        
+        // Priority 2: Professional Roles
         if (r.includes('symposium coordinator') || r.includes('asst. prof')) return ['12,00,000', true];
         if (r.includes('president') && !r.includes('joint')) return ['10,00,000', false];
         if (r.includes('treasurer') && !r.includes('joint')) return ['9,00,000', false];
@@ -10862,10 +10951,25 @@
         return ['1,00,000', false];
       }
 
-      document.getElementById('comm-list').innerHTML = COMMITTEE.map(c => {
+      function getRolePriority(role) {
+        const r = (role || '').toLowerCase();
+        if (r.includes('asst. prof') || r.includes('symposium coordinator')) return 0;
+        if (r.includes('president') && !r.includes('joint')) return 1;
+        if (r.includes('treasurer') || r.includes('secretary') || r.includes('web admin')) return 2;
+        if (r.includes('joint president') || r.includes('joint secretary') || r.includes('joint treasurer')) return 3;
+        if (r.includes('head coordinator')) return 4;
+        if (r.includes('joint coordinator')) return 5;
+        if (r.includes('multimedia')) return 6;
+        return 10;
+      }
+
+      const fullList = [...COMMITTEE, ...(window.DYNAMIC_COMMITTEE || [])];
+      fullList.sort((a, b) => getRolePriority(a.role) - getRolePriority(b.role));
+
+      document.getElementById('comm-list').innerHTML = fullList.map(c => {
         const initials = getInitials(c.name);
         const hasRealPhoto = c.img && !c.img.includes('ui-avatars.com');
-        const [bountyNum, isFaculty] = getBounty(c.role);
+        const [bountyNum, isFaculty] = getBounty(c.role, c.dept);
         const isCallable = c.phone && c.phone !== 'Asst. Prof' && c.phone !== '+910000000000';
 
         const opos = (c.imgStyle && c.imgStyle.includes('top')) ? 'top center' : 'center top';
@@ -10882,7 +10986,7 @@
 
 
         // Prioritize the first 10 members to load in the "first load" itself
-        const listIndex = COMMITTEE.indexOf(c);
+        const listIndex = fullList.indexOf(c);
         const isEager = listIndex < 10;
 
 
@@ -13556,6 +13660,59 @@ function doPost(e) {
 
     function portalToAdmin() { closePortal(); openAdminLogin('admin'); }
     function portalToScanner() { closePortal(); openAdminLogin('scanner'); }
+    function openCommitteePortal() { closePortal(); document.getElementById('committee-ov').style.display = 'flex'; }
+    function closeCommitteePortal() { document.getElementById('committee-ov').style.display = 'none'; openPortal(); }
+
+    async function submitCommitteeForm(e) {
+      e.preventDefault();
+      const status = document.getElementById('comm-status');
+      const aid = document.getElementById('comm-auth-id').value.trim().toLowerCase();
+      const apass = document.getElementById('comm-auth-pwd').value.trim();
+
+      if (aid !== 'core' || apass !== '93611') {
+        status.innerText = '❌ Access Denied: Invalid Credentials';
+        status.style.background = 'rgba(255,0,0,0.1)';
+        status.style.color = '#ff0000';
+        status.style.display = 'block';
+        return;
+      }
+
+      const btn = document.getElementById('comm-submit-btn');
+      const data = {
+        name: document.getElementById('comm-name').value,
+        position: document.getElementById('comm-position').value,
+        event: document.getElementById('comm-event').value,
+        image: document.getElementById('comm-image').value,
+        highlight: document.getElementById('comm-highlight').checked,
+        visible: document.getElementById('comm-visible').checked
+      };
+      btn.disabled = true;
+      btn.innerText = '⌛ Adding Member...';
+      status.style.display = 'none';
+      try {
+        const resp = await fetch(SHEETS_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'addCommittee', data, uid: ADMIN_ID, pwd: ADMIN_PASS })
+        });
+        const res = await resp.json();
+        if (res.success) {
+          status.innerText = '✅ Member added successfully! Syncing...';
+          status.style.background = 'rgba(0,255,0,0.1)';
+          status.style.color = '#00ff00';
+          status.style.display = 'block';
+          document.getElementById('committee-form').reset();
+          await checkEmergencyStatus();
+        } else { throw new Error(res.error || 'Failed to add'); }
+      } catch (err) {
+        status.innerText = '❌ Error: ' + err.message;
+        status.style.background = 'rgba(255,0,0,0.1)';
+        status.style.color = '#ff0000';
+        status.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Add New Member';
+      }
+    }
 
     /* ════════ QR SCANNER ════════ */
     let html5QrCode = null;

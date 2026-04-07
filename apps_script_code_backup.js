@@ -381,6 +381,33 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({ success: true, members: newVal })).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // ── Add Committee Member (requires admin auth) ──
+    if (d.action === "addCommittee") {
+      if (d.uid !== "sriram" || d.pwd !== "93611") {
+        return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
+      }
+      var commSh = ss.getSheetByName("Committee") || ss.insertSheet("Committee");
+      if (commSh.getLastRow() === 0) {
+        var commHeaders = ["Name", "Role", "Department", "Photo", "Phone", "IsHead", "HasGlow", "Visible"];
+        commSh.getRange(1, 1, 1, commHeaders.length).setValues([commHeaders]);
+        commSh.getRange(1, 1, 1, commHeaders.length).setFontWeight("bold");
+      }
+      var r = d.data;
+      var newRow = [
+        String(r.name || ""),
+        String(r.position || ""),
+        String(r.event || ""),
+        String(r.image || ""),
+        "",
+        r.highlight ? "TRUE" : "FALSE",
+        r.highlight ? "TRUE" : "FALSE",
+        r.visible !== undefined ? (r.visible ? "ON" : "OFF") : "ON"
+      ];
+      commSh.appendRow(newRow);
+      SpreadsheetApp.flush();
+      return ContentService.createTextOutput(JSON.stringify({ success: true })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // Optimized Scan Handle (Fast execution, localized lock, duplicate prevention)
     if (d.action === "handleScan") {
       if ((d.uid !== "sriram" && d.uid !== "utsavqr") || d.pwd !== "93611") {
