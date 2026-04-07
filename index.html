@@ -14089,8 +14089,8 @@ function doPost(e) {
         ...getParsedMembers(currentScanData).map(m => ({ 
           name: m.name || m.n || '', 
           regno: m.regno || m.r || '', 
-          year: m.year || m.y || '', 
-          section: m.section || m.s || ''
+          year: m.year || m.y || currentScanData.year || '', 
+          section: m.section || m.s || currentScanData.section || ''
         }))
       ];
       const membersToMark = [...selectedMembers].map(i => ({

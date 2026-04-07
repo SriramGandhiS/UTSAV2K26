@@ -649,10 +649,23 @@ function doPost(e) {
           var parts = rawTM.split("|");
           for (var p = 0; p < parts.length; p++) {
             var part = parts[p].trim();
-            // Match "1. Name (RegNo)" pattern
+            // Match "1. Name (RegNo)" pattern 
+            // Fallback: Also try to capture year/section if present in visual string "1. Name (RegNo) Year Sec"
             var nameMatch = part.match(/^\d+\.\s*(.+?)\s*\(([^)]+)\)/);
             if (nameMatch) {
-              teamMembers.push({ name: nameMatch[1].trim(), regno: nameMatch[2].trim() });
+              var mName = nameMatch[1].trim();
+              var mReg = nameMatch[2].trim();
+              // Try to find year/section after the (RegNo) part
+              var rest = part.substring(part.indexOf(')') + 1).trim();
+              var yr = "";
+              var sec = "";
+              if (rest) {
+                var yrMatch = rest.match(/Year\s*(\d+)/i);
+                var secMatch = rest.match(/Sec\s*([A-Za-z0-9])/i);
+                if (yrMatch) yr = yrMatch[1];
+                if (secMatch) sec = secMatch[1];
+              }
+              teamMembers.push({ name: mName, regno: mReg, year: yr, section: sec });
             }
           }
         }
@@ -839,12 +852,13 @@ function doPost(e) {
             continue;
           }
 
-          // Fill base identity from leader (index 0) or first marked member
+          // Fill base identity from leader (index 0) or first marked member 
+          // CRITICAL: Only fill if the row identity is currently empty to avoid overwriting with blank strings
           if (!anyNewMark) {
-            rowToWrite[1] = String(m.name || "");
-            rowToWrite[2] = String(m.regno || "");
-            rowToWrite[3] = String(m.year || "");
-            rowToWrite[4] = String(m.section || "");
+            if (!rowToWrite[1] && m.name) rowToWrite[1] = String(m.name);
+            if (!rowToWrite[2] && m.regno) rowToWrite[2] = String(m.regno);
+            if (!rowToWrite[3] && m.year) rowToWrite[3] = String(m.year);
+            if (!rowToWrite[4] && m.section) rowToWrite[4] = String(m.section);
           }
 
           // Write member name+regno in their correct Member slot (Member1–4)
