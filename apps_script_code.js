@@ -661,14 +661,21 @@ function doPost(e) {
       var totalPossible = 1 + teamMembers.length;
 
       if (scansSh && scansSh.getLastRow() > 1) {
-        var scanIds = scansSh.getRange(2, 1, Math.min(scansSh.getLastRow() - 1, 5000), 1).getValues();
-        for (var i = 0; i < scanIds.length; i++) {
-          var sid = String(scanIds[i][0]);
-          if (sid === regId) { 
-            isScanned = true; 
-            for (var k = 0; k < totalPossible; k++) enteredIndices.push(k);
-            break; 
+        var scanData = scansSh.getRange(2, 1, Math.min(scansSh.getLastRow() - 1, 5000), SCAN_HEADERS.length).getValues();
+        for (var i = 0; i < scanData.length; i++) {
+          var sid = String(scanData[i][0]);
+          // New model: one row per team with base regId
+          if (sid === regId) {
+            // Check which Member slots are filled to determine who has entered
+            for (var slot = 0; slot < 4; slot++) {
+              var slotCol = 7 + (slot * 2); // Member1=col7, Member2=col9, Member3=col11, Member4=col13
+              if (String(scanData[i][slotCol] || "").trim() !== "") {
+                if (enteredIndices.indexOf(slot) === -1) enteredIndices.push(slot);
+              }
+            }
+            break;
           }
+          // Legacy: composite IDs from old model (_M0, _M1...)  
           if (sid.indexOf(regId + "_M") === 0) {
             var mIdx = parseInt(sid.substring((regId + "_M").length));
             if (!isNaN(mIdx) && enteredIndices.indexOf(mIdx) === -1) enteredIndices.push(mIdx);
@@ -779,7 +786,7 @@ function doPost(e) {
       }
     }
 
-    // Team-based scan: marks individual members with composite IDs
+    // Team-based scan: ONE ROW per team, updates Member slots in place
     if (d.action === "handleTeamScan") {
       if ((d.uid !== "sriram" && d.uid !== "utsavqr") || d.pwd !== "93611") {
         return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Unauthorized" })).setMimeType(ContentService.MimeType.JSON);
@@ -793,49 +800,79 @@ function doPost(e) {
         var scannerId = r.scannerId || "unknown";
         var cache = CacheService.getScriptCache();
 
-        // Check if the entire team pass was already scanned
-        if (cache.get("scan_" + baseRegId)) {
-          var allRes = [];
-          for (var i = 0; i < members.length; i++) allRes.push({ index: members[i].index, status: "already_entered" });
-          return ContentService.createTextOutput(JSON.stringify({ success: true, results: allRes })).setMimeType(ContentService.MimeType.JSON);
-        }
-
         var scansSh = ss.getSheetByName("Scans") || ss.insertSheet("Scans");
-        enforceHeaders(scansSh); // ALWAYS enforce correct 17 headers
+        enforceHeaders(scansSh); // Always ensure correct 17 headers
 
-        var results = [];
         var ts = "'" + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd/MM/yyyy, hh:mm:ss a");
+        var results = [];
 
-        for (var i = 0; i < members.length; i++) {
-          var m = members[i];
-          var mIndex = parseInt(m.index);
-          var scanId = baseRegId + "_M" + mIndex;
-
-          if (cache.get("scan_" + scanId)) {
-            results.push({ index: mIndex, status: "already_entered" });
-          } else {
-            // Construct 17-column row with member in correct slot
-            var rowData = [
-              scanId, String(m.name || ""), String(m.regno || ""), String(m.year || ""), String(m.section || ""), String(r.eventName || ""), String(r.teamName || "Solo"),
-              "", "", "", "", "", "", "", "", // Member 1-4 slots (8-15)
-              ts, String(scannerId)
-            ];
-            
-            // Map index to correct columns: 0->8,9; 1->10,11; 2->12,13; 3->14,15
-            var colStart = 7 + (mIndex * 2);
-            if (colStart >= 7 && colStart <= 14) {
-              // Populate slot with Member Data as requested
-              rowData[colStart] = String(m.name || "");
-              rowData[colStart + 1] = String(m.regno || "");
+        // ── Find existing team row by base RegID ──
+        var existingRowIndex = -1;
+        var existingRowData = null;
+        if (scansSh.getLastRow() > 1) {
+          var sheetIds = scansSh.getRange(2, 1, scansSh.getLastRow() - 1, 1).getValues();
+          for (var i = 0; i < sheetIds.length; i++) {
+            if (String(sheetIds[i][0]) === baseRegId) {
+              existingRowIndex = i + 2; // +1 header, +1 for 1-based index
+              existingRowData = scansSh.getRange(existingRowIndex, 1, 1, SCAN_HEADERS.length).getValues()[0];
+              break;
             }
-
-            scansSh.appendRow(rowData);
-            cache.put("scan_" + scanId, "1", 21600);
-            results.push({ index: mIndex, status: "marked" });
           }
         }
 
-        SpreadsheetApp.flush();
+        // Build base row (used when creating a new row)
+        var rowToWrite = existingRowData ? existingRowData.slice() : [
+          baseRegId, "", "", "", "", String(r.eventName || ""), String(r.teamName || "Solo"),
+          "", "", "", "", "", "", "", "", // Member 1-4 slots
+          ts, String(scannerId)
+        ];
+
+        // Update Name/RegNo/Year/Section from first unmarked member (leader preferred)
+        var anyNewMark = false;
+        for (var i = 0; i < members.length; i++) {
+          var m = members[i];
+          var mIndex = parseInt(m.index);
+          var cacheKey = "scan_" + baseRegId + "_M" + mIndex;
+
+          if (cache.get(cacheKey)) {
+            results.push({ index: mIndex, status: "already_entered" });
+            continue;
+          }
+
+          // Fill base identity from leader (index 0) or first marked member
+          if (!anyNewMark) {
+            rowToWrite[1] = String(m.name || "");
+            rowToWrite[2] = String(m.regno || "");
+            rowToWrite[3] = String(m.year || "");
+            rowToWrite[4] = String(m.section || "");
+          }
+
+          // Write member name+regno in their correct Member slot (Member1–4)
+          // Index 0 → col 8,9 (Member1); 1 → col 10,11; 2 → col 12,13; 3 → col 14,15
+          var colStart = 7 + (mIndex * 2);
+          if (colStart >= 7 && colStart <= 14) {
+            rowToWrite[colStart] = String(m.name || "");
+            rowToWrite[colStart + 1] = String(m.regno || "");
+          }
+
+          rowToWrite[15] = ts; // Update timestamp
+          rowToWrite[16] = String(scannerId);
+          cache.put(cacheKey, "1", 21600);
+          results.push({ index: mIndex, status: "marked" });
+          anyNewMark = true;
+        }
+
+        if (anyNewMark) {
+          if (existingRowIndex !== -1) {
+            // UPDATE existing team row in place
+            scansSh.getRange(existingRowIndex, 1, 1, SCAN_HEADERS.length).setValues([rowToWrite]);
+          } else {
+            // CREATE new team row
+            scansSh.appendRow(rowToWrite);
+          }
+          SpreadsheetApp.flush();
+        }
+
         return ContentService.createTextOutput(JSON.stringify({ success: true, results: results })).setMimeType(ContentService.MimeType.JSON);
       } finally {
         scanLock2.releaseLock();
