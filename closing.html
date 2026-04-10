@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UTSAV 2K26</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #000;
+      overflow: hidden;
+      font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .vig {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.85) 100%);
+    }
+
+    .stable-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: calc(env(safe-area-inset-top, 0px) + 30px) 15px 40px;
+      z-index: 10;
+      background: linear-gradient(to bottom, #000 85%, transparent);
+      text-align: center;
+    }
+
+    .stable-big {
+      font-size: clamp(1.8rem, 10vw, 4rem);
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 5px;
+      text-shadow: 0 0 20px rgba(255,255,255,0.3);
+      line-height: 1.1;
+    }
+
+    .stable-status {
+      font-size: clamp(0.85rem, 4vw, 1.1rem);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .stage {
+      position: absolute;
+      top: 160px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .roll-container {
+      display: flex;
+      flex-direction: column;
+      animation: loop-scroll var(--dur, 45s) linear infinite;
+      will-change: transform;
+    }
+
+    @keyframes loop-scroll {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+
+    .roll-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15vh 10px 80px; /* Added 15vh top padding for visibility */
+      width: 100%;
+    }
+
+    .n {
+      font-size: clamp(0.95rem, 5vw, 1.1rem);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-align: center;
+      line-height: 1;
+      width: 100%;
+      margin: 18px 0;
+      text-transform: uppercase;
+    }
+
+    /* Color Classes */
+    .c-convener { color: #22c55e; font-weight: 600; } /* Green */
+    .c-staff { color: #ef4444; }    /* Red */
+    .c-student { color: #ffffff; }  /* White - Restored */
+
+    .pos {
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-top: -12px;
+      margin-bottom: 20px;
+    }
+
+    .hr {
+      width: 40px; height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin: 2px auto;
+    }
+
+    .end {
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 60px;
+      text-align: center;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: max(20px, env(safe-area-inset-top, 20px));
+      left: 15px;
+      z-index: 20;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 30px;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    .back-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    .fade {
+      position: fixed; inset: 0; z-index: 100; background: #000;
+      animation: fo 1.5s ease forwards; pointer-events: none;
+    }
+    @keyframes fo { to { opacity: 0; visibility: hidden; } }
+    #fx-layer {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .fx-item {
+      position: absolute; top: -10vh;
+      animation: fx-fall linear infinite;
+      opacity: 0; font-weight: bold;
+    }
+    .fx-card {
+      width: 30px; height: 42px; background: #fff; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .fx-fire {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #ffcc00; box-shadow: 0 0 10px 4px #ff5500;
+    }
+    @keyframes fx-fall {
+      0% { transform: translateY(0) rotate(0deg) scale(var(--s, 1)); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(120vh) rotate(720deg) scale(var(--s, 1)); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">&#8592; Back</a>
+
+<div id="fx-layer"></div>
+<div class="fade"></div>
+<div class="vig"></div>
+
+<div class="stable-header">
+  <h1 class="stable-big">UTSAV 2K26</h1>
+  <p class="stable-status">Registrations Closed</p>
+</div>
+
+<div class="stage">
+  <div class="roll-container" id="roll-container">
+    <div class="roll-list" id="roll-original">
+      
+      <p class="sec">CONVENER</p>
+      <p class="n c-convener">Dr. D SHANTHI</p>
+      <p class="pos">Convener · Head of Department</p>
+      <div class="hr"></div>
+
+      <p class="sec">FACULTY COORDINATORS</p>
+      <p class="n c-staff">Mrs. L. Hemalatha</p>
+      <p class="pos">Symposium Coordinator</p>
+      <div class="hr"></div>
+      
+      <p class="n c-staff">Mrs. N. Padmapriya</p>
+      <p class="pos">Symposium Coordinator</p>
+      <div class="hr"></div>
+
+      <p class="sec" style="margin-top: 10vh;">STUDENT COORDINATORS</p>
+      <p class="n c-student">Pranav A</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Lekeetha Sri A</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Kalaiselvi S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Renusree T</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Prasanna G</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Priscilla S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Gowshika S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Shriram Adithya S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Prabhakaran K</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Raghul S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Pradeep M R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Tharun Chezhian M</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Shunmuga Subramanian MA</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Sri Danush A</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Shaheel Syed Abuthahir S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Keshika A S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Deshika R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Priyanka M</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Samyuktha S K</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Shyamsundar M</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Sumith Sopan S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Yashwanth N G</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Ram Prakash T</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Sachin V B</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Raja Vignesh R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Hariharan R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Jeevika E</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Muthulatchmi M</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Manikandan A R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Arikara Sudhan M</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Maha Shree B</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Mahalakshmi B</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Harini P</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Dhanusha R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Jeya Dharshini L</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Nandhitha M</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Kaviya K</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Vijayavivinya M</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Soba S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Reshmaa K J</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Preethi Sri T</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Nithyasree S V</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Suganthana Rishi A</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Vasanthakumar S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Sushmitha R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Srinithi R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Sharmila A</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Sowmiya sri N R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Syedali Fathima S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Yazhini Priyaa R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Siva Ranjani S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Ajay P</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Madhuvandhana S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Renugadevi R</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Simson Roach S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Srivarshan K</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Shanmugapandian S</p><p class="pos">Student Coordinator</p><div class="hr"></div>
+      <p class="n c-student">Sabaresh M</p><p class="pos">Student Coordinator</p>
+
+      <p class="end">See You Soon</p>
+    </div>
+  </div>
+</div>
+
+<script>
+    (function () {
+      const container = document.getElementById('roll-container');
+      const original = document.getElementById('roll-original');
+      const clone = original.cloneNode(true);
+      container.appendChild(clone);
+      
+      // Cinema-style medium-speed credits at stable 60fps
+      const totalTime = 45;
+      container.style.setProperty('--dur', `${totalTime}s`);
+
+      // FX Generation (Cards & Fire)
+      const fxLayer = document.getElementById('fx-layer');
+      const suits = ['♠', '♥', '♦', '♣'];
+      const colors = ['#000', '#d00', '#d00', '#000'];
+      
+      for(let i=0; i<40; i++) {
+        let el = document.createElement('div');
+        let isCard = Math.random() > 0.4; // 60% cards, 40% fire
+        el.className = 'fx-item ' + (isCard ? 'fx-card' : 'fx-fire');
+        
+        let scale = 0.5 + Math.random() * 0.8;
+        el.style.setProperty('--s', scale);
+        
+        if(isCard) {
+          let s = Math.floor(Math.random() * 4);
+          el.innerText = suits[s];
+          el.style.color = colors[s];
+        }
+
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.animationDuration = (4 + Math.random() * 6) + 's';
+        el.style.animationDelay = (Math.random() * 5) + 's';
+        
+        fxLayer.appendChild(el);
+      }
+    })();
+</script>
+</body>
+</html>

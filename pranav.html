@@ -11248,6 +11248,8 @@
             }
 
             function openReg(evId) {
+              window.location.href = 'closing.html';
+              return;
               hideDock();
               revealTimeouts.forEach(t => clearTimeout(t)); revealTimeouts = [];
               if (isCooldown) {
