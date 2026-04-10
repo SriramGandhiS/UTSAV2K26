@@ -10220,7 +10220,7 @@
             "DESIGN DECODE": "https://chat.whatsapp.com/DjFzaKUd1e925Mwot5Li9L?mode=gi_t",
             "FRANCHISE FIESTA": "https://chat.whatsapp.com/Fc8otG9IlqN99FzuPiRty9",
             "CHECKMATE CODERS": "https://chat.whatsapp.com/HM2osS4hkYaLExQnQVw2TL",
-            "HACKVERSE": "https://chat.whatsapp.com/EPVfUdxaIqAIJEQFgs79b7",
+            "HACKVERSE": "https://chat.whatsapp.com/Cp98WaLj8e34zHEbGIeF8X?mode=gi_t",
             "THE ALGORITHMIC PLATTER": "https://chat.whatsapp.com/LKa7feP7CPkIWbhyb2yJo7",
             "TECHNOTRACE": "https://chat.whatsapp.com/Id7RvnVMPtjBeur8ISIwj7",
             "UNO REVERSE": "https://chat.whatsapp.com/GxbewbKXWC2EMXvZXG56zO",
@@ -10401,7 +10401,17 @@
                     if (evObj.id === 'dn') {
                       evObj.poster = 'assets/posters/dance.jpg';
                       evObj.maxTeam = 20;
-                      evObj.rules = evObj.rules.map(r => r.replace('Max 10', 'Max 20'));
+                      evObj.desc = 'Step into the spotlight and let your moves do the talking. This is not just a performance — it’s your moment to own the stage, express your vibe, and bring pure energy.<br><br>This is an interest-based entry, not a confirmed registration. By signing up, you’re showing your intent to participate. Our coordinators will reach out to you with further details.<br><br><b>Important Info:</b><br>• Event date and venue will be announced soon<br>• Selected participants will be contacted directly<br>• Stay prepared — high energy, high competition<br><br>This is your stage. Bring your style. Bring your crew. Bring the hype. Let’s make it unforgettable.';
+                      evObj.rules = [
+                        'Team size: Maximum 20 members (including leader)',
+                        'One team per class is encouraged',
+                        'Song selection and final track must be shared with coordinators in advance',
+                        'Participants must coordinate with organizers for music submission and timing',
+                        'Performance duration and final format will be informed later',
+                        'Vulgarity or inappropriate content is strictly prohibited',
+                        'All decisions by the organizing team will be final'
+                      ];
+                      evObj.time = 'Will be announced';
                     }
 
                     if (evObj.id === 'zcz') {
@@ -12658,8 +12668,8 @@
                 let waGroupLink = EVENT_WHATSAPP_MAP[reg.eventName] || '#';
                 if (reg.eventId === 'dn') {
                   waGroupLink = (reg.gender === 'Female')
-                    ? 'https://chat.whatsapp.com/KuV7TFjgpP9FzAmmCvrGTy?mode=gi_t'
-                    : 'https://chat.whatsapp.com/Kz4a3HXB56bISBxP9sebh0?mode=gi_t';
+                    ? 'https://chat.whatsapp.com/KuV7TFjgpP9FzAmmCvrGTy'
+                    : 'https://chat.whatsapp.com/Kz4a3HXB56bISBxP9sebh0';
                 }
 
                 document.getElementById('conf-wa-container').innerHTML = `
@@ -12852,10 +12862,10 @@
                 const waText = encodeURIComponent(`🎟️ CSEUTSAV'26 2K26 Pass\nName: ${r.name}\nEvent: ${r.eventName}\nPass ID: ${r.regId}\n\nShow this pass at entry:\n${shareLink}`);
 
                 let waGroupLink = EVENT_WHATSAPP_MAP[r.eventName] || '#';
-                if (r.eventId === 'dn' || r.eventName === 'Cultural Dance') {
+                if (r.eventId === 'dn' || r.eventName === 'DANCE' || r.eventName === 'Cultural Dance') {
                   waGroupLink = (r.gender === 'Female')
-                    ? 'https://chat.whatsapp.com/KuV7TFjgpP9FzAmmCvrGTy?mode=gi_t'
-                    : 'https://chat.whatsapp.com/Kz4a3HXB56bISBxP9sebh0?mode=gi_t';
+                    ? 'https://chat.whatsapp.com/KuV7TFjgpP9FzAmmCvrGTy'
+                    : 'https://chat.whatsapp.com/Kz4a3HXB56bISBxP9sebh0';
                 }
                 return `
     <div class="pass-card">
